@@ -30,7 +30,64 @@ export interface Band {
   whatItSees: string
   limits: string
   typicalSensors: string[]
+  profile: BandProfile
 }
+
+export interface BandProfile {
+  /** Detection strength per phenomenon: 0 blind, 1 marginal, 2 usable, 3 strong. */
+  detects: Record<PhenomenonId, 0 | 1 | 2 | 3>
+  day: number
+  night: number
+  /** Penetration through each obscurant, same 0-3 scale. */
+  penetrates: { cloud: number; rain: number; fog: number; smoke: number; dark: number }
+  typicalRangeM: number
+  entryCostUsd: number
+}
+
+export type PhenomenonId = 'aircraft' | 'satellite' | 'bird_insect' | 'meteor' | 'lightning' | 'drone' | 'balloon' | 'exhaust_plume' | 'rf_emitter' | 'ground_vehicle'
+export interface Phenomenon { id: PhenomenonId; label: string }
+export const PHENOMENA: readonly Phenomenon[] = [
+  {
+    "id": "aircraft",
+    "label": "Aircraft"
+  },
+  {
+    "id": "satellite",
+    "label": "Satellite"
+  },
+  {
+    "id": "bird_insect",
+    "label": "Bird or insect"
+  },
+  {
+    "id": "meteor",
+    "label": "Meteor"
+  },
+  {
+    "id": "lightning",
+    "label": "Lightning"
+  },
+  {
+    "id": "drone",
+    "label": "Small drone"
+  },
+  {
+    "id": "balloon",
+    "label": "Balloon"
+  },
+  {
+    "id": "exhaust_plume",
+    "label": "Exhaust plume"
+  },
+  {
+    "id": "rf_emitter",
+    "label": "RF emitter"
+  },
+  {
+    "id": "ground_vehicle",
+    "label": "Ground vehicle"
+  }
+] as const
 
 export const BANDS: readonly Band[] = [
   {
@@ -59,7 +116,32 @@ export const BANDS: readonly Band[] = [
     "typicalSensors": [
       "csi-tl-sipm",
       "gm-tube"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 0,
+        "satellite": 0,
+        "bird_insect": 0,
+        "meteor": 0,
+        "lightning": 1,
+        "drone": 0,
+        "balloon": 0,
+        "exhaust_plume": 0,
+        "rf_emitter": 0,
+        "ground_vehicle": 0
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 3,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 30,
+      "entryCostUsd": 189
+    }
   },
   {
     "id": "uv",
@@ -84,7 +166,32 @@ export const BANDS: readonly Band[] = [
       "ltr-390",
       "as7331",
       "guva-s12sd"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 1,
+        "satellite": 0,
+        "bird_insect": 0,
+        "meteor": 2,
+        "lightning": 3,
+        "drone": 0,
+        "balloon": 0,
+        "exhaust_plume": 2,
+        "rf_emitter": 0,
+        "ground_vehicle": 1
+      },
+      "day": 0,
+      "night": 3,
+      "penetrates": {
+        "cloud": 0,
+        "rain": 0,
+        "fog": 0,
+        "smoke": 1,
+        "dark": 3
+      },
+      "typicalRangeM": 5000,
+      "entryCostUsd": 24.95
+    }
   },
   {
     "id": "vis",
@@ -109,7 +216,32 @@ export const BANDS: readonly Band[] = [
       "imx477-hq",
       "imx296-gs",
       "imx678"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 3,
+        "satellite": 3,
+        "bird_insect": 2,
+        "meteor": 3,
+        "lightning": 3,
+        "drone": 2,
+        "balloon": 3,
+        "exhaust_plume": 2,
+        "rf_emitter": 0,
+        "ground_vehicle": 2
+      },
+      "day": 2,
+      "night": 3,
+      "penetrates": {
+        "cloud": 0,
+        "rain": 0,
+        "fog": 0,
+        "smoke": 0,
+        "dark": 0
+      },
+      "typicalRangeM": 30000,
+      "entryCostUsd": 78
+    }
   },
   {
     "id": "nir",
@@ -133,7 +265,32 @@ export const BANDS: readonly Band[] = [
     "typicalSensors": [
       "imx477-noir",
       "imx462-noir"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 3,
+        "satellite": 2,
+        "bird_insect": 1,
+        "meteor": 2,
+        "lightning": 2,
+        "drone": 2,
+        "balloon": 2,
+        "exhaust_plume": 3,
+        "rf_emitter": 0,
+        "ground_vehicle": 2
+      },
+      "day": 1,
+      "night": 3,
+      "penetrates": {
+        "cloud": 0,
+        "rain": 1,
+        "fog": 1,
+        "smoke": 1,
+        "dark": 2
+      },
+      "typicalRangeM": 20000,
+      "entryCostUsd": 96
+    }
   },
   {
     "id": "swir",
@@ -156,7 +313,32 @@ export const BANDS: readonly Band[] = [
     "limits": "Requires an InGaAs sensor. This is the single most expensive band per pixel in the platform and the reason tier 3 exists. Water vapour absorption bands carve holes in the spectrum.",
     "typicalSensors": [
       "ingaas-640"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 3,
+        "satellite": 1,
+        "bird_insect": 1,
+        "meteor": 2,
+        "lightning": 1,
+        "drone": 2,
+        "balloon": 2,
+        "exhaust_plume": 3,
+        "rf_emitter": 0,
+        "ground_vehicle": 2
+      },
+      "day": 2,
+      "night": 3,
+      "penetrates": {
+        "cloud": 0,
+        "rain": 1,
+        "fog": 2,
+        "smoke": 2,
+        "dark": 3
+      },
+      "typicalRangeM": 25000,
+      "entryCostUsd": 2400
+    }
   },
   {
     "id": "lwir",
@@ -181,7 +363,32 @@ export const BANDS: readonly Band[] = [
       "lepton-3-5",
       "boson-640",
       "mlx90640"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 3,
+        "satellite": 1,
+        "bird_insect": 2,
+        "meteor": 1,
+        "lightning": 1,
+        "drone": 2,
+        "balloon": 1,
+        "exhaust_plume": 3,
+        "rf_emitter": 0,
+        "ground_vehicle": 3
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 0,
+        "rain": 1,
+        "fog": 1,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 8000,
+      "entryCostUsd": 74.95
+    }
   },
   {
     "id": "mmw",
@@ -206,7 +413,32 @@ export const BANDS: readonly Band[] = [
       "iwr6843",
       "ld2450",
       "cdm324"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 2,
+        "satellite": 0,
+        "bird_insect": 1,
+        "meteor": 0,
+        "lightning": 0,
+        "drone": 3,
+        "balloon": 1,
+        "exhaust_plume": 0,
+        "rf_emitter": 0,
+        "ground_vehicle": 3
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 1,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 250,
+      "entryCostUsd": 14.5
+    }
   },
   {
     "id": "rf",
@@ -231,7 +463,32 @@ export const BANDS: readonly Band[] = [
       "rtl-sdr-v4",
       "airspy-mini",
       "hackrf-one"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 3,
+        "satellite": 3,
+        "bird_insect": 0,
+        "meteor": 1,
+        "lightning": 3,
+        "drone": 3,
+        "balloon": 2,
+        "exhaust_plume": 0,
+        "rf_emitter": 3,
+        "ground_vehicle": 1
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 3,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 300000,
+      "entryCostUsd": 39.95
+    }
   },
   {
     "id": "elf_vlf",
@@ -252,7 +509,32 @@ export const BANDS: readonly Band[] = [
       "rm3100",
       "fgm-3",
       "qmc5883l"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 1,
+        "satellite": 0,
+        "bird_insect": 0,
+        "meteor": 0,
+        "lightning": 3,
+        "drone": 1,
+        "balloon": 0,
+        "exhaust_plume": 0,
+        "rf_emitter": 1,
+        "ground_vehicle": 2
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 3,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 30,
+      "entryCostUsd": 39.95
+    }
   },
   {
     "id": "acoustic",
@@ -273,7 +555,32 @@ export const BANDS: readonly Band[] = [
       "ics-43434",
       "sph0645",
       "infrabsu"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 3,
+        "satellite": 0,
+        "bird_insect": 1,
+        "meteor": 1,
+        "lightning": 3,
+        "drone": 3,
+        "balloon": 0,
+        "exhaust_plume": 0,
+        "rf_emitter": 0,
+        "ground_vehicle": 3
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 1,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 12000,
+      "entryCostUsd": 12.5
+    }
   },
   {
     "id": "seismic",
@@ -294,7 +601,32 @@ export const BANDS: readonly Band[] = [
       "sm-24-geophone",
       "trillium-compact",
       "raspberryshake"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 1,
+        "satellite": 0,
+        "bird_insect": 0,
+        "meteor": 1,
+        "lightning": 1,
+        "drone": 0,
+        "balloon": 0,
+        "exhaust_plume": 0,
+        "rf_emitter": 0,
+        "ground_vehicle": 2
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 2,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 3000,
+      "entryCostUsd": 89
+    }
   },
   {
     "id": "grav",
@@ -310,7 +642,32 @@ export const BANDS: readonly Band[] = [
     "typicalSensors": [
       "atom-interferometer",
       "squid-gradiometer"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 1,
+        "satellite": 0,
+        "bird_insect": 0,
+        "meteor": 0,
+        "lightning": 0,
+        "drone": 0,
+        "balloon": 0,
+        "exhaust_plume": 0,
+        "rf_emitter": 0,
+        "ground_vehicle": 0
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 3,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 100,
+      "entryCostUsd": 150000
+    }
   },
   {
     "id": "env",
@@ -327,7 +684,32 @@ export const BANDS: readonly Band[] = [
       "bme688",
       "sqm-lu",
       "mlx90614-sky"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 0,
+        "satellite": 0,
+        "bird_insect": 0,
+        "meteor": 0,
+        "lightning": 0,
+        "drone": 0,
+        "balloon": 0,
+        "exhaust_plume": 0,
+        "rf_emitter": 0,
+        "ground_vehicle": 0
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 3,
+        "rain": 3,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 0,
+      "entryCostUsd": 22.5
+    }
   },
   {
     "id": "nav",
@@ -345,7 +727,32 @@ export const BANDS: readonly Band[] = [
       "neo-m9n",
       "lea-m8t",
       "bno085"
-    ]
+    ],
+    "profile": {
+      "detects": {
+        "aircraft": 0,
+        "satellite": 0,
+        "bird_insect": 0,
+        "meteor": 0,
+        "lightning": 0,
+        "drone": 0,
+        "balloon": 0,
+        "exhaust_plume": 0,
+        "rf_emitter": 0,
+        "ground_vehicle": 0
+      },
+      "day": 3,
+      "night": 3,
+      "penetrates": {
+        "cloud": 2,
+        "rain": 3,
+        "fog": 3,
+        "smoke": 3,
+        "dark": 3
+      },
+      "typicalRangeM": 0,
+      "entryCostUsd": 49.99
+    }
   }
 ] as const
 
