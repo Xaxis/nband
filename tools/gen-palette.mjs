@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-// Derives BIFROST's two colour sets from schema/bands.json and prints them for
+// Derives NBAND's two colour sets from schema/bands.json and prints them for
 // the dataviz validator.
 //
-// BIFROST has an unusual constraint: fourteen bands is far more than any
+// NBAND has an unusual constraint: fourteen bands is far more than any
 // categorical palette can separate under colour-vision deficiency (360/14 is
 // roughly 26 degrees of hue apart, well below the separation floor). So there
 // are deliberately two sets with two different jobs:

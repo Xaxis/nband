@@ -8,16 +8,16 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'BIFROST — an open multi-spectral sensing platform',
-    template: '%s — BIFROST',
+    default: 'NBAND — an open multi-spectral sensing platform',
+    template: '%s — NBAND',
   },
   description:
-    'BIFROST is an open, buildable sensor node that watches the sky across fourteen bands at once, timestamps everything to a common clock, and publishes what it records. Hardware, firmware, grid, and discriminator, versioned together.',
-  applicationName: 'BIFROST',
+    'NBAND is an open, buildable sensor node that watches the sky across fourteen bands at once, timestamps everything to a common clock, and publishes what it records. Hardware, firmware, grid, and discriminator, versioned together.',
+  applicationName: 'NBAND',
   openGraph: {
     type: 'website',
-    siteName: 'BIFROST',
-    title: 'BIFROST — an open multi-spectral sensing platform',
+    siteName: 'NBAND',
+    title: 'NBAND — an open multi-spectral sensing platform',
     description:
       'Fourteen bands, one clock, an open archive. Build a node, join the grid, read the data.',
     url: SITE_URL,
@@ -36,7 +36,7 @@ export const viewport: Viewport = {
 }
 
 // Applied before paint so a light-mode preference never flashes dark.
-const THEME_BOOTSTRAP = `(function(){try{var t=localStorage.getItem('bifrost-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}}catch(e){}})()`
+const THEME_BOOTSTRAP = `(function(){try{var t=localStorage.getItem('nband-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}}catch(e){}})()`
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

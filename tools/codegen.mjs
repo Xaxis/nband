@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Generates language bindings from the canonical schema files.
 //
-// The whole point of this file is that BIFROST's band taxonomy, enum values,
+// The whole point of this file is that NBAND's band taxonomy, enum values,
 // and platform thresholds exist in exactly one place. Firmware running on a
 // mast in the desert, the Postgres enum backing the archive, and the colour a
 // chart uses for the LWIR trace all derive from schema/bands.json and
@@ -163,6 +163,8 @@ function generateTypeScript() {
     `  keySpecs: Record<string, string | number | boolean>`,
     `  notes: string`,
     `  alternatives?: string[]`,
+    `  /** Substitutes people use that have not been through conformance. */`,
+    `  candidateAlternatives?: string[]`,
     `}`,
     ``,
     `export const PARTS: readonly Part[] = ${JSON.stringify(hardware.parts, null, 2)} as unknown as readonly Part[]`,
@@ -263,7 +265,7 @@ function generatePython() {
 
 console.log(checkOnly ? 'Checking generated files...' : 'Generating...')
 emit('apps/web/lib/schema/generated.ts', generateTypeScript())
-emit('firmware/bifrost_node/schema_generated.py', generatePython())
+emit('firmware/nband_node/schema_generated.py', generatePython())
 
 if (checkOnly) {
   if (stale.length) {

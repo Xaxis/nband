@@ -51,7 +51,7 @@ export const BANDS: readonly Band[] = [
       "minEv": 100000,
       "maxEv": 100000000
     },
-    "hue": 285,
+    "hue": 295,
     "unitDefault": "cps",
     "shortDescription": "Ionizing photons above 100 keV.",
     "whatItSees": "Radioisotope decay, cosmic-ray secondaries, and any source emitting hard photons. The only band in the stack that responds to nuclear rather than thermal or electronic processes.",
@@ -75,7 +75,7 @@ export const BANDS: readonly Band[] = [
       "minHz": 750000000000000,
       "maxHz": 3000000000000000
     },
-    "hue": 265,
+    "hue": 258,
     "unitDefault": "uW/cm2",
     "shortDescription": "100 to 400 nanometres, above the violet edge of vision.",
     "whatItSees": "Corona discharge, electrical arcing, plasma, combustion, and lightning leaders. Solar UV sets the daytime floor, so the band is far more informative after dark.",
@@ -104,7 +104,7 @@ export const BANDS: readonly Band[] = [
     "unitDefault": "adu",
     "shortDescription": "380 to 750 nanometres, the band your eye already covers.",
     "whatItSees": "Anything that reflects sunlight or emits its own light: aircraft, satellites, meteors, balloons, birds, and the occasional thing that fits none of those. Provides the astrometry that turns a detection into a bearing.",
-    "limits": "Useless through cloud and nearly useless in daylight against a bright sky for dim targets. A single camera gives bearing but never range, which is why BIFROST treats single-node visible detections as unresolvable in distance by construction.",
+    "limits": "Useless through cloud and nearly useless in daylight against a bright sky for dim targets. A single camera gives bearing but never range, which is why NBAND treats single-node visible detections as unresolvable in distance by construction.",
     "typicalSensors": [
       "imx477-hq",
       "imx296-gs",
@@ -125,7 +125,7 @@ export const BANDS: readonly Band[] = [
       "minHz": 210000000000000,
       "maxHz": 400000000000000
     },
-    "hue": 25,
+    "hue": 20,
     "unitDefault": "adu",
     "shortDescription": "750 to 1400 nanometres, just past the red edge.",
     "whatItSees": "Hot exhaust, incandescent surfaces, IR illuminators and rangefinders, and haze-penetrating reflected light. Silicon sensors are natively sensitive here, so removing the IR-cut filter from a normal camera buys the band for free.",
@@ -149,7 +149,7 @@ export const BANDS: readonly Band[] = [
       "minHz": 100000000000000,
       "maxHz": 210000000000000
     },
-    "hue": 40,
+    "hue": 48,
     "unitDefault": "adu",
     "shortDescription": "1.4 to 3 micrometres. Reflective, not thermal.",
     "whatItSees": "Sees through haze, thin smoke, and some fog far better than visible light. Discriminates materials by reflectance in a way no other band in this stack can. Night-sky airglow illuminates targets passively at 1.5 to 1.7 micrometres.",
@@ -172,7 +172,7 @@ export const BANDS: readonly Band[] = [
       "minHz": 21000000000000,
       "maxHz": 37000000000000
     },
-    "hue": 8,
+    "hue": 4,
     "unitDefault": "K",
     "shortDescription": "8 to 14 micrometres. Pure thermal emission.",
     "whatItSees": "Everything warmer than absolute zero, by its own emitted heat rather than reflected light. Works in total darkness and through smoke. A radiometric sensor reports actual temperature per pixel, which turns a track into an energy-budget measurement.",
@@ -222,7 +222,7 @@ export const BANDS: readonly Band[] = [
       "minM": 0.05,
       "maxM": 600
     },
-    "hue": 200,
+    "hue": 205,
     "unitDefault": "dBm",
     "shortDescription": "500 kilohertz to 6 gigahertz, received passively.",
     "whatItSees": "Emissions rather than reflections. Aircraft transponders, satellite downlinks, control links, broadband impulsive noise from discharge events, and anything transmitting where nothing should be. Also feeds passive radar: an aircraft crossing a broadcast transmitter's illumination produces a Doppler-shifted echo.",
@@ -243,7 +243,7 @@ export const BANDS: readonly Band[] = [
       "minHz": 0,
       "maxHz": 30000
     },
-    "hue": 220,
+    "hue": 237,
     "unitDefault": "nT",
     "shortDescription": "DC to 30 kilohertz field measurement, not photon detection.",
     "whatItSees": "Static and slowly varying magnetic fields, sferics from distant lightning, power-line harmonics, and any moving ferromagnetic or current-carrying mass close enough to perturb the local field. This is the band that has historically carried the most repeatable anomalous reports.",
@@ -264,7 +264,7 @@ export const BANDS: readonly Band[] = [
       "minHz": 0.05,
       "maxHz": 20000
     },
-    "hue": 95,
+    "hue": 108,
     "unitDefault": "dBSPL",
     "shortDescription": "0.05 hertz to 20 kilohertz pressure waves.",
     "whatItSees": "Propeller and rotor signatures, jet noise, sonic booms, and the infrasound tail that survives to long range when audible sound has already been absorbed. Independently corroborates or refutes a claim that an optical track was silent.",
@@ -285,7 +285,7 @@ export const BANDS: readonly Band[] = [
       "minHz": 0.008,
       "maxHz": 100
     },
-    "hue": 70,
+    "hue": 60,
     "unitDefault": "m/s",
     "shortDescription": "Ground motion from 0.008 to 100 hertz.",
     "whatItSees": "Ground-coupled acoustic energy from low overflights, and, at high-tier sites, the vibration reference a gravimeter needs to separate real gravitational signal from the ground moving underneath it.",
@@ -306,7 +306,7 @@ export const BANDS: readonly Band[] = [
     "unitDefault": "nGal",
     "shortDescription": "Absolute local gravitational acceleration.",
     "whatItSees": "The only channel that responds to mass-energy directly rather than to photons or fields. A discrepancy between the mass implied by radar cross-section and the mass implied by gravitational perturbation is a measurement no other instrument in the stack can produce.",
-    "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every BIFROST node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
+    "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every NBAND node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
     "typicalSensors": [
       "atom-interferometer",
       "squid-gradiometer"
@@ -475,7 +475,7 @@ export interface ClockQualityMeta {
 
 export const CLOCKQUALITY_ORDER: readonly ClockQuality[] = ['gnss_pps', 'gnss_nopps', 'ntp', 'freerun'] as const
 
-/** Why the node decided a window of data was worth keeping. BIFROST records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection. */
+/** Why the node decided a window of data was worth keeping. NBAND records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection. */
 export type TriggerReason = 'threshold' | 'motion' | 'spectral' | 'coincidence' | 'cross_node' | 'scheduled' | 'manual'
 
 export const TRIGGERREASON: Record<TriggerReason, TriggerReasonMeta> = {
@@ -524,7 +524,7 @@ export interface TriggerReasonMeta {
 
 export const TRIGGERREASON_ORDER: readonly TriggerReason[] = ['threshold', 'motion', 'spectral', 'coincidence', 'cross_node', 'scheduled', 'manual'] as const
 
-/** The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. BIFROST can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support. */
+/** The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. NBAND can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support. */
 export type Classification = 'instrumental' | 'terrestrial_known' | 'terrestrial_likely' | 'ambiguous' | 'anomalous_unresolved'
 
 export const CLASSIFICATION: Record<Classification, ClassificationMeta> = {
@@ -848,6 +848,8 @@ export interface Part {
   keySpecs: Record<string, string | number | boolean>
   notes: string
   alternatives?: string[]
+  /** Substitutes people use that have not been through conformance. */
+  candidateAlternatives?: string[]
 }
 
 export const PARTS: readonly Part[] = [
@@ -877,7 +879,9 @@ export const PARTS: readonly Part[] = [
     "notes": "The tier 1 reference host. Two gigabytes is genuinely sufficient because the node agent holds bounded ring buffers and never queues decoded frames; see firmware/README.md on the memory budget. Choosing 2 GB over 8 GB saves USD 110 at July 2026 prices, which is more than a quarter of the entire tier 1 budget. The Pi 5's Ethernet MAC supports hardware timestamping, which is what makes sub-microsecond cross-node timing achievable at all.",
     "alternatives": [
       "pi5-4gb",
-      "pi5-8gb",
+      "pi5-8gb"
+    ],
+    "candidateAlternatives": [
       "pi4-4gb"
     ]
   },
@@ -901,7 +905,9 @@ export const PARTS: readonly Part[] = [
     },
     "notes": "The tier 2 reference host. The extra headroom over 2 GB is spent on the LWIR pipeline and on holding a longer pre-roll for the coincidence trigger.",
     "alternatives": [
-      "pi5-8gb",
+      "pi5-8gb"
+    ],
+    "candidateAlternatives": [
       "cm5"
     ]
   },
@@ -924,7 +930,8 @@ export const PARTS: readonly Part[] = [
       "ram": "8 GB LPDDR4X"
     },
     "notes": "Tier 3 host. Needed once SWIR imaging and wideband SDR are both running, since each wants a multi-hundred-megabyte buffer of its own.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "cm5",
       "jetson-orin-nano"
     ]
@@ -952,7 +959,8 @@ export const PARTS: readonly Part[] = [
       "ppsPin": "GPIO18"
     },
     "notes": "The single most important part in the entire build and the one most builders skip. Without a pulse-per-second signal wired to a GPIO and disciplined through chrony, a node's timestamps are good to milliseconds and it can never contribute to multi-node geometry. With it, the node holds a few hundred nanoseconds and becomes a real element of an interferometric array. Budget for this before budgeting for a second camera.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "gnss-neo-m9n",
       "gnss-lea-m8t"
     ]
@@ -981,7 +989,8 @@ export const PARTS: readonly Part[] = [
       "mount": "C/CS"
     },
     "notes": "Rolling shutter is a real limitation for fast targets: a fast-crossing object is geometrically skewed, and that skew must not be read as anomalous kinematics. The firmware records the readout time per frame so the discriminator can correct for it. Where budget allows, the global-shutter IMX296 removes the problem entirely at the cost of resolution.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "cam-gs-imx296",
       "cam-imx678"
     ]
@@ -1009,7 +1018,8 @@ export const PARTS: readonly Part[] = [
       "usefulTo": "~1050 nm"
     },
     "notes": "The cheapest genuinely additional band in the platform. A second HQ camera body with the IR-cut filter removed and a hard 850 nm bandpass in front of it produces a channel that is physically independent of the visible camera rather than a filtered copy of it. Without the bandpass filter this is not a NIR channel, it is a visible channel with extra noise, and the registry will mark it as such.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "cam-noir-imx462"
     ]
   },
@@ -1036,7 +1046,8 @@ export const PARTS: readonly Part[] = [
       "tcxoPpm": 1
     },
     "notes": "The V3 is the current reference, not the V4. RTL-SDR Blog announced the V4 as end-of-line in 2026 after Rafael Micro stopped producing the R828D tuner and the remaining stock proved faulty; the V3 remains in stable production. A V4L using the R828S is expected but was not shippable at the time of writing. Any BOM still specifying a V4 is out of date. The 1 ppm TCXO matters here: an uncompensated dongle drifts enough to smear a narrowband detection across the analysis window.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "sdr-airspy-mini",
       "sdr-hackrf"
     ]
@@ -1064,7 +1075,8 @@ export const PARTS: readonly Part[] = [
       "humidityPct": "0-100, +/-3 %"
     },
     "notes": "Context only, never a detection channel. Its job is to make a refraction argument settleable after the fact instead of arguable forever. Pressure trend and dewpoint spread are what let the discriminator recognise a temperature inversion, which is the single most common cause of a genuinely strange-looking optical track near the horizon.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "env-bme280"
     ]
   },
@@ -1090,7 +1102,8 @@ export const PARTS: readonly Part[] = [
       "headingAccuracyDeg": 2
     },
     "notes": "Records where each sensor was actually pointing rather than where the operator believes it was bolted. A mast that shifts two degrees in wind invalidates every bearing taken during the gust unless the shift is recorded. The onboard sensor-fusion output is used directly; running fusion on the host wastes CPU that the trigger pipeline needs.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "imu-icm20948"
     ]
   },
@@ -1119,7 +1132,9 @@ export const PARTS: readonly Part[] = [
     },
     "notes": "Radiometric output is the reason this is the reference rather than a cheaper array: every pixel carries an absolute temperature, which turns a thermal track into an energy measurement the discriminator can reason about. The flat-field shutter fires every few minutes and blanks the stream for roughly half a second; the firmware marks those windows invalid rather than letting them register as a detection. Export-controlled in some jurisdictions, and the 8.7 Hz frame rate is a deliberate export-compliance limit, not a technical one.",
     "alternatives": [
-      "lwir-mlx90640",
+      "lwir-mlx90640"
+    ],
+    "candidateAlternatives": [
       "lwir-boson640"
     ]
   },
@@ -1171,7 +1186,8 @@ export const PARTS: readonly Part[] = [
       "irradianceRange": "nW/cm2 to mW/cm2"
     },
     "notes": "Three separate UV channels rather than a single index, which is what makes the part useful for discrimination instead of merely for sun exposure. A corona discharge, a lightning leader, and direct sunlight have distinguishable ratios across the three. Needs a fused-silica or PTFE diffuser window; ordinary acrylic blocks UVB and UVC entirely and will silently turn this into a one-channel sensor.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "uv-ltr390"
     ]
   },
@@ -1198,7 +1214,9 @@ export const PARTS: readonly Part[] = [
     },
     "notes": "Sets an honest expectation: an eight metre range makes this a calibration and near-field instrument, not a sky radar. It earns its place by being the cheapest way to get a true range and radial velocity into the schema at all, which lets a builder exercise and validate the entire radar path before deciding whether to spend forty times more on a module that can actually reach altitude. Do not present a tier 2 node as radar-covered for aerial targets.",
     "alternatives": [
-      "radar-iwr6843",
+      "radar-iwr6843"
+    ],
+    "candidateAlternatives": [
       "radar-cdm324"
     ]
   },
@@ -1251,7 +1269,8 @@ export const PARTS: readonly Part[] = [
       "rangeUt": 800
     },
     "notes": "Magneto-inductive rather than Hall-effect, which is why it reaches tens of nanotesla instead of hundreds. Mount it at least two metres from the node's own electronics and from any of the active-emission hardware, on a non-ferrous mast section. In practice the dominant signal at most sites is the operator walking past with a phone, and learning that local signature is part of commissioning rather than a nuisance.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "mag-qmc5883l",
       "mag-fgm3"
     ]
@@ -1278,7 +1297,8 @@ export const PARTS: readonly Part[] = [
       "bitDepth": 24
     },
     "notes": "Digital output straight to the Pi's I2S peripheral, which keeps the analogue path short and avoids the ground-loop noise that plagues USB audio interfaces on a solar-powered mast. Rolls off below 50 Hz, so this covers audible acoustics only. Infrasound needs a dedicated differential pressure sensor and a mechanical wind filter, which is a tier 3 addition.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "mic-sph0645",
       "mic-infrabsu"
     ]
@@ -1305,7 +1325,8 @@ export const PARTS: readonly Part[] = [
       "backgroundCps": "20-60"
     },
     "notes": "Open hardware, fully documented, and the only practical route to a real energy spectrum rather than a bare count rate at this price. A spectrum is what separates a cosmic-ray shower from an isotope line. This is also the instrument that reads back the active-emission module's own 59.5 keV americium line, which is how the node proves the lure is operating and correctly characterises its own contribution to the background before subtracting it.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "gamma-gm-tube"
     ]
   },
@@ -1352,7 +1373,8 @@ export const PARTS: readonly Part[] = [
       "sensitivityVPerMPerS": 28.8
     },
     "notes": "A 10 Hz element does not reach the infrasound band and is not a substitute for a broadband seismometer. Its role at tier 3 is ground-coupled acoustic detection of low overflights and, more importantly, characterising the site's vibration background, which is the prerequisite for ever siting a gravimeter there.",
-    "alternatives": [
+    "alternatives": [],
+    "candidateAlternatives": [
       "seis-trillium",
       "seis-raspberryshake"
     ]

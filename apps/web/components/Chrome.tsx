@@ -43,7 +43,7 @@ function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null)
 
   useEffect(() => {
-    const stored = localStorage.getItem('bifrost-theme')
+    const stored = localStorage.getItem('nband-theme')
     if (stored === 'light' || stored === 'dark') setTheme(stored)
     else setTheme(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
   }, [])
@@ -52,7 +52,7 @@ function ThemeToggle() {
     const next = theme === 'light' ? 'dark' : 'light'
     setTheme(next)
     document.documentElement.setAttribute('data-theme', next)
-    localStorage.setItem('bifrost-theme', next)
+    localStorage.setItem('nband-theme', next)
   }
 
   return (
@@ -99,7 +99,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-14 max-w-[1180px] items-center gap-3 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight">
           <Mark />
-          <span>BIFROST</span>
+          <span>NBAND</span>
         </Link>
 
         <nav className="ml-4 hidden items-center gap-0.5 lg:flex" aria-label="Main">
@@ -177,7 +177,7 @@ export function SiteFooter({ version }: { version: string }) {
         <div>
           <div className="flex items-center gap-2.5 font-semibold tracking-tight">
             <Mark size={20} />
-            BIFROST
+            NBAND
           </div>
           <p className="mt-3 max-w-[38ch] text-[13.5px] leading-relaxed text-[var(--ink-3)]">
             An open multi-spectral sensing platform. Build a node, join the grid, read the archive.
@@ -239,7 +239,7 @@ export function SiteFooter({ version }: { version: string }) {
         <div className="mx-auto flex max-w-[1180px] flex-col gap-2 px-4 py-5 text-[12.5px] text-[var(--ink-3)] sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>Code MIT. Documentation and recorded data CC BY 4.0.</p>
           <p>
-            BIFROST records what it sees and says what it cannot explain. It does not claim to know
+            NBAND records what it sees and says what it cannot explain. It does not claim to know
             what anything is.
           </p>
         </div>

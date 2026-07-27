@@ -1,0 +1,118 @@
+# NBAND node configuration.
+#
+# Copy to /etc/nband/node.toml and edit. The agent validates this file hard
+# at startup: a node that cannot fully describe itself refuses to run rather
+# than emitting data whose provenance nobody can reconstruct later.
+
+[node]
+name = "KP-01 Sonoran"
+tier = "t2"
+pre_roll_s = 15.0
+post_roll_s = 15.0
+simulate = false
+
+[site]
+latitude = 31.9403
+longitude = -109.3120
+elevation_m = 1402.0
+# Published position is fuzzed by this radius. You are running this at home.
+location_precision_m = 1000
+timezone = "America/Phoenix"
+
+# Azimuth -> minimum usable elevation. Survey this once with a compass and an
+# inclinometer. Without it, "saw nothing to the north" is ambiguous between
+# "looked and it was clear" and "there is a ridge in the way".
+[site.horizon_mask]
+0 = 4.0
+90 = 2.5
+180 = 12.0
+270 = 18.5
+
+[grid]
+endpoint = "https://nband.space"
+node_slug = "kp-01-sonoran"
+key_path = "/var/lib/nband/node.key"
+enrollment_secret = "set-me-once-then-delete"
+upload_interval_s = 30.0
+max_spool_bytes = 2000000000
+
+# --- Detection channels ----------------------------------------------------
+
+[[channel]]
+id = "vis.wide"
+band = "vis"
+part = "cam-hq-imx477"
+unit = "mag/arcsec2"
+sample_rate_hz = 0.2
+elevation_deg = 90.0
+fov_deg = 120.0
+trigger_sigma = 4.5
+
+[[channel]]
+id = "nir.850"
+band = "nir"
+part = "cam-noir-imx477"
+unit = "ADU"
+sample_rate_hz = 0.2
+elevation_deg = 90.0
+fov_deg = 120.0
+trigger_sigma = 4.5
+
+[[channel]]
+id = "lwir.main"
+band = "lwir"
+part = "lwir-mlx90640"
+driver = "mlx90640"
+unit = "K"
+sample_rate_hz = 8.0
+elevation_deg = 75.0
+fov_deg = 110.0
+trigger_sigma = 5.0
+options = { address = 0x33 }
+
+[[channel]]
+id = "rf.sdr0"
+band = "rf"
+part = "sdr-rtl-v3"
+unit = "dBm"
+sample_rate_hz = 1.0
+trigger_sigma = 6.0
+options = { center_freq = 450e6, sample_rate = 2.048e6, nfft = 1024 }
+
+[[channel]]
+id = "mag.z"
+band = "elf_vlf"
+part = "mag-rm3100"
+driver = "rm3100"
+unit = "nT"
+sample_rate_hz = 10.0
+trigger_sigma = 5.0
+
+# --- Context channels ------------------------------------------------------
+# These may never carry trigger_sigma. The agent rejects the config if they do.
+
+[[channel]]
+id = "env.temp"
+band = "env"
+part = "env-bme688"
+driver = "bme68x"
+unit = "C"
+sample_rate_hz = 0.1
+options = { field = "temperature", address = 0x77 }
+
+[[channel]]
+id = "env.pressure"
+band = "env"
+part = "env-bme688"
+driver = "bme68x"
+unit = "hPa"
+sample_rate_hz = 0.1
+options = { field = "pressure", address = 0x77 }
+
+[[channel]]
+id = "nav.clock"
+band = "nav"
+part = "gnss-lc29h"
+driver = "gnss_nmea_pps"
+unit = "ns"
+sample_rate_hz = 1.0

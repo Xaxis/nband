@@ -22,12 +22,13 @@ venv/
 .ruff_cache/
 .mypy_cache/
 
-# node runtime artifacts (a real BIFROST unit writes here)
+# node runtime artifacts (a real NBAND unit writes here)
 firmware/var/
 firmware/captures/
-*.bifrost-spool
+*.nband-spool
 
 # editors / os
 .idea/
 .vscode/
 .DS_Store
+.vercel

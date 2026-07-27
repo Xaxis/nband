@@ -6,7 +6,7 @@ import { getFeed } from '../../lib/feed'
 export const metadata: Metadata = {
   title: 'Live telemetry',
   description:
-    'Band-by-band telemetry from the BIFROST grid, with historical scrub and discriminator verdicts overlaid.',
+    'Band-by-band telemetry from the NBAND grid, with historical scrub and discriminator verdicts overlaid.',
 }
 
 export const dynamic = 'force-dynamic'
@@ -38,7 +38,7 @@ export default async function TelemetryPage() {
         {feed.kind === 'mock' && (
           <Note kind="info" title="This is a synthetic feed">
             <p>
-              No BIFROST node is reporting yet, so these charts are driven by a deterministic
+              No NBAND node is reporting yet, so these charts are driven by a deterministic
               simulator that models each band&apos;s real behaviour: Poisson counting noise on the
               scintillator, a solar curve on the ultraviolet and visible channels, the periodic
               flat-field shutter on the thermal camera, and an impulsive rather than smooth radio

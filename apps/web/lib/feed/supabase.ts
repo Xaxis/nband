@@ -14,7 +14,7 @@ import type {
  *
  * This is the implementation the mock is shaped to imitate. It reads through
  * the anon key, which is read-only by row-level-security policy: every write
- * path in BIFROST goes through the ingest API using the service role, so a
+ * path in NBAND goes through the ingest API using the service role, so a
  * compromised browser key cannot forge telemetry.
  *
  * It is wired but unexercised until nodes are actually reporting. Selecting it
@@ -23,13 +23,13 @@ import type {
  */
 export class SupabaseFeed implements TelemetryFeed {
   readonly kind = 'live' as const
-  // Grid tables live in the `bifrost` schema rather than `public`, so the
+  // Grid tables live in the `nband` schema rather than `public`, so the
   // client is parameterised on that schema name.
-  private db: SupabaseClient<any, 'bifrost', 'bifrost'>
+  private db: SupabaseClient<any, 'nband', 'nband'>
 
   constructor(url: string, anonKey: string) {
-    this.db = createClient<any, 'bifrost', 'bifrost'>(url, anonKey, {
-      db: { schema: 'bifrost' },
+    this.db = createClient<any, 'nband', 'nband'>(url, anonKey, {
+      db: { schema: 'nband' },
       auth: { persistSession: false },
     })
   }

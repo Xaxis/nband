@@ -1,9 +1,8 @@
 {
-  "$comment": "Canonical BIFROST hardware registry. Drives the bill of materials, the community variant registry, and the firmware driver map. Every entry carries the price actually paid at a named vendor on a named date, because 2026 component pricing is unstable enough that an unsourced number is worse than no number. `status` follows schema/spec.json:enums.variantStatus.",
+  "$comment": "Canonical NBAND hardware registry. Drives the bill of materials, the community variant registry, and the firmware driver map. Every entry carries the price actually paid at a named vendor on a named date, because 2026 component pricing is unstable enough that an unsourced number is worse than no number. `status` follows schema/spec.json:enums.variantStatus.",
   "schemaVersion": "0.1.0",
   "pricesAsOf": "2026-07-27",
   "priceNote": "Silicon pricing through 2026 is being distorted by LPDDR4 and DRAM supply being redirected to AI datacentre demand. Raspberry Pi board prices have risen in three separate rounds since December 2025 and are now 80 to 150 percent above original MSRP depending on memory size. Treat every figure here as a snapshot, not a quote. The tier budgets are held stable by moving down the memory ladder rather than by pretending prices did not move.",
-
   "parts": [
     {
       "id": "pi5-2gb",
@@ -12,7 +11,9 @@
       "vendor": "Raspberry Pi",
       "model": "Raspberry Pi 5, 2GB",
       "status": "reference",
-      "tiers": ["t1"],
+      "tiers": [
+        "t1"
+      ],
       "priceUsd": 65.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.pishop.us/product/raspberry-pi-5-2gb/",
@@ -27,7 +28,13 @@
         "ethernet": "Gigabit with hardware timestamping"
       },
       "notes": "The tier 1 reference host. Two gigabytes is genuinely sufficient because the node agent holds bounded ring buffers and never queues decoded frames; see firmware/README.md on the memory budget. Choosing 2 GB over 8 GB saves USD 110 at July 2026 prices, which is more than a quarter of the entire tier 1 budget. The Pi 5's Ethernet MAC supports hardware timestamping, which is what makes sub-microsecond cross-node timing achievable at all.",
-      "alternatives": ["pi5-4gb", "pi5-8gb", "pi4-4gb"]
+      "alternatives": [
+        "pi5-4gb",
+        "pi5-8gb"
+      ],
+      "candidateAlternatives": [
+        "pi4-4gb"
+      ]
     },
     {
       "id": "pi5-4gb",
@@ -36,15 +43,24 @@
       "vendor": "Raspberry Pi",
       "model": "Raspberry Pi 5, 4GB",
       "status": "reference",
-      "tiers": ["t2"],
+      "tiers": [
+        "t2"
+      ],
       "priceUsd": 110.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.pishop.us/product/raspberry-pi-5-4gb/",
       "interface": "host",
       "driver": null,
-      "keySpecs": { "ram": "4 GB LPDDR4X" },
+      "keySpecs": {
+        "ram": "4 GB LPDDR4X"
+      },
       "notes": "The tier 2 reference host. The extra headroom over 2 GB is spent on the LWIR pipeline and on holding a longer pre-roll for the coincidence trigger.",
-      "alternatives": ["pi5-8gb", "cm5"]
+      "alternatives": [
+        "pi5-8gb"
+      ],
+      "candidateAlternatives": [
+        "cm5"
+      ]
     },
     {
       "id": "pi5-8gb",
@@ -53,15 +69,23 @@
       "vendor": "Raspberry Pi",
       "model": "Raspberry Pi 5, 8GB",
       "status": "reference",
-      "tiers": ["t3"],
+      "tiers": [
+        "t3"
+      ],
       "priceUsd": 175.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.pishop.us/product/raspberry-pi-5-8gb/",
       "interface": "host",
       "driver": null,
-      "keySpecs": { "ram": "8 GB LPDDR4X" },
+      "keySpecs": {
+        "ram": "8 GB LPDDR4X"
+      },
       "notes": "Tier 3 host. Needed once SWIR imaging and wideband SDR are both running, since each wants a multi-hundred-megabyte buffer of its own.",
-      "alternatives": ["cm5", "jetson-orin-nano"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "cm5",
+        "jetson-orin-nano"
+      ]
     },
     {
       "id": "gnss-lc29h",
@@ -70,7 +94,11 @@
       "vendor": "Quectel / Waveshare",
       "model": "LC29H(DA) RTK HAT with PPS",
       "status": "reference",
-      "tiers": ["t1", "t2", "t3"],
+      "tiers": [
+        "t1",
+        "t2",
+        "t3"
+      ],
       "priceUsd": 49.99,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.waveshare.com/lc29h-gps-hat.htm",
@@ -82,7 +110,11 @@
         "ppsPin": "GPIO18"
       },
       "notes": "The single most important part in the entire build and the one most builders skip. Without a pulse-per-second signal wired to a GPIO and disciplined through chrony, a node's timestamps are good to milliseconds and it can never contribute to multi-node geometry. With it, the node holds a few hundred nanoseconds and becomes a real element of an interferometric array. Budget for this before budgeting for a second camera.",
-      "alternatives": ["gnss-neo-m9n", "gnss-lea-m8t"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "gnss-neo-m9n",
+        "gnss-lea-m8t"
+      ]
     },
     {
       "id": "cam-hq-imx477",
@@ -91,7 +123,11 @@
       "vendor": "Raspberry Pi",
       "model": "HQ Camera (IMX477) + 6mm CS lens",
       "status": "reference",
-      "tiers": ["t1", "t2", "t3"],
+      "tiers": [
+        "t1",
+        "t2",
+        "t3"
+      ],
       "priceUsd": 78.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.raspberrypi.com/products/raspberry-pi-high-quality-camera/",
@@ -104,7 +140,11 @@
         "mount": "C/CS"
       },
       "notes": "Rolling shutter is a real limitation for fast targets: a fast-crossing object is geometrically skewed, and that skew must not be read as anomalous kinematics. The firmware records the readout time per frame so the discriminator can correct for it. Where budget allows, the global-shutter IMX296 removes the problem entirely at the cost of resolution.",
-      "alternatives": ["cam-gs-imx296", "cam-imx678"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "cam-gs-imx296",
+        "cam-imx678"
+      ]
     },
     {
       "id": "cam-noir-imx477",
@@ -113,7 +153,11 @@
       "vendor": "Raspberry Pi",
       "model": "HQ Camera NoIR + 850nm bandpass",
       "status": "reference",
-      "tiers": ["t1", "t2", "t3"],
+      "tiers": [
+        "t1",
+        "t2",
+        "t3"
+      ],
       "priceUsd": 96.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.raspberrypi.com/products/raspberry-pi-high-quality-camera/",
@@ -125,7 +169,10 @@
         "usefulTo": "~1050 nm"
       },
       "notes": "The cheapest genuinely additional band in the platform. A second HQ camera body with the IR-cut filter removed and a hard 850 nm bandpass in front of it produces a channel that is physically independent of the visible camera rather than a filtered copy of it. Without the bandpass filter this is not a NIR channel, it is a visible channel with extra noise, and the registry will mark it as such.",
-      "alternatives": ["cam-noir-imx462"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "cam-noir-imx462"
+      ]
     },
     {
       "id": "sdr-rtl-v3",
@@ -134,7 +181,10 @@
       "vendor": "RTL-SDR Blog",
       "model": "RTL-SDR Blog V3",
       "status": "reference",
-      "tiers": ["t1", "t2"],
+      "tiers": [
+        "t1",
+        "t2"
+      ],
       "priceUsd": 39.95,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.rtl-sdr.com/buy-rtl-sdr-dvb-t-dongles/",
@@ -147,7 +197,11 @@
         "tcxoPpm": 1
       },
       "notes": "The V3 is the current reference, not the V4. RTL-SDR Blog announced the V4 as end-of-line in 2026 after Rafael Micro stopped producing the R828D tuner and the remaining stock proved faulty; the V3 remains in stable production. A V4L using the R828S is expected but was not shippable at the time of writing. Any BOM still specifying a V4 is out of date. The 1 ppm TCXO matters here: an uncompensated dongle drifts enough to smear a narrowband detection across the analysis window.",
-      "alternatives": ["sdr-airspy-mini", "sdr-hackrf"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "sdr-airspy-mini",
+        "sdr-hackrf"
+      ]
     },
     {
       "id": "env-bme688",
@@ -156,7 +210,11 @@
       "vendor": "Bosch",
       "model": "BME688",
       "status": "reference",
-      "tiers": ["t1", "t2", "t3"],
+      "tiers": [
+        "t1",
+        "t2",
+        "t3"
+      ],
       "priceUsd": 22.5,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.adafruit.com/product/5046",
@@ -168,7 +226,10 @@
         "humidityPct": "0-100, +/-3 %"
       },
       "notes": "Context only, never a detection channel. Its job is to make a refraction argument settleable after the fact instead of arguable forever. Pressure trend and dewpoint spread are what let the discriminator recognise a temperature inversion, which is the single most common cause of a genuinely strange-looking optical track near the horizon.",
-      "alternatives": ["env-bme280"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "env-bme280"
+      ]
     },
     {
       "id": "imu-bno085",
@@ -177,15 +238,25 @@
       "vendor": "CEVA / Adafruit",
       "model": "BNO085 9-DoF IMU",
       "status": "reference",
-      "tiers": ["t1", "t2", "t3"],
+      "tiers": [
+        "t1",
+        "t2",
+        "t3"
+      ],
       "priceUsd": 29.95,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.adafruit.com/product/4754",
       "interface": "i2c",
       "driver": "bno08x",
-      "keySpecs": { "output": "fused quaternion at 100 Hz", "headingAccuracyDeg": 2.0 },
+      "keySpecs": {
+        "output": "fused quaternion at 100 Hz",
+        "headingAccuracyDeg": 2.0
+      },
       "notes": "Records where each sensor was actually pointing rather than where the operator believes it was bolted. A mast that shifts two degrees in wind invalidates every bearing taken during the gust unless the shift is recorded. The onboard sensor-fusion output is used directly; running fusion on the host wastes CPU that the trigger pipeline needs.",
-      "alternatives": ["imu-icm20948"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "imu-icm20948"
+      ]
     },
     {
       "id": "lwir-lepton35",
@@ -194,7 +265,10 @@
       "vendor": "Teledyne FLIR",
       "model": "Lepton 3.5 + PureThermal 3",
       "status": "reference",
-      "tiers": ["t2", "t3"],
+      "tiers": [
+        "t2",
+        "t3"
+      ],
       "priceUsd": 329.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://groupgets.com/products/flir-lepton-3-5",
@@ -208,7 +282,12 @@
         "neTdMk": 50
       },
       "notes": "Radiometric output is the reason this is the reference rather than a cheaper array: every pixel carries an absolute temperature, which turns a thermal track into an energy measurement the discriminator can reason about. The flat-field shutter fires every few minutes and blanks the stream for roughly half a second; the firmware marks those windows invalid rather than letting them register as a detection. Export-controlled in some jurisdictions, and the 8.7 Hz frame rate is a deliberate export-compliance limit, not a technical one.",
-      "alternatives": ["lwir-mlx90640", "lwir-boson640"]
+      "alternatives": [
+        "lwir-mlx90640"
+      ],
+      "candidateAlternatives": [
+        "lwir-boson640"
+      ]
     },
     {
       "id": "lwir-mlx90640",
@@ -217,7 +296,9 @@
       "vendor": "Melexis",
       "model": "MLX90640 32x24 thermal array",
       "status": "verified",
-      "tiers": ["t1"],
+      "tiers": [
+        "t1"
+      ],
       "priceUsd": 74.95,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.adafruit.com/product/4407",
@@ -231,7 +312,9 @@
         "accuracyC": 2.0
       },
       "notes": "The honest budget thermal option and a fully supported variant, not a downgrade to be apologised for. At 768 pixels it cannot image a shape, but it can absolutely register that something warm crossed the field, and that is enough to make a coincidence trigger with the optical channel. The discriminator knows the difference: detections from this part are scored for thermal presence and never for thermal morphology. This is the variant registry working as intended.",
-      "alternatives": ["lwir-lepton35"]
+      "alternatives": [
+        "lwir-lepton35"
+      ]
     },
     {
       "id": "uv-as7331",
@@ -240,7 +323,10 @@
       "vendor": "ams OSRAM",
       "model": "AS7331 UVA/UVB/UVC sensor",
       "status": "reference",
-      "tiers": ["t2", "t3"],
+      "tiers": [
+        "t2",
+        "t3"
+      ],
       "priceUsd": 24.95,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.sparkfun.com/products/23517",
@@ -251,7 +337,10 @@
         "irradianceRange": "nW/cm2 to mW/cm2"
       },
       "notes": "Three separate UV channels rather than a single index, which is what makes the part useful for discrimination instead of merely for sun exposure. A corona discharge, a lightning leader, and direct sunlight have distinguishable ratios across the three. Needs a fused-silica or PTFE diffuser window; ordinary acrylic blocks UVB and UVC entirely and will silently turn this into a one-channel sensor.",
-      "alternatives": ["uv-ltr390"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "uv-ltr390"
+      ]
     },
     {
       "id": "radar-ld2450",
@@ -260,7 +349,9 @@
       "vendor": "Hi-Link",
       "model": "LD2450 24 GHz tracking radar",
       "status": "reference",
-      "tiers": ["t2"],
+      "tiers": [
+        "t2"
+      ],
       "priceUsd": 14.5,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.aliexpress.com/w/wholesale-hlk-ld2450.html",
@@ -273,7 +364,12 @@
         "outputs": "x, y, speed per target"
       },
       "notes": "Sets an honest expectation: an eight metre range makes this a calibration and near-field instrument, not a sky radar. It earns its place by being the cheapest way to get a true range and radial velocity into the schema at all, which lets a builder exercise and validate the entire radar path before deciding whether to spend forty times more on a module that can actually reach altitude. Do not present a tier 2 node as radar-covered for aerial targets.",
-      "alternatives": ["radar-iwr6843", "radar-cdm324"]
+      "alternatives": [
+        "radar-iwr6843"
+      ],
+      "candidateAlternatives": [
+        "radar-cdm324"
+      ]
     },
     {
       "id": "radar-iwr6843",
@@ -282,7 +378,9 @@
       "vendor": "Texas Instruments",
       "model": "IWR6843ISK 60 GHz mmWave",
       "status": "reference",
-      "tiers": ["t3"],
+      "tiers": [
+        "t3"
+      ],
       "priceUsd": 299.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.ti.com/tool/IWR6843ISK",
@@ -295,7 +393,9 @@
         "antennas": "4 Rx, 3 Tx"
       },
       "notes": "The first part in the stack that produces a genuine three-dimensional point cloud with per-point Doppler. Range to a few hundred metres for a drone-sized cross-section under good conditions, far less in rain. Every site develops a fixed clutter map from buildings and terrain within the first hour; that map is learned, stored per node, and subtracted before anything is called a detection.",
-      "alternatives": ["radar-ld2450"]
+      "alternatives": [
+        "radar-ld2450"
+      ]
     },
     {
       "id": "mag-rm3100",
@@ -304,7 +404,10 @@
       "vendor": "PNI Sensor",
       "model": "RM3100 3-axis geomagnetic sensor",
       "status": "reference",
-      "tiers": ["t2", "t3"],
+      "tiers": [
+        "t2",
+        "t3"
+      ],
       "priceUsd": 39.95,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.sparkfun.com/products/23088",
@@ -317,7 +420,11 @@
         "rangeUt": 800
       },
       "notes": "Magneto-inductive rather than Hall-effect, which is why it reaches tens of nanotesla instead of hundreds. Mount it at least two metres from the node's own electronics and from any of the active-emission hardware, on a non-ferrous mast section. In practice the dominant signal at most sites is the operator walking past with a phone, and learning that local signature is part of commissioning rather than a nuisance.",
-      "alternatives": ["mag-qmc5883l", "mag-fgm3"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "mag-qmc5883l",
+        "mag-fgm3"
+      ]
     },
     {
       "id": "mic-ics43434",
@@ -326,7 +433,10 @@
       "vendor": "TDK InvenSense",
       "model": "ICS-43434 I2S MEMS microphone",
       "status": "reference",
-      "tiers": ["t2", "t3"],
+      "tiers": [
+        "t2",
+        "t3"
+      ],
       "priceUsd": 12.5,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.adafruit.com/product/3421",
@@ -338,7 +448,11 @@
         "bitDepth": 24
       },
       "notes": "Digital output straight to the Pi's I2S peripheral, which keeps the analogue path short and avoids the ground-loop noise that plagues USB audio interfaces on a solar-powered mast. Rolls off below 50 Hz, so this covers audible acoustics only. Infrasound needs a dedicated differential pressure sensor and a mechanical wind filter, which is a tier 3 addition.",
-      "alternatives": ["mic-sph0645", "mic-infrabsu"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "mic-sph0645",
+        "mic-infrabsu"
+      ]
     },
     {
       "id": "gamma-csi-sipm",
@@ -347,7 +461,9 @@
       "vendor": "OpenGammaDetector",
       "model": "CsI(Tl) + SiPM open gamma spectrometer",
       "status": "reference",
-      "tiers": ["t3"],
+      "tiers": [
+        "t3"
+      ],
       "priceUsd": 189.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://github.com/OpenGammaProject/Open-Gamma-Detector",
@@ -360,7 +476,10 @@
         "backgroundCps": "20-60"
       },
       "notes": "Open hardware, fully documented, and the only practical route to a real energy spectrum rather than a bare count rate at this price. A spectrum is what separates a cosmic-ray shower from an isotope line. This is also the instrument that reads back the active-emission module's own 59.5 keV americium line, which is how the node proves the lure is operating and correctly characterises its own contribution to the background before subtracting it.",
-      "alternatives": ["gamma-gm-tube"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "gamma-gm-tube"
+      ]
     },
     {
       "id": "swir-ingaas640",
@@ -369,7 +488,9 @@
       "vendor": "various",
       "model": "InGaAs 640x512 SWIR module",
       "status": "reference",
-      "tiers": ["t3"],
+      "tiers": [
+        "t3"
+      ],
       "priceUsd": 2400.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.alliedvision.com/en/camera-selector/",
@@ -390,7 +511,9 @@
       "vendor": "ION / Sercel",
       "model": "SM-24 geophone element",
       "status": "reference",
-      "tiers": ["t3"],
+      "tiers": [
+        "t3"
+      ],
       "priceUsd": 89.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.sparkfun.com/products/11744",
@@ -401,7 +524,11 @@
         "sensitivityVPerMPerS": 28.8
       },
       "notes": "A 10 Hz element does not reach the infrasound band and is not a substitute for a broadband seismometer. Its role at tier 3 is ground-coupled acoustic detection of low overflights and, more importantly, characterising the site's vibration background, which is the prerequisite for ever siting a gravimeter there.",
-      "alternatives": ["seis-trillium", "seis-raspberryshake"]
+      "alternatives": [],
+      "candidateAlternatives": [
+        "seis-trillium",
+        "seis-raspberryshake"
+      ]
     },
     {
       "id": "sem-am241",
@@ -410,7 +537,9 @@
       "vendor": "recovered",
       "model": "Am-241 signature cartridge (10 x 0.9 uCi discs)",
       "status": "reference",
-      "tiers": ["t3"],
+      "tiers": [
+        "t3"
+      ],
       "priceUsd": 0.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.nrc.gov/reading-rm/doc-collections/cfr/part030/part030-0015.html",
@@ -432,7 +561,10 @@
       "vendor": "generic",
       "model": "850 nm pulsed IR beacon, 5 W peak",
       "status": "reference",
-      "tiers": ["t2", "t3"],
+      "tiers": [
+        "t2",
+        "t3"
+      ],
       "priceUsd": 34.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.digikey.com/",
@@ -454,13 +586,19 @@
       "vendor": "Pelican",
       "model": "1500 case with breather vent and feedthroughs",
       "status": "reference",
-      "tiers": ["t2", "t3"],
+      "tiers": [
+        "t2",
+        "t3"
+      ],
       "priceUsd": 179.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.pelican.com/us/en/product/cases/protector/1500",
       "interface": "none",
       "driver": null,
-      "keySpecs": { "ipRating": "IP67", "internalMm": "430x290x155" },
+      "keySpecs": {
+        "ipRating": "IP67",
+        "internalMm": "430x290x155"
+      },
       "notes": "Sealed enclosures trap moisture rather than excluding it: the air inside is humid when you close the lid, and the first cold night condenses it onto the coldest surface, which is always the optics. A Gore breather vent plus reusable desiccant solves this. Every optical port needs its own gasketed window rather than a hole, and germanium for the LWIR port because glass is opaque at 10 micrometres."
     },
     {
@@ -470,7 +608,10 @@
       "vendor": "generic",
       "model": "100 W panel + 30 A MPPT + 100 Ah LiFePO4",
       "status": "reference",
-      "tiers": ["t2", "t3"],
+      "tiers": [
+        "t2",
+        "t3"
+      ],
       "priceUsd": 385.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.amazon.com/",

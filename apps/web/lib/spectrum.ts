@@ -1,7 +1,7 @@
 import { BANDS, BAND_BY_ID, type Band, type BandId, type Classification } from './schema/generated'
 
 /**
- * BIFROST's colour system, and the reasoning behind why there are two of them.
+ * NBAND's colour system, and the reasoning behind why there are two of them.
  *
  * The platform has fourteen bands. Fourteen is far more than any categorical
  * palette can separate: evenly spaced around the hue circle they sit about 26

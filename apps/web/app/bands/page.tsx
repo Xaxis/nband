@@ -6,7 +6,7 @@ import { BANDS, CONTEXT_BANDS, DETECTION_BANDS } from '../../lib/schema/generate
 export const metadata: Metadata = {
   title: 'The fourteen bands',
   description:
-    'Every band a BIFROST node samples, what it physically responds to, and where it fails. Ordered by wavelength.',
+    'Every band a NBAND node samples, what it physically responds to, and where it fails. Ordered by wavelength.',
 }
 
 export default function BandsPage() {

@@ -1,12 +1,12 @@
--- BIFROST grid schema, migration 0001
+-- NBAND grid schema, migration 0001
 -- Generated against schema/bands.json and schema/spec.json at schemaVersion 0.1.0.
 -- Enum members are checked against those files by tools/check-drift.mjs; adding a
 -- value here without adding it there (or vice versa) fails the build.
 
 begin;
 
-create schema if not exists bifrost;
-set search_path = bifrost, public;
+create schema if not exists nband;
+set search_path = nband, public;
 
 -- ---------------------------------------------------------------------------
 -- Enums
@@ -173,9 +173,9 @@ declare
   end_ts   date := (date_trunc('month', for_time) + interval '1 month')::date;
   part     text := format('telemetry_%s', to_char(start_ts, 'YYYY_MM'));
 begin
-  if to_regclass(format('bifrost.%I', part)) is null then
+  if to_regclass(format('nband.%I', part)) is null then
     execute format(
-      'create table bifrost.%I partition of bifrost.telemetry for values from (%L) to (%L)',
+      'create table nband.%I partition of nband.telemetry for values from (%L) to (%L)',
       part, start_ts, end_ts
     );
   end if;

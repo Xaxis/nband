@@ -1,0 +1,44 @@
+[Unit]
+Description=NBAND node agent
+Documentation=https://nband.space/software
+After=network-online.target chronyd.service
+Wants=network-online.target
+# The agent runs without a disciplined clock and records that fact honestly,
+# so chrony is Wanted rather than Required: a node that cannot reach GNSS
+# should still collect data and mark it degraded, not refuse to start.
+
+[Service]
+Type=simple
+User=nband
+Group=nband
+ExecStart=/opt/nband/venv/bin/python -m nband_node.agent \
+  --config /etc/nband/node.toml \
+  --spool /var/lib/nband/spool
+Restart=always
+RestartSec=10
+
+# The node buffers to disk and backfills, so a restart costs nothing but a gap
+# in the ring buffer. Failing fast beats limping.
+WatchdogSec=300
+
+StateDirectory=nband
+StateDirectoryMode=0750
+ConfigurationDirectory=nband
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/nband
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+# The agent needs the buses, the cameras, and the PPS device, and nothing else.
+DeviceAllow=/dev/i2c-1 rw
+DeviceAllow=/dev/spidev0.0 rw
+DeviceAllow=/dev/pps0 r
+DeviceAllow=char-video4linux rw
+SupplementaryGroups=i2c spi gpio video dialout
+
+[Install]
+WantedBy=multi-user.target

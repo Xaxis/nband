@@ -33,7 +33,7 @@ export default function HomePage() {
           </h1>
 
           <p className="mt-5 max-w-[58ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
-            Your eyes cover one narrow band out of fourteen. BIFROST is a sensor node you can
+            Your eyes cover one narrow band out of fourteen. NBAND is a sensor node you can
             actually build that watches the rest of them at the same time, stamps every reading
             against a satellite-disciplined clock, and publishes what it records so that anyone can
             check the work.
