@@ -1,0 +1,23 @@
+[project]
+name = "nband-discriminator"
+version = "0.1.0"
+description = "nband discriminator: known-source subtraction, hypothesis scoring, and verdicts that explain themselves."
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+# Catalogue providers. All optional: an absent provider is recorded as
+# 'unavailable', which is a first-class outcome rather than an error.
+catalogs = ["sgp4>=2.23", "requests>=2.32"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+nband-discriminator = "nband_discriminator.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["nband_discriminator*"]

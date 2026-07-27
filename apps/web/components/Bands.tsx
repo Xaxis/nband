@@ -70,58 +70,76 @@ export function SpectrumBar({ interactive = true }: { interactive?: boolean }) {
     x: ((e - -14) / (3 - -14)) * 100,
   }))
 
+  // Flex weights from the log-wavelength span. Flexbox is used rather than
+  // absolute percentage positioning because it cannot overflow: the row always
+  // sums to the container width at every viewport size, so there is no
+  // horizontal scroll to get wrong. The minimum basis keeps the visible band,
+  // which is a genuine sliver on a log axis, wide enough to see and to tap.
+  const segments = em.map(({ b, pos }) => ({
+    b,
+    grow: Math.max(pos.end - pos.start, 0.012),
+  }))
+
   return (
     <div className="w-full">
-      <div className="scroll-x">
-        <div className="min-w-[560px]">
-          <div className="relative h-[74px] w-full">
-            {em.map(({ b, pos }) => {
-              const left = pos.start * 100
-              const width = Math.max((pos.end - pos.start) * 100, 0.9)
-              const light = SPECTRAL.light[b.id]
-              const dark = SPECTRAL.dark[b.id]
-              return (
-                <Link
-                  key={b.id}
-                  href={`/bands#${b.id}`}
-                  className="group absolute bottom-0 top-0 rounded-[3px] border transition-[filter,transform] focus-visible:z-10"
-                  style={{
-                    left: `${left}%`,
-                    width: `${width}%`,
-                    background: `light-dark(color-mix(in oklab, ${light} 26%, transparent), color-mix(in oklab, ${dark} 26%, transparent))`,
-                    borderColor: `light-dark(${light}, ${dark})`,
-                  }}
-                  aria-label={`${b.label}, ${bandExtent(b)}`}
-                  tabIndex={interactive ? 0 : -1}
-                >
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-x-0 bottom-0 h-[3px]"
-                    style={{ background: `light-dark(${light}, ${dark})` }}
-                  />
-                  <span className="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-                    style={{
-                      background: `light-dark(color-mix(in oklab, ${light} 22%, transparent), color-mix(in oklab, ${dark} 22%, transparent))`,
-                    }}
-                  />
-                </Link>
-              )
-            })}
-          </div>
-
-          {/* Decade axis. */}
-          <div className="relative mt-1.5 h-4 border-t border-[var(--line)]">
-            {ticks.map((t) => (
+      <div className="flex h-[56px] w-full gap-[3px] sm:h-[68px]">
+        {segments.map(({ b, grow }) => {
+          const light = SPECTRAL.light[b.id]
+          const dark = SPECTRAL.dark[b.id]
+          return (
+            <Link
+              key={b.id}
+              href={`/bands#${b.id}`}
+              className="group relative min-w-0 overflow-hidden rounded-[3px] border transition-transform hover:-translate-y-px focus-visible:z-10"
+              style={{
+                flexGrow: grow,
+                flexBasis: 0,
+                minWidth: 8,
+                background: `light-dark(color-mix(in oklab, ${light} 22%, transparent), color-mix(in oklab, ${dark} 22%, transparent))`,
+                borderColor: `light-dark(${light}, ${dark})`,
+              }}
+              aria-label={`${b.label}, ${bandExtent(b)}`}
+              tabIndex={interactive ? 0 : -1}
+            >
               <span
-                key={t.e}
-                className="num absolute top-1 -translate-x-1/2 text-[10px] text-[var(--ink-3)]"
-                style={{ left: `${t.x}%` }}
-              >
-                10<sup>{t.e}</sup> m
-              </span>
-            ))}
-          </div>
-        </div>
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-[3px]"
+                style={{ background: `light-dark(${light}, ${dark})` }}
+              />
+              {/* Only the widest segments get an inline label; the rest are
+                  identified by the chip row below. Never truncated mid-word. */}
+              {grow > 0.14 && (
+                <span
+                  className="num absolute inset-x-1 top-1.5 hidden truncate text-[10px] uppercase tracking-wide text-[var(--ink-2)] sm:block"
+                  aria-hidden="true"
+                >
+                  {b.label}
+                </span>
+              )}
+              <span
+                className="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                style={{
+                  background: `light-dark(color-mix(in oklab, ${light} 20%, transparent), color-mix(in oklab, ${dark} 20%, transparent))`,
+                }}
+              />
+            </Link>
+          )
+        })}
+      </div>
+
+      {/* Decade axis. Ticks thin out on narrow viewports rather than colliding. */}
+      <div className="relative mt-2 h-4 border-t border-[var(--line)]">
+        {ticks.map((t, i) => (
+          <span
+            key={t.e}
+            className={`num absolute top-1 -translate-x-1/2 whitespace-nowrap text-[10px] text-[var(--ink-3)] ${
+              i % 2 === 1 ? 'hidden sm:inline' : ''
+            }`}
+            style={{ left: `${Math.min(Math.max(t.x, 4), 96)}%` }}
+          >
+            10<sup>{t.e}</sup> m
+          </span>
+        ))}
       </div>
 
       {/* Labels are the primary identity channel; the bar above reinforces. */}

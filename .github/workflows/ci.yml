@@ -1,0 +1,63 @@
+name: ci
+
+# The premise of this repository is that hardware, firmware, database, and
+# documentation move together. This workflow is what makes that claim checkable
+# rather than aspirational.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  drift:
+    name: schema, SQL, and docs agree
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: yarn install --frozen-lockfile
+      # Fails when generated bindings are stale, when a Postgres enum has
+      # drifted from the schema files, when a document claims a version that
+      # does not exist, or when a part references something that is not there.
+      - run: node tools/check-drift.mjs
+
+  firmware:
+    name: firmware tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install cryptography
+      - run: python firmware/tests/test_core.py
+      # Catches drivers that are advertised in the registry or the example
+      # config but never implemented. That gap shipped once already.
+      - run: python firmware/tests/test_registry.py
+
+  discriminator:
+    name: discriminator tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      # Mostly asserts refusals: that a degraded clock, a single band, or an
+      # unreachable catalogue all block promotion to the unresolved rung.
+      - run: python discriminator/tests/test_engine.py
+
+  web:
+    name: web build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: yarn install --frozen-lockfile
+      - run: yarn workspace @nband/web type-check
+      - run: yarn workspace @nband/web build
