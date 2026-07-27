@@ -1,6 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BandChip } from '../../components/Bands'
+import {
+  NodeBlockDiagram,
+  PinoutDiagram,
+  PowerBudget,
+  WiringTable,
+} from '../../components/HardwareVisuals'
 import { Button, Container, Note, Section } from '../../components/ui'
 import {
   PARTS,
@@ -108,6 +114,42 @@ export default function HardwarePage() {
         <Note kind="warning" title="Component prices are moving fast in 2026">
           <p>{PRICE_NOTE}</p>
         </Note>
+      </Section>
+
+      <Section
+        className="border-y border-[var(--line)] bg-[var(--surface-0)]"
+        eyebrow="Architecture"
+        title="What plugs into what"
+        lede="The tier 2 reference node. Every diagram on this page is generated from the same registry that produces the bill of materials, so swapping a part moves the wiring with it instead of quietly invalidating a hand-drawn picture."
+      >
+        <div className="mt-8">
+          <NodeBlockDiagram tier="t2" />
+        </div>
+      </Section>
+
+      <Section
+        eyebrow="Wiring"
+        title="Where every wire goes"
+        lede="Physical pin numbers, because that is what you count on the board. Pin 12 carries the pulse-per-second signal and is the one connection that must be exactly right."
+      >
+        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start">
+          <PinoutDiagram tier="t2" />
+          <div>
+            <h3 className="eyebrow mb-3">Per sensor</h3>
+            <WiringTable tier="t2" />
+          </div>
+        </div>
+      </Section>
+
+      <Section
+        className="border-y border-[var(--line)] bg-[var(--surface-0)]"
+        eyebrow="Power"
+        title="What it draws, and what that means off-grid"
+        lede="Summed from the parts actually in the tier rather than rounded to a comfortable number. This is the figure that strands remote builds."
+      >
+        <div className="mt-8">
+          <PowerBudget tier="t2" />
+        </div>
       </Section>
 
       {TIER_ORDER.map((t) => {

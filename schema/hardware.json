@@ -34,7 +34,13 @@
       ],
       "candidateAlternatives": [
         "pi4-4gb"
-      ]
+      ],
+      "electrical": {
+        "idleW": 2.7,
+        "activeW": 6.4,
+        "rail": "5V",
+        "pins": []
+      }
     },
     {
       "id": "pi5-4gb",
@@ -60,7 +66,13 @@
       ],
       "candidateAlternatives": [
         "cm5"
-      ]
+      ],
+      "electrical": {
+        "idleW": 2.9,
+        "activeW": 7.0,
+        "rail": "5V",
+        "pins": []
+      }
     },
     {
       "id": "pi5-8gb",
@@ -85,7 +97,13 @@
       "candidateAlternatives": [
         "cm5",
         "jetson-orin-nano"
-      ]
+      ],
+      "electrical": {
+        "idleW": 3.1,
+        "activeW": 7.6,
+        "rail": "5V",
+        "pins": []
+      }
     },
     {
       "id": "gnss-lc29h",
@@ -114,7 +132,34 @@
       "candidateAlternatives": [
         "gnss-neo-m9n",
         "gnss-lea-m8t"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.13,
+        "activeW": 0.17,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "1"
+          },
+          {
+            "signal": "GND",
+            "pin": "6"
+          },
+          {
+            "signal": "TXD→RXD",
+            "pin": "10"
+          },
+          {
+            "signal": "RXD←TXD",
+            "pin": "8"
+          },
+          {
+            "signal": "PPS",
+            "pin": "12"
+          }
+        ]
+      }
     },
     {
       "id": "cam-hq-imx477",
@@ -144,7 +189,18 @@
       "candidateAlternatives": [
         "cam-gs-imx296",
         "cam-imx678"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.25,
+        "activeW": 1.1,
+        "rail": "CSI",
+        "pins": [
+          {
+            "signal": "CSI-0",
+            "pin": "CAM0"
+          }
+        ]
+      }
     },
     {
       "id": "cam-noir-imx477",
@@ -172,7 +228,18 @@
       "alternatives": [],
       "candidateAlternatives": [
         "cam-noir-imx462"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.25,
+        "activeW": 1.1,
+        "rail": "CSI",
+        "pins": [
+          {
+            "signal": "CSI-1",
+            "pin": "CAM1"
+          }
+        ]
+      }
     },
     {
       "id": "sdr-rtl-v3",
@@ -201,7 +268,18 @@
       "candidateAlternatives": [
         "sdr-airspy-mini",
         "sdr-hackrf"
-      ]
+      ],
+      "electrical": {
+        "idleW": 1.4,
+        "activeW": 1.9,
+        "rail": "USB",
+        "pins": [
+          {
+            "signal": "USB 2.0",
+            "pin": "USB-A"
+          }
+        ]
+      }
     },
     {
       "id": "env-bme688",
@@ -229,7 +307,30 @@
       "alternatives": [],
       "candidateAlternatives": [
         "env-bme280"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.001,
+        "activeW": 0.04,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "9"
+          },
+          {
+            "signal": "SDA",
+            "pin": "3"
+          },
+          {
+            "signal": "SCL",
+            "pin": "5"
+          }
+        ]
+      }
     },
     {
       "id": "imu-bno085",
@@ -256,7 +357,30 @@
       "alternatives": [],
       "candidateAlternatives": [
         "imu-icm20948"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.01,
+        "activeW": 0.04,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "9"
+          },
+          {
+            "signal": "SDA",
+            "pin": "3"
+          },
+          {
+            "signal": "SCL",
+            "pin": "5"
+          }
+        ]
+      }
     },
     {
       "id": "lwir-lepton35",
@@ -287,7 +411,18 @@
       ],
       "candidateAlternatives": [
         "lwir-boson640"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.65,
+        "activeW": 0.95,
+        "rail": "USB",
+        "pins": [
+          {
+            "signal": "USB 2.0",
+            "pin": "USB-A"
+          }
+        ]
+      }
     },
     {
       "id": "lwir-mlx90640",
@@ -314,7 +449,30 @@
       "notes": "The honest budget thermal option and a fully supported variant, not a downgrade to be apologised for. At 768 pixels it cannot image a shape, but it can absolutely register that something warm crossed the field, and that is enough to make a coincidence trigger with the optical channel. The discriminator knows the difference: detections from this part are scored for thermal presence and never for thermal morphology. This is the variant registry working as intended.",
       "alternatives": [
         "lwir-lepton35"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.02,
+        "activeW": 0.09,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "9"
+          },
+          {
+            "signal": "SDA",
+            "pin": "3"
+          },
+          {
+            "signal": "SCL",
+            "pin": "5"
+          }
+        ]
+      }
     },
     {
       "id": "uv-as7331",
@@ -340,7 +498,30 @@
       "alternatives": [],
       "candidateAlternatives": [
         "uv-ltr390"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.002,
+        "activeW": 0.01,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "9"
+          },
+          {
+            "signal": "SDA",
+            "pin": "3"
+          },
+          {
+            "signal": "SCL",
+            "pin": "5"
+          }
+        ]
+      }
     },
     {
       "id": "radar-ld2450",
@@ -369,7 +550,30 @@
       ],
       "candidateAlternatives": [
         "radar-cdm324"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.32,
+        "activeW": 0.44,
+        "rail": "5V",
+        "pins": [
+          {
+            "signal": "5V",
+            "pin": "4"
+          },
+          {
+            "signal": "GND",
+            "pin": "14"
+          },
+          {
+            "signal": "TX",
+            "pin": "16"
+          },
+          {
+            "signal": "RX",
+            "pin": "18"
+          }
+        ]
+      }
     },
     {
       "id": "radar-iwr6843",
@@ -395,7 +599,18 @@
       "notes": "The first part in the stack that produces a genuine three-dimensional point cloud with per-point Doppler. Range to a few hundred metres for a drone-sized cross-section under good conditions, far less in rain. Every site develops a fixed clutter map from buildings and terrain within the first hour; that map is learned, stored per node, and subtracted before anything is called a detection.",
       "alternatives": [
         "radar-ld2450"
-      ]
+      ],
+      "electrical": {
+        "idleW": 1.8,
+        "activeW": 3.6,
+        "rail": "USB",
+        "pins": [
+          {
+            "signal": "USB",
+            "pin": "USB-A"
+          }
+        ]
+      }
     },
     {
       "id": "mag-rm3100",
@@ -424,7 +639,38 @@
       "candidateAlternatives": [
         "mag-qmc5883l",
         "mag-fgm3"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.004,
+        "activeW": 0.03,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "25"
+          },
+          {
+            "signal": "MOSI",
+            "pin": "19"
+          },
+          {
+            "signal": "MISO",
+            "pin": "21"
+          },
+          {
+            "signal": "SCLK",
+            "pin": "23"
+          },
+          {
+            "signal": "CS",
+            "pin": "24"
+          }
+        ]
+      }
     },
     {
       "id": "mic-ics43434",
@@ -452,7 +698,34 @@
       "candidateAlternatives": [
         "mic-sph0645",
         "mic-infrabsu"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.002,
+        "activeW": 0.005,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "20"
+          },
+          {
+            "signal": "BCLK",
+            "pin": "12"
+          },
+          {
+            "signal": "LRCL",
+            "pin": "35"
+          },
+          {
+            "signal": "DOUT",
+            "pin": "38"
+          }
+        ]
+      }
     },
     {
       "id": "gamma-csi-sipm",
@@ -479,7 +752,18 @@
       "alternatives": [],
       "candidateAlternatives": [
         "gamma-gm-tube"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.28,
+        "activeW": 0.35,
+        "rail": "USB",
+        "pins": [
+          {
+            "signal": "USB",
+            "pin": "USB-A"
+          }
+        ]
+      }
     },
     {
       "id": "swir-ingaas640",
@@ -502,7 +786,18 @@
         "frameRateHz": 30
       },
       "notes": "The single largest line item in any tier and the reason tier 3 exists as a category. It buys haze penetration and material discrimination that no other band provides, and it exploits night-sky airglow to illuminate targets passively at 1.5 to 1.7 micrometres with no emitter at all. Export-controlled in most jurisdictions; check ITAR and EAR status before shipping across a border. Most builders should skip this and put the money into a second complete node instead, which buys geometry, and geometry beats spectral coverage.",
-      "alternatives": []
+      "alternatives": [],
+      "electrical": {
+        "idleW": 3.2,
+        "activeW": 5.5,
+        "rail": "USB3",
+        "pins": [
+          {
+            "signal": "USB 3.0",
+            "pin": "USB-A"
+          }
+        ]
+      }
     },
     {
       "id": "seis-sm24",
@@ -528,7 +823,38 @@
       "candidateAlternatives": [
         "seis-trillium",
         "seis-raspberryshake"
-      ]
+      ],
+      "electrical": {
+        "idleW": 0.05,
+        "activeW": 0.08,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "39"
+          },
+          {
+            "signal": "MOSI",
+            "pin": "19"
+          },
+          {
+            "signal": "MISO",
+            "pin": "21"
+          },
+          {
+            "signal": "SCLK",
+            "pin": "23"
+          },
+          {
+            "signal": "CS",
+            "pin": "26"
+          }
+        ]
+      }
     },
     {
       "id": "sem-am241",
@@ -552,7 +878,13 @@
         "doseRateAt1mNgyPerH": 40
       },
       "notes": "Part of the optional active-emission module. Sources are the encapsulated foils already present in ionisation smoke detectors, aggregated behind aluminium and acrylic so that alpha and beta are fully absorbed while the 59.5 keV gamma line passes. Total activity stays under the US NRC 10 CFR 30.15 general-license threshold that already covers these devices in ordinary domestic use. Read docs/safety before building this. It is genuinely optional, every passive band works without it, and jurisdictions outside the US have their own rules that the operator is responsible for checking.",
-      "alternatives": []
+      "alternatives": [],
+      "electrical": {
+        "idleW": 0.0,
+        "activeW": 0.0,
+        "rail": "none",
+        "pins": []
+      }
     },
     {
       "id": "sem-ir-beacon",
@@ -577,7 +909,26 @@
         "prfHz": 10000,
         "dutyCycle": "randomised"
       },
-      "notes": "LED rather than laser, keeping the emitter below any Class 3R ocular hazard threshold while still producing a distinctive pulse-coded signature. The randomised duty cycle is what makes it identifiable in the archive: the node knows its own emission schedule exactly, so any NIR return correlating with the code is self-illumination and is subtracted rather than reported. Point it above the horizon, never at a road or a flight path."
+      "notes": "LED rather than laser, keeping the emitter below any Class 3R ocular hazard threshold while still producing a distinctive pulse-coded signature. The randomised duty cycle is what makes it identifiable in the archive: the node knows its own emission schedule exactly, so any NIR return correlating with the code is self-illumination and is subtracted rather than reported. Point it above the horizon, never at a road or a flight path.",
+      "electrical": {
+        "idleW": 0.01,
+        "activeW": 1.6,
+        "rail": "5V",
+        "pins": [
+          {
+            "signal": "5V",
+            "pin": "2"
+          },
+          {
+            "signal": "GND",
+            "pin": "30"
+          },
+          {
+            "signal": "GATE",
+            "pin": "16"
+          }
+        ]
+      }
     },
     {
       "id": "case-pelican1500",
@@ -599,30 +950,69 @@
         "ipRating": "IP67",
         "internalMm": "430x290x155"
       },
-      "notes": "Sealed enclosures trap moisture rather than excluding it: the air inside is humid when you close the lid, and the first cold night condenses it onto the coldest surface, which is always the optics. A Gore breather vent plus reusable desiccant solves this. Every optical port needs its own gasketed window rather than a hole, and germanium for the LWIR port because glass is opaque at 10 micrometres."
+      "notes": "Sealed enclosures trap moisture rather than excluding it: the air inside is humid when you close the lid, and the first cold night condenses it onto the coldest surface, which is always the optics. A Gore breather vent plus reusable desiccant solves this. Every optical port needs its own gasketed window rather than a hole, and germanium for the LWIR port because glass is opaque at 10 micrometres.",
+      "electrical": {
+        "idleW": 0.0,
+        "activeW": 0.0,
+        "rail": "none",
+        "pins": []
+      }
     },
     {
-      "id": "power-solar-100w",
+      "id": "power-solar-150w",
       "category": "power",
       "band": null,
       "vendor": "generic",
-      "model": "100 W panel + 30 A MPPT + 100 Ah LiFePO4",
+      "model": "120 W panel + 30 A MPPT + 180 Ah LiFePO4",
       "status": "reference",
       "tiers": [
-        "t2",
-        "t3"
+        "t2"
       ],
-      "priceUsd": 385.0,
+      "priceUsd": 589.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.amazon.com/",
       "interface": "none",
       "driver": "ina226_monitor",
       "keySpecs": {
-        "panelW": 100,
-        "batteryWh": 1280,
+        "panelW": 120,
+        "batteryWh": 2160,
         "autonomyDays": 3
       },
-      "notes": "Sized for a tier 2 node drawing roughly 11 W continuous, which is 264 Wh per day. Three days of autonomy through overcast is the design point, and LiFePO4 rather than lead-acid because the duty cycle is a shallow daily discharge for years. The current monitor is not an accessory: node power draw is itself telemetry, and an unexplained current step is one of the more reliable early indicators of a sensor failing."
+      "notes": "Sized against the summed draw of the tier 2 parts list, 14.4 W continuous or 345 Wh per day, not against a round number. An earlier revision of this BOM specified a 100 W panel and 100 Ah battery on the strength of an assumed 11 W load; that would have run a remote node flat during the first sustained overcast. The panel figure carries 35 percent for soiling and cable loss at four peak-sun-hours, which is a conservative mid-latitude winter assumption. LiFePO4 at 50 percent usable depth of discharge, because the duty cycle is a shallow daily cycle for years. The current monitor is not an accessory: node power draw is telemetry, and an unexplained current step is one of the more reliable early indicators of a sensor failing.",
+      "electrical": {
+        "idleW": 0.0,
+        "activeW": 0.0,
+        "rail": "none",
+        "pins": []
+      }
+    },
+    {
+      "id": "power-solar-200w",
+      "category": "power",
+      "band": null,
+      "vendor": "generic",
+      "model": "180 W array + 40 A MPPT + 270 Ah LiFePO4",
+      "status": "reference",
+      "tiers": [
+        "t3"
+      ],
+      "priceUsd": 968.0,
+      "priceAsOf": "2026-07-27",
+      "sourceUrl": "https://www.amazon.com/",
+      "interface": "none",
+      "driver": "ina226_monitor",
+      "keySpecs": {
+        "panelW": 180,
+        "batteryWh": 3240,
+        "autonomyDays": 3
+      },
+      "notes": "Tier 3 draws 22.2 W continuous, 532 Wh per day, which is 54 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. Reusing the tier 2 kit here was caught by the power drift check rather than by a builder discovering it during the first long overcast, which is exactly the failure that check exists to prevent. Same assumptions otherwise: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge.",
+      "electrical": {
+        "idleW": 0.0,
+        "activeW": 0.0,
+        "rail": "none",
+        "pins": []
+      }
     }
   ]
 }

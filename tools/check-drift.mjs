@@ -163,6 +163,47 @@ check('hardware and band cross-references resolve', () => {
   return `${hardware.parts.length} parts, ${spec.hypotheses.defaults.length} hypotheses`
 })
 
+// 5. Power sizing matches the parts it is sold with --------------------------
+
+check('off-grid power sizing matches the tier load', () => {
+  const errors = []
+
+  for (const tier of ['t1', 't2', 't3']) {
+    const parts = hardware.parts.filter((p) => p.tiers?.includes(tier))
+    const activeW = parts.reduce((sum, p) => sum + (p.electrical?.activeW ?? 0), 0)
+    const dailyWh = activeW * 24
+
+    const power = parts.find((p) => p.category === 'power')
+    if (!power) continue
+
+    const panelW = Number(power.keySpecs?.panelW ?? 0)
+    const batteryWh = Number(power.keySpecs?.batteryWh ?? 0)
+
+    // Four peak-sun-hours with a 35 percent margin; three days at 50 percent
+    // usable depth of discharge. A BOM that ships a panel too small for the
+    // node it is sold with strands a remote build, and that shipped once.
+    const neededPanelW = (dailyWh / 4) * 1.35
+    const neededBatteryWh = dailyWh * 3 * 2
+
+    if (panelW < neededPanelW * 0.9) {
+      errors.push(
+        `${tier}: '${power.id}' specifies a ${panelW} W panel but the parts draw ` +
+          `${activeW.toFixed(1)} W (${dailyWh.toFixed(0)} Wh/day), needing about ` +
+          `${Math.ceil(neededPanelW)} W`,
+      )
+    }
+    if (batteryWh < neededBatteryWh * 0.9) {
+      errors.push(
+        `${tier}: '${power.id}' specifies ${batteryWh} Wh of battery but three days of ` +
+          `autonomy at this load needs about ${Math.ceil(neededBatteryWh)} Wh`,
+      )
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return 'panel and battery cover the summed draw of every tier that ships them'
+})
+
 // ---------------------------------------------------------------------------
 
 console.log(`NBAND drift check — platform v${version}, schema v${spec.schemaVersion}\n`)
