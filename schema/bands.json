@@ -1,0 +1,320 @@
+{
+  "$comment": "Canonical BIFROST band taxonomy. This file is the single source of truth for every band the platform knows about. Firmware, database enums, discriminator, and website colour system are all generated from it. Bands are ordered by increasing wavelength (decreasing photon energy); the non-electromagnetic channels follow, then the context channels. Do not reorder without bumping the schema version - `ordinal` is persisted in the database.",
+  "schemaVersion": "0.1.0",
+  "bands": [
+    {
+      "id": "gamma",
+      "ordinal": 0,
+      "label": "Gamma",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "wavelength": {
+        "minM": 1e-14,
+        "maxM": 1e-11
+      },
+      "frequency": {
+        "minHz": 3e+19,
+        "maxHz": 3e+22
+      },
+      "energy": {
+        "minEv": 100000,
+        "maxEv": 100000000
+      },
+      "hue": 295,
+      "unitDefault": "cps",
+      "shortDescription": "Ionizing photons above 100 keV.",
+      "whatItSees": "Radioisotope decay, cosmic-ray secondaries, and any source emitting hard photons. The only band in the stack that responds to nuclear rather than thermal or electronic processes.",
+      "limits": "Counting statistics dominate. A small scintillator sees roughly 20-60 counts per second of background, so a real excursion needs either a large deviation or a long integration. Air attenuates low-energy gammas strongly, which caps useful range at tens of metres for weak sources.",
+      "typicalSensors": [
+        "csi-tl-sipm",
+        "gm-tube"
+      ]
+    },
+    {
+      "id": "uv",
+      "ordinal": 1,
+      "label": "Ultraviolet",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "wavelength": {
+        "minM": 1e-07,
+        "maxM": 4e-07
+      },
+      "frequency": {
+        "minHz": 750000000000000.0,
+        "maxHz": 3000000000000000.0
+      },
+      "hue": 258,
+      "unitDefault": "uW/cm2",
+      "shortDescription": "100 to 400 nanometres, above the violet edge of vision.",
+      "whatItSees": "Corona discharge, electrical arcing, plasma, combustion, and lightning leaders. Solar UV sets the daytime floor, so the band is far more informative after dark.",
+      "limits": "Ordinary glass blocks most of it, so the sensor needs a quartz or fused-silica window. Atmospheric ozone absorbs hard UV entirely. Daytime dynamic range is brutal: the Sun is roughly six orders of magnitude above any plausible target.",
+      "typicalSensors": [
+        "ltr-390",
+        "as7331",
+        "guva-s12sd"
+      ]
+    },
+    {
+      "id": "vis",
+      "ordinal": 2,
+      "label": "Visible",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "wavelength": {
+        "minM": 3.8e-07,
+        "maxM": 7.5e-07
+      },
+      "frequency": {
+        "minHz": 400000000000000.0,
+        "maxHz": 790000000000000.0
+      },
+      "hue": 150,
+      "unitDefault": "adu",
+      "shortDescription": "380 to 750 nanometres, the band your eye already covers.",
+      "whatItSees": "Anything that reflects sunlight or emits its own light: aircraft, satellites, meteors, balloons, birds, and the occasional thing that fits none of those. Provides the astrometry that turns a detection into a bearing.",
+      "limits": "Useless through cloud and nearly useless in daylight against a bright sky for dim targets. A single camera gives bearing but never range, which is why BIFROST treats single-node visible detections as unresolvable in distance by construction.",
+      "typicalSensors": [
+        "imx477-hq",
+        "imx296-gs",
+        "imx678"
+      ]
+    },
+    {
+      "id": "nir",
+      "ordinal": 3,
+      "label": "Near infrared",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "wavelength": {
+        "minM": 7.5e-07,
+        "maxM": 1.4e-06
+      },
+      "frequency": {
+        "minHz": 210000000000000.0,
+        "maxHz": 400000000000000.0
+      },
+      "hue": 20,
+      "unitDefault": "adu",
+      "shortDescription": "750 to 1400 nanometres, just past the red edge.",
+      "whatItSees": "Hot exhaust, incandescent surfaces, IR illuminators and rangefinders, and haze-penetrating reflected light. Silicon sensors are natively sensitive here, so removing the IR-cut filter from a normal camera buys the band for free.",
+      "limits": "Sensitivity falls off a cliff past 1100 nm where silicon stops absorbing. Sunlight is rich in NIR, so daytime contrast is poor. Without a bandpass filter the channel is contaminated by ordinary visible light.",
+      "typicalSensors": [
+        "imx477-noir",
+        "imx462-noir"
+      ]
+    },
+    {
+      "id": "swir",
+      "ordinal": 4,
+      "label": "Short-wave infrared",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "wavelength": {
+        "minM": 1.4e-06,
+        "maxM": 3e-06
+      },
+      "frequency": {
+        "minHz": 100000000000000.0,
+        "maxHz": 210000000000000.0
+      },
+      "hue": 48,
+      "unitDefault": "adu",
+      "shortDescription": "1.4 to 3 micrometres. Reflective, not thermal.",
+      "whatItSees": "Sees through haze, thin smoke, and some fog far better than visible light. Discriminates materials by reflectance in a way no other band in this stack can. Night-sky airglow illuminates targets passively at 1.5 to 1.7 micrometres.",
+      "limits": "Requires an InGaAs sensor. This is the single most expensive band per pixel in the platform and the reason tier 3 exists. Water vapour absorption bands carve holes in the spectrum.",
+      "typicalSensors": [
+        "ingaas-640"
+      ]
+    },
+    {
+      "id": "lwir",
+      "ordinal": 5,
+      "label": "Long-wave infrared",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "wavelength": {
+        "minM": 8e-06,
+        "maxM": 1.4e-05
+      },
+      "frequency": {
+        "minHz": 21000000000000.0,
+        "maxHz": 37000000000000.0
+      },
+      "hue": 4,
+      "unitDefault": "K",
+      "shortDescription": "8 to 14 micrometres. Pure thermal emission.",
+      "whatItSees": "Everything warmer than absolute zero, by its own emitted heat rather than reflected light. Works in total darkness and through smoke. A radiometric sensor reports actual temperature per pixel, which turns a track into an energy-budget measurement.",
+      "limits": "Resolution is low and expensive to increase; 160x120 is the affordable tier. Germanium optics only, which are costly and fragile. Uncooled microbolometers drift, so a shutter-based flat-field correction interrupts the stream every few minutes.",
+      "typicalSensors": [
+        "lepton-3-5",
+        "boson-640",
+        "mlx90640"
+      ]
+    },
+    {
+      "id": "mmw",
+      "ordinal": 6,
+      "label": "Millimetre wave",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "wavelength": {
+        "minM": 0.0037,
+        "maxM": 0.0125
+      },
+      "frequency": {
+        "minHz": 24000000000,
+        "maxHz": 81000000000
+      },
+      "hue": 320,
+      "unitDefault": "m",
+      "shortDescription": "24 to 81 gigahertz active radar.",
+      "whatItSees": "The only band in the stack that measures range and radial velocity directly, by illuminating the target and timing the return. Gives the discriminator a physical distance, which is what converts an angular track into a real trajectory.",
+      "limits": "Short range for small radar cross-sections: a few hundred metres for a drone-sized target with a hobby module. Rain attenuates heavily. Ground clutter and multipath produce persistent false returns that have to be learned and subtracted per site.",
+      "typicalSensors": [
+        "iwr6843",
+        "ld2450",
+        "cdm324"
+      ]
+    },
+    {
+      "id": "rf",
+      "ordinal": 7,
+      "label": "Radio frequency",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "frequency": {
+        "minHz": 500000,
+        "maxHz": 6000000000
+      },
+      "wavelength": {
+        "minM": 0.05,
+        "maxM": 600
+      },
+      "hue": 205,
+      "unitDefault": "dBm",
+      "shortDescription": "500 kilohertz to 6 gigahertz, received passively.",
+      "whatItSees": "Emissions rather than reflections. Aircraft transponders, satellite downlinks, control links, broadband impulsive noise from discharge events, and anything transmitting where nothing should be. Also feeds passive radar: an aircraft crossing a broadcast transmitter's illumination produces a Doppler-shifted echo.",
+      "limits": "The spectrum is crowded and every site has a unique interference fingerprint that must be characterised before anything can be called anomalous. A single antenna gives no bearing without a rotator or a coherent multi-receiver array.",
+      "typicalSensors": [
+        "rtl-sdr-v4",
+        "airspy-mini",
+        "hackrf-one"
+      ]
+    },
+    {
+      "id": "elf_vlf",
+      "ordinal": 8,
+      "label": "Magnetic and ELF/VLF",
+      "kind": "electromagnetic",
+      "role": "detection",
+      "frequency": {
+        "minHz": 0,
+        "maxHz": 30000
+      },
+      "hue": 237,
+      "unitDefault": "nT",
+      "shortDescription": "DC to 30 kilohertz field measurement, not photon detection.",
+      "whatItSees": "Static and slowly varying magnetic fields, sferics from distant lightning, power-line harmonics, and any moving ferromagnetic or current-carrying mass close enough to perturb the local field. This is the band that has historically carried the most repeatable anomalous reports.",
+      "limits": "Falls off as the cube of distance for a dipole source, which makes it a close-range channel: metres to low tens of metres for anything realistic. The Earth's 25 to 65 microtesla background is five orders of magnitude larger than any plausible signal, so everything depends on differential measurement and gradiometry.",
+      "typicalSensors": [
+        "rm3100",
+        "fgm-3",
+        "qmc5883l"
+      ]
+    },
+    {
+      "id": "acoustic",
+      "ordinal": 9,
+      "label": "Acoustic and infrasound",
+      "kind": "mechanical",
+      "role": "detection",
+      "frequency": {
+        "minHz": 0.05,
+        "maxHz": 20000
+      },
+      "hue": 108,
+      "unitDefault": "dBSPL",
+      "shortDescription": "0.05 hertz to 20 kilohertz pressure waves.",
+      "whatItSees": "Propeller and rotor signatures, jet noise, sonic booms, and the infrasound tail that survives to long range when audible sound has already been absorbed. Independently corroborates or refutes a claim that an optical track was silent.",
+      "limits": "Sound arrives seconds after light, so acoustic correlation needs a range estimate to line up. Wind noise dominates infrasound and requires a mechanical wind filter to suppress. Urban sites are close to unusable below 100 hertz.",
+      "typicalSensors": [
+        "ics-43434",
+        "sph0645",
+        "infrabsu"
+      ]
+    },
+    {
+      "id": "seismic",
+      "ordinal": 10,
+      "label": "Seismic",
+      "kind": "mechanical",
+      "role": "detection",
+      "frequency": {
+        "minHz": 0.008,
+        "maxHz": 100
+      },
+      "hue": 60,
+      "unitDefault": "m/s",
+      "shortDescription": "Ground motion from 0.008 to 100 hertz.",
+      "whatItSees": "Ground-coupled acoustic energy from low overflights, and, at high-tier sites, the vibration reference a gravimeter needs to separate real gravitational signal from the ground moving underneath it.",
+      "limits": "Almost entirely a noise-characterisation channel at low tiers. Cultural noise from roads and machinery swamps everything below a few hertz at any site near people.",
+      "typicalSensors": [
+        "sm-24-geophone",
+        "trillium-compact",
+        "raspberryshake"
+      ]
+    },
+    {
+      "id": "grav",
+      "ordinal": 11,
+      "label": "Gravimetric",
+      "kind": "gravitational",
+      "role": "detection",
+      "hue": 340,
+      "unitDefault": "nGal",
+      "shortDescription": "Absolute local gravitational acceleration.",
+      "whatItSees": "The only channel that responds to mass-energy directly rather than to photons or fields. A discrepancy between the mass implied by radar cross-section and the mass implied by gravitational perturbation is a measurement no other instrument in the stack can produce.",
+      "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every BIFROST node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
+      "typicalSensors": [
+        "atom-interferometer",
+        "squid-gradiometer"
+      ]
+    },
+    {
+      "id": "env",
+      "ordinal": 12,
+      "label": "Environmental",
+      "kind": "context",
+      "role": "context",
+      "hue": 180,
+      "unitDefault": "mixed",
+      "shortDescription": "Pressure, temperature, humidity, wind, sky quality, cloud cover.",
+      "whatItSees": "Nothing on its own. It exists so that every detection carries the atmospheric state it was made under, which is what allows a refraction artefact, a temperature inversion, or a wet radome to be ruled in or out afterwards rather than argued about.",
+      "limits": "Not a detection channel. Treating an environmental excursion as a detection is a known failure mode of amateur sensor networks and the discriminator refuses to score on it alone.",
+      "typicalSensors": [
+        "bme688",
+        "sqm-lu",
+        "mlx90614-sky"
+      ]
+    },
+    {
+      "id": "nav",
+      "ordinal": 13,
+      "label": "Navigation and pose",
+      "kind": "context",
+      "role": "context",
+      "hue": 0,
+      "saturation": 0,
+      "unitDefault": "mixed",
+      "shortDescription": "GNSS position, disciplined clock, and platform attitude.",
+      "whatItSees": "Where the node is, which way each sensor is pointing, and what time it is to within a few hundred nanoseconds. Every other band's data is worthless for cross-node correlation without this one.",
+      "limits": "GNSS is spoofable and jammable. A node that loses PPS lock degrades from nanosecond to millisecond timing, and the schema records that degradation explicitly so downstream correlation can be weighted accordingly rather than silently trusted.",
+      "typicalSensors": [
+        "neo-m9n",
+        "lea-m8t",
+        "bno085"
+      ]
+    }
+  ]
+}

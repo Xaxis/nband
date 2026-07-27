@@ -1,0 +1,33 @@
+# secrets
+.env
+.env.local
+.env*.local
+
+# node
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+*.tsbuildinfo
+.vercel/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# node runtime artifacts (a real BIFROST unit writes here)
+firmware/var/
+firmware/captures/
+*.bifrost-spool
+
+# editors / os
+.idea/
+.vscode/
+.DS_Store
