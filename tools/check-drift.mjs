@@ -381,6 +381,71 @@ check('the assembly is physically consistent', () => {
   return `${assemblies.length} assemblies, ${onCarrier} carrier-mounted bodies all within their board`
 })
 
+check('the node fits inside the case it is sold with', () => {
+  // The enclosure was drawn from its exterior dimensions and nothing checked
+  // that the contents fit, which is the only question the number is for.
+  //
+  // Measured by packed floor area rather than by the bounding box of the
+  // assembly, because the assembly is a display arrangement: it spreads the USB
+  // peripherals out so they can be seen and hovered, which is not how anything
+  // is packed. Bounding box gave 97 percent for a tier that has plenty of room
+  // once the parts are actually stacked, which would have been a false alarm.
+  //
+  // The packing factor is the honest part. Rectangles never tile perfectly, and
+  // cable bend radius, connector backshells, standoffs, desiccant and the
+  // breather vent all take floor. 1.6x the summed footprint is a working figure
+  // for hand-packed electronics and is stated rather than hidden.
+  const PACKING = 1.6
+  const path = resolve(root, 'apps/web/public/boards/assembly.json')
+  if (!existsSync(path)) throw new Error('assembly.json is missing; run `make boards`')
+  const { assemblies } = JSON.parse(readFileSync(path, 'utf8'))
+  const errors = []
+  const notes = []
+
+  for (const a of assemblies) {
+    const shellBody = a.bodies.find((b) => b.mount === 'enclosure')
+    if (!shellBody) continue
+    const shell = hardware.parts.find((p) => p.id === shellBody.id)
+    const m = shell?.mechanical
+    if (!m?.interiorWidthMm) {
+      errors.push(`${a.tier}: '${shellBody.id}' has no interior dimensions, so nothing can be fitted to it`)
+      continue
+    }
+
+    // What actually goes in the box. Mast and ground-mounted parts do not, by
+    // definition, and the case is not inside itself. The carrier stacks on the
+    // host rather than beside it, so it takes no additional floor.
+    const inside = a.bodies.filter(
+      (b) => b.mount !== 'enclosure' && !b.remote && b.mount !== 'hat' && b.mount !== 'carrier',
+    )
+    if (inside.length === 0) continue
+
+    const floor = inside.reduce((sum, b) => sum + b.size[0] * b.size[2], 0) * PACKING
+    const available = m.interiorWidthMm * m.interiorDepthMm
+    const tallest = Math.max(...inside.map((b) => b.size[1]))
+
+    if (floor > available) {
+      errors.push(
+        `${a.tier}: contents need about ${Math.round(floor / 100) / 10} of floor area against ` +
+          `${Math.round(available / 100) / 10} available (packed at ${PACKING}x). Specify a larger case.`,
+      )
+    } else if (tallest > m.interiorHeightMm) {
+      errors.push(
+        `${a.tier}: '${inside.find((b) => b.size[1] === tallest).id}' is ${tallest} mm tall ` +
+          `against ${m.interiorHeightMm} mm of interior height`,
+      )
+    } else {
+      notes.push(
+        `${a.tier} uses ${Math.round((floor / available) * 100)}% of the interior floor, ` +
+          `tallest part ${tallest} mm of ${m.interiorHeightMm}`,
+      )
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return notes.length ? notes.join('; ') : 'no tier ships an enclosure'
+})
+
 check('every part in a tier has mechanical data', () => {
   // The whole-node view sizes each body from schema/hardware.json. A part with
   // no mechanical block is silently absent from the assembly, which reads as

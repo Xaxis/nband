@@ -790,7 +790,7 @@ export const TIER: Record<Tier, TierMeta> = {
   "t3": {
     "id": "t3",
     "label": "Tier 3 - Extended",
-    "budgetUsd": 5400,
+    "budgetUsd": 5350,
     "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost.",
     "buildable": true
   },
@@ -2365,7 +2365,7 @@ export const PARTS: readonly Part[] = [
       "ipRating": "IP67",
       "internalMm": "430x290x155"
     },
-    "notes": "Sealed enclosures trap moisture rather than excluding it: the air inside is humid when you close the lid, and the first cold night condenses it onto the coldest surface, which is always the optics. A Gore breather vent plus reusable desiccant solves this. Every optical port needs its own gasketed window rather than a hole, and germanium for the LWIR port because glass is opaque at 10 micrometres.",
+    "notes": "Sealed enclosures trap moisture rather than excluding it: the air inside is humid when you close the lid, and the first cold night condenses it onto the coldest surface, which is always the optics. A Gore breather vent plus reusable desiccant solves this. Every optical port needs its own gasketed window rather than a hole, and germanium for the LWIR port because glass is opaque at 10 micrometres. Carries tier 2 and tier 3 alike: packed, tier 3's contents take about a third of the interior floor and the tallest part is half the interior height. A larger case was briefly specified here on the strength of a measurement that turned out to be measuring the wrong thing — the spread-out display arrangement of the 3D model rather than how anything is actually packed.",
     "electrical": {
       "idleW": 0,
       "activeW": 0,
@@ -2378,7 +2378,10 @@ export const PARTS: readonly Part[] = [
       "heightMm": 157,
       "mount": "enclosure",
       "dimensionsSourced": true,
-      "note": "Pelican 1500 published exterior dimensions."
+      "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The model used to be drawn from the exterior alone, which answers how big the box is and not the question anyone actually has, which is whether the node fits in it.",
+      "interiorWidthMm": 425,
+      "interiorDepthMm": 284,
+      "interiorHeightMm": 155
     }
   },
   {
