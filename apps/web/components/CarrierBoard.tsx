@@ -66,7 +66,10 @@ export function CarrierBoards() {
         connect elsewhere and are not carried by the board, so tier 3 shows eight modules against a
         bill of materials listing considerably more. Beyond the connectors, each board carries a
         100&nbsp;nF decoupling capacitor per module, a bulk reservoir per supply rail, a ground
-        plane poured on an inner layer, and the four HAT mounting holes. Header pins are labelled
+        plane poured on an inner layer, a series resistor and pull-down on any gate driven from a
+        GPIO, and the four HAT mounting holes. The pull-down matters more than it looks: without
+        it the infrared emitter&rsquo;s gate floats from power-on until the agent claims the pin,
+        and a floating gate is not an off gate. Header pins are labelled
         by Raspberry Pi physical number rather than by the connector&rsquo;s own numbering, which
         runs counter-clockwise and agrees with the Pi on only two of its forty pins.
       </p>

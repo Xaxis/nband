@@ -103,7 +103,19 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
           const netClosed =
             viaNet &&
             new RegExp(`\\.J1 > \\.P${pin.pin}" to="net\\.${viaNet[1]}"`).test(src)
-          if (!direct && !netClosed) {
+          // A third legitimate shape: through a series component. A GPIO
+          // driving a gate goes header -> series resistor -> module, so neither
+          // a direct trace nor a net closes the path, but the signal does reach
+          // the pin. Follow one hop.
+          let viaSeries = false
+          const hop = new RegExp(`\\.J1 > \\.P${pin.pin}" to="\\.(R\\d+) > \\.pin1"`).exec(src)
+          if (hop) {
+            viaSeries = new RegExp(
+              `\\.${hop[1]} > \\.pin2" to="\\.\\w+ > \\.${sig}"`,
+            ).test(src)
+          }
+
+          if (!direct && !netClosed && !viaSeries) {
             problems.push(
               `${b.tier}: ${p2.id} ${pin.signal} does not reach header pin ${pin.pin}, ` +
                 `directly or through a net`,

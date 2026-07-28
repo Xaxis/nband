@@ -46,16 +46,16 @@
       "widthMm": 105,
       "modules": 9,
       "signals": 41,
-      "digest": "2abe23d9302dde40",
+      "digest": "d6781c4122b02a0e",
       "artifacts": {
         "schematic-svg": "/boards/t3-schematic.svg",
         "pcb-svg": "/boards/t3-pcb.svg",
         "glb": "/boards/t3-board.glb"
       },
-      "components": 21,
+      "components": 23,
       "routing": {
-        "routed": 69,
-        "nets": 77,
+        "routed": 72,
+        "nets": 80,
         "unrouted": 0,
         "drc": 0
       }

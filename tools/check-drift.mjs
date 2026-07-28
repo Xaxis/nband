@@ -297,6 +297,38 @@ check('an analogue sensor names the converter that reads it', () => {
   return analog.length === 0 ? 'no analogue parts' : `${analog.length} analogue part(s), each with a converter`
 })
 
+check('nothing drives the GPIO header above 3.3 volts', () => {
+  // The Pi's GPIO is not 5 V tolerant. Applying 5 V to an input damages the
+  // pin, and often the SoC.
+  //
+  // Two parts in this registry run from a 5 V rail and also land signal pins on
+  // the header. Both are fine, because their logic is 3.3 V even though their
+  // supply is not — but that was true by luck rather than by check, since the
+  // registry had no field distinguishing supply voltage from logic voltage and
+  // nothing could tell the safe case from the damaging one. A future part on a
+  // 5 V rail with 5 V logic would have been drawn straight onto the header.
+  const errors = []
+  for (const part of hardware.parts) {
+    const e = part.electrical
+    if (!e) continue
+    const digital = (e.pins ?? []).filter(
+      (x) => !/^(5V|3V3|GND|VCC|VIN)$/i.test(x.signal) && /^\d+$/.test(String(x.pin)),
+    )
+    if (digital.length === 0) continue
+    if (typeof e.logicVoltage !== 'number') {
+      errors.push(`part '${part.id}' lands ${digital.length} GPIO pin(s) but declares no logicVoltage`)
+    } else if (e.logicVoltage > 3.3) {
+      errors.push(
+        `part '${part.id}' drives the header at ${e.logicVoltage} V; the Pi's GPIO is not ` +
+          `5 V tolerant and needs a level shifter, which this registry cannot express`,
+      )
+    }
+  }
+  if (errors.length) throw new Error(errors.join('; '))
+  const n = hardware.parts.filter((p) => p.electrical?.logicVoltage).length
+  return `${n} parts declare a logic voltage, none above 3.3 V`
+})
+
 check('every part in a tier has mechanical data', () => {
   // The whole-node view sizes each body from schema/hardware.json. A part with
   // no mechanical block is silently absent from the assembly, which reads as

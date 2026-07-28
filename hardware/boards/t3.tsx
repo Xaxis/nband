@@ -178,6 +178,13 @@ export default () => (
     {/* bulk reservoir on V5 */}
     <capacitor name="C11" capacitance="10uF" footprint="0805"
       pcbX={-13.00} pcbY={-11.5} schX={-4} schY={-24} />
+    {/* sem-ir-beacon: gate series resistor and pull-down. Without the
+        pull-down the gate floats from power-on until the agent claims
+        the pin, and a floating gate is not an off gate. */}
+    <resistor name="R1" resistance="100" footprint="0402"
+      pcbX={-6.00} pcbY={-11.5} schX={2} schY={-7} />
+    <resistor name="R2" resistance="10k" footprint="0402"
+      pcbX={-2.00} pcbY={-11.5} schX={4} schY={-7} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J5 > .SDA" to="net.SDA" />
@@ -246,12 +253,15 @@ export default () => (
     <trace from=".C10 > .pin2" to="net.GND" />
     <trace from=".C11 > .pin1" to="net.V5" />
     <trace from=".C11 > .pin2" to="net.GND" />
+    <trace from=".J1 > .P16" to=".R1 > .pin1" />
+    <trace from=".R1 > .pin2" to=".J9 > .GATE" />
+    <trace from=".R2 > .pin1" to=".J9 > .GATE" />
+    <trace from=".R2 > .pin2" to="net.GND" />
     <trace from=".J4 > .CS" to=".J1 > .P24" />
     <trace from=".J6 > .TXD__RXD" to=".J1 > .P10" />
     <trace from=".J6 > .RXD__TXD" to=".J1 > .P8" />
     <trace from=".J6 > .PPS" to=".J1 > .P7" />
     <trace from=".J7 > .CS" to=".J1 > .P26" />
-    <trace from=".J9 > .GATE" to=".J1 > .P16" />
     <trace from=".J10 > .BCLK" to=".J1 > .P12" />
     <trace from=".J10 > .LRCL" to=".J1 > .P35" />
     <trace from=".J10 > .DOUT" to=".J1 > .P38" />

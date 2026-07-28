@@ -242,6 +242,8 @@ function boardFor(tier) {
         rails.get(net).push({ ref: m.ref, sig, headerPin: s.pin })
       } else if (busNet.has(s.pin)) {
         addNet(busNet.get(s.pin), `    <trace from=".${m.ref} > .${sig}" to="net.${busNet.get(s.pin)}" />`)
+      } else if (/^(GATE|EN|PWM)$/i.test(s.signal)) {
+        // Routed through its series resistor below, not straight to the header.
       } else {
         signalTraces.push(`    <trace from=".${m.ref} > .${sig}" to=".J1 > .P${s.pin}" />`)
       }
@@ -321,6 +323,41 @@ function boardFor(tier) {
   // The Pi's 1.8 k alone is correct for this bus. What a builder has to do is
   // disable the pull-ups on each breakout, which is a jumper or a solder blob
   // the registry cannot express, so the build guide says it instead.
+
+  // A gate driven from a GPIO needs two resistors, and the emitter had neither.
+  //
+  // Without a pull-down the gate floats from the moment the board is powered
+  // until the agent starts and claims the pin, which on a cold boot is tens of
+  // seconds. A floating MOSFET gate is not off; it sits wherever leakage and
+  // coupling put it. For an infrared emitter that means an uncommanded emission
+  // of unknown duration at every power-on, which is a safety question on a mast
+  // and a data-integrity one in the archive, because self-illumination the node
+  // did not schedule is self-illumination it cannot subtract.
+  //
+  // The series resistor limits the current the GPIO sinks into the gate
+  // capacitance on each edge. Neither part is optional and neither was there.
+  const gates = placed.flatMap((m) =>
+    m.pins
+      .filter((s2) => /^(GATE|EN|PWM)$/i.test(s2.signal))
+      .map((s2) => ({ ref: m.ref, sig: ident(s2.signal), pin: s2.pin, part: m.part })),
+  )
+  gates.forEach((g, k) => {
+    const rs = `R${k * 2 + 1}`
+    const rpd = `R${k * 2 + 2}`
+    passives.push(
+      `    {/* ${g.part.id}: gate series resistor and pull-down. Without the\n` +
+        `        pull-down the gate floats from power-on until the agent claims\n` +
+        `        the pin, and a floating gate is not an off gate. */}\n` +
+        `    <resistor name="${rs}" resistance="100" footprint="0402"\n` +
+        `      pcbX={${(-6 + k * 8).toFixed(2)}} pcbY={-11.5} schX={2} schY={${-7 - k * 2}} />\n` +
+        `    <resistor name="${rpd}" resistance="10k" footprint="0402"\n` +
+        `      pcbX={${(-2 + k * 8).toFixed(2)}} pcbY={-11.5} schX={4} schY={${-7 - k * 2}} />`,
+    )
+    passiveTraces.push(`    <trace from=".J1 > .P${g.pin}" to=".${rs} > .pin1" />`)
+    passiveTraces.push(`    <trace from=".${rs} > .pin2" to=".${g.ref} > .${g.sig}" />`)
+    passiveTraces.push(`    <trace from=".${rpd} > .pin1" to=".${g.ref} > .${g.sig}" />`)
+    passiveTraces.push(`    <trace from=".${rpd} > .pin2" to="net.GND" />`)
+  })
 
   // ---- Mechanical ------------------------------------------------------
   // The four HAT mounting holes, at the positions the mechanical standard

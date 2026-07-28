@@ -1456,7 +1456,10 @@ export const PARTS: readonly Part[] = [
           "signal": "PPS",
           "pin": "7"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 65,
@@ -1660,7 +1663,10 @@ export const PARTS: readonly Part[] = [
           "signal": "SCL",
           "pin": "5"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 25,
@@ -1718,7 +1724,10 @@ export const PARTS: readonly Part[] = [
           "signal": "SCL",
           "pin": "5"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 25,
@@ -1826,7 +1835,10 @@ export const PARTS: readonly Part[] = [
           "signal": "SCL",
           "pin": "5"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 25,
@@ -1883,7 +1895,10 @@ export const PARTS: readonly Part[] = [
           "signal": "SCL",
           "pin": "5"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 25,
@@ -1943,7 +1958,10 @@ export const PARTS: readonly Part[] = [
           "signal": "RX",
           "pin": "32"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": true,
+      "logicVoltageNote": "Runs from 5 V but its UART is 3.3 V TTL, which is why it can face the Pi directly. This is a property of the module, not of its rail, and it is recorded because the distinction is invisible otherwise: a 5 V-supplied module with 5 V logic on the same pins would damage the Pi's GPIO, and nothing in this registry could previously say which of the two it was."
     },
     "mechanical": {
       "widthMm": 35,
@@ -2056,7 +2074,10 @@ export const PARTS: readonly Part[] = [
           "signal": "CS",
           "pin": "24"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 25,
@@ -2119,7 +2140,10 @@ export const PARTS: readonly Part[] = [
           "signal": "DOUT",
           "pin": "38"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 20,
@@ -2307,7 +2331,10 @@ export const PARTS: readonly Part[] = [
           "signal": "GATE",
           "pin": "16"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "Gate is driven from a 3.3 V GPIO. The emitter itself runs from 5 V; the gate does not."
     },
     "mechanical": {
       "widthMm": 30,
@@ -2522,7 +2549,10 @@ export const PARTS: readonly Part[] = [
           "signal": "CS",
           "pin": "26"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 55,
@@ -2578,7 +2608,10 @@ export const PARTS: readonly Part[] = [
           "signal": "SCL",
           "pin": "5"
         }
-      ]
+      ],
+      "logicVoltage": 3.3,
+      "logicVoltageSourced": false,
+      "logicVoltageNote": "3.3 V logic, the Pi's GPIO domain."
     },
     "mechanical": {
       "widthMm": 25,
