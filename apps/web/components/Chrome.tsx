@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { NAV } from '../lib/nav'
+import { Search } from './Search'
 
 // Header shows a short path through the manifest rather than a second list of
 // its own. The footer previously kept a hand-written list and ended up linking
@@ -126,6 +127,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <Search />
           <Link
             href="/telemetry"
             className="hidden items-center gap-1.5 rounded-md border border-[var(--line)] px-2.5 py-1.5 text-[13px] text-[var(--ink-2)] transition-colors hover:border-[var(--line-strong)] hover:text-[var(--ink)] sm:flex"

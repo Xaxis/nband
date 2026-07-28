@@ -12,7 +12,7 @@
     "start": "yarn workspace @nband/web start",
     "lint": "yarn workspace @nband/web lint",
     "type-check": "yarn workspace @nband/web type-check",
-    "codegen": "node tools/codegen.mjs",
+    "codegen": "node tools/codegen.mjs && node tools/build-search-index.mjs",
     "check:drift": "node tools/check-drift.mjs",
     "check:parity": "node tools/check-parity.mjs",
     "check:links": "node tools/check-links.mjs",
