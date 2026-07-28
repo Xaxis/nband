@@ -5,10 +5,10 @@
   "boards": [
     {
       "tier": "t1",
-      "widthMm": 105,
+      "widthMm": 90,
       "modules": 4,
       "signals": 17,
-      "digest": "604d0a8455d90d8e",
+      "digest": "4b6c4a3908b7cc0c",
       "artifacts": {
         "schematic-svg": "/boards/t1-schematic.svg",
         "pcb-svg": "/boards/t1-pcb.svg",

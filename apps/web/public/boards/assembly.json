@@ -53,7 +53,7 @@
           "mount": "hat",
           "glb": "/boards/t1-board.glb",
           "size": [
-            105,
+            90,
             1.6,
             56
           ],
@@ -63,7 +63,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. 105 x 56 mm, mounting on the HAT hole pattern."
+          "note": "Generated from the hardware registry. 90 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "imu-bno085",
@@ -77,7 +77,7 @@
             18
           ],
           "pos": [
-            -37,
+            -29.5,
             54.699999999999996,
             -16
           ],
