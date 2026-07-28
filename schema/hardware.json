@@ -1060,7 +1060,10 @@
         ],
         "logicVoltage": 3.3,
         "logicVoltageSourced": false,
-        "logicVoltageNote": "Gate is driven from a 3.3 V GPIO. The emitter itself runs from 5 V; the gate does not."
+        "logicVoltageNote": "Gate is driven from a 3.3 V GPIO. The emitter itself runs from 5 V; the gate does not.",
+        "peakW": 5.0,
+        "peakNote": "A 5 W pulsed emitter at a 5 percent duty cycle averages 1.6 W once its drive losses are counted, and the power budget correctly used the average. The rail does not see an average. It sees 1 A pulses arriving through one 5 V header pin, and the Raspberry Pi budgets roughly 1.5 A across all of its 5 V pins for everything. Sizing the reservoir for the average would sag the rail on every pulse, which browns out whatever else shares it. A 220 uF electrolytic sits at the emitter itself: at a 200 microsecond gate the 1 A pulse pulls about 9 mV out of it, which the rail never sees. Without it the same charge comes down the header pin and everything else on 5 V sees the sag.",
+        "localReservoirUf": 220
       },
       "mechanical": {
         "widthMm": 30,

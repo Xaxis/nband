@@ -446,6 +446,54 @@ check('the node fits inside the case it is sold with', () => {
   return notes.length ? notes.join('; ') : 'no tier ships an enclosure'
 })
 
+check('pulsed loads are sized by their peak, not their average', () => {
+  // The power budget sums activeW, which is right for sizing a panel and a
+  // battery and wrong for sizing a rail. A 5 W emitter at a 5 percent duty
+  // cycle averages 1.6 W and draws 1 A in pulses, and the Raspberry Pi budgets
+  // about 1.5 A across all its 5 V pins for everything on them. Nothing
+  // recorded the peak, so nothing could notice.
+  const PI_5V_A = 1.5
+  const errors = []
+  for (const tier of spec.enums.tier.values) {
+    const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id))
+    // Not the host. The Raspberry Pi's rail is 5 V because that is what powers
+    // it, not because it draws from its own header pins, and counting it as a
+    // load on the rail it provides made the first version of this check report
+    // 2.52 A for a board whose actual header draw is 1.
+    const on5v = parts.filter(
+      (p) => p.electrical?.rail === '5V' && p.mechanical?.mount !== 'host',
+    )
+    if (on5v.length === 0) continue
+    // Peak where declared, average otherwise: a part with no peak is assumed
+    // not to pulse, which is what makes declaring one matter.
+    const amps = on5v.reduce((a, p) => a + (p.electrical.peakW ?? p.electrical.activeW ?? 0) / 5, 0)
+    // Anything pulsed also needs a local reservoir, whatever the total. One amp
+    // arriving in pulses through a single header pin sags the rail for
+    // everything else on it unless there is charge stored next to the load.
+    const pulsedHere = on5v.filter((p) => p.electrical.peakW)
+    for (const p of pulsedHere) {
+      const peakA = p.electrical.peakW / 5
+      if (peakA > 0.5 && !p.electrical.localReservoirUf) {
+        errors.push(
+          `${tier.id}: '${p.id}' peaks at ${peakA.toFixed(2)} A through the header and declares ` +
+            `no local reservoir; the rail will sag on every pulse`,
+        )
+      }
+    }
+
+    if (amps > PI_5V_A) {
+      errors.push(
+        `${tier.id}: parts on the 5 V rail peak at ${amps.toFixed(2)} A against the header's ` +
+          `${PI_5V_A} A budget. A pulsed load needs its own supply or a local reservoir sized ` +
+          `for the pulse, not the average.`,
+      )
+    }
+  }
+  if (errors.length) throw new Error(errors.join('; '))
+  const pulsed = hardware.parts.filter((p) => p.electrical?.peakW)
+  return `${pulsed.length} pulsed load(s) declared, every 5 V rail within the header budget`
+})
+
 check('every part in a tier has mechanical data', () => {
   // The whole-node view sizes each body from schema/hardware.json. A part with
   // no mechanical block is silently absent from the assembly, which reads as

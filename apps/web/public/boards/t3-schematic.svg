@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="tscircuit-schematic" width="1200" height="600" style="background-color: rgb(245, 241, 237)" data-real-to-screen-transform="matrix(19.8023723242,0,0,-19.8023723242,540.2945272844,108.4061070516)"><style>
+<svg xmlns="http://www.w3.org/2000/svg" class="tscircuit-schematic" width="1200" height="600" style="background-color: rgb(245, 241, 237)" data-real-to-screen-transform="matrix(19.8023723242,0,0,-19.8023723242,540.2945272844,108.4061070516)" role="img" aria-label="nband T3 carrier — Schematic, generated from schema/hardware.json"><title>nband T3 carrier — Schematic, generated from schema/hardware.json</title><desc>GENERATED REFERENCE — never fabricated, never electrically verified. Component placement is machine-generated. Verify against the registry before use. nband.space</desc><style>
               .boundary { fill: rgb(245, 241, 237); }
               .schematic-boundary { fill: none; stroke: #fff; }
               .component { fill: none; stroke: rgb(132, 0, 0); }

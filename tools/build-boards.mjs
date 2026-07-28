@@ -137,6 +137,51 @@ if (Object.keys(extra).length) {
   console.log(`  width overrides: ${JSON.stringify(extra)}`)
 }
 
+/**
+ * Stamp an exported drawing with what it is and what it is not.
+ *
+ * These files are offered as downloads, and a downloaded SVG has left every
+ * piece of context the page around it provided. On its own it is a clean,
+ * convincing schematic with no indication that it was generated rather than
+ * drawn, that nothing on it has been fabricated, or that its layout is machine
+ * placement rather than engineering. Someone opening it a year from now, or
+ * receiving it from someone else, has no way to know any of that.
+ *
+ * So the caveat travels with the artifact: a title and description for
+ * accessibility and for anything reading the file programmatically, and a line
+ * of visible text at the foot of the drawing itself for the person looking at
+ * it.
+ */
+function stampSvg(path, board, kind) {
+  const svg = readFileSync(path, 'utf8')
+  const what = kind.startsWith('schematic')
+    ? 'Schematic, generated from schema/hardware.json'
+    : 'PCB layout, machine-placed and auto-routed'
+  const title = `nband ${board.tier.toUpperCase()} carrier — ${what}`
+  const caveat =
+    'GENERATED REFERENCE — never fabricated, never electrically verified. ' +
+    'Component placement is machine-generated. Verify against the registry before use. nband.space'
+
+  // Viewbox tells us where the foot of the drawing is.
+  const vb = /viewBox="([-\d.]+)\s+([-\d.]+)\s+([\d.]+)\s+([\d.]+)"/.exec(svg)
+  let footer = ''
+  if (vb) {
+    const [, x, y, w, h] = vb.map(Number)
+    footer =
+      `<text x="${x + w / 2}" y="${y + h - h * 0.012}" text-anchor="middle" ` +
+      `font-family="monospace" font-size="${(h * 0.016).toFixed(2)}" fill="#b4453c" ` +
+      `opacity="0.85">${caveat}</text>`
+  }
+
+  const stamped = svg.replace(
+    /<svg([^>]*)>/,
+    (m, attrs) =>
+      `<svg${attrs} role="img" aria-label="${title}">` +
+      `<title>${title}</title><desc>${caveat}</desc>`,
+  )
+  writeFileSync(path, footer ? stamped.replace('</svg>', `${footer}</svg>`) : stamped)
+}
+
 const built = []
 for (const b of manifest.boards) {
   const artifacts = {}
@@ -148,7 +193,9 @@ for (const b of manifest.boards) {
     const rel = `.build/${b.tier}-${ext}`
     try {
       exportBoard(b.tier, format, rel)
-      copyFileSync(join(BOARDS, rel), join(PUBLIC, `${b.tier}-${ext}`))
+      const dest = join(PUBLIC, `${b.tier}-${ext}`)
+      copyFileSync(join(BOARDS, rel), dest)
+      if (ext.endsWith('.svg')) stampSvg(dest, b, ext)
       artifacts[format] = `/boards/${b.tier}-${ext}`
     } catch (err) {
       console.error(`  ${b.tier}: ${format} failed — ${String(err.stderr ?? err).slice(0, 160)}`)
