@@ -169,15 +169,26 @@ function trim(n: number): string {
 }
 
 /** Position of a band on a log-wavelength axis, 0 (shortest) to 1 (longest).
- *  Used by the spectrum bar so the layout reflects physics rather than an
- *  arbitrary equal split. Non-electromagnetic bands return null. */
+ *
+ *  Electromagnetic bands only. This previously admitted any band with a
+ *  frequency range and converted it with the speed of light, which put the
+ *  acoustic and seismic channels on the electromagnetic axis: 20 kHz of sound
+ *  was rendered as a 15 km wavelength instead of the 17 mm it actually is in
+ *  air. Mechanical and gravitational channels do not belong on this axis at
+ *  any position, so they are excluded by kind rather than by whether the
+ *  arithmetic happens to produce a number. */
 export function logWavelengthPosition(b: Band): { start: number; end: number } | null {
+  if (b.kind !== 'electromagnetic') return null
   const lo = b.wavelength?.minM ?? (b.frequency?.maxHz ? 3e8 / b.frequency.maxHz : null)
   const hi = b.wavelength?.maxM ?? (b.frequency?.minHz ? 3e8 / b.frequency.minHz : null)
   if (lo == null || hi == null || lo <= 0 || hi <= 0) return null
-  // Domain spans gamma (1e-14 m) to the long end of the RF band (1e3 m).
+  // Domain spans gamma (1e-14 m) to the long end of ELF (1e7 m, 30 Hz).
   const D_LO = Math.log10(1e-14)
-  const D_HI = Math.log10(1e3)
-  const norm = (v: number) => (Math.log10(v) - D_LO) / (D_HI - D_LO)
+  const D_HI = Math.log10(1e7)
+  // Clamp rather than drop: ELF wavelengths genuinely run to thousands of
+  // kilometres, past the plotted domain, and a band that exists should be
+  // shown reaching the edge rather than silently omitted.
+  const norm = (v: number) =>
+    Math.min(Math.max((Math.log10(v) - D_LO) / (D_HI - D_LO), 0), 1)
   return { start: norm(lo), end: norm(hi) }
 }

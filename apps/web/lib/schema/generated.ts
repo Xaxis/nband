@@ -534,6 +534,10 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 30,
       "entryCostUsd": 39.95
+    },
+    "wavelength": {
+      "minM": 10000,
+      "maxM": 10000000
     }
   },
   {

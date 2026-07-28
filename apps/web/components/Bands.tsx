@@ -65,9 +65,9 @@ export function SpectrumBar({ interactive = true }: { interactive?: boolean }) {
   const other = BANDS.filter((b) => logWavelengthPosition(b) === null)
 
   // Decade ticks across the plotted domain, 1e-14 m to 1e3 m.
-  const ticks = [-14, -11, -8, -6, -3, 0, 3].map((e) => ({
+  const ticks = [-14, -11, -8, -6, -3, 0, 3, 6].map((e) => ({
     e,
-    x: ((e - -14) / (3 - -14)) * 100,
+    x: ((e - -14) / (7 - -14)) * 100,
   }))
 
   // Flex weights from the log-wavelength span. Flexbox is used rather than
@@ -75,10 +75,13 @@ export function SpectrumBar({ interactive = true }: { interactive?: boolean }) {
   // sums to the container width at every viewport size, so there is no
   // horizontal scroll to get wrong. The minimum basis keeps the visible band,
   // which is a genuine sliver on a log axis, wide enough to see and to tap.
-  const segments = em.map(({ b, pos }) => ({
-    b,
-    grow: Math.max(pos.end - pos.start, 0.012),
-  }))
+  // Normalised so the flex factors sum to 1. Flexbox distributes only that
+  // FRACTION of the free space when the factors total less than one, so raw
+  // log-decade fractions summing to ~0.55 left the bar filling 55 percent of
+  // its container with dead space to the right of it.
+  const raw = em.map(({ b, pos }) => ({ b, grow: Math.max(pos.end - pos.start, 0.012) }))
+  const growTotal = raw.reduce((sum, s) => sum + s.grow, 0) || 1
+  const segments = raw.map((s) => ({ ...s, grow: s.grow / growTotal }))
 
   return (
     <div className="w-full">
@@ -108,7 +111,7 @@ export function SpectrumBar({ interactive = true }: { interactive?: boolean }) {
               />
               {/* Only the widest segments get an inline label; the rest are
                   identified by the chip row below. Never truncated mid-word. */}
-              {grow > 0.14 && (
+              {grow > 0.11 && (
                 <span
                   className="num absolute inset-x-1 top-1.5 hidden truncate text-[10px] uppercase tracking-wide text-[var(--ink-2)] sm:block"
                   aria-hidden="true"
@@ -150,7 +153,7 @@ export function SpectrumBar({ interactive = true }: { interactive?: boolean }) {
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-1.5">
-        <span className="eyebrow mr-1">Off the EM axis</span>
+        <span className="eyebrow mr-1">Not electromagnetic</span>
         {other.map((b) => (
           <BandChip key={b.id} band={b} size="sm" href={`/bands#${b.id}`} />
         ))}

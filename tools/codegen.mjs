@@ -16,6 +16,24 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+// Keys beginning with "$" are annotations for whoever is reading the schema,
+// not data. bands.json already used $comment this way; a $wavelengthNote added
+// later leaked into the generated TypeScript and failed the type check, because
+// the emitted object literal carried a property the Band interface does not
+// declare. Stripping them here makes the convention hold everywhere rather than
+// depending on nobody adding another one.
+function stripAnnotations(value) {
+  if (Array.isArray(value)) return value.map(stripAnnotations)
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([k]) => !k.startsWith('$'))
+        .map(([k, v]) => [k, stripAnnotations(v)]),
+    )
+  }
+  return value
+}
+
 const read = (p) => JSON.parse(readFileSync(resolve(root, p), 'utf8'))
 
 const bands = read('schema/bands.json')
@@ -135,9 +153,9 @@ function generateTypeScript() {
     ``,
     `export type PhenomenonId = ${tsUnion(bands.phenomena.map((p) => p.id))}`,
     `export interface Phenomenon { id: PhenomenonId; label: string }`,
-    `export const PHENOMENA: readonly Phenomenon[] = ${JSON.stringify(bands.phenomena, null, 2)} as const`,
+    `export const PHENOMENA: readonly Phenomenon[] = ${JSON.stringify(stripAnnotations(bands.phenomena), null, 2)} as const`,
     ``,
-    `export const BANDS: readonly Band[] = ${JSON.stringify(bands.bands, null, 2)} as const`,
+    `export const BANDS: readonly Band[] = ${JSON.stringify(stripAnnotations(bands.bands), null, 2)} as const`,
     ``,
     `export const BAND_BY_ID: Record<BandId, Band> = Object.fromEntries(`,
     `  BANDS.map((b) => [b.id, b]),`,
@@ -192,7 +210,7 @@ function generateTypeScript() {
     `  pins: { signal: string; pin: string }[]`,
     `}`,
     ``,
-    `export const PARTS: readonly Part[] = ${JSON.stringify(hardware.parts, null, 2)} as unknown as readonly Part[]`,
+    `export const PARTS: readonly Part[] = ${JSON.stringify(stripAnnotations(hardware.parts), null, 2)} as unknown as readonly Part[]`,
     `export const PRICES_AS_OF = '${hardware.pricesAsOf}' as const`,
     `export const PRICE_NOTE = ${JSON.stringify(hardware.priceNote)} as const`,
     ``,
