@@ -1,4 +1,4 @@
-import { DocPage, docMetadata } from '../../components/DocPage'
+import { DocPage, docMetadata } from '../../../components/DocPage'
 
 export const metadata = docMetadata('software')
 

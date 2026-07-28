@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import { TelemetryView } from '../../components/telemetry/TelemetryView'
-import { Container, Note } from '../../components/ui'
-import { getFeed } from '../../lib/feed'
+import { TelemetryView } from '../../../components/telemetry/TelemetryView'
+import { Container, Note } from '../../../components/ui'
+import { getFeed } from '../../../lib/feed'
 
 export const metadata: Metadata = {
   title: 'Live telemetry',

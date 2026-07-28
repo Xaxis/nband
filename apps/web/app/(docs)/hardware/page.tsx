@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { BandChip } from '../../components/Bands'
+import { BandChip } from '../../../components/Bands'
 import {
   NodeBlockDiagram,
   PinoutDiagram,
   PowerBudget,
   WiringTable,
-} from '../../components/HardwareVisuals'
-import { Button, Container, Note, Section } from '../../components/ui'
+} from '../../../components/HardwareVisuals'
+import { Button, Container, Note, Section } from '../../../components/ui'
 import {
   PARTS,
   PRICES_AS_OF,
@@ -18,7 +18,7 @@ import {
   tierCost,
   type Part,
   type Tier,
-} from '../../lib/schema/generated'
+} from '../../../lib/schema/generated'
 
 export const metadata: Metadata = {
   title: 'Hardware and bill of materials',

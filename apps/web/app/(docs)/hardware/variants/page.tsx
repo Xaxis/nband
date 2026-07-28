@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { BandChip } from '../../../components/Bands'
-import { Container, Note, Section } from '../../../components/ui'
-import { PARTS, VARIANTSTATUS, type VariantStatus } from '../../../lib/schema/generated'
+import { BandChip } from '../../../../components/Bands'
+import { Container, Note, Section } from '../../../../components/ui'
+import { PARTS, VARIANTSTATUS, type VariantStatus } from '../../../../lib/schema/generated'
 
 export const metadata: Metadata = {
   title: 'Hardware variant registry',

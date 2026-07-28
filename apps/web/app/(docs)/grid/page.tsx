@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { BandChip } from '../../components/Bands'
-import { Container, Note, Section } from '../../components/ui'
-import { getFeed } from '../../lib/feed'
-import { NODESTATUS, THRESHOLDS, TIER } from '../../lib/schema/generated'
-import { STATUS } from '../../lib/spectrum'
+import { BandChip } from '../../../components/Bands'
+import { Container, Note, Section } from '../../../components/ui'
+import { getFeed } from '../../../lib/feed'
+import { NODESTATUS, THRESHOLDS, TIER } from '../../../lib/schema/generated'
+import { STATUS } from '../../../lib/spectrum'
 
 export const metadata: Metadata = {
   title: 'The grid',

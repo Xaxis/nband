@@ -1,19 +1,22 @@
 import type { Metadata } from 'next'
-import { SpectrumBar } from '../../components/Bands'
+import Link from 'next/link'
+import { SpectrumBar } from '../../../components/Bands'
 import {
   AtmosphericWindow,
   BandProfilePanel,
   DetectionMatrix,
-} from '../../components/BandVisuals'
-import { Container, Section } from '../../components/ui'
+} from '../../../components/BandVisuals'
+import { Container, Section } from '../../../components/ui'
 import {
   CONTEXT_BANDS,
   DETECTION_BANDS,
+  PARTS,
   PHENOMENA,
+  TIER,
   type Band,
   type PhenomenonId,
-} from '../../lib/schema/generated'
-import { SPECTRAL, bandExtent } from '../../lib/spectrum'
+} from '../../../lib/schema/generated'
+import { SPECTRAL, bandExtent } from '../../../lib/spectrum'
 
 export const metadata: Metadata = {
   title: 'The fourteen bands',
@@ -55,6 +58,33 @@ function StrengthPills({ band }: { band: Band }) {
   )
 }
 
+/** The registry already knows which parts serve which band, so the two pages
+ *  can point at each other instead of leaving the reader to guess. */
+function PartsForBand({ band }: { band: Band }) {
+  const parts = PARTS.filter((p) => p.band === band.id)
+  if (parts.length === 0) return null
+  return (
+    <div className="mt-5 border-t border-[var(--line)] pt-4">
+      <h3 className="eyebrow mb-2">Parts that open this band</h3>
+      <div className="flex flex-wrap gap-1.5">
+        {parts.map((p) => (
+          <Link
+            key={p.id}
+            href="/hardware"
+            className="group flex items-baseline gap-2 rounded-md border border-[var(--line)] bg-[var(--surface-3)] px-2 py-1 transition-colors hover:border-[var(--line-strong)]"
+          >
+            <span className="text-[11.5px] text-[var(--ink)]">{p.model}</span>
+            <span className="num text-[10.5px] text-[var(--ink-3)]">
+              {p.priceUsd === 0 ? 'recovered' : `$${p.priceUsd.toFixed(0)}`}
+              {p.tiers?.length ? ` · ${p.tiers.map((t) => TIER[t].label.split(' ')[0]).join(', ')}` : ''}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function BandSection({ band }: { band: Band }) {
   const light = SPECTRAL.light[band.id]
   const dark = SPECTRAL.dark[band.id]
@@ -80,6 +110,8 @@ function BandSection({ band }: { band: Band }) {
         <div className="mt-5 border-t border-[var(--line)] pt-4">
           <StrengthPills band={band} />
         </div>
+
+        <PartsForBand band={band} />
 
         <div className="mt-5 grid gap-5 border-t border-[var(--line)] pt-5 sm:grid-cols-2">
           <div>

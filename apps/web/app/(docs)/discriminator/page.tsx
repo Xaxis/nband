@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { DiscriminatorPlayground } from '../../components/DiscriminatorPlayground'
-import { Container, Note, Section } from '../../components/ui'
+import { DiscriminatorPlayground } from '../../../components/DiscriminatorPlayground'
+import { Container, Note, Section } from '../../../components/ui'
 import {
   CATALOGSOURCE,
   CLASSIFICATION,
@@ -9,8 +9,8 @@ import {
   CORROBORATION_ORDER,
   HYPOTHESES,
   THRESHOLDS,
-} from '../../lib/schema/generated'
-import { VERDICT } from '../../lib/spectrum'
+} from '../../../lib/schema/generated'
+import { VERDICT } from '../../../lib/spectrum'
 
 export const metadata: Metadata = {
   title: 'The discriminator',

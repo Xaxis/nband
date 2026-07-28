@@ -15,9 +15,10 @@
     "codegen": "node tools/codegen.mjs",
     "check:drift": "node tools/check-drift.mjs",
     "check:parity": "node tools/check-parity.mjs",
+    "check:links": "node tools/check-links.mjs",
     "fixtures": "python3 tools/gen-fixtures.py",
     "db:seed": "node tools/seed.mjs",
-    "check": "yarn check:drift && yarn check:parity && yarn type-check && yarn lint"
+    "check": "yarn check:drift && yarn check:parity && yarn check:links && yarn type-check && yarn lint"
   },
   "devDependencies": {
     "prettier": "^3.6.2"

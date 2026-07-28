@@ -1,6 +1,6 @@
-import { DocPage, docMetadata } from '../../components/DocPage'
-import { PinoutDiagram, PowerBudget, WiringTable } from '../../components/HardwareVisuals'
-import { Section } from '../../components/ui'
+import { DocPage, docMetadata } from '../../../components/DocPage'
+import { PinoutDiagram, PowerBudget, WiringTable } from '../../../components/HardwareVisuals'
+import { Section } from '../../../components/ui'
 
 export const metadata = docMetadata('build')
 

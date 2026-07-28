@@ -3,15 +3,18 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { NAV } from '../lib/nav'
 
-const NAV = [
+// Header shows a short path through the manifest rather than a second list of
+// its own. The footer previously kept a hand-written list and ended up linking
+// to two pages that had never been built.
+const HEADER_LINKS = [
+  { href: '/docs', label: 'Docs' },
   { href: '/bands', label: 'Bands' },
   { href: '/hardware', label: 'Hardware' },
   { href: '/build', label: 'Build' },
-  { href: '/software', label: 'Software' },
-  { href: '/grid', label: 'Grid' },
   { href: '/discriminator', label: 'Discriminator' },
-  { href: '/contribute', label: 'Contribute' },
+  { href: '/grid', label: 'Grid' },
 ]
 
 function Mark({ size = 22 }: { size?: number }) {
@@ -103,7 +106,7 @@ export function SiteHeader() {
         </Link>
 
         <nav className="ml-4 hidden items-center gap-0.5 lg:flex" aria-label="Main">
-          {NAV.map((item) => {
+          {HEADER_LINKS.map((item) => {
             const active = pathname === item.href || pathname.startsWith(item.href + '/')
             return (
               <Link
@@ -155,7 +158,7 @@ export function SiteHeader() {
 
       {open && (
         <nav className="border-t border-[var(--line)] bg-[var(--surface-2)] px-4 py-2 lg:hidden" aria-label="Main">
-          {[...NAV, { href: '/telemetry', label: 'Telemetry' }].map((item) => (
+          {[...HEADER_LINKS, { href: '/telemetry', label: 'Telemetry' }].map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -173,7 +176,7 @@ export function SiteHeader() {
 export function SiteFooter({ version }: { version: string }) {
   return (
     <footer className="mt-24 border-t border-[var(--line)] bg-[var(--surface-0)]">
-      <div className="mx-auto grid max-w-[1180px] gap-8 px-4 py-12 sm:px-6 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-[1180px] gap-8 px-4 py-12 sm:px-6 md:grid-cols-[1.6fr_repeat(4,1fr)]">
         <div>
           <div className="flex items-center gap-2.5 font-semibold tracking-tight">
             <Mark size={20} />
@@ -188,39 +191,11 @@ export function SiteFooter({ version }: { version: string }) {
           </p>
         </div>
 
-        {[
-          {
-            title: 'Build',
-            links: [
-              { href: '/hardware', label: 'Bill of materials' },
-              { href: '/build', label: 'Build guide' },
-              { href: '/software', label: 'Flash and configure' },
-              { href: '/hardware/variants', label: 'Variant registry' },
-            ],
-          },
-          {
-            title: 'Understand',
-            links: [
-              { href: '/bands', label: 'The fourteen bands' },
-              { href: '/discriminator', label: 'How verdicts work' },
-              { href: '/software/schema', label: 'Data schema' },
-              { href: '/software/api', label: 'API reference' },
-            ],
-          },
-          {
-            title: 'Participate',
-            links: [
-              { href: '/grid', label: 'Node map' },
-              { href: '/telemetry', label: 'Live telemetry' },
-              { href: '/contribute', label: 'Contribute' },
-              { href: '/safety', label: 'Safety' },
-            ],
-          },
-        ].map((col) => (
-          <div key={col.title}>
-            <h3 className="eyebrow mb-3">{col.title}</h3>
+        {NAV.filter((sec) => sec.id !== 'start').map((col) => (
+          <div key={col.id}>
+            <h3 className="eyebrow mb-3">{col.label}</h3>
             <ul className="space-y-2">
-              {col.links.map((l) => (
+              {col.items.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}

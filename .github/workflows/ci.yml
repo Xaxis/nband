@@ -26,6 +26,8 @@ jobs:
       # The playground scores client-side, so the logic exists in Python and in
       # JavaScript. This fails the build the moment the two disagree.
       - run: node tools/check-parity.mjs
+      # Catches links to pages that were never built. The footer shipped two.
+      - run: node tools/check-links.mjs
 
   firmware:
     name: firmware tests

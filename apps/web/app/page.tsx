@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { SpectrumBar, BandChip } from '../components/Bands'
+import { HeroScene } from '../components/hero/Hero'
 import { Button, Container, Section, Stat } from '../components/ui'
 import {
   CLASSIFICATION,
@@ -49,7 +50,21 @@ export default function HomePage() {
             </Button>
           </div>
 
-          <div className="mt-14">
+          <div className="mt-10 lg:mt-4">
+            <p className="eyebrow mb-2">
+              One node, eleven detection shells, an object crossing them
+            </p>
+            <HeroScene />
+            <p className="mt-2 max-w-[74ch] text-[12px] leading-relaxed text-[var(--ink-3)]">
+              Range rings are the real detection distances from the band schema, on a log scale
+              because the channels span thirty metres to three hundred kilometres. A band lights
+              when the object enters its shell. Two lit at once is a coincidence, which is the
+              cheapest strong evidence the platform can produce and the only thing that promotes a
+              buffered window to permanent storage.
+            </p>
+          </div>
+
+          <div className="mt-12">
             <p className="eyebrow mb-3">The instrument, by wavelength</p>
             <SpectrumBar />
           </div>
