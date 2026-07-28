@@ -69,7 +69,10 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
       .flatMap((p) => (p.electrical?.pins ?? []).filter((x) => /^\d+$/.test(String(x.pin))))
     for (const pin of expected) {
       // The board must terminate this signal on the header pin the registry names.
-      if (!src.includes(`.J1 > .P${pin.pin}"`)) {
+      // Anchored on the closing quote. Without it ".J1 > .P3" matches inside
+      // ".J1 > .P30", so a board that reached only pin 30 satisfied an
+      // assertion about pin 3.
+      if (!new RegExp(`\\.J1 > \\.P${pin.pin}"`).test(src)) {
         problems.push(`${b.tier}: no trace reaches header pin ${pin.pin} (${pin.signal})`)
       }
     }
@@ -91,12 +94,15 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
           // modules, SPI by two — goes to a named net, and the header pin is
           // tied to that same net. Both terminate on the pin the registry
           // names; only the first is a single line of source.
-          const direct = src.includes(`> .${sig}" to=".J1 > .P${pin.pin}"`)
+          const direct = new RegExp(
+            `> \\.${sig}" to="\\.J1 > \\.P${pin.pin}"`,
+          ).test(src)
           const viaNet = new RegExp(
             `> \\.${sig}" to="net\\.([A-Za-z0-9_]+)"`,
           ).exec(src)
           const netClosed =
-            viaNet && src.includes(`.J1 > .P${pin.pin}" to="net.${viaNet[1]}"`)
+            viaNet &&
+            new RegExp(`\\.J1 > \\.P${pin.pin}" to="net\\.${viaNet[1]}"`).test(src)
           if (!direct && !netClosed) {
             problems.push(
               `${b.tier}: ${p2.id} ${pin.signal} does not reach header pin ${pin.pin}, ` +

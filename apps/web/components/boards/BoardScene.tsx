@@ -20,17 +20,25 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
  */
 
 /**
- * Probed once, before the effect runs, rather than by catching a constructor
- * failure inside it. Setting state synchronously in an effect is a cascading
- * render, and "does this browser do WebGL" is answerable without one.
+ * Probed once for the lifetime of the page, and the probe context is released.
+ *
+ * Creating a canvas and asking it for a WebGL context is not free: each call
+ * consumes one of the browser's ~16 simultaneous contexts, and this was called
+ * twice per mount. Losing contexts while probing for context availability
+ * undoes the point of the forceContextLoss on unmount.
  */
+let webglProbe: boolean | null = null
 function webglAvailable(): boolean {
+  if (webglProbe !== null) return webglProbe
   try {
     const canvas = document.createElement('canvas')
-    return !!(canvas.getContext('webgl2') ?? canvas.getContext('webgl'))
+    const gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl')
+    webglProbe = !!gl
+    ;(gl as WebGLRenderingContext | null)?.getExtension('WEBGL_lose_context')?.loseContext()
   } catch {
-    return false
+    webglProbe = false
   }
+  return webglProbe
 }
 
 export default function BoardScene({ src, label }: { src: string; label: string }) {

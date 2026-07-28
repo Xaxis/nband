@@ -59,7 +59,11 @@ privacy: ## Published positions do not give away where an operator lives
 boards-check: ## Carrier board netlists match the hardware registry
 	@node tools/check-boards.mjs
 
-boards-verify: ## The above, plus a full routing and design-rule pass (needs the tscircuit CLI)
+# Part of `make check`. The routing pass and the header-numbering tripwire only
+# ever ran when someone typed this target by hand, while the site said the
+# boards were checked on every build. CI still runs the cheap half, because it
+# has no board toolchain, and boards-check says so rather than passing silently.
+boards-verify: boards-deps ## The above, plus a full routing and design-rule pass
 	@node tools/check-boards.mjs --full
 
 test-firmware: ## Node agent: clock, buffers, triggering, registry, concurrency
@@ -98,7 +102,7 @@ format: ## Format Python and web sources in place
 build: ## Production build of the site
 	@yarn workspace @nband/web build
 
-check-fast: drift parity links privacy boards-check test ## Everything except the web build
+check-fast: drift parity links privacy boards-verify test ## Everything except the web build
 	@echo "fast checks green"
 
 check: check-fast lint build ## Everything CI runs

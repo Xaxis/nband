@@ -48,17 +48,44 @@ export function DocTabs({ tabs, label }: { tabs: DocTab[]; label: string }) {
   )
   const listId = useId()
 
-  const matched = tabs.find((t) => hash === `#${t.id}` || hash.startsWith(`#${t.id}-`))
-  const active = matched ?? tabs[0]
+  // Resolve the hash to a panel in two steps.
+  //
+  // First by name, including a prefix match so a nested deep link such as
+  // "#boards-t3-model" still opens the boards panel.
+  //
+  // Then, failing that, by looking up whatever element the hash names and
+  // asking which panel contains it. Panelling this page silently broke every
+  // link into it: twenty-four search results and the home page point at "#t1",
+  // which had been a section anchor and became content inside a closed panel.
+  // Rather than rewrite those links and break the next set, any anchor living
+  // inside a panel opens that panel.
+  const named = tabs.find((t) => hash === `#${t.id}` || hash.startsWith(`#${t.id}-`))
+  const containing = useSyncExternalStore(
+    subscribe,
+    () => {
+      if (named || hash.length < 2) return ''
+      const el = document.getElementById(decodeURIComponent(hash.slice(1)))
+      return el?.closest('[data-doctab]')?.getAttribute('data-doctab') ?? ''
+    },
+    () => '',
+  )
+  const active = named ?? tabs.find((t) => t.id === containing) ?? tabs[0]
 
   const select = (id: string) => {
     // replaceState, not a navigation: the back button should leave the page,
     // not step back through however many panels were opened along the way.
     window.history.replaceState(null, '', `#${id}`)
     window.dispatchEvent(new Event('nband:boardhash'))
-    // Bring the strip into view when the panel above it was tall, but never
-    // scroll on first paint.
-    document.getElementById(listId)?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    // Offset by the sticky header, which scrollIntoView does not account for
+    // and would otherwise leave the strip tucked underneath it. Honour the
+    // reduced-motion setting the rest of the site respects.
+    const strip = document.getElementById(listId)
+    if (!strip) return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({
+      top: strip.getBoundingClientRect().top + window.scrollY - 56,
+      behavior: reduced ? 'auto' : 'smooth',
+    })
   }
 
   return (
@@ -103,13 +130,22 @@ export function DocTabs({ tabs, label }: { tabs: DocTab[]; label: string }) {
         </Container>
       )}
 
-      {/* Every panel stays mounted and the inactive ones are hidden, so that
-          in-page anchors and browser find-on-page still reach content in a
-          panel that is not open, and so switching back is instant. */}
+      {/* Every panel stays mounted and inactive ones carry `hidden`, so
+          switching back is instant and any anchor inside a closed panel is
+          still findable by getElementById — which is what lets a link like
+          "#t1" open the panel containing it.
+
+          It does NOT make the content reachable by the browser's find-on-page,
+          and an earlier version of this comment claimed it did. `hidden` takes
+          the subtree out of the accessibility tree and out of find. Four fifths
+          of this page is therefore invisible to Ctrl-F while a panel is open,
+          which is the honest cost of panelling it. Site search covers the same
+          content and is one keystroke away. */}
       {tabs.map((t) => (
         <div
           key={t.id}
           id={`panel-${t.id}`}
+          data-doctab={t.id}
           role="tabpanel"
           aria-labelledby={`tab-${t.id}`}
           hidden={t.id !== active.id}

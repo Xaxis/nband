@@ -81,9 +81,14 @@ function TierParts({ tier }: { tier: Tier }) {
   const parts = partsForTier(tier)
   const meta = TIER[tier]
   const total = tierCost(tier)
+  // A plain tier id, not "tier-t1". Twenty-four search results and the home
+  // page have always linked to /hardware#t1; panelling the page turned those
+  // into anchors inside a closed panel, and renaming them would have broken the
+  // links outright. DocTabs opens whichever panel contains the anchor, so these
+  // stay exactly as they were.
   return (
     <Section
-      id={`tier-${tier}`}
+      id={tier}
       className={`!pt-10 ${tier === 't2' ? 'border-y border-[var(--line)] bg-[var(--surface-0)]' : ''}`}
       eyebrow={`${meta.label} · ${parts.length} parts`}
       title={`$${total.toFixed(0)} — ${meta.summary.split('.')[0]}`}

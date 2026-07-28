@@ -71,6 +71,9 @@ export function PanZoom({
   }, [hint])
 
   const onPointerDown = (e: React.PointerEvent) => {
+    // Primary button only. Any-button drag meant a right-click began a pan that
+    // the context menu then stranded mid-gesture.
+    if (e.button !== 0) return
     ;(e.target as Element).setPointerCapture?.(e.pointerId)
     drag.current = { x: e.clientX, y: e.clientY, ox: t.x, oy: t.y }
   }
@@ -119,11 +122,16 @@ export function PanZoom({
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
         onPointerLeave={endDrag}
-        className={`relative h-[420px] w-full cursor-grab touch-none overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] active:cursor-grabbing sm:h-[520px] ${
+        // touch-pan-y, not touch-none. A full-width element that swallows every
+        // touch gesture is a scroll trap: on a phone the drawing occupies the
+        // width of the screen and the page cannot be scrolled past it at all.
+        // Vertical drags scroll the page; horizontal drags pan the drawing,
+        // which is the axis that actually needs panning on a wide schematic.
+        className={`relative h-[420px] w-full cursor-grab touch-pan-y overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] active:cursor-grabbing sm:h-[520px] ${
           surface === 'light' ? 'bg-[#f6f4ef]' : 'bg-[#0b0d10]'
         }`}
         aria-label={`${alt}. Drag to pan. Hold Control or Command and scroll to zoom. Arrow keys pan, plus and minus zoom, zero resets.`}
-        role="application"
+        role="group"
       >
         <div
           className="absolute left-1/2 top-1/2 origin-center will-change-transform"
@@ -135,7 +143,7 @@ export function PanZoom({
 
         {hint && (
           <p className="pointer-events-none absolute inset-x-0 top-3 mx-auto w-fit rounded-full bg-[var(--surface-3)] px-3 py-1 text-[11.5px] text-[var(--ink-2)] shadow">
-            Hold Ctrl or \u2318 and scroll to zoom
+            Hold Ctrl or Cmd and scroll to zoom
           </p>
         )}
       </div>
