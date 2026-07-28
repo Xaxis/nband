@@ -13,14 +13,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
  * asked for them. Everything the section has to say is in the DOM before this
  * arrives, and the schematic beside it is the artifact that carries the meaning.
  *
- * The board geometry is authored in millimetres and sits near the origin, but
- * "near" is doing some work: the exporter centres the board outline and leaves
- * component meshes wherever they were placed. So the camera is fitted to the
- * measured bounding sphere rather than to a guessed distance, the same approach
- * the hero scene takes, and for the same reason — a hardcoded camera position
- * clips the moment the geometry changes size, and this geometry is regenerated
- * from the hardware registry every time a part moves.
+ * The camera is fitted to the measured geometry rather than placed at a guessed
+ * distance, the same approach the hero scene takes and for the same reason: a
+ * hardcoded position clips the moment the geometry changes size, and this
+ * geometry is regenerated from the hardware registry every time a part moves.
  */
+
 /**
  * Probed once, before the effect runs, rather than by catching a constructor
  * failure inside it. Setting state synchronously in an effect is a cascading
@@ -90,6 +88,15 @@ export default function BoardScene({ src, label }: { src: string; label: string 
         const root = gltf.scene
         scene.add(root)
 
+        // Ready means the model is in the scene. Everything after this is
+        // framing, and it is ordered this way deliberately: the overlay
+        // previously cleared only at the end of this callback, so any throw in
+        // the camera maths left "Loading model…" sitting on top of a model that
+        // had loaded perfectly well. GLTFLoader routes a throwing onLoad to
+        // onError, so the failure was not even silent — it was just attributed
+        // to the wrong thing.
+        setStatus('ready')
+
         // Centre on the measured geometry, then frame it.
         const box = new THREE.Box3().setFromObject(root)
         const centre = box.getCenter(new THREE.Vector3())
@@ -106,7 +113,12 @@ export default function BoardScene({ src, label }: { src: string; label: string 
         // size — which it does, because the geometry is regenerated whenever a
         // part moves in the hardware registry.
         const size = new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3())
-        const aspect = Math.max(0.5, host.clientWidth / host.clientHeight)
+        // Clamped, because a host that has not been laid out yet reports a
+        // height of zero and an aspect of Infinity, which propagates NaN
+        // through the projection matrix and renders nothing.
+        const w = host.clientWidth || 800
+        const h = host.clientHeight || 500
+        const aspect = Math.min(4, Math.max(0.5, w / h))
         const vFov = (camera.fov * Math.PI) / 180
         const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect)
 
@@ -134,11 +146,14 @@ export default function BoardScene({ src, label }: { src: string; label: string 
             for (const mat of mats) if (mat) disposables.push(mat)
           }
         })
-
-        setStatus('ready')
       },
       undefined,
-      () => setStatus('error'),
+      (err) => {
+        // Named, because "cannot display the 3D view" was previously shown for
+        // a WebGL failure, a network failure and a bug in this callback alike.
+        console.error('nband: could not load board model', src, err)
+        setStatus('error')
+      },
     )
 
     // Idle rotation, stopped the moment anyone touches it: a model that keeps
