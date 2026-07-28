@@ -78,10 +78,21 @@ function assemblyFor(tier) {
   const host = by('host')[0]
   if (host) push(host, 0, host.mechanical.heightMm / 2 - PI_BOARD_T, 0)
 
-  // 2. The carrier, on standoffs above it. Rendered from the real generated
-  //    GLB rather than as a box, so the one part of this that is a genuine
-  //    engineering artifact looks like one.
-  const hatY = (host?.mechanical.heightMm ?? 18) - PI_BOARD_T + STANDOFF
+  // 2. Any HAT that is a bought board rather than the generated carrier. The
+  //    GNSS receiver is one, and it was silently absent from every assembly:
+  //    its mount is 'hat', the hat slot was assumed to mean the carrier, and
+  //    nothing checked that each part in the tier appeared somewhere. The part
+  //    the entire clock discipline rests on was missing from the picture.
+  let stackY = (host?.mechanical.heightMm ?? 18) - PI_BOARD_T + STANDOFF
+  for (const p of by('hat')) {
+    push(p, 0, stackY + p.mechanical.heightMm / 2, 0)
+    stackY += p.mechanical.heightMm + STANDOFF
+  }
+
+  // 3. The carrier, on standoffs above whatever is already stacked. Rendered
+  //    from the real generated GLB rather than as a box, so the one part of
+  //    this that is a genuine engineering artifact looks like one.
+  const hatY = stackY
   bodies.push({
     id: `carrier-${tier.id}`,
     label: `${tier.label} carrier board`,
@@ -93,7 +104,7 @@ function assemblyFor(tier) {
     note: `Generated from the hardware registry. ${boardWidth(tier.id)} x 56 mm, mounting on the HAT hole pattern.`,
   })
 
-  // 3. Breakouts on the carrier's top face, wrapped inside its actual outline.
+  // 4. Breakouts on the carrier's top face, wrapped inside its actual outline.
   //
   // The first version marched the z coordinate outward without ever wrapping,
   // so on tier 3 four of eight breakouts floated past the edge of the board
@@ -120,7 +131,7 @@ function assemblyFor(tier) {
     rowDepth = Math.max(rowDepth, dpt)
   }
 
-  // 4. USB peripherals, clustered beside the host rather than strung out in a
+  // 5. USB peripherals, clustered beside the host rather than strung out in a
   //    line. Tier 3 carries six of them and a single row put the far one half a
   //    metre from the node it plugs into, which is not what the bench looks
   //    like and made the whole model read as scattered debris.
@@ -141,7 +152,7 @@ function assemblyFor(tier) {
     rowH = Math.max(rowH, p.mechanical.depthMm)
   }
 
-  // 5. Cameras on their ribbons, in front of the node and pointing up, which is
+  // 6. Cameras on their ribbons, in front of the node and pointing up, which is
   //    where they actually sit: a mast-mounted node looks at the sky.
   let kx = -60
   for (const p of by('csi')) {
@@ -149,7 +160,7 @@ function assemblyFor(tier) {
     kx -= p.mechanical.widthMm + 16
   }
 
-  // 5b. Sensors that mount at the enclosure wall rather than on the board,
+  // 7. Sensors that mount at the enclosure wall rather than on the board,
   //     because what they measure is outside it: ambient air, sky, sound.
   //     Drawing these on the carrier was not a layout bug so much as a claim
   //     about the build that was not true — a BME688 bolted above the Pi reads
@@ -168,7 +179,7 @@ function assemblyFor(tier) {
     wx += p.mechanical.widthMm + 10
   }
 
-  // 6. Everything that lives away from the node: the geophone in the ground,
+  // 8. Everything that lives away from the node: the geophone in the ground,
   //    the solar array on its own mount. Placed loosely and flagged, because
   //    their real position is a site decision rather than a assembly one.
   let ex = -260
@@ -177,7 +188,7 @@ function assemblyFor(tier) {
     ex -= p.mechanical.widthMm + 60
   }
 
-  // 7. The case, as an outline the rest sits inside.
+  // 9. The case, as an outline the rest sits inside.
   const shell = by('enclosure')[0]
   if (shell) {
     bodies.push({
@@ -190,6 +201,19 @@ function assemblyFor(tier) {
       sourced: shell.mechanical.dimensionsSourced === true,
       note: shell.mechanical.note,
     })
+  }
+
+  // Nothing in a tier may be silently absent. The GNSS receiver disappeared
+  // from all three assemblies for weeks because its mount landed in a slot the
+  // layout did not handle, and no check noticed. An omission that looks like
+  // "this tier does not include one" is worse than a crash.
+  const shown = new Set(bodies.map((b) => b.id))
+  const missing = parts.filter((p) => !shown.has(p.id))
+  if (missing.length > 0) {
+    throw new Error(
+      `${tier.id}: ${missing.length} part(s) in the tier are absent from the assembly: ` +
+        `${missing.map((p) => `${p.id} (mount=${p.mechanical.mount})`).join(', ')}`,
+    )
   }
 
   const sourced = bodies.filter((b) => b.sourced).length

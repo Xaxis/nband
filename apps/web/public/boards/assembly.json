@@ -28,6 +28,26 @@
           "interface": "host"
         },
         {
+          "id": "gnss-lc29h",
+          "label": "Quectel / Waveshare LC29H(DA) RTK HAT with PPS",
+          "band": "nav",
+          "hue": 0,
+          "mount": "hat",
+          "size": [
+            65,
+            13,
+            56
+          ],
+          "pos": [
+            0,
+            33.9,
+            0
+          ],
+          "sourced": true,
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm.",
+          "interface": "uart+gpio"
+        },
+        {
           "id": "carrier-t1",
           "label": "Tier 1 - Baseline carrier board",
           "mount": "hat",
@@ -39,7 +59,7 @@
           ],
           "pos": [
             0,
-            27.4,
+            51.4,
             0
           ],
           "sourced": true,
@@ -58,7 +78,7 @@
           ],
           "pos": [
             -37,
-            30.7,
+            54.699999999999996,
             -16
           ],
           "sourced": false,
@@ -167,8 +187,8 @@
         }
       ],
       "counts": {
-        "total": 8,
-        "sourced": 2,
+        "total": 9,
+        "sourced": 3,
         "approximate": 6,
         "onCarrier": 1,
         "onWall": 2,
@@ -201,6 +221,26 @@
           "interface": "host"
         },
         {
+          "id": "gnss-lc29h",
+          "label": "Quectel / Waveshare LC29H(DA) RTK HAT with PPS",
+          "band": "nav",
+          "hue": 0,
+          "mount": "hat",
+          "size": [
+            65,
+            13,
+            56
+          ],
+          "pos": [
+            0,
+            33.9,
+            0
+          ],
+          "sourced": true,
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm.",
+          "interface": "uart+gpio"
+        },
+        {
           "id": "carrier-t2",
           "label": "Tier 2 - Core carrier board",
           "mount": "hat",
@@ -212,7 +252,7 @@
           ],
           "pos": [
             0,
-            27.4,
+            51.4,
             0
           ],
           "sourced": true,
@@ -231,7 +271,7 @@
           ],
           "pos": [
             -57,
-            30.7,
+            54.699999999999996,
             -16
           ],
           "sourced": false,
@@ -251,7 +291,7 @@
           ],
           "pos": [
             -24,
-            31.2,
+            55.199999999999996,
             -12.5
           ],
           "sourced": false,
@@ -480,8 +520,8 @@
         }
       ],
       "counts": {
-        "total": 15,
-        "sourced": 3,
+        "total": 16,
+        "sourced": 4,
         "approximate": 12,
         "onCarrier": 2,
         "onWall": 4,
@@ -514,6 +554,26 @@
           "interface": "host"
         },
         {
+          "id": "gnss-lc29h",
+          "label": "Quectel / Waveshare LC29H(DA) RTK HAT with PPS",
+          "band": "nav",
+          "hue": 0,
+          "mount": "hat",
+          "size": [
+            65,
+            13,
+            56
+          ],
+          "pos": [
+            0,
+            33.9,
+            0
+          ],
+          "sourced": true,
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm.",
+          "interface": "uart+gpio"
+        },
+        {
           "id": "carrier-t3",
           "label": "Tier 3 - Extended carrier board",
           "mount": "hat",
@@ -525,7 +585,7 @@
           ],
           "pos": [
             0,
-            27.4,
+            51.4,
             0
           ],
           "sourced": true,
@@ -544,7 +604,7 @@
           ],
           "pos": [
             -54.5,
-            30.7,
+            54.699999999999996,
             -16
           ],
           "sourced": false,
@@ -564,7 +624,7 @@
           ],
           "pos": [
             -11.5,
-            34.2,
+            58.199999999999996,
             -7.5
           ],
           "sourced": false,
@@ -915,8 +975,8 @@
         }
       ],
       "counts": {
-        "total": 21,
-        "sourced": 3,
+        "total": 22,
+        "sourced": 4,
         "approximate": 18,
         "onCarrier": 2,
         "onWall": 4,
