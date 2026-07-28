@@ -357,6 +357,38 @@ if (!full) {
       }
     }
 
+    // How badly the reference plane is cut up, stated rather than implied.
+    //
+    // A four-layer mixed-signal board wants signal / ground / power / signal,
+    // with the ground layer continuous so return currents follow their outbound
+    // trace instead of taking a loop around whatever is in the way. tscircuit's
+    // autorouter treats every layer as a signal layer and cannot be told to
+    // reserve one, so the pour shares inner1 with traces and the plane is not
+    // continuous. That is the single biggest reason these are reference layouts
+    // and not designs, so the number is published rather than left implicit.
+    {
+      const pours = circuit.filter((e) => e.type === 'pcb_copper_pour')
+      const planeLayers = new Set(pours.map((p) => p.layer))
+      const cuts = circuit
+        .filter((e) => e.type === 'pcb_trace')
+        .flatMap((t) => (t.route ?? []).filter((r) => r.route_type === 'wire'))
+        .filter((r) => planeLayers.has(r.layer)).length
+      if (pours.length === 0) {
+        fail(`${b.tier}: no ground pour, so every return current is a trace`)
+      } else if (planeLayers.has('top') || planeLayers.has('bottom')) {
+        fail(
+          `${b.tier}: ground pour is on an outer layer (${[...planeLayers].join(', ')}); ` +
+            `the reference plane belongs on an inner layer`,
+        )
+      } else {
+        ok(
+          `${b.tier}: ground poured on ${[...planeLayers].join(', ')}, ` +
+            `${cuts} trace segment(s) crossing it — the plane is not continuous, which is ` +
+            `why this is a reference layout`,
+        )
+      }
+    }
+
     const errors = circuit.filter((e) => String(e.type).includes('error'))
     if (errors.length) {
       // Not a failure. These boards are a reference carrier that has never been

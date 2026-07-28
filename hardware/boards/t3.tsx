@@ -140,7 +140,7 @@ export default () => (
     <net name="V33" />
     <net name="GND" />
     <net name="V5" />
-    <copperpour layer="bottom" connectsTo="net.GND" />
+    <copperpour layer="inner1" connectsTo="net.GND" />
     <hole name="H1" diameter="2.75mm" pcbX={-29} pcbY={-24.5} />
     <hole name="H2" diameter="2.75mm" pcbX={29} pcbY={-24.5} />
     <hole name="H3" diameter="2.75mm" pcbX={-29} pcbY={24.5} />
@@ -178,14 +178,6 @@ export default () => (
     {/* bulk reservoir on V5 */}
     <capacitor name="C11" capacitance="10uF" footprint="0805"
       pcbX={-13.00} pcbY={-11.5} schX={-4} schY={-24} />
-    {/* SDA pull-up. Disable the on-breakout pull-ups; three in
-        parallel load the bus to about 1.6 k. */}
-    <resistor name="R1" resistance="4.7k" footprint="0402"
-      pcbX={14.00} pcbY={-11.5} schX={-2} schY={-7} />
-    {/* SCL pull-up. Disable the on-breakout pull-ups; three in
-        parallel load the bus to about 1.6 k. */}
-    <resistor name="R2" resistance="4.7k" footprint="0402"
-      pcbX={20.00} pcbY={-11.5} schX={-2} schY={-8.5} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J5 > .SDA" to="net.SDA" />
@@ -254,10 +246,6 @@ export default () => (
     <trace from=".C10 > .pin2" to="net.GND" />
     <trace from=".C11 > .pin1" to="net.V5" />
     <trace from=".C11 > .pin2" to="net.GND" />
-    <trace from=".R1 > .pin1" to="net.SDA" />
-    <trace from=".R1 > .pin2" to="net.V33" />
-    <trace from=".R2 > .pin1" to="net.SCL" />
-    <trace from=".R2 > .pin2" to="net.V33" />
     <trace from=".J4 > .CS" to=".J1 > .P24" />
     <trace from=".J6 > .TXD__RXD" to=".J1 > .P10" />
     <trace from=".J6 > .RXD__TXD" to=".J1 > .P8" />

@@ -65,12 +65,21 @@ export function CarrierBoards() {
         Only modules that touch the GPIO header appear here. USB peripherals and the CSI cameras
         connect elsewhere and are not carried by the board, so tier 3 shows eight modules against a
         bill of materials listing considerably more. Beyond the connectors, each board carries a
-        100&nbsp;nF decoupling capacitor per module, a bulk reservoir per supply rail, one pair of
-        4.7&nbsp;k I&sup2;C pull-ups (disable the ones on your breakouts &mdash; three in parallel
-        load the bus to about 1.6&nbsp;k), a poured ground plane, and the four HAT mounting holes.
-        Header pins are labelled by Raspberry Pi physical number rather than by the
-        connector&rsquo;s own numbering, which runs counter-clockwise and agrees with the Pi on
-        only two of its forty pins.
+        100&nbsp;nF decoupling capacitor per module, a bulk reservoir per supply rail, a ground
+        plane poured on an inner layer, and the four HAT mounting holes. Header pins are labelled
+        by Raspberry Pi physical number rather than by the connector&rsquo;s own numbering, which
+        runs counter-clockwise and agrees with the Pi on only two of its forty pins.
+      </p>
+
+      <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+        There are deliberately no I&sup2;C pull-ups on the carrier, and the reason is a correction.
+        An earlier revision fitted a 4.7&nbsp;k pair to stop the breakouts&rsquo; own pull-ups
+        overloading the bus. The Raspberry Pi already fits 1.8&nbsp;k to 3V3 on GPIO2 and GPIO3, on
+        the board and not removable, so that pair took a tier&nbsp;3 bus with four breakouts from
+        1,047&nbsp;&Omega; down to 856&nbsp;&Omega; &mdash; below the 967&nbsp;&Omega; I&sup2;C
+        needs to pull a valid low. The resistors added to fix the loading were what caused it.
+        Disable the pull-ups on each breakout instead; the Pi&rsquo;s 1.8&nbsp;k is correct on its
+        own.
       </p>
     </div>
   )

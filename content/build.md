@@ -187,6 +187,14 @@ Stand at the node position with a compass and a clinometer, or a phone app that 
 
 A malformed mask fails loudly at startup rather than silently defaulting to an unobstructed sky.
 
+### Disable the pull-ups on your I2C breakouts
+
+Nearly every breakout board ships with its own I2C pull-up resistors fitted, usually 10 k, and nearly every one of them has a jumper or a solder pad to remove them. Remove them on all but one.
+
+The Raspberry Pi fits 1.8 k pull-ups to 3V3 on GPIO2 and GPIO3 on the board itself, and those cannot be removed. That value is correct on its own. Four breakouts left as shipped bring the bus to about 1,047 ohms, which still works. What does not work is adding more: I2C needs at least (3.3 - 0.4) / 3 mA, about 967 ohms, to pull a valid low, and it is easy to go under that without noticing because the symptom is not a dead bus. It is a bus that works until a hot afternoon or a longer cable, and then produces read errors that look like a failing sensor.
+
+An earlier revision of the carrier board fitted an extra 4.7 k pair here for exactly the reason above and made it worse rather than better. It has been removed.
+
 ## Step 9: Enrol with the grid
 
 Enrolling a new node needs a secret, and there is no self-service way to get one yet. Ask for it: open an issue on the repository titled "node enrolment", or email the address in [SECURITY.md](https://github.com/Xaxis/nband/blob/main/SECURITY.md). Say roughly where the node will be and which tier you built. You will get a secret back.

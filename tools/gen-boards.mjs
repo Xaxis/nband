@@ -308,19 +308,19 @@ function boardFor(tier) {
     passiveTraces.push(`    <trace from=".${ref} > .pin2" to="net.GND" />`)
   }
 
-  // I2C pull-ups, only when the tier actually has an I2C module on the bus.
-  const i2cNets = [...busNet.values()].filter((n) => /^(SDA|SCL)$/.test(n))
-  i2cNets.forEach((net, k) => {
-    const ref = `R${k + 1}`
-    passives.push(
-      `    {/* ${net} pull-up. Disable the on-breakout pull-ups; three in\n` +
-        `        parallel load the bus to about 1.6 k. */}\n` +
-        `    <resistor name="${ref}" resistance="4.7k" footprint="0402"\n` +
-        `      pcbX={${(14 + k * 6).toFixed(2)}} pcbY={-11.5} schX={-2} schY={${-7 - k * 1.5}} />`,
-    )
-    passiveTraces.push(`    <trace from=".${ref} > .pin1" to="net.${net}" />`)
-    passiveTraces.push(`    <trace from=".${ref} > .pin2" to="net.V33" />`)
-  })
+  // No I2C pull-ups on the carrier, deliberately, and this is a correction.
+  //
+  // An earlier version fitted a 4.7 k pair here with a comment explaining that
+  // the breakouts' own pull-ups in parallel overload the bus. The reasoning was
+  // right and the conclusion was backwards: the Raspberry Pi already fits 1.8 k
+  // to 3V3 on GPIO2 and GPIO3, on the board, not removable. Adding 4.7 k on top
+  // of that and four breakouts at 10 k each gives 856 ohm, and I2C needs at
+  // least (3.3 - 0.4) / 3 mA = 967 ohm to pull a valid low. The pair added to
+  // fix over-loading was what pushed the bus out of specification.
+  //
+  // The Pi's 1.8 k alone is correct for this bus. What a builder has to do is
+  // disable the pull-ups on each breakout, which is a jumper or a solder blob
+  // the registry cannot express, so the build guide says it instead.
 
   // ---- Mechanical ------------------------------------------------------
   // The four HAT mounting holes, at the positions the mechanical standard
@@ -361,10 +361,21 @@ function boardFor(tier) {
     // A ground plane rather than ground traces. Every module, every decoupling
     // capacitor and several header pins land on GND, and routing each of those
     // as its own trace is both wrong for a mixed-signal board and the single
-    // largest source of routing congestion here. A pour on an inner layer is
-    // what any real four-layer carrier would use, and it gives the return
-    // current a path that is not a long thin loop next to a 24 GHz radar.
-    `\n    <copperpour layer="bottom" connectsTo="net.GND" />`
+    // largest source of routing congestion here.
+    //
+    // It is on inner1, which is where the reference plane belongs in a four
+    // layer stackup: signal, ground, power, signal. It used to be on bottom,
+    // which is a signal layer, so the "plane" was cut into islands by seventy
+    // trace segments crossing it.
+    //
+    // Honest limitation, and it is the main reason these boards are a reference
+    // rather than a design: the autorouter treats all four layers as signal
+    // layers and cannot be told to reserve one. inner1 still carries traces, so
+    // the plane is not continuous, and a person re-laying this out should
+    // reserve inner1 for ground and inner2 for power before fabricating. The
+    // fragmentation is measured and reported by tools/check-boards.mjs rather
+    // than left as something a reader has to notice.
+    `\n    <copperpour layer="inner1" connectsTo="net.GND" />`
   const traces = [
     netDecls,
     '',
