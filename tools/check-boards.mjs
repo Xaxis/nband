@@ -85,8 +85,24 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
           if (!src.includes(`> .${sig}" to="net.`)) {
             problems.push(`${b.tier}: ${p2.id} ${pin.signal} is not tied to a rail net`)
           }
-        } else if (!src.includes(`> .${sig}" to=".J1 > .P${pin.pin}"`)) {
-          problems.push(`${b.tier}: ${p2.id} ${pin.signal} does not reach header pin ${pin.pin}`)
+        } else {
+          // Two legitimate shapes. A signal used by one module is a direct
+          // trace to its header pin. A signal on a bus — I2C shared by four
+          // modules, SPI by two — goes to a named net, and the header pin is
+          // tied to that same net. Both terminate on the pin the registry
+          // names; only the first is a single line of source.
+          const direct = src.includes(`> .${sig}" to=".J1 > .P${pin.pin}"`)
+          const viaNet = new RegExp(
+            `> \\.${sig}" to="net\\.([A-Za-z0-9_]+)"`,
+          ).exec(src)
+          const netClosed =
+            viaNet && src.includes(`.J1 > .P${pin.pin}" to="net.${viaNet[1]}"`)
+          if (!direct && !netClosed) {
+            problems.push(
+              `${b.tier}: ${p2.id} ${pin.signal} does not reach header pin ${pin.pin}, ` +
+                `directly or through a net`,
+            )
+          }
         }
       }
     }
@@ -136,7 +152,7 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
 
 if (!full) {
   console.log('  skip  routing and design-rule pass (run `make boards-verify`)')
-} else if (!existsSync(join(root, 'hardware/node_modules/.bin/tsci'))) {
+} else if (!existsSync(join(root, 'hardware/node_modules/tscircuit/cli.mjs'))) {
   console.log('  skip  routing pass — the board toolchain is not installed (`make boards-deps`)')
 } else {
   // Inside the tree: the CLI resolves output paths relative to the project and
@@ -155,8 +171,18 @@ if (!full) {
       // ENOENT otherwise, so it runs from the board directory with relative
       // paths on both sides.
       execFileSync(
-        join(root, 'hardware/node_modules/.bin/tsci'),
-        ['export', `${b.tier}.tsx`, '-f', 'circuit-json', '-o', `.build/${b.tier}.json`],
+        'bun',
+        [
+          '--preload',
+          join(root, 'hardware/iterator-helpers-polyfill.js'),
+          join(root, 'hardware/node_modules/tscircuit/cli.mjs'),
+          'export',
+          `${b.tier}.tsx`,
+          '-f',
+          'circuit-json',
+          '-o',
+          `.build/${b.tier}.json`,
+        ],
         { cwd: join(root, 'hardware/boards'), stdio: 'pipe' },
       )
     } catch (err) {
@@ -169,22 +195,25 @@ if (!full) {
     const routed = count('pcb_trace')
     const netlist = count('source_trace')
 
-    // The whole reason this file exists. A zero here means the autorouter threw
-    // and the export reported success anyway, which is the failure this check
-    // exists to catch.
+    // Trace count is not the completeness metric, and using it as one was
+    // misleading. Several source traces terminating on the same net become one
+    // routed path, so a fully routed board reports fewer pcb_traces than
+    // source_traces and looks like 89 percent. What actually matters is whether
+    // the router failed to place anything.
+    const unroutable = circuit.filter(
+      (e) => /could not find a route/i.test(String(e.message ?? '')),
+    ).length
+
     if (routed === 0 && netlist > 0) {
+      // The original reason this file exists: the autorouter throwing while the
+      // export prints success and exits zero.
       fail(`${b.tier}: export succeeded but laid down NO copper (${netlist} nets unrouted)`)
+    } else if (unroutable > 0) {
+      fail(`${b.tier}: ${unroutable} connection(s) could not be routed`)
     } else {
-      // Partial routing is reported, not failed. Component placement on these
-      // boards is generated on a grid, and no autorouter finishes a dense
-      // carrier from machine placement — that is a layout job for a person.
-      // The netlist is the claim this repository makes and the checks above are
-      // what enforce it. Saying "3 of 3 boards route perfectly" when they do
-      // not is exactly the kind of overstatement the project exists to avoid.
-      const pct = Math.round((routed / netlist) * 100)
       ok(
-        `${b.tier}: netlist exports, ${routed}/${netlist} nets auto-routed (${pct}%), ` +
-          `${count('pcb_plated_hole')} plated holes`,
+        `${b.tier}: fully routed — ${routed} traces, ${count('pcb_component')} components, ` +
+          `${count('pcb_plated_hole')} plated holes, ${count('pcb_hole')} mounting holes`,
       )
     }
 

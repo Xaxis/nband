@@ -25,7 +25,8 @@ const BOARDS = join(root, 'hardware/boards')
 const BUILD = join(BOARDS, '.build')
 const PUBLIC = join(root, 'apps/web/public/boards')
 
-const cli = join(root, 'hardware/node_modules/.bin/tsci')
+const cli = join(root, 'hardware/node_modules/tscircuit/cli.mjs')
+const polyfill = join(root, 'hardware/iterator-helpers-polyfill.js')
 if (!existsSync(cli)) {
   console.error('The tscircuit CLI is not installed. Run `make boards-deps`.')
   process.exit(1)
@@ -38,8 +39,11 @@ const manifest = JSON.parse(readFileSync(join(BOARDS, 'manifest.json'), 'utf8'))
 
 // The CLI resolves output paths relative to the input file's directory, so
 // everything runs from the boards directory with relative paths on both sides.
+// Through bun with the Iterator Helpers polyfill preloaded. Without it the
+// default autorouter throws and the export still reports success, producing a
+// board with no copper. See hardware/iterator-helpers-polyfill.js.
 const exportBoard = (tier, format, out) =>
-  execFileSync(cli, ['export', `${tier}.tsx`, '-f', format, '-o', out], {
+  execFileSync('bun', ['--preload', polyfill, cli, 'export', `${tier}.tsx`, '-f', format, '-o', out], {
     cwd: BOARDS,
     stdio: 'pipe',
   })
@@ -68,18 +72,30 @@ for (const b of manifest.boards) {
   let routed = 0
   let nets = 0
   let unrouted = 0
+  let drc = 0
+  let components = 0
   try {
     exportBoard(b.tier, 'circuit-json', `.build/${b.tier}-circuit.json`)
     const circuit = JSON.parse(readFileSync(join(BOARDS, `.build/${b.tier}-circuit.json`), 'utf8'))
     routed = circuit.filter((e) => e.type === 'pcb_trace').length
     nets = circuit.filter((e) => e.type === 'source_trace').length
-    unrouted = circuit.filter((e) => String(e.type).includes('error')).length
+    // Separated, because they mean different things to a reader. A connection
+    // the router gave up on is a hole in the design; a clearance violation is a
+    // layout defect on a board that is otherwise complete.
+    unrouted = circuit.filter((e) => /could not find a route/i.test(String(e.message ?? ''))).length
+    drc =
+      circuit.filter((e) => String(e.type).includes('error')).length - unrouted
+    components = circuit.filter((e) => e.type === 'pcb_component').length
   } catch {
     /* reported above */
   }
 
-  built.push({ ...b, artifacts, routing: { routed, nets, unresolved: unrouted } })
-  console.log(`  ${b.tier}: schematic, pcb, glb  (${routed}/${nets} nets auto-routed)`)
+  built.push({ ...b, artifacts, components, routing: { routed, nets, unrouted, drc } })
+  console.log(
+    `  ${b.tier}: schematic, pcb, glb — ${components} components, ` +
+      `${unrouted === 0 ? 'fully routed' : `${unrouted} unrouted`}` +
+      `${drc ? `, ${drc} design-rule violation(s)` : ''}`,
+  )
 }
 
 writeFileSync(
@@ -90,10 +106,10 @@ writeFileSync(
       // Stated on the artifact itself so it survives being copied out of context.
       status: 'reference-only',
       caveat:
-        'Generated from the hardware registry to check the pin assignments. Component ' +
-        'placement is machine-generated and the autorouter does not finish; the schematic ' +
-        'is authoritative, the PCB and 3D views are a starting point for layout. No board ' +
-        'here has been fabricated.',
+        'Generated from the hardware registry. The schematic is derived from the netlist ' +
+        'and is as correct as the registry is. Component placement is machine-generated, ' +
+        'so the layout is a reference rather than a finished board, and no board here has ' +
+        'been fabricated or electrically verified.',
       boards: built,
     },
     null,

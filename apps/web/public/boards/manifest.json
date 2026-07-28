@@ -1,54 +1,60 @@
 {
   "generatedFrom": "schema/hardware.json",
   "status": "reference-only",
-  "caveat": "Generated from the hardware registry to check the pin assignments. Component placement is machine-generated and the autorouter does not finish; the schematic is authoritative, the PCB and 3D views are a starting point for layout. No board here has been fabricated.",
+  "caveat": "Generated from the hardware registry. The schematic is derived from the netlist and is as correct as the registry is. Component placement is machine-generated, so the layout is a reference rather than a finished board, and no board here has been fabricated or electrically verified.",
   "boards": [
     {
       "tier": "t1",
       "modules": 4,
       "signals": 17,
-      "digest": "66870029e3ea9850",
+      "digest": "e14df4884f4badc6",
       "artifacts": {
         "schematic-svg": "/boards/t1-schematic.svg",
         "pcb-svg": "/boards/t1-pcb.svg",
         "glb": "/boards/t1-board.glb"
       },
+      "components": 12,
       "routing": {
-        "routed": 16,
-        "nets": 21,
-        "unresolved": 2
+        "routed": 33,
+        "nets": 37,
+        "unrouted": 0,
+        "drc": 0
       }
     },
     {
       "tier": "t2",
       "modules": 7,
       "signals": 32,
-      "digest": "6bce7f63c105f797",
+      "digest": "13108a9359769530",
       "artifacts": {
         "schematic-svg": "/boards/t2-schematic.svg",
         "pcb-svg": "/boards/t2-pcb.svg",
         "glb": "/boards/t2-board.glb"
       },
+      "components": 19,
       "routing": {
-        "routed": 34,
-        "nets": 40,
-        "unresolved": 5
+        "routed": 59,
+        "nets": 64,
+        "unrouted": 0,
+        "drc": 0
       }
     },
     {
       "tier": "t3",
       "modules": 8,
       "signals": 37,
-      "digest": "d9b61db2f77025b6",
+      "digest": "6f7dfce0be8af07f",
       "artifacts": {
         "schematic-svg": "/boards/t3-schematic.svg",
         "pcb-svg": "/boards/t3-pcb.svg",
         "glb": "/boards/t3-board.glb"
       },
+      "components": 21,
       "routing": {
-        "routed": 38,
-        "nets": 46,
-        "unresolved": 6
+        "routed": 67,
+        "nets": 75,
+        "unrouted": 0,
+        "drc": 1
       }
     }
   ]

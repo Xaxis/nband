@@ -26,11 +26,12 @@ export default () => (
     /* Four layers. Two could not route tier 3's 37 nets, and a carrier with
        this many buses crossing wants an inner ground plane anyway. */
     layers={4}
-    /* The default capacity-mesh autorouter throws on this netlist in the
-       currently pinned CLI, and does so while the export still reports
-       success. Pinned to the sequential router, and tools/check-boards.mjs
-       fails the build if the trace count ever comes back short. */
-    autorouter="sequential-trace"
+    /* The default autorouter, capacity-mesh. It used to throw on these
+       netlists — and print "Exported!" while doing it — because the CLI runs
+       under Bun and Bun 1.1.18 lacks the ES2025 Iterator Helpers its solver
+       calls. hardware/iterator-helpers-polyfill.js supplies them via
+       bun --preload. Falling back to the sequential router instead had cost
+       roughly a quarter of the nets. */
   >
     {/* Raspberry Pi 5 40-pin GPIO header. Pin numbering is physical, matching
         the "pin" field in schema/hardware.json. */}
@@ -121,9 +122,74 @@ export default () => (
       pcbX={1.91} pcbY={3} schX={7} schY={-4}
     />
 
+    <net name="SDA" />
+    <net name="SCL" />
+    <net name="MOSI" />
+    <net name="MISO" />
+    <net name="SCLK" />
     <net name="V33" />
     <net name="GND" />
     <net name="V5" />
+    <copperpour layer="bottom" connectsTo="net.GND" />
+    <hole name="H1" diameter="2.75mm" pcbX={-29} pcbY={-24.5} />
+    <hole name="H2" diameter="2.75mm" pcbX={29} pcbY={-24.5} />
+    <hole name="H3" diameter="2.75mm" pcbX={-29} pcbY={24.5} />
+    <hole name="H4" diameter="2.75mm" pcbX={29} pcbY={24.5} />
+    {/* decoupling for J2 (env-bme688) */}
+    <capacitor name="C1" capacitance="100nF" footprint="0402"
+      pcbX={-19.32} pcbY={18.40} schX={0} schY={2.4} />
+    {/* decoupling for J3 (gnss-lc29h) */}
+    <capacitor name="C2" capacitance="100nF" footprint="0402"
+      pcbX={-5.89} pcbY={18.40} schX={7} schY={2.4} />
+    {/* decoupling for J4 (seis-sm24) */}
+    <capacitor name="C3" capacitance="100nF" footprint="0402"
+      pcbX={10.08} pcbY={18.40} schX={14} schY={2.4} />
+    {/* decoupling for J5 (imu-bno085) */}
+    <capacitor name="C4" capacitance="100nF" footprint="0402"
+      pcbX={-19.32} pcbY={8.90} schX={0} schY={-1.6} />
+    {/* decoupling for J6 (sem-ir-beacon) */}
+    <capacitor name="C5" capacitance="100nF" footprint="0402"
+      pcbX={-5.35} pcbY={8.90} schX={7} schY={-1.6} />
+    {/* decoupling for J7 (mic-ics43434) */}
+    <capacitor name="C6" capacitance="100nF" footprint="0402"
+      pcbX={10.74} pcbY={8.90} schX={14} schY={-1.6} />
+    {/* decoupling for J8 (uv-as7331) */}
+    <capacitor name="C7" capacitance="100nF" footprint="0402"
+      pcbX={-19.32} pcbY={-0.60} schX={0} schY={-5.6} />
+    {/* decoupling for J9 (mag-rm3100) */}
+    <capacitor name="C8" capacitance="100nF" footprint="0402"
+      pcbX={2.91} pcbY={-0.60} schX={7} schY={-5.6} />
+    {/* bulk reservoir on V33 */}
+    <capacitor name="C9" capacitance="10uF" footprint="0805"
+      pcbX={-19.00} pcbY={-11.5} schX={-4} schY={-21} />
+    {/* bulk reservoir on V5 */}
+    <capacitor name="C10" capacitance="10uF" footprint="0805"
+      pcbX={-13.00} pcbY={-11.5} schX={-4} schY={-22.5} />
+    {/* SDA pull-up. Disable the on-breakout pull-ups; three in
+        parallel load the bus to about 1.6 k. */}
+    <resistor name="R1" resistance="4.7k" footprint="0402"
+      pcbX={14.00} pcbY={-11.5} schX={-2} schY={-7} />
+    {/* SCL pull-up. Disable the on-breakout pull-ups; three in
+        parallel load the bus to about 1.6 k. */}
+    <resistor name="R2" resistance="4.7k" footprint="0402"
+      pcbX={20.00} pcbY={-11.5} schX={-2} schY={-8.5} />
+    <trace from=".J2 > .SDA" to="net.SDA" />
+    <trace from=".J5 > .SDA" to="net.SDA" />
+    <trace from=".J8 > .SDA" to="net.SDA" />
+    <trace from=".J1 > .P3" to="net.SDA" />
+    <trace from=".J2 > .SCL" to="net.SCL" />
+    <trace from=".J5 > .SCL" to="net.SCL" />
+    <trace from=".J8 > .SCL" to="net.SCL" />
+    <trace from=".J1 > .P5" to="net.SCL" />
+    <trace from=".J4 > .MOSI" to="net.MOSI" />
+    <trace from=".J9 > .MOSI" to="net.MOSI" />
+    <trace from=".J1 > .P19" to="net.MOSI" />
+    <trace from=".J4 > .MISO" to="net.MISO" />
+    <trace from=".J9 > .MISO" to="net.MISO" />
+    <trace from=".J1 > .P21" to="net.MISO" />
+    <trace from=".J4 > .SCLK" to="net.SCLK" />
+    <trace from=".J9 > .SCLK" to="net.SCLK" />
+    <trace from=".J1 > .P23" to="net.SCLK" />
     <trace from=".J2 > .3V3" to="net.V33" />
     <trace from=".J3 > .3V3" to="net.V33" />
     <trace from=".J4 > .3V3" to="net.V33" />
@@ -149,26 +215,38 @@ export default () => (
     <trace from=".J1 > .P25" to="net.GND" />
     <trace from=".J6 > .5V" to="net.V5" />
     <trace from=".J1 > .P2" to="net.V5" />
-    <trace from=".J2 > .SDA" to=".J1 > .P3" />
-    <trace from=".J2 > .SCL" to=".J1 > .P5" />
+    <trace from=".C1 > .pin1" to="net.V33" />
+    <trace from=".C1 > .pin2" to="net.GND" />
+    <trace from=".C2 > .pin1" to="net.V33" />
+    <trace from=".C2 > .pin2" to="net.GND" />
+    <trace from=".C3 > .pin1" to="net.V33" />
+    <trace from=".C3 > .pin2" to="net.GND" />
+    <trace from=".C4 > .pin1" to="net.V33" />
+    <trace from=".C4 > .pin2" to="net.GND" />
+    <trace from=".C5 > .pin1" to="net.V5" />
+    <trace from=".C5 > .pin2" to="net.GND" />
+    <trace from=".C6 > .pin1" to="net.V33" />
+    <trace from=".C6 > .pin2" to="net.GND" />
+    <trace from=".C7 > .pin1" to="net.V33" />
+    <trace from=".C7 > .pin2" to="net.GND" />
+    <trace from=".C8 > .pin1" to="net.V33" />
+    <trace from=".C8 > .pin2" to="net.GND" />
+    <trace from=".C9 > .pin1" to="net.V33" />
+    <trace from=".C9 > .pin2" to="net.GND" />
+    <trace from=".C10 > .pin1" to="net.V5" />
+    <trace from=".C10 > .pin2" to="net.GND" />
+    <trace from=".R1 > .pin1" to="net.SDA" />
+    <trace from=".R1 > .pin2" to="net.V33" />
+    <trace from=".R2 > .pin1" to="net.SCL" />
+    <trace from=".R2 > .pin2" to="net.V33" />
     <trace from=".J3 > .TXD__RXD" to=".J1 > .P10" />
     <trace from=".J3 > .RXD__TXD" to=".J1 > .P8" />
     <trace from=".J3 > .PPS" to=".J1 > .P7" />
-    <trace from=".J4 > .MOSI" to=".J1 > .P19" />
-    <trace from=".J4 > .MISO" to=".J1 > .P21" />
-    <trace from=".J4 > .SCLK" to=".J1 > .P23" />
     <trace from=".J4 > .CS" to=".J1 > .P26" />
-    <trace from=".J5 > .SDA" to=".J1 > .P3" />
-    <trace from=".J5 > .SCL" to=".J1 > .P5" />
     <trace from=".J6 > .GATE" to=".J1 > .P16" />
     <trace from=".J7 > .BCLK" to=".J1 > .P12" />
     <trace from=".J7 > .LRCL" to=".J1 > .P35" />
     <trace from=".J7 > .DOUT" to=".J1 > .P38" />
-    <trace from=".J8 > .SDA" to=".J1 > .P3" />
-    <trace from=".J8 > .SCL" to=".J1 > .P5" />
-    <trace from=".J9 > .MOSI" to=".J1 > .P19" />
-    <trace from=".J9 > .MISO" to=".J1 > .P21" />
-    <trace from=".J9 > .SCLK" to=".J1 > .P23" />
     <trace from=".J9 > .CS" to=".J1 > .P24" />
   </board>
 )

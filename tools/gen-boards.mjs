@@ -167,6 +167,161 @@ function boardFor(tier) {
     m.ref = `J${i + 2}`
   })
 
+  // ---- Nets -----------------------------------------------------------
+  //
+  // Three kinds of connection, and getting the distinction right is most of
+  // what makes this board routable.
+  //
+  // Rails (3V3, 5V, GND) are one node each. Routing every module's ground
+  // separately to its own header pin is what the first draft did, and the
+  // router could not place them.
+  //
+  // Buses are the same argument one level down. I2C is a bus: on tier 3 four
+  // modules share SDA on header pin 3, and routing four separate traces into
+  // one pad is congestion the sequential router cannot resolve. SPI is a bus
+  // too. Any header pin claimed by more than one module is therefore a net,
+  // which is both electrically correct and what unblocked the last of the
+  // unrouted signals.
+  //
+  // Everything else is genuinely point to point.
+  const railOf = (sig) =>
+    sig.toUpperCase() === 'GND' ? 'GND' : `V${sig.replace(/[^0-9]/g, '') || 'CC'}`
+
+  const usersOfPin = new Map()
+  for (const m of placed) {
+    for (const s of m.pins) {
+      if (isRail(s.signal)) continue
+      if (!usersOfPin.has(s.pin)) usersOfPin.set(s.pin, [])
+      usersOfPin.get(s.pin).push(m)
+    }
+  }
+  // A shared pin becomes a named net. The signal name is unique per pin in the
+  // registry, but the pin number is appended when it is not, because two nets
+  // with one name silently merge into one circuit.
+  const busNet = new Map() // header pin -> net name
+  const usedNames = new Set(['GND'])
+  for (const [pin, users] of usersOfPin) {
+    if (users.length < 2) continue
+    const sig = ident(users[0].pins.find((x) => x.pin === pin).signal)
+    const name = usedNames.has(sig) ? `${sig}_P${pin}` : sig
+    usedNames.add(name)
+    busNet.set(pin, name)
+  }
+
+  const rails = new Map()
+  const nets = new Map() // net name -> trace lines
+  const signalTraces = []
+
+  const addNet = (name, line) => {
+    if (!nets.has(name)) nets.set(name, [])
+    nets.get(name).push(line)
+  }
+
+  for (const m of placed) {
+    for (const s of m.pins) {
+      const sig = ident(s.signal)
+      if (isRail(s.signal)) {
+        const net = railOf(s.signal)
+        if (!rails.has(net)) rails.set(net, [])
+        rails.get(net).push({ ref: m.ref, sig, headerPin: s.pin })
+      } else if (busNet.has(s.pin)) {
+        addNet(busNet.get(s.pin), `    <trace from=".${m.ref} > .${sig}" to="net.${busNet.get(s.pin)}" />`)
+      } else {
+        signalTraces.push(`    <trace from=".${m.ref} > .${sig}" to=".J1 > .P${s.pin}" />`)
+      }
+    }
+  }
+  for (const [pin, name] of busNet) {
+    addNet(name, `    <trace from=".J1 > .P${pin}" to="net.${name}" />`)
+  }
+  for (const [net, members] of rails) {
+    for (const m of members) addNet(net, `    <trace from=".${m.ref} > .${m.sig}" to="net.${net}" />`)
+    for (const pin of new Set(members.map((m) => m.headerPin))) {
+      addNet(net, `    <trace from=".J1 > .P${pin}" to="net.${net}" />`)
+    }
+  }
+
+  // ---- Passives --------------------------------------------------------
+  //
+  // A connector fan-out is not a circuit board. Three things every real
+  // carrier has, and this one did not until it was pointed out:
+  //
+  // Decoupling. Each module gets 100 nF across its own supply and ground, as
+  // close to its connector as the layout allows. Without it a board is a set
+  // of unbypassed rails feeding sensors down 50 mm of trace, and the symptom
+  // is not a dead node but an intermittently noisy one, which is the worst
+  // possible failure for an instrument whose whole job is deciding whether a
+  // reading was real.
+  //
+  // Bulk. One 10 uF per rail near the header, for the low-frequency half the
+  // ceramics do not cover.
+  //
+  // Pull-ups. I2C is open-drain and does not work at all without them. The
+  // breakout boards each carry their own, which is exactly the problem: three
+  // modules in parallel put roughly 1.6 k on the bus and the Pi cannot pull
+  // that low reliably. The registry cannot express "cut the jumper on each
+  // breakout", so this fits one pair on the carrier and says so.
+  const passives = []
+  const passiveTraces = []
+  let cIdx = 1
+
+  for (const m of placed) {
+    const supply = m.pins.find((s) => isRail(s.signal) && s.signal.toUpperCase() !== 'GND')
+    if (!supply) continue
+    const ref = `C${cIdx++}`
+    passives.push(
+      `    {/* decoupling for ${m.ref} (${m.part.id}) */}\n` +
+        `    <capacitor name="${ref}" capacitance="100nF" footprint="0402"\n` +
+        `      pcbX={${(m.pcbX + 1).toFixed(2)}} pcbY={${(m.pcbY - 3.6).toFixed(2)}} schX={${m.schX}} schY={${(m.schY - 1.6).toFixed(1)}} />`,
+    )
+    passiveTraces.push(`    <trace from=".${ref} > .pin1" to="net.${railOf(supply.signal)}" />`)
+    passiveTraces.push(`    <trace from=".${ref} > .pin2" to="net.GND" />`)
+  }
+
+  let bulkIdx = 0
+  for (const rail of rails.keys()) {
+    if (rail === 'GND') continue
+    const ref = `C${cIdx++}`
+    bulkIdx++
+    passives.push(
+      `    {/* bulk reservoir on ${rail} */}\n` +
+        `    <capacitor name="${ref}" capacitance="10uF" footprint="0805"\n` +
+        `      pcbX={${(-25 + bulkIdx * 6).toFixed(2)}} pcbY={-11.5} schX={-4} schY={${-6 - cIdx * 1.5}} />`,
+    )
+    passiveTraces.push(`    <trace from=".${ref} > .pin1" to="net.${rail}" />`)
+    passiveTraces.push(`    <trace from=".${ref} > .pin2" to="net.GND" />`)
+  }
+
+  // I2C pull-ups, only when the tier actually has an I2C module on the bus.
+  const i2cNets = [...busNet.values()].filter((n) => /^(SDA|SCL)$/.test(n))
+  i2cNets.forEach((net, k) => {
+    const ref = `R${k + 1}`
+    passives.push(
+      `    {/* ${net} pull-up. Disable the on-breakout pull-ups; three in\n` +
+        `        parallel load the bus to about 1.6 k. */}\n` +
+        `    <resistor name="${ref}" resistance="4.7k" footprint="0402"\n` +
+        `      pcbX={${(14 + k * 6).toFixed(2)}} pcbY={-11.5} schX={-2} schY={${-7 - k * 1.5}} />`,
+    )
+    passiveTraces.push(`    <trace from=".${ref} > .pin1" to="net.${net}" />`)
+    passiveTraces.push(`    <trace from=".${ref} > .pin2" to="net.V33" />`)
+  })
+
+  // ---- Mechanical ------------------------------------------------------
+  // The four HAT mounting holes, at the positions the mechanical standard
+  // fixes. Without them the board is a rectangle that cannot be bolted to
+  // anything, which on a mast is not a detail.
+  const holes = [
+    [-29, -24.5],
+    [29, -24.5],
+    [-29, 24.5],
+    [29, 24.5],
+  ]
+    .map(
+      ([x, y], k) =>
+        `    <hole name="H${k + 1}" diameter="2.75mm" pcbX={${x}} pcbY={${y}} />`,
+    )
+    .join('\n')
+
   const decls = placed
     .map((m) => {
       const labels = Object.fromEntries(m.pins.map((s, k) => [`pin${k + 1}`, ident(s.signal)]))
@@ -184,47 +339,27 @@ function boardFor(tier) {
     })
     .join('\n')
 
-  // Power and ground go to nets, not to point-to-point traces.
-  //
-  // Routing every module's GND individually to its own header pin is what a
-  // first draft of this generator did, and the router could not place them:
-  // tier 3 came back with 9 of 37 nets unrouted, almost all of them ground.
-  // That was a real design error rather than a router limitation. Ground is one
-  // node of the circuit, so it is one net, and the same is true of each supply
-  // rail. Declaring them properly collapses most of the routing pressure and is
-  // also what any real carrier board would do.
-  const rails = new Map() // net name -> [ "ref.SIGNAL", ... ]
-  const signalTraces = []
-
-  for (const m of placed) {
-    for (const s of m.pins) {
-      const sig = ident(s.signal)
-      if (isRail(s.signal)) {
-        const net = s.signal.toUpperCase() === 'GND' ? 'GND' : `V${s.signal.replace(/[^0-9]/g, '')}`
-        if (!rails.has(net)) rails.set(net, [])
-        rails.get(net).push({ ref: m.ref, sig, headerPin: s.pin })
-      } else {
-        // Several modules legitimately land on the same header pin: I2C is a
-        // bus and so is SPI, so pins 3 and 5 carry every I2C device here. That
-        // is a shared net, not a conflict, and the pin-exclusivity check in
-        // check-drift.mjs already distinguishes the two cases.
-        signalTraces.push(`    <trace from=".${m.ref} > .${sig}" to=".J1 > .P${s.pin}" />`)
-      }
-    }
-  }
-
-  const netDecls = [...rails.keys()].map((n) => `    <net name="${n}" />`).join('\n')
-  const railTraces = [...rails.entries()]
-    .flatMap(([net, members]) => [
-      ...members.map((m) => `    <trace from=".${m.ref} > .${m.sig}" to="net.${net}" />`),
-      // Tie the net to every header pin the registry assigns to that rail.
-      ...[...new Set(members.map((m) => m.headerPin))].map(
-        (pin) => `    <trace from=".J1 > .P${pin}" to="net.${net}" />`,
-      ),
-    ])
-    .join('\n')
-
-  const traces = [netDecls, '', railTraces, '', signalTraces.join('\n')]
+  const allNets = [...new Set([...nets.keys()])]
+  const netDecls =
+    allNets.map((n) => `    <net name="${n}" />`).join('\n') +
+    // A ground plane rather than ground traces. Every module, every decoupling
+    // capacitor and several header pins land on GND, and routing each of those
+    // as its own trace is both wrong for a mixed-signal board and the single
+    // largest source of routing congestion here. A pour on an inner layer is
+    // what any real four-layer carrier would use, and it gives the return
+    // current a path that is not a long thin loop next to a 24 GHz radar.
+    `\n    <copperpour layer="bottom" connectsTo="net.GND" />`
+  const traces = [
+    netDecls,
+    '',
+    holes,
+    '',
+    passives.join('\n'),
+    '',
+    [...nets.values()].flat().join('\n'),
+    passiveTraces.join('\n'),
+    signalTraces.join('\n'),
+  ]
     .filter((x) => x !== '')
     .join('\n')
 
@@ -255,11 +390,12 @@ export default () => (
     /* Four layers. Two could not route tier 3's 37 nets, and a carrier with
        this many buses crossing wants an inner ground plane anyway. */
     layers={4}
-    /* The default capacity-mesh autorouter throws on this netlist in the
-       currently pinned CLI, and does so while the export still reports
-       success. Pinned to the sequential router, and tools/check-boards.mjs
-       fails the build if the trace count ever comes back short. */
-    autorouter="sequential-trace"
+    /* The default autorouter, capacity-mesh. It used to throw on these
+       netlists — and print "Exported!" while doing it — because the CLI runs
+       under Bun and Bun 1.1.18 lacks the ES2025 Iterator Helpers its solver
+       calls. hardware/iterator-helpers-polyfill.js supplies them via
+       bun --preload. Falling back to the sequential router instead had cost
+       roughly a quarter of the nets. */
   >
     {/* Raspberry Pi 5 40-pin GPIO header. Pin numbering is physical, matching
         the "pin" field in schema/hardware.json. */}

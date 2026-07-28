@@ -8,6 +8,7 @@ import {
 } from '../../../components/HardwareVisuals'
 import { Button, Container, Note, Section } from '../../../components/ui'
 import { CarrierBoards } from '../../../components/CarrierBoard'
+import { DocTabs } from '../../../components/DocTabs'
 import {
   PARTS,
   PRICES_AS_OF,
@@ -76,6 +77,47 @@ function PartRow({ part }: { part: Part }) {
   )
 }
 
+function TierParts({ tier }: { tier: Tier }) {
+  const parts = partsForTier(tier)
+  const meta = TIER[tier]
+  const total = tierCost(tier)
+  return (
+    <Section
+      id={`tier-${tier}`}
+      className={`!pt-10 ${tier === 't2' ? 'border-y border-[var(--line)] bg-[var(--surface-0)]' : ''}`}
+      eyebrow={`${meta.label} · ${parts.length} parts`}
+      title={`$${total.toFixed(0)} — ${meta.summary.split('.')[0]}`}
+      lede={meta.summary}
+    >
+      <div className="card scroll-x mt-7">
+        <table className="w-full min-w-[720px] border-collapse">
+          <thead>
+            <tr className="bg-[var(--surface-3)] text-left">
+              <th className="eyebrow px-3 py-2.5 font-normal">Part</th>
+              <th className="eyebrow px-3 py-2.5 font-normal">Band</th>
+              <th className="eyebrow px-3 py-2.5 font-normal">Bus</th>
+              <th className="eyebrow px-3 py-2.5 text-right font-normal">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {parts.map((p) => (
+              <PartRow key={p.id} part={p} />
+            ))}
+            <tr className="border-t-2 border-[var(--line-strong)] bg-[var(--surface-3)]">
+              <td className="px-3 py-2.5 text-[13px] font-semibold text-[var(--ink)]" colSpan={3}>
+                Total, excluding tools, shipping, and tax
+              </td>
+              <td className="num px-3 py-2.5 text-right text-[14px] font-semibold text-[var(--ink)]">
+                ${total.toFixed(2)}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  )
+}
+
 export default function HardwarePage() {
   const uncategorised = PARTS.filter((p) => !p.tiers || p.tiers.length === 0)
 
@@ -98,7 +140,7 @@ export default function HardwarePage() {
             {TIER_ORDER.map((t) => (
               <a
                 key={t}
-                href={`#${t}`}
+                href={`#tiers`}
                 className="card flex items-baseline justify-between p-4 transition-colors hover:border-[var(--line-strong)]"
               >
                 <span className="text-[14px] font-medium text-[var(--ink)]">{TIER[t].label}</span>
@@ -111,125 +153,104 @@ export default function HardwarePage() {
         </Container>
       </section>
 
-      <Section>
-        <Note kind="warning" title="Component prices are moving fast in 2026">
-          <p>{PRICE_NOTE}</p>
-        </Note>
-      </Section>
-
-      <Section
-        className="border-y border-[var(--line)] bg-[var(--surface-0)]"
-        eyebrow="Architecture"
-        title="What plugs into what"
-        lede="The tier 2 reference node. Every diagram on this page is generated from the same registry that produces the bill of materials, so swapping a part moves the wiring with it instead of quietly invalidating a hand-drawn picture."
-      >
-        <div className="mt-8">
-          <NodeBlockDiagram tier="t2" />
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Wiring"
-        title="Where every wire goes"
-        lede="Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal and is the one connection that must be exactly right."
-      >
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start">
-          <PinoutDiagram tier="t2" />
-          <div>
-            <h3 className="eyebrow mb-3">Per sensor</h3>
-            <WiringTable tier="t2" />
-          </div>
-        </div>
-      </Section>
-
-      <Section
-        className="border-y border-[var(--line)] bg-[var(--surface-0)]"
-        eyebrow="Power"
-        title="What it draws, and what that means off-grid"
-        lede="Summed from the parts actually in the tier rather than rounded to a comfortable number. This is the figure that strands remote builds."
-      >
-        <div className="mt-8">
-          <PowerBudget tier="t2" />
-        </div>
-      </Section>
-
-      {TIER_ORDER.map((t) => {
-        const parts = partsForTier(t)
-        const meta = TIER[t]
-        const total = tierCost(t)
-        return (
-          <Section
-            key={t}
-            id={t}
-            className={t === 't2' ? 'border-y border-[var(--line)] bg-[var(--surface-0)]' : ''}
-            eyebrow={`${meta.label} · ${parts.length} parts`}
-            title={`$${total.toFixed(0)} — ${meta.summary.split('.')[0]}`}
-            lede={meta.summary}
-          >
-            <div className="card scroll-x mt-7">
-              <table className="w-full min-w-[720px] border-collapse">
-                <thead>
-                  <tr className="bg-[var(--surface-3)] text-left">
-                    <th className="eyebrow px-3 py-2.5 font-normal">Part</th>
-                    <th className="eyebrow px-3 py-2.5 font-normal">Band</th>
-                    <th className="eyebrow px-3 py-2.5 font-normal">Bus</th>
-                    <th className="eyebrow px-3 py-2.5 text-right font-normal">Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {parts.map((p) => (
-                    <PartRow key={p.id} part={p} />
-                  ))}
-                  <tr className="border-t-2 border-[var(--line-strong)] bg-[var(--surface-3)]">
-                    <td className="px-3 py-2.5 text-[13px] font-semibold text-[var(--ink)]" colSpan={3}>
-                      Total, excluding tools, shipping, and tax
-                    </td>
-                    <td className="num px-3 py-2.5 text-right text-[14px] font-semibold text-[var(--ink)]">
-                      ${total.toFixed(2)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </Section>
-        )
-      })}
-
-      {uncategorised.length > 0 && (
-        <Section
-          className="border-t border-[var(--line)]"
-          eyebrow="Registered alternatives"
-          title="Parts in the registry that are not in a reference build"
-          lede="Substitutes and community submissions the discriminator knows how to calibrate. Registering a part is how you make your build legible to the grid."
-        >
-          <div className="card scroll-x mt-7">
-            <table className="w-full min-w-[720px] border-collapse">
-              <thead>
-                <tr className="bg-[var(--surface-3)] text-left">
-                  <th className="eyebrow px-3 py-2.5 font-normal">Part</th>
-                  <th className="eyebrow px-3 py-2.5 font-normal">Band</th>
-                  <th className="eyebrow px-3 py-2.5 font-normal">Bus</th>
-                  <th className="eyebrow px-3 py-2.5 text-right font-normal">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {uncategorised.map((p) => (
-                  <PartRow key={p.id} part={p} />
+      <DocTabs
+        label="Hardware sections"
+        tabs={[
+          {
+            id: 'tiers',
+            label: 'Build tiers',
+            hint: 'Three reference builds, priced from the same registry that generates every diagram on this page. The tiers are a suggestion about sequence rather than a product line.',
+            content: (
+              <>
+                <Container className="pb-4 pt-7">
+                  <Note kind="warning" title="Component prices are moving fast in 2026">
+                    <p>{PRICE_NOTE}</p>
+                  </Note>
+                </Container>
+                {TIER_ORDER.map((t) => (
+                  <TierParts key={t} tier={t} />
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </Section>
-      )}
-
-      <Section
-        className="border-t border-[var(--line)]"
-        eyebrow="Generated from the registry"
-        title="The wiring table, as a circuit"
-        lede="Every part above records which physical header pin each of its signals lands on. That table used to be checked by reading it, and reading it is how a UART ended up routed to two pins that have no UART function, one of which was already assigned to something else. It is now compiled into a netlist per tier, so a pin conflict is a build failure rather than a discovery made with a soldering iron in hand."
-      >
-        <CarrierBoards />
-      </Section>
+              </>
+            ),
+          },
+          {
+            id: 'architecture',
+            label: 'Architecture',
+            hint: 'What plugs into what, for the tier 2 reference node. Generated from the registry, so swapping a part moves the wiring with it instead of quietly invalidating a hand-drawn picture.',
+            content: (
+              <Container className="py-9">
+                <NodeBlockDiagram tier="t2" />
+              </Container>
+            ),
+          },
+          {
+            id: 'wiring',
+            label: 'Wiring',
+            hint: 'Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal and is the one connection that must be exactly right.',
+            content: (
+              <Container className="py-9">
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start">
+                  <PinoutDiagram tier="t2" />
+                  <div>
+                    <h3 className="eyebrow mb-3">Per sensor</h3>
+                    <WiringTable tier="t2" />
+                  </div>
+                </div>
+              </Container>
+            ),
+          },
+          {
+            id: 'boards',
+            label: 'Carrier boards',
+            hint: 'The wiring table compiled into a circuit. Every part above records which physical header pin each of its signals lands on, and reading that table is how a UART ended up routed to two pins with no UART function. It is now a netlist, so a pin conflict is a build failure.',
+            content: (
+              <Container className="py-9">
+                <CarrierBoards />
+              </Container>
+            ),
+          },
+          {
+            id: 'power',
+            label: 'Power',
+            hint: 'Summed from the parts actually in the tier rather than rounded to a comfortable number. This is the figure that strands remote builds.',
+            content: (
+              <Container className="py-9">
+                <PowerBudget tier="t2" />
+              </Container>
+            ),
+          },
+          ...(uncategorised.length > 0
+            ? [
+                {
+                  id: 'alternatives',
+                  label: 'Alternatives',
+                  hint: 'Substitutes and community submissions the discriminator knows how to calibrate. Registering a part is how you make your build legible to the grid.',
+                  content: (
+                    <Container className="py-9">
+                      <div className="card scroll-x">
+                        <table className="w-full min-w-[720px] border-collapse">
+                          <thead>
+                            <tr className="bg-[var(--surface-3)] text-left">
+                              <th className="eyebrow px-3 py-2.5 font-normal">Part</th>
+                              <th className="eyebrow px-3 py-2.5 font-normal">Band</th>
+                              <th className="eyebrow px-3 py-2.5 font-normal">Bus</th>
+                              <th className="eyebrow px-3 py-2.5 text-right font-normal">Price</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {uncategorised.map((p) => (
+                              <PartRow key={p.id} part={p} />
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Container>
+                  ),
+                },
+              ]
+            : []),
+        ]}
+      />
 
       <Section className="border-t border-[var(--line)] bg-[var(--surface-0)]">
         <div className="grid gap-4 md:grid-cols-2">

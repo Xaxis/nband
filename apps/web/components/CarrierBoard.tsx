@@ -41,12 +41,12 @@ export function CarrierBoards() {
 
   return (
     <div className="mt-7">
-      <Note kind="warning" title="No board here has been fabricated">
-        The schematic is generated from the hardware registry and is as correct as the registry is;
-        it is the wiring reference and it is checked on every build. The layout is not finished.
-        Components are placed by a script and the autorouter leaves a portion of the nets unplaced,
-        which each view states in the open. Do not send any of this to a fabricator without laying
-        it out properly first.
+      <Note kind="warning" title="No board here has been fabricated or electrically verified">
+        The schematic is generated from the hardware registry and is as correct as the registry is,
+        and it is checked on every build. Every connection routes, but component placement is
+        machine-generated rather than laid out by a person, so treat the board as a reference
+        design: read it, take the netlist from it, and lay it out yourself before sending anything
+        to a fabricator.
       </Note>
 
       <BoardViewer boards={boards} />
@@ -54,9 +54,13 @@ export function CarrierBoards() {
       <p className="mt-4 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
         Only modules that touch the GPIO header appear here. USB peripherals and the CSI cameras
         connect elsewhere and are not carried by the board, so tier 3 shows eight modules against a
-        bill of materials listing considerably more. The header pins are labelled by Raspberry Pi
-        physical number rather than by the connector&rsquo;s own numbering, which runs
-        counter-clockwise and agrees with the Pi on only two of its forty pins.
+        bill of materials listing considerably more. Beyond the connectors, each board carries a
+        100&nbsp;nF decoupling capacitor per module, a bulk reservoir per supply rail, one pair of
+        4.7&nbsp;k I&sup2;C pull-ups (disable the ones on your breakouts &mdash; three in parallel
+        load the bus to about 1.6&nbsp;k), a poured ground plane, and the four HAT mounting holes.
+        Header pins are labelled by Raspberry Pi physical number rather than by the
+        connector&rsquo;s own numbering, which runs counter-clockwise and agrees with the Pi on
+        only two of its forty pins.
       </p>
     </div>
   )

@@ -33,7 +33,8 @@ export interface BoardEntry {
   modules: number
   signals: number
   artifacts: Record<string, string>
-  routing: { routed: number; nets: number; unresolved: number }
+  components: number
+  routing: { routed: number; nets: number; unrouted: number; drc: number }
 }
 
 type View = 'schematic' | 'pcb' | 'model'
@@ -49,13 +50,13 @@ const VIEWS: { id: View; label: string; blurb: string }[] = [
     id: 'pcb',
     label: 'PCB layout',
     blurb:
-      'Component placement is generated on a grid and the router does not finish. A starting point for layout, not a board to fabricate.',
+      'Four layers, ground poured on the bottom. Placement is machine-generated, so treat this as a reference layout rather than a finished board.',
   },
   {
     id: 'model',
     label: '3D model',
     blurb:
-      'The same unfinished layout, rendered. Connector bodies and board outline are real; unrouted nets are simply absent.',
+      'The same layout, rendered. Board outline, connector bodies, passives and mounting holes are all real geometry.',
   },
 ]
 
@@ -114,10 +115,10 @@ export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
   const board = boards.find((b) => b.tier === tier) ?? boards[0]
   if (!board) return null
 
-  const pct = board.routing.nets
-    ? Math.round((board.routing.routed / board.routing.nets) * 100)
-    : 0
-  const unrouted = board.routing.nets - board.routing.routed
+  // Routed-trace count is not a completeness measure: several connections on
+  // one net become a single routed path, so a finished board reports fewer
+  // traces than nets. What matters is whether anything failed to route.
+  const complete = board.routing.unrouted === 0
   const active = VIEWS.find((v) => v.id === view)!
 
   return (
@@ -174,7 +175,8 @@ export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
           </button>
         ))}
         <span className="num ml-auto pr-1 text-[11.5px] text-[var(--ink-3)]">
-          {board.signals} signals · {pct}% auto-routed
+          {board.components} components · {board.signals} signals ·{' '}
+          {complete ? 'fully routed' : `${board.routing.unrouted} unrouted`}
         </span>
       </div>
 
@@ -191,7 +193,7 @@ export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
           <PanZoom
             key={`${board.tier}-pcb`}
             src={board.artifacts['pcb-svg']}
-            alt={`PCB layout for the ${board.label} carrier, with ${board.routing.routed} of ${board.routing.nets} nets routed`}
+            alt={`PCB layout for the ${board.label} carrier: ${board.components} components on four layers, ${complete ? 'fully routed' : `${board.routing.unrouted} connections unrouted`}`}
             surface="dark"
           />
         )}
@@ -203,11 +205,15 @@ export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
       <div className="border-t border-[var(--line)] px-4 py-3">
         <p className="text-[13px] leading-relaxed text-[var(--ink-2)]">
           <span className="font-semibold text-[var(--ink)]">{active.label}.</span> {active.blurb}
-          {view !== 'schematic' && unrouted > 0 && (
+          {view !== 'schematic' && (
             <>
               {' '}
               <span className="num">
-                {unrouted} of {board.routing.nets} nets are still unrouted on this tier.
+                {complete
+                  ? `Every connection is routed.`
+                  : `${board.routing.unrouted} connection(s) could not be routed.`}
+                {board.routing.drc > 0 &&
+                  ` ${board.routing.drc} design-rule violation${board.routing.drc === 1 ? ' remains' : 's remain'}.`}
               </span>
             </>
           )}
