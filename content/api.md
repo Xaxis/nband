@@ -126,6 +126,31 @@ Pagination is by cursor rather than offset. The archive only grows, and an offse
 
 Reads are served through the same anonymous key the browser uses, so row-level security applies identically. Simulated nodes are excluded by policy rather than by the query remembering to.
 
+## GET /api/archive/export
+
+Bulk download, as newline-delimited JSON. An archive nobody can download is not an archive.
+
+```
+GET /api/archive/export?table=events|verdicts|detections|catalog_checks
+  &from=<iso8601>&to=<iso8601>&max=<=100000
+```
+
+NDJSON rather than CSV or Parquet, for reasons that are specific rather than taste. CSV cannot represent the shape of this data: `bands` is an array, `peak_metrics` and `track` are JSON, and flattening them loses the structure that makes them worth keeping. Parquet would be better for anything columnar but needs a writer holding the result in memory, and this streams, because the archive grows without bound. NDJSON streams, survives being cut in half, and every language reads it.
+
+The last line of every export is a manifest rather than a row:
+
+```json
+{"nband_manifest": true, "schema_version": "0.1.0", "table": "events", "rows": 5,
+ "truncated": false, "sha256": "8efeda08...", "generated_at": "2026-07-28T19:24:11Z",
+ "excludes": "Simulated nodes, by row-level security..."}
+```
+
+It is last because the digest is only knowable once the rows are written; a reader who wants it first can read the file backwards, and a reader who wants to stream does not have to wait. The digest covers the row lines exactly as transmitted, so an analysis can name the bytes it was computed from and a later reader can check they have the same ones. It is verifiable with `sha256sum` over everything except the final line.
+
+`truncated` tells you whether `max` cut the result short, so a partial export is never mistaken for a complete one.
+
+Exports go through the same anonymous key and the same row-level security as everything else, so simulated nodes are absent, and the manifest says so rather than leaving you to wonder why the row count is lower than the grid page suggests. Superseded verdicts are present and marked `is_current: false`; nothing is ever rewritten in place.
+
 ## Reading
 
 `GET /api/telemetry?node=<slug>&from=<ms>&to=<ms>` returns band-by-band series and the events overlapping that window, capped at 31 days. It reports which feed served it, so a client can tell synthetic data from real.
