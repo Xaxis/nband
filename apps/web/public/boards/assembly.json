@@ -2352,7 +2352,7 @@
           ],
           "wireframe": true,
           "sourced": true,
-          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The model used to be drawn from the exterior alone, which answers how big the box is and not the question anyone actually has, which is whether the node fits in it."
+          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits."
         }
       ],
       "cables": [
@@ -4071,7 +4071,7 @@
           ],
           "wireframe": true,
           "sourced": true,
-          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The model used to be drawn from the exterior alone, which answers how big the box is and not the question anyone actually has, which is whether the node fits in it."
+          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits."
         }
       ],
       "cables": [

@@ -642,7 +642,7 @@ export const BANDS: readonly Band[] = [
     "unitDefault": "nGal",
     "shortDescription": "Absolute local gravitational acceleration.",
     "whatItSees": "The only channel that responds to mass-energy directly rather than to photons or fields. A discrepancy between the mass implied by radar cross-section and the mass implied by gravitational perturbation is a measurement no other instrument in the stack can produce.",
-    "limits": "Research tier only, and honestly not reachable today. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is not near any portable instrument's floor: a transportable atom interferometer sits around 50 microgal and the best absolute gravimeters around 2 microgal, so the signal is three to four orders of magnitude below them and no amount of integration time closes that gap for a transient. An earlier revision of this entry called it 'at the edge of a portable instrument's single-shot floor', which was wrong by those same orders of magnitude. The band is defined because the schema should be able to represent a measurement it cannot yet make, and because absence should be recorded rather than assumed. No nband node carries one, and none is expected to.",
+    "limits": "Research tier only, and not reachable today. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, three to four orders of magnitude below any portable instrument: a transportable atom interferometer sits around 50 microgal and the best absolute gravimeters around 2 microgal, and no amount of integration time closes that gap for a transient. The band is defined because the schema should be able to represent a measurement it cannot yet make, and because absence should be recorded rather than assumed. No nband node carries one, and none is expected to.",
     "typicalSensors": [
       "atom-interferometer",
       "squid-gradiometer"
@@ -1914,7 +1914,7 @@ export const PARTS: readonly Part[] = [
       "ppsAccuracyNs": 20,
       "ppsPin": "GPIO4 (physical pin 7)"
     },
-    "notes": "The single most important part in the entire build and the one most builders skip. Without a pulse-per-second signal wired to a GPIO and disciplined through chrony, a node's timestamps are good to milliseconds and it can never contribute to multi-node geometry. With it, the node holds a few hundred nanoseconds and becomes a real element of an interferometric array. Budget for this before budgeting for a second camera. PPS lands on GPIO4, physical pin 7. An earlier revision put it on GPIO18, which is the I2S bit clock and is claimed by the microphone in tiers 2 and 3; the two would have fought for the same pin on any node carrying both.",
+    "notes": "RTK-capable, but that is not why it is here. The pulse-per-second output is, because it is the difference between a node that can join an array and one that can only ever file solo reports. Without PPS a timestamp is good to milliseconds, three to four orders of magnitude too coarse for time-of-arrival work between nodes. PPS lands on GPIO4, physical pin 7. Not GPIO18: that is the I2S bit clock and the microphone claims it on any node carrying both.",
     "alternatives": [],
     "candidateAlternatives": [
       "gnss-neo-m9n",
@@ -3084,7 +3084,7 @@ export const PARTS: readonly Part[] = [
       "naturalFrequencyHz": 10,
       "sensitivityVPerMPerS": 28.8
     },
-    "notes": "A 10 Hz element does not reach the infrasound band and is not a substitute for a broadband seismometer. Its role at tier 3 is ground-coupled acoustic detection of low overflights and, more importantly, characterising the site's vibration background, which is the prerequisite for ever siting a gravimeter there. Electrically this is a coil moving in a magnetic field: two wires, tens of millivolts, and no digital interface of any kind. An earlier revision of this registry listed it with SPI pins and a driver named for an ADC that was in no bill of materials, so the carrier board drew a geophone wired directly to the Pi's SPI bus, which is not a thing that can work. It reaches the node through the ADS1256 below.",
+    "notes": "A 10 Hz element does not reach the infrasound band and is not a substitute for a broadband seismometer. Its role at tier 3 is ground-coupled acoustic detection of low overflights and, more importantly, characterising the site's vibration background, which is the prerequisite for ever siting a gravimeter there. Electrically it is a coil moving in a magnetic field: two wires, tens of millivolts, no supply and no digital interface. It reaches the node through the ADS1256.",
     "alternatives": [],
     "candidateAlternatives": [
       "seis-trillium",
@@ -3242,7 +3242,7 @@ export const PARTS: readonly Part[] = [
       "ipRating": "IP67",
       "internalMm": "430x290x155"
     },
-    "notes": "Sealed enclosures trap moisture rather than excluding it: the air inside is humid when you close the lid, and the first cold night condenses it onto the coldest surface, which is always the optics. A Gore breather vent plus reusable desiccant solves this. Every optical port needs its own gasketed window rather than a hole, and germanium for the LWIR port because glass is opaque at 10 micrometres. Carries tier 2 and tier 3 alike: packed, tier 3's contents take about a third of the interior floor and the tallest part is half the interior height. A larger case was briefly specified here on the strength of a measurement that turned out to be measuring the wrong thing — the spread-out display arrangement of the 3D model rather than how anything is actually packed.",
+    "notes": "Sealed enclosures trap moisture rather than excluding it: the air inside is humid when you close the lid, and the first cold night condenses it onto the coldest surface, which is always the optics. A Gore breather vent plus reusable desiccant solves this. Every optical port needs its own gasketed window rather than a hole, and germanium for the LWIR port because glass is opaque at 10 micrometres. Carries tier 2 and tier 3 alike: packed, tier 3's contents take about a third of the interior floor and the tallest part is half the interior height.",
     "electrical": {
       "idleW": 0,
       "activeW": 0,
@@ -3255,7 +3255,7 @@ export const PARTS: readonly Part[] = [
       "heightMm": 157,
       "mount": "enclosure",
       "dimensionsSourced": true,
-      "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The model used to be drawn from the exterior alone, which answers how big the box is and not the question anyone actually has, which is whether the node fits in it.",
+      "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits.",
       "interiorWidthMm": 425,
       "interiorDepthMm": 284,
       "interiorHeightMm": 155
@@ -3281,7 +3281,7 @@ export const PARTS: readonly Part[] = [
       "batteryWh": 2160,
       "autonomyDays": 3
     },
-    "notes": "Sized against the summed draw of the tier 2 parts list, 12.8 W continuous or 307 Wh per day, not against a round number. An earlier revision of this BOM specified a 100 W panel and 100 Ah battery on the strength of an assumed 11 W load; that would have run a remote node flat during the first sustained overcast. The panel figure carries 35 percent for soiling and cable loss at four peak-sun-hours, which is a conservative mid-latitude winter assumption. LiFePO4 at 50 percent usable depth of discharge, because the duty cycle is a shallow daily cycle for years. Node power draw is telemetry rather than an accessory, and the monitor that produces it is a separate part (pwr-ina226) rather than something bundled here, and an unexplained current step is one of the more reliable early indicators of a sensor failing.",
+    "notes": "Sized against the summed draw of the tier 2 parts list, 12.8 W continuous or 307 Wh per day, rather than against a round number. Assumptions: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy. A panel too small for the node it ships with strands a remote build, which is why the drift check recomputes this from the parts rather than trusting the label.",
     "electrical": {
       "idleW": 0,
       "activeW": 0,
@@ -3317,7 +3317,7 @@ export const PARTS: readonly Part[] = [
       "batteryWh": 3840,
       "autonomyDays": 3
     },
-    "notes": "Tier 3 draws 24.6 W continuous, 591 Wh per day, which is 92 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. An earlier revision shipped a 180 W array and 270 Ah bank here, which met the project's own sizing rule only because the drift check quietly allowed a ten percent shortfall; at 92 percent of the required panel it would have run a deficit through any overcast week. The allowance has been removed and the kit resized to clear the rule outright. Assumptions: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy.",
+    "notes": "Tier 3 draws 24.6 W continuous, 591 Wh per day, which is 92 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. Same assumptions as the tier 2 kit: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy.",
     "electrical": {
       "idleW": 0,
       "activeW": 0,
@@ -3366,7 +3366,7 @@ export const PARTS: readonly Part[] = [
         }
       ]
     },
-    "notes": "Not optional on tier 3, and its absence was a real defect in an earlier bill of materials. That tier lists five bus-powered peripherals drawing 12.3 W between them, which is 2.46 A at 5 V, against a Raspberry Pi 5 that budgets 1.6 A across all USB ports even with a 5 A supply, and has four ports for five devices. Plugged in directly, the short-wave infrared imager and the millimetre-wave radar alone exceed the budget, and the failure mode is not a clean refusal: the Pi brown-outs peripherals under load, so channels drop out intermittently under exactly the conditions that matter. Put the two highest-draw devices on the hub at minimum.",
+    "notes": "Not optional on tier 3. That tier lists five bus-powered peripherals drawing 12.3 W between them, 2.46 A at 5 V, against a Raspberry Pi 5 that budgets 1.6 A across all USB ports even with a 5 A supply, and has four ports for five devices. Plugged in directly, the short-wave infrared imager and the millimetre-wave radar alone exceed the budget, and the failure mode is not a clean refusal: the Pi brown-outs peripherals under load, so channels drop out intermittently under exactly the conditions that matter. Put the two highest-draw devices on the hub at minimum.",
     "mechanical": {
       "widthMm": 100,
       "depthMm": 42,
@@ -3422,7 +3422,7 @@ export const PARTS: readonly Part[] = [
       "maxSps": 30000,
       "pgaMax": 64
     },
-    "notes": "Not optional, and its absence was a real defect: the geophone is an analogue element and cannot reach the node without it. Twenty-four bits and a programmable gain up to 64 are what make a 28.8 V/(m/s) coil readable at the amplitudes that matter, which are microvolts. The differential input pair also rejects the common-mode noise picked up over a multi-metre cable run to a ground-coupled element, which a single-ended input would not.",
+    "notes": "Not optional: the geophone is an analogue element and cannot reach the node without it. Twenty-four bits and a programmable gain up to 64 are what make a 28.8 V/(m/s) coil readable at the amplitudes that matter, which are microvolts. The differential input pair also rejects the common-mode noise picked up over a multi-metre cable run to a ground-coupled element, which a single-ended input would not.",
     "alternatives": [],
     "candidateAlternatives": [],
     "electrical": {
@@ -3525,7 +3525,7 @@ export const PARTS: readonly Part[] = [
       "busVoltageMax": 36,
       "resolutionUv": 2.5
     },
-    "notes": "Node power draw is telemetry, not an accessory, and this is the part that produces it. Both solar kits used to declare ina226_monitor as their driver while having no interface, no pins and no place on any board, so the platform advertised a current monitor that appeared in no bill of materials and could not be wired. A node that cannot see its own consumption cannot distinguish a flat battery from a failed sensor, and on an off-grid mast that is the difference between a diagnosable outage and a site visit.",
+    "notes": "Node power draw is telemetry rather than an accessory, and this is the part that produces it. A node that cannot see its own consumption cannot distinguish a flat battery from a failed sensor, and on an off-grid mast that is the difference between a diagnosable outage and a site visit. Mounts where the supply enters the enclosure, with its shunt in series with the feed it measures.",
     "alternatives": [],
     "candidateAlternatives": [],
     "electrical": {
