@@ -37,6 +37,9 @@ jobs:
       - name: Position obscuring holds
         run: make privacy
 
+      - name: Carrier boards match the hardware registry
+        run: make boards-check
+
   python:
     name: firmware and discriminator
     runs-on: ubuntu-latest
