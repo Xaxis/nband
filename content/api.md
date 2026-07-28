@@ -12,16 +12,28 @@ Base URL is `https://nband.space`. Writes require a signature. Reads do not requ
 
 ## Authentication
 
-Every write is signed with the node's Ed25519 private key, which is generated on the node at first run and never leaves it. Four headers accompany each request:
+Every write is signed with the node's Ed25519 private key, which is generated on the node at first run and never leaves it. Six headers accompany each request:
 
 ```
 X-Nband-Node:       your-node-slug
 X-Nband-Key:        base64url public key, no padding
-X-Nband-Signature:  base64url signature over the exact request body bytes
+X-Nband-Signature:  base64url signature over the canonical payload below
+X-Nband-Timestamp:  seconds since the epoch, as a decimal string
+X-Nband-Nonce:      a value never used before by this node
 X-Nband-Schema:     0.1.0
 ```
 
-The signature covers the raw body, so serialise once and sign the bytes you actually send. Re-serialising between signing and sending is the most common cause of a 401 that looks inexplicable.
+The signature does **not** cover the body alone. It covers a canonical payload that binds the request to one endpoint, one moment, and one use:
+
+```
+nband/v1\n{path}\n{timestamp}\n{nonce}\n{body}
+```
+
+`{path}` is the request path exactly as sent, such as `/api/grid/telemetry`. The four newlines are literal. A signature over the body alone was valid forever, on any endpoint, and could be replayed to fabricate archive content — the three bound fields close that, and each closes a different hole. The path stops a telemetry signature being presented to `/detections`. The timestamp bounds how long a captured request stays usable: more than **300 seconds** of skew in either direction is refused with a 401. The nonce is recorded in a server-side ledger and makes the request usable exactly once inside that window; a repeat is refused with a 409.
+
+Omitting `X-Nband-Timestamp` or `X-Nband-Nonce` is a 401, not a warning. Nodes on the body-only scheme cannot write to the grid.
+
+The body portion is the raw bytes, so serialise once and sign the bytes you actually send. Re-serialising between signing and sending is the most common cause of a 401 that looks inexplicable.
 
 The schema header is checked against the grid's own version. A node running a different schema is writing rows whose meaning may differ, so it is rejected with a 409 naming both versions rather than accepted and quietly reconciled.
 

@@ -14,6 +14,7 @@ is also how the build guide lets you verify each step.
 
 from __future__ import annotations
 
+import datetime
 import math
 import time
 from abc import ABC, abstractmethod
@@ -289,28 +290,128 @@ class RtlSdrPowerDriver(Driver):
         return Sample(self.channel_id, self.band, t_ns, round(dbm, 2))
 
 
+# ---------------------------------------------------------------------------
+# GPIO, across two incompatible libgpiod generations
+# ---------------------------------------------------------------------------
+#
+# libgpiod 2.0 removed Chip.get_line() and the LINE_REQ_* constants outright,
+# replacing them with request_lines() and a LineSettings object. pyproject
+# declares gpiod>=2.1, but both GPIO drivers were written against the 1.x API,
+# so the gamma and beacon channels raised AttributeError the moment open() ran
+# on a correctly installed node. Nothing caught it because neither driver is
+# exercised without hardware attached.
+#
+# Bookworm ships 1.6.3 as python3-libgpiod while pip installs 2.x, so a node can
+# genuinely have either depending on how its operator followed the guide. These
+# shims pick at runtime rather than forcing anyone to reinstall.
+
+
+def _chip_path(name: str) -> str:
+    """Accept either 'gpiochip4' or '/dev/gpiochip4'; 2.x requires the path."""
+    return name if name.startswith("/dev/") else f"/dev/{name}"
+
+
+class _EdgeCounter:
+    """Counts rising edges on one line, on either libgpiod generation."""
+
+    def __init__(self, chip: str, pin: int, consumer: str) -> None:
+        import gpiod  # type: ignore[import-not-found]
+
+        self._pin = pin
+        if hasattr(gpiod, "request_lines"):  # 2.x
+            from gpiod.line import Edge  # type: ignore[import-not-found]
+
+            self._v2 = True
+            self._req = gpiod.request_lines(
+                _chip_path(chip),
+                consumer=consumer,
+                config={pin: gpiod.LineSettings(edge_detection=Edge.RISING)},
+            )
+        else:  # 1.x
+            self._v2 = False
+            self._line = gpiod.Chip(chip).get_line(pin)
+            self._line.request(consumer=consumer, type=gpiod.LINE_REQ_EV_RISING_EDGE)
+
+    def drain(self) -> int:
+        """Consume every edge waiting right now and return how many there were."""
+        n = 0
+        if self._v2:
+            # timedelta(0) polls rather than blocking, so a quiet channel costs
+            # nothing and a busy one cannot stall the worker thread.
+            while self._req.wait_edge_events(datetime.timedelta(0)):
+                n += len(self._req.read_edge_events())
+        else:
+            while self._line.event_wait(sec=0):
+                self._line.event_read()
+                n += 1
+        return n
+
+    def close(self) -> None:
+        (self._req if self._v2 else self._line).release()
+
+
+class _OutputLine:
+    """A single output line, on either libgpiod generation."""
+
+    def __init__(self, chip: str, pin: int, consumer: str) -> None:
+        import gpiod  # type: ignore[import-not-found]
+
+        self._pin = pin
+        if hasattr(gpiod, "request_lines"):  # 2.x
+            from gpiod.line import Direction, Value  # type: ignore[import-not-found]
+
+            self._v2 = True
+            self._on, self._off = Value.ACTIVE, Value.INACTIVE
+            self._req = gpiod.request_lines(
+                _chip_path(chip),
+                consumer=consumer,
+                config={
+                    pin: gpiod.LineSettings(direction=Direction.OUTPUT, output_value=Value.INACTIVE)
+                },
+            )
+        else:  # 1.x
+            self._v2 = False
+            self._on, self._off = 1, 0
+            self._line = gpiod.Chip(chip).get_line(pin)
+            self._line.request(consumer=consumer, type=gpiod.LINE_REQ_DIR_OUT)
+
+    def set(self, on: bool) -> None:
+        value = self._on if on else self._off
+        if self._v2:
+            self._req.set_value(self._pin, value)
+        else:
+            self._line.set_value(value)
+
+    def close(self) -> None:
+        self.set(False)
+        (self._req if self._v2 else self._line).release()
+
+
 class GeigerCountDriver(Driver):
     """Pulse counter on a GPIO pin, for a scintillator or GM tube."""
 
     band = Band.GAMMA
 
     def open(self) -> None:
-        import gpiod  # type: ignore[import-not-found]
-
-        chip = gpiod.Chip(str(self.channel.options.get("chip", "gpiochip4")))
-        self._line = chip.get_line(int(self.channel.options.get("pin", 17)))
-        self._line.request(consumer="nband", type=gpiod.LINE_REQ_EV_RISING_EDGE)
+        self._line = _EdgeCounter(
+            str(self.channel.options.get("chip", "gpiochip4")),
+            int(self.channel.options.get("pin", 17)),
+            "nband",
+        )
         self._count = 0
         self._last = time.monotonic()
         self._opened = True
+
+    def close(self) -> None:
+        if self._opened:
+            self._line.close()
+        self._opened = False
 
     def capabilities(self) -> Capabilities:
         return Capabilities(notes="count rate only; no energy spectrum from a bare pulse counter")
 
     def read(self, t_ns: int) -> Sample | None:
-        while self._line.event_wait(sec=0):
-            self._line.event_read()
-            self._count += 1
+        self._count += self._line.drain()
         now = time.monotonic()
         elapsed = now - self._last
         if elapsed < 1.0:
@@ -564,7 +665,11 @@ class Ld2450Driver(Driver):
         import serial  # type: ignore[import-not-found]
 
         self._ser = serial.Serial(
-            str(self.channel.options.get("port", "/dev/ttyAMA0")),
+            # Not ttyAMA0: that is the GNSS receiver, and sharing it would cost
+            # the node its clock discipline, which is the one thing it cannot
+            # do without. This expects 'dtoverlay=uart4' and the module wired to
+            # GPIO12/13 on physical pins 32 and 33.
+            str(self.channel.options.get("port", "/dev/ttyAMA4")),
             int(self.channel.options.get("baud", 256000)),
             timeout=0.2,
         )
@@ -912,23 +1017,31 @@ class SemBeaconDriver(Driver):
     band = Band.NIR
 
     def open(self) -> None:
-        import gpiod  # type: ignore[import-not-found]
-
-        chip = gpiod.Chip(str(self.channel.options.get("chip", "gpiochip4")))
-        self._line = chip.get_line(int(self.channel.options.get("pin", 23)))
-        self._line.request(consumer="nband-sem", type=gpiod.LINE_REQ_DIR_OUT)
+        self._line = _OutputLine(
+            str(self.channel.options.get("chip", "gpiochip4")),
+            int(self.channel.options.get("pin", 23)),
+            "nband-sem",
+        )
         self._duty = float(self.channel.options.get("duty", 0.05))
         self._enabled = bool(self.channel.options.get("enabled", False))
         self._opened = True
 
     def capabilities(self) -> Capabilities:
+        # Not "below Class 3R": that was a retracted claim. Class 3R is an IEC
+        # 60825 laser class and this is an LED, assessed under IEC 62471 instead.
+        # Naming a laser class it was never assessed against read as a safety
+        # clearance nobody had issued.
         return Capabilities(
-            notes="850 nm LED emitter, not a laser; below Class 3R. Point above the horizon."
+            notes=(
+                "850 nm LED emitter, not a laser. Assessed under IEC 62471, not the "
+                "IEC 60825 laser classes. Near-infrared defeats the blink reflex; "
+                "point above the horizon and do not view at close range."
+            )
         )
 
     def close(self) -> None:
         if self._opened:
-            self._line.set_value(0)
+            self._line.close()
         self._opened = False
 
     def read(self, t_ns: int) -> Sample | None:
@@ -937,7 +1050,7 @@ class SemBeaconDriver(Driver):
         # Deterministic pseudo-random gating, seeded on the second, so the
         # schedule is reconstructable from the timestamp alone during analysis.
         on = (hash((self.channel_id, t_ns // 1_000_000_000)) & 0xFFFF) / 0xFFFF < self._duty
-        self._line.set_value(1 if on else 0)
+        self._line.set(on)
         return Sample(self.channel_id, self.band, t_ns, 1.0 if on else 0.0, Q_SELF_EMISSION)
 
 

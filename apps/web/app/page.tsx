@@ -34,7 +34,7 @@ export default function HomePage() {
 
           <p className="mt-4 max-w-[60ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
             <span className="text-[var(--ink)]">nband is a fix for the evidence.</span> A sensor
-            node you can build for the price of a used laptop, watching fourteen bands at once,
+            node you can build for the price of a used laptop, watching up to thirteen bands at once,
             timestamped to GPS within a few hundred nanoseconds, publishing everything it records
             to an open archive. Most of what it catches will be aircraft. That is the point: you
             cannot say a thing is unexplained until you have properly ruled out the explanations.
@@ -71,9 +71,9 @@ export default function HomePage() {
         <Container>
           <div className="grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
             <Stat
-              value="14"
-              label="Bands watching simultaneously"
-              detail="Gamma through radio, plus sound and ground motion"
+              value="13"
+              label="Bands one node can watch at once"
+              detail="Six on the entry build. Gamma through radio, plus sound and ground motion"
               accent="#4ea9ff"
             />
             <Stat

@@ -1,6 +1,6 @@
 # nband
 
-An open multi-spectral sensing platform. A buildable sensor node that watches the sky across fourteen bands at once, timestamps everything against a satellite-disciplined clock, and publishes what it records.
+An open multi-spectral sensing platform. A buildable sensor node that watches the sky across as many as thirteen bands at once, timestamps everything against a satellite-disciplined clock, and publishes what it records.
 
 **Site:** https://nband.space
 
@@ -49,14 +49,15 @@ make check          # everything CI runs
 make node-selftest  # open every channel in simulation, no hardware needed
 ```
 
-`make check` runs six things, each of which is a claim this repository makes
+`make check` runs seven things, each of which is a claim this repository makes
 about itself:
 
 | Target | What it proves |
 |---|---|
-| `make drift` | Generated bindings, Postgres enums, document versions, part cross-references, tier budgets and power sizing all agree |
+| `make drift` | Generated bindings, Postgres enums, document versions, part cross-references, tier budgets, power sizing, band counts and the documented wire protocol all agree |
 | `make parity` | The browser discriminator scores identically to the Python engine |
 | `make links` | Every internal link resolves and every document has a route |
+| `make privacy` | A published node position cannot be de-fuzzed back to an operator's home |
 | `make test-firmware` | Clock grading, bounded buffers, coincidence triggering, driver registry |
 | `make test-discriminator` | The scoring engine, mostly asserting what it refuses to conclude |
 | `make lint` `make build` | Types, lints, and a production build |

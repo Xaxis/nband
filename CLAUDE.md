@@ -1,8 +1,8 @@
 # nband
 
-Open multi-spectral sensing platform. A buildable Raspberry Pi node that samples fourteen bands simultaneously, disciplines its clock against GNSS, and publishes to a shared grid. Site at **nband.space**, deployed on Vercel, backed by Supabase project `futnukppkvxmjfuexthx` (schema `nband`).
+Open multi-spectral sensing platform. A buildable Raspberry Pi node that samples up to thirteen of fourteen defined bands simultaneously, disciplines its clock against GNSS, and publishes to a shared grid. Site at **nband.space**, deployed on Vercel, backed by Supabase project `futnukppkvxmjfuexthx` (schema `nband`).
 
-Formerly called BIFROST. Renamed 2026-07-27. The GitHub repo is still `Xaxis/bifrost` and the local checkout is still `~/Projects/bifrost`; both are pending rename.
+Formerly called BIFROST. Renamed 2026-07-27. The GitHub repo is `Xaxis/nband` and the local checkout is `~/Projects/nband`.
 
 ## The rule everything else follows from
 
@@ -65,7 +65,9 @@ after changing discriminator scoring. Both are checked in CI.
 
 ## Environment
 
-`.env` at repo root, never committed. Vercel holds the same values as project env vars. `gh` fails because an invalid `GITHUB_TOKEN` shadows the keyring token — use `env -u GITHUB_TOKEN` or push over SSH. The keyring token lacks `workflow` scope, so `.github/workflows/` pushes need `gh auth refresh -s workflow`.
+`.env` at repo root, never committed. Vercel holds the same values as project env vars.
+
+`NBAND_FUZZ_SALT` is load-bearing for operator privacy: it keys the per-node position offset, and anything that leaks it makes every published coordinate invertible back to a home address. It is not interchangeable with the enrolment secret, which nodes hold.
 
 ## Style
 

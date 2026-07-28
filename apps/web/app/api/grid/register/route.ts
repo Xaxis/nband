@@ -95,12 +95,23 @@ export async function POST(request: Request) {
     }
   }
 
-  const shown = fuzzPosition(
-    reg.site.lat,
-    reg.site.lon,
-    reg.site.location_precision_m,
-    reg.pubkey,
-  )
+  // Keyed on the slug rather than the public key: the key is a column on the
+  // anon-readable row, so seeding the offset with it let anyone recompute the
+  // offset and recover the operator's true position. The slug is public too —
+  // the secrecy lives entirely in NBAND_FUZZ_SALT.
+  let shown: { lat: number; lon: number }
+  try {
+    shown = await fuzzPosition(
+      reg.site.lat,
+      reg.site.lon,
+      reg.site.location_precision_m,
+      reg.slug,
+    )
+  } catch {
+    // Better to refuse the enrolment than to store a position we cannot promise
+    // to have obscured.
+    return fail(503, 'enrolment is closed: the grid is not configured to obscure positions')
+  }
 
   const { data: node, error: nodeErr } = await db
     .from('nodes')

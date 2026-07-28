@@ -19,8 +19,21 @@ producing evidence somebody else can trust.
 
 **Node operator location.** Published coordinates are deliberately fuzzed to the
 precision each operator declares, and the true position is never stored. Any
-path that reveals a precise position, or that allows averaging repeated reads to
-recover one, is a vulnerability.
+path that reveals a precise position, that allows averaging repeated reads to
+recover one, or that allows the offset itself to be reconstructed, is a
+vulnerability.
+
+> This one has already failed once. In 0.1.0 the offset was seeded by
+> hashing the node's public key — a column on the world-readable `nodes` row —
+> and the displacement was always exactly the declared precision, placing every
+> node on a known circle. Both halves were recoverable from published data, and
+> the true position could be recovered to about five metres. No operator was
+> affected: the fix landed before any node enrolled, while the node table was
+> still empty and the public feed still served mock data. The offset is now an
+> HMAC keyed on a server-only salt, sampled uniformly over the disc, and
+> `tools/check-privacy.mjs` measures the resulting distribution on every build.
+> It is recorded here rather than quietly patched because a privacy guarantee
+> that has failed before deserves more scepticism than one that has not.
 
 **Node identity.** A node's Ed25519 private key is generated on the node and
 never leaves it. Anything that would let a third party enrol under an existing

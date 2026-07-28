@@ -34,6 +34,9 @@ jobs:
       # Every internal link resolves, and every document has a route.
       - run: make links
 
+      - name: Position obscuring holds
+        run: make privacy
+
   python:
     name: firmware and discriminator
     runs-on: ubuntu-latest

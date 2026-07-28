@@ -642,7 +642,7 @@ export const BANDS: readonly Band[] = [
     "unitDefault": "nGal",
     "shortDescription": "Absolute local gravitational acceleration.",
     "whatItSees": "The only channel that responds to mass-energy directly rather than to photons or fields. A discrepancy between the mass implied by radar cross-section and the mass implied by gravitational perturbation is a measurement no other instrument in the stack can produce.",
-    "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every nband node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
+    "limits": "Research tier only, and honestly not reachable today. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is not near any portable instrument's floor: a transportable atom interferometer sits around 50 microgal and the best absolute gravimeters around 2 microgal, so the signal is three to four orders of magnitude below them and no amount of integration time closes that gap for a transient. An earlier revision of this entry called it 'at the edge of a portable instrument's single-shot floor', which was wrong by those same orders of magnitude. The band is defined because the schema should be able to represent a measurement it cannot yet make, and because absence should be recorded rather than assumed. No nband node carries one, and none is expected to.",
     "typicalSensors": [
       "atom-interferometer",
       "squid-gradiometer"
@@ -777,25 +777,29 @@ export const TIER: Record<Tier, TierMeta> = {
     "id": "t1",
     "label": "Tier 1 - Baseline",
     "budgetUsd": 460,
-    "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid."
+    "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid.",
+    "buildable": true
   },
   "t2": {
     "id": "t2",
     "label": "Tier 2 - Core",
     "budgetUsd": 1650,
-    "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against."
+    "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against.",
+    "buildable": true
   },
   "t3": {
     "id": "t3",
     "label": "Tier 3 - Extended",
-    "budgetUsd": 5100,
-    "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost."
+    "budgetUsd": 5300,
+    "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost.",
+    "buildable": true
   },
   "tr": {
     "id": "tr",
     "label": "Research",
     "budgetUsd": 200000,
-    "summary": "Tier 3 plus quantum gravimetry and SQUID or NV-centre magnetometry. A handful of sites at most, sited for low seismic background."
+    "summary": "Tier 3 plus quantum gravimetry and SQUID or NV-centre magnetometry. There is no bill of materials for this tier and nband does not publish one: no part in the registry belongs to it, and the six-figure budget is an order-of-magnitude marker rather than a costed build. It exists so the schema can represent an instrument class it cannot yet specify.",
+    "buildable": false
   }
 } as const
 
@@ -804,6 +808,7 @@ export interface TierMeta {
   label: string
   budgetUsd: number
   summary: string
+  buildable: boolean
 }
 
 export const TIER_ORDER: readonly Tier[] = ['t1', 't2', 't3', 'tr'] as const
@@ -1814,7 +1819,7 @@ export const PARTS: readonly Part[] = [
       "targets": 3,
       "outputs": "x, y, speed per target"
     },
-    "notes": "Sets an honest expectation: an eight metre range makes this a calibration and near-field instrument, not a sky radar. It earns its place by being the cheapest way to get a true range and radial velocity into the schema at all, which lets a builder exercise and validate the entire radar path before deciding whether to spend forty times more on a module that can actually reach altitude. Do not present a tier 2 node as radar-covered for aerial targets.",
+    "notes": "Sets an honest expectation: an eight metre range makes this a calibration and near-field instrument, not a sky radar. It earns its place by being the cheapest way to get a true range and radial velocity into the schema at all, which lets a builder exercise and validate the entire radar path before deciding whether to spend forty times more on a module that can actually reach altitude. Do not present a tier 2 node as radar-covered for aerial targets. Wiring note: this needs a second UART. Physical pins 16 and 18 (GPIO23/24) have no UART alternate function and were wrong; GPIO14/15 are the console and /dev/ttyAMA0 belongs to the GNSS receiver, whose pulse-per-second discipline is the one thing a node cannot afford to lose. Add 'dtoverlay=uart4' to /boot/firmware/config.txt and wire to GPIO12/13 on physical pins 32 and 33, which appear as /dev/ttyAMA4.",
     "alternatives": [
       "radar-iwr6843"
     ],
@@ -1836,11 +1841,11 @@ export const PARTS: readonly Part[] = [
         },
         {
           "signal": "TX",
-          "pin": "16"
+          "pin": "33"
         },
         {
           "signal": "RX",
-          "pin": "18"
+          "pin": "32"
         }
       ]
     }
@@ -2018,7 +2023,7 @@ export const PARTS: readonly Part[] = [
       "resolutionPctAt662": 9,
       "backgroundCps": "20-60"
     },
-    "notes": "Open hardware, fully documented, and the only practical route to a real energy spectrum rather than a bare count rate at this price. A spectrum is what separates a cosmic-ray shower from an isotope line. This is also the instrument that reads back the active-emission module's own 59.5 keV americium line, which is how the node proves the lure is operating and correctly characterises its own contribution to the background before subtracting it.",
+    "notes": "Open hardware, fully documented, and the only practical route to a real energy spectrum rather than a bare count rate at this price. A spectrum is what separates a cosmic-ray shower from an isotope line, and it lets the node characterise its own radiological background properly rather than reporting an unattributed count rate. Earlier text here justified it partly as the readback for the aggregated americium lure; that module has been withdrawn (see the safety page on 10 CFR 30.15) and this part stands on its own merits as a passive instrument.",
     "alternatives": [],
     "candidateAlternatives": [
       "gamma-gm-tube"
@@ -2217,7 +2222,7 @@ export const PARTS: readonly Part[] = [
       "batteryWh": 2160,
       "autonomyDays": 3
     },
-    "notes": "Sized against the summed draw of the tier 2 parts list, 14.4 W continuous or 345 Wh per day, not against a round number. An earlier revision of this BOM specified a 100 W panel and 100 Ah battery on the strength of an assumed 11 W load; that would have run a remote node flat during the first sustained overcast. The panel figure carries 35 percent for soiling and cable loss at four peak-sun-hours, which is a conservative mid-latitude winter assumption. LiFePO4 at 50 percent usable depth of discharge, because the duty cycle is a shallow daily cycle for years. The current monitor is not an accessory: node power draw is telemetry, and an unexplained current step is one of the more reliable early indicators of a sensor failing.",
+    "notes": "Sized against the summed draw of the tier 2 parts list, 12.8 W continuous or 307 Wh per day, not against a round number. An earlier revision of this BOM specified a 100 W panel and 100 Ah battery on the strength of an assumed 11 W load; that would have run a remote node flat during the first sustained overcast. The panel figure carries 35 percent for soiling and cable loss at four peak-sun-hours, which is a conservative mid-latitude winter assumption. LiFePO4 at 50 percent usable depth of discharge, because the duty cycle is a shallow daily cycle for years. The current monitor is not an accessory: node power draw is telemetry, and an unexplained current step is one of the more reliable early indicators of a sensor failing.",
     "electrical": {
       "idleW": 0,
       "activeW": 0,
@@ -2230,22 +2235,22 @@ export const PARTS: readonly Part[] = [
     "category": "power",
     "band": null,
     "vendor": "generic",
-    "model": "180 W array + 40 A MPPT + 270 Ah LiFePO4",
+    "model": "220 W array + 40 A MPPT + 300 Ah LiFePO4",
     "status": "reference",
     "tiers": [
       "t3"
     ],
-    "priceUsd": 968,
+    "priceUsd": 1140,
     "priceAsOf": "2026-07-27",
     "sourceUrl": "https://www.amazon.com/",
     "interface": "none",
     "driver": "ina226_monitor",
     "keySpecs": {
-      "panelW": 180,
-      "batteryWh": 3240,
+      "panelW": 220,
+      "batteryWh": 3840,
       "autonomyDays": 3
     },
-    "notes": "Tier 3 draws 22.2 W continuous, 532 Wh per day, which is 54 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. Reusing the tier 2 kit here was caught by the power drift check rather than by a builder discovering it during the first long overcast, which is exactly the failure that check exists to prevent. Same assumptions otherwise: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge.",
+    "notes": "Tier 3 draws 24.1 W continuous, 578 Wh per day, which is 88 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. An earlier revision shipped a 180 W array and 270 Ah bank here, which met the project's own sizing rule only because the drift check quietly allowed a ten percent shortfall; at 92 percent of the required panel it would have run a deficit through any overcast week. The allowance has been removed and the kit resized to clear the rule outright. Assumptions: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy.",
     "electrical": {
       "idleW": 0,
       "activeW": 0,

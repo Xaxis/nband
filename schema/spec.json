@@ -9,25 +9,29 @@
           "id": "t1",
           "label": "Tier 1 - Baseline",
           "budgetUsd": 460,
-          "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid."
+          "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid.",
+          "buildable": true
         },
         {
           "id": "t2",
           "label": "Tier 2 - Core",
           "budgetUsd": 1650,
-          "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against."
+          "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against.",
+          "buildable": true
         },
         {
           "id": "t3",
           "label": "Tier 3 - Extended",
-          "budgetUsd": 5100,
-          "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost."
+          "budgetUsd": 5300,
+          "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost.",
+          "buildable": true
         },
         {
           "id": "tr",
           "label": "Research",
           "budgetUsd": 200000,
-          "summary": "Tier 3 plus quantum gravimetry and SQUID or NV-centre magnetometry. A handful of sites at most, sited for low seismic background."
+          "summary": "Tier 3 plus quantum gravimetry and SQUID or NV-centre magnetometry. There is no bill of materials for this tier and nband does not publish one: no part in the registry belongs to it, and the six-figure budget is an order-of-magnitude marker rather than a costed build. It exists so the schema can represent an instrument class it cannot yet specify.",
+          "buildable": false
         }
       ]
     },

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { BandChip } from '../../../components/Bands'
 import { Container, Note, Section } from '../../../components/ui'
 import { getFeed } from '../../../lib/feed'
-import { NODESTATUS, THRESHOLDS, TIER } from '../../../lib/schema/generated'
+import { NODESTATUS, THRESHOLDS } from '../../../lib/schema/generated'
 import { STATUS } from '../../../lib/spectrum'
 
 export const metadata = pageMetadata({
@@ -164,7 +164,7 @@ export default async function GridPage() {
                     </span>
                   </td>
                   <td className="num px-3 py-3 text-[12.5px] text-[var(--ink-2)]">
-                    {TIER[n.tier].label.split(' ')[0]}
+                    {n.tier.toUpperCase()}
                   </td>
                   <td className="px-3 py-3">
                     <span className="num text-[12.5px]"

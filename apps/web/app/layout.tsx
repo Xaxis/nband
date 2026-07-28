@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     template: '%s — nband',
   },
   description:
-    'Thousands of unexplained sightings a year, and almost no usable evidence. nband is an open sensor node you can build that watches fourteen bands at once, timestamps everything to GPS, rules out every ordinary explanation it can, and publishes the rest.',
+    'Thousands of unexplained sightings a year, and almost no usable evidence. nband is an open sensor node you can build that watches up to thirteen bands at once, timestamps everything to GPS, rules out every ordinary explanation it can, and publishes the rest.',
   applicationName: 'nband',
   openGraph: {
     type: 'website',

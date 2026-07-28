@@ -18,7 +18,7 @@ written against and which `make drift` enforces.
   `X-Nband-Timestamp` and `X-Nband-Nonce`; requests older than five minutes or
   replaying a nonce are refused. Older agents cannot write to the grid.
 - Tier budgets are restated from the sourced part prices rather than aspiration,
-  and a drift check keeps them honest. Tiers now cost $460 / $1,650 / $5,100.
+  and a drift check keeps them honest. Tiers now cost $460 / $1,650 / $5,228.
 - The GNSS pulse-per-second input moved from GPIO18 to **GPIO4, physical pin 7**.
   GPIO18 is the I2S bit clock and was claimed by the microphone on any node
   carrying both. Existing builds must move one wire and update `config.txt`.
@@ -27,6 +27,27 @@ written against and which `make drift` enforces.
   between day and night.
 
 ### Fixed
+- **Published node positions could be de-fuzzed to about five metres.** The
+  offset's bearing was derived by hashing the node's Ed25519 public key, which
+  was itself a column on the world-readable `nodes` row, so anyone could
+  recompute the offset and subtract it. The distance was always exactly
+  `location_precision_m`, placing every node on a known circle rather than
+  anywhere inside a disc — a 1 km precision meant a 0.14 km² annulus instead of
+  3.1 km². Four pages promised operators the opposite. The offset is now an
+  HMAC over a server-only `NBAND_FUZZ_SALT`, the radius is drawn as
+  `precision × √u` so the point is uniform over the disc, the public key is no
+  longer granted to the anonymous role, and `make privacy` measures the
+  resulting distribution rather than asserting it in a comment. No operator was
+  affected: the node table was empty and the feed was still mock.
+- **The americium-241 dose "correction" was wrong by two orders of magnitude**,
+  in the alarming direction, and stood on the live safety page. A tabulated
+  constant of 3.2 × 10⁻² mGy·m²/(GBq·h) was published as "3.2 µSv/h per MBq".
+  The real figure is 1–28 nSv/h at one metre depending on whether the soft
+  neptunium L X-rays are counted, against a 340 nSv/h background — a few
+  percent of background, never three times it. The retracted original was
+  approximately right. The accompanying claim that 2 mm of aluminium does not
+  help was also wrong. The module stays withdrawn: 10 CFR 30.15 was always the
+  real reason and is sufficient on its own.
 - **The node agent never graded its own clock.** It asserted `gnss_pps` with a
   fabricated offset on every real run, so the strongest gate on the
   classification ladder was a constant in production and a free-running node
@@ -64,9 +85,10 @@ Claims that were wrong, and wrong in the reassuring direction:
 - **FCC Part 15** has no 100 mW allowance at 400–600 MHz; that band is not ISM
   and §15.209 limits field strength to nearer nanowatts. The broadband emitter
   is withdrawn.
-- The **americium-241 dose figure** was understated by a factor of nearly thirty:
-  roughly 1,070 nSv/h at one metre, about three times natural background, not
-  the "under one percent" published.
+- The **americium-241 dose figure** was restated as roughly 1,070 nSv/h at one
+  metre, "about three times natural background". **This correction was wrong**
+  and is itself retracted below. The dose was never the reason the
+  module was withdrawn; 10 CFR 30.15 was, and that part of the entry stands.
 
 ### Added
 - Site search over pages, document sections, bands, parts, and concepts.

@@ -12,7 +12,6 @@ import {
   DETECTION_BANDS,
   PARTS,
   PHENOMENA,
-  TIER,
   type Band,
   type PhenomenonId,
 } from '../../../lib/schema/generated'
@@ -77,7 +76,7 @@ function PartsForBand({ band }: { band: Band }) {
             <span className="text-[11.5px] text-[var(--ink)]">{p.model}</span>
             <span className="num text-[10.5px] text-[var(--ink-3)]">
               {p.priceUsd === 0 ? 'recovered' : `$${p.priceUsd.toFixed(0)}`}
-              {p.tiers?.length ? ` · ${p.tiers.map((t) => TIER[t].label.split(' ')[0]).join(', ')}` : ''}
+              {p.tiers?.length ? ` · ${p.tiers.map((t) => t.toUpperCase()).join(', ')}` : ''}
             </span>
           </Link>
         ))}

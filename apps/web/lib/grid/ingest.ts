@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { BANDS, SCHEMA_VERSION } from '../schema/generated'
+import { fuzzPosition as fuzzPositionCore } from './fuzz.mjs'
 
 /**
  * Shared ingest machinery for the grid write path.
@@ -347,27 +348,38 @@ export const registerSchema = z.object({
  * Fuzz a published position to the node's declared precision.
  *
  * Operators run these at home, and an exact coordinate is a home address. The
- * offset is deterministic per node so the published point does not wander
- * between requests, which would otherwise leak the true position by averaging.
+ * offset must be deterministic per node, or the published point wanders between
+ * requests and the true position falls out of the average.
+ *
+ * Deterministic is not the same as unguessable, and an earlier version of this
+ * function confused the two. It derived the bearing from an FNV hash of the
+ * node's public key and used a fixed radius. Both halves were recoverable by
+ * anyone: the public key was a column on the anon-readable `nodes` row, so the
+ * hash could simply be recomputed, and a fixed radius puts the true position on
+ * a thin ring rather than anywhere inside a disc. Together they inverted to a
+ * few metres. The published coordinate was the home address with extra steps,
+ * while four separate pages promised otherwise.
+ *
+ * The arithmetic now lives in ./fuzz.mjs, where tools/check-privacy.mjs runs it
+ * and measures the property rather than trusting this comment. What remains
+ * here is the policy: the salt is required, and its absence refuses the
+ * enrolment. Refusing an enrolment is recoverable; publishing a real home
+ * address is not.
  */
-export function fuzzPosition(
+export async function fuzzPosition(
   lat: number,
   lon: number,
   precisionM: number,
-  seed: string,
-): { lat: number; lon: number } {
-  if (precisionM <= 0) return { lat, lon }
-  let h = 2166136261
-  for (let i = 0; i < seed.length; i++) {
-    h ^= seed.charCodeAt(i)
-    h = Math.imul(h, 16777619)
+  nodeId: string,
+): Promise<{ lat: number; lon: number }> {
+  const salt = process.env.NBAND_FUZZ_SALT
+  if (precisionM > 0 && (!salt || salt.length < 16)) {
+    throw new Error(
+      'NBAND_FUZZ_SALT is unset or too short; refusing to publish a position that ' +
+        'could be de-fuzzed. Set it to at least 16 random bytes.',
+    )
   }
-  const a = ((h >>> 0) / 4294967296) * 2 * Math.PI
-  const r = precisionM / 111_320
-  return {
-    lat: Number((lat + r * Math.cos(a)).toFixed(4)),
-    lon: Number((lon + (r * Math.sin(a)) / Math.cos((lat * Math.PI) / 180)).toFixed(4)),
-  }
+  return fuzzPositionCore(lat, lon, precisionM, nodeId, salt ?? '')
 }
 
 export function ok(payload: Record<string, unknown> = {}) {

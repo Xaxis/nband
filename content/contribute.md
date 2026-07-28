@@ -56,10 +56,24 @@ If you change firmware behaviour that a document describes, change the document 
 
 ## Running the tests
 
+Everything goes through `make`, and `make check` is exactly what CI runs. Run that before opening a pull request and there should be no surprises:
+
 ```bash
-python3 firmware/tests/test_core.py
-python3 discriminator/tests/test_engine.py
-yarn check:drift && yarn type-check
+make install     # JS and Python dependencies, pinned to match CI
+make check       # everything CI runs
 ```
+
+If you want the fast loop while working, `make check-fast` skips the production build. Each target is a claim the repository makes about itself:
+
+| Target | What it proves |
+|---|---|
+| `make drift` | Generated bindings, Postgres enums, document versions, part cross-references, tier budgets, power sizing, band counts and the documented wire protocol all agree |
+| `make parity` | The browser discriminator scores identically to the Python engine |
+| `make links` | Every internal link resolves and every document has a route |
+| `make privacy` | Published node positions cannot be de-fuzzed back to an operator's home |
+| `make test` | Clock grading, bounded buffers, coincidence triggering, driver registry, and the scoring engine |
+| `make lint` `make build` | Types, lints, and a production build |
+
+A previous version of this page listed three bare commands covering a fraction of that, so a contributor could follow it exactly and still be surprised by CI.
 
 The discriminator tests are mostly about refusal: they assert that events get downgraded when the clock is degraded, when a catalogue was unavailable, or when only one band saw it. Those are the cases that protect the archive from false claims, which is the only failure mode that actually costs this project anything.

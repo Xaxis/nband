@@ -169,7 +169,18 @@ check('tier budgets match the sourced part prices', () => {
   const errors = []
   for (const tier of spec.enums.tier.values) {
     const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id))
-    if (parts.length === 0) continue
+    if (parts.length === 0) {
+      // A tier with a price and no parts is a number nobody can check. The
+      // research tier books $200k against an empty registry, which is fine only
+      // as long as it says so rather than sitting in a price list.
+      if (tier.buildable !== false) {
+        errors.push(
+          `${tier.id}: claims a $${tier.budgetUsd} budget but no part belongs to it. ` +
+            `Set "buildable": false if it is aspirational.`,
+        )
+      }
+      continue
+    }
     const actual = parts.reduce((sum, p) => sum + p.priceUsd, 0)
     // A budget is a claim the bill of materials has to honour. Both tier 1 and
     // tier 2 quietly exceeded their own stated figure while the page presented
@@ -206,14 +217,18 @@ check('off-grid power sizing matches the tier load', () => {
     const neededPanelW = (dailyWh / 4) * 1.35
     const neededBatteryWh = dailyWh * 3 * 2
 
-    if (panelW < neededPanelW * 0.9) {
+    // No tolerance factor. This check carried a silent `* 0.9` that let the
+    // tier 3 kit pass at 92 percent of its own stated requirement, which is the
+    // precise failure the rule exists to prevent and exactly the kind of fudge
+    // that makes a green check worthless.
+    if (panelW < neededPanelW) {
       errors.push(
         `${tier}: '${power.id}' specifies a ${panelW} W panel but the parts draw ` +
           `${activeW.toFixed(1)} W (${dailyWh.toFixed(0)} Wh/day), needing about ` +
           `${Math.ceil(neededPanelW)} W`,
       )
     }
-    if (batteryWh < neededBatteryWh * 0.9) {
+    if (batteryWh < neededBatteryWh) {
       errors.push(
         `${tier}: '${power.id}' specifies ${batteryWh} Wh of battery but three days of ` +
           `autonomy at this load needs about ${Math.ceil(neededBatteryWh)} Wh`,
@@ -223,6 +238,188 @@ check('off-grid power sizing matches the tier load', () => {
 
   if (errors.length) throw new Error(errors.join('; '))
   return 'panel and battery cover the summed draw of every tier that ships them'
+})
+
+check('power figures in prose match the summed parts list', () => {
+  // The solar-kit notes quoted 14.4 W and 22.2 W while the registry summed to
+  // 12.8 W and 24.1 W, and the hardware page printed the prose figure directly
+  // above a chart computing the real one from the same file. Any number a
+  // reader could recompute has to be recomputed.
+  const errors = []
+  const draw = (t) =>
+    hardware.parts
+      .filter((p) => p.tiers?.includes(t) && p.electrical?.activeW != null)
+      .reduce((s, p) => s + p.electrical.activeW, 0)
+
+  for (const [id, tier] of [
+    ['power-solar-150w', 't2'],
+    ['power-solar-200w', 't3'],
+  ]) {
+    const part = hardware.parts.find((p) => p.id === id)
+    if (!part) continue
+    const w = draw(tier)
+    const wh = w * 24
+    // Every figure stated in the note must be the one the registry produces.
+    for (const [label, want] of [
+      ['W', w.toFixed(1)],
+      ['Wh', Math.round(wh).toString()],
+    ]) {
+      if (!part.notes.includes(want)) {
+        errors.push(`${id} note does not state ${want} ${label} for ${tier} (registry says so)`)
+      }
+    }
+  }
+
+  // And the comparison between tiers, which was 34 points out.
+  const t3note = hardware.parts.find((p) => p.id === 'power-solar-200w')
+  if (t3note) {
+    const pct = Math.round((draw('t3') / draw('t2') - 1) * 100)
+    if (!t3note.notes.includes(`${pct} percent more`)) {
+      errors.push(`power-solar-200w note does not say t3 draws ${pct} percent more than t2`)
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return `t1 ${draw('t1').toFixed(1)} W, t2 ${draw('t2').toFixed(1)} W, t3 ${draw('t3').toFixed(1)} W`
+})
+
+check('no two parts in a tier claim the same pin', () => {
+  // The infrared beacon's gate and the radar's UART were both assigned physical
+  // pin 16 while sitting in the same tier, and the radar's pair had no UART
+  // alternate function at all. Both survived review because a pin conflict is
+  // invisible until someone has soldered. The GNSS pulse-per-second line has
+  // already had to move once for the same reason.
+  // Most signals are shared by design: I2C and SPI are buses, I2S clocks fan
+  // out, power and ground are rails, and USB names a port type rather than a
+  // pin. Only these are genuinely exclusive — two devices driving one of them
+  // is a wiring fault, not a topology.
+  const EXCLUSIVE = /^(CS\d*|NSS|INT\d*|IRQ|GATE|TX|RX|TXD|RXD|PPS|DRDY|EN|RESET)$/i
+  const errors = []
+
+  for (const tier of spec.enums.tier.values) {
+    const claims = new Map() // physical pin -> [ "part:signal", ... ]
+    for (const part of hardware.parts.filter((p) => p.tiers?.includes(tier.id))) {
+      for (const pin of part.electrical?.pins ?? []) {
+        if (!EXCLUSIVE.test(String(pin.signal).trim())) continue
+        // Ports such as "USB-A" are not header pins and cannot collide here.
+        if (!/^\d+$/.test(String(pin.pin))) continue
+        const key = String(pin.pin)
+        if (!claims.has(key)) claims.set(key, [])
+        claims.get(key).push(`${part.id}:${pin.signal}`)
+      }
+    }
+    for (const [pin, holders] of claims) {
+      if (holders.length > 1) {
+        errors.push(`${tier.id} physical pin ${pin} is claimed by ${holders.join(' and ')}`)
+      }
+    }
+  }
+
+  // Signals that must sit on a pin capable of carrying them. The Pi's UARTs are
+  // on specific GPIOs; a pin without the alternate function silently does
+  // nothing, which reads as a dead sensor.
+  const UART_CAPABLE = new Set(['8', '10', '32', '33', '27', '28', '7', '29', '31', '36'])
+  for (const part of hardware.parts) {
+    if (part.interface !== 'uart') continue
+    for (const pin of part.electrical?.pins ?? []) {
+      const sig = String(pin.signal).toUpperCase()
+      if (/^(TX|RX|TXD|RXD)$/.test(sig) && !UART_CAPABLE.has(String(pin.pin))) {
+        errors.push(
+          `part '${part.id}' routes ${sig} to physical pin ${pin.pin}, which has no UART function`,
+        )
+      }
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return 'every signal pin is claimed once, and every UART sits on a UART-capable pin'
+})
+
+check('band counts on the site match the registry', () => {
+  // The landing page advertised fourteen simultaneous bands. Fourteen is the
+  // size of the taxonomy; the best-equipped tier reaches thirteen and the entry
+  // node reaches six, because the gravimetric band has no buildable sensor. The
+  // schema reference separately claimed an 11/3 detection-context split against
+  // an actual 12/2. Counts that anyone can recompute from the repository should
+  // not be typed by hand.
+  const errors = []
+  const withParts = new Set(hardware.parts.filter((p) => p.band).map((p) => p.band))
+  const best = Math.max(
+    ...spec.enums.tier.values.map(
+      (t) =>
+        new Set(hardware.parts.filter((p) => p.band && p.tiers?.includes(t.id)).map((p) => p.band))
+          .size,
+    ),
+  )
+  const detection = bands.bands.filter((b) => b.role === 'detection').length
+  const context = bands.bands.filter((b) => b.role === 'context').length
+
+  const words = { 2: 'Two', 3: 'Three', 11: 'eleven', 12: 'twelve', 13: 'thirteen', 14: 'fourteen' }
+  const hero = readText('apps/web/app/page.tsx')
+  if (!hero.includes(`up to ${words[best]} bands at once`)) {
+    errors.push(`the landing page does not claim "up to ${words[best]} bands at once"`)
+  }
+  if (!new RegExp(`value="${best}"`).test(hero)) {
+    errors.push(`the landing page stat does not read ${best}`)
+  }
+
+  const schemaDoc = readText('content/schema.md')
+  if (!schemaDoc.includes(`${words[detection][0].toUpperCase()}${words[detection].slice(1)} are detection bands`)) {
+    errors.push(`content/schema.md does not say there are ${words[detection]} detection bands`)
+  }
+  if (!schemaDoc.includes(`${words[context] ?? context} are context bands`)) {
+    errors.push(`content/schema.md does not say there are ${context} context bands`)
+  }
+  if (withParts.size !== best) {
+    // Not an error in itself, but worth surfacing: it means some band has a part
+    // that no tier ships.
+    errors.push(
+      `${withParts.size} bands have parts but the best tier only reaches ${best}; a part belongs to no tier`,
+    )
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return `${bands.bands.length} defined, ${best} buildable at once, ${detection} detection / ${context} context`
+})
+
+check('the documented wire protocol matches the ingest code', () => {
+  // The API reference described a body-only signature and four headers for as
+  // long as the code had required six and signed a canonical payload. Anyone
+  // writing a client from the documentation would have got a 401 with no way to
+  // work out why. Prose about a protocol is part of the protocol.
+  const ingest = readText('apps/web/lib/grid/ingest.ts')
+  const api = readText('content/api.md')
+  const errors = []
+
+  // Every header the code reads must appear in the reference.
+  const headers = [...ingest.matchAll(/headers\.get\('(x-nband-[a-z-]+)'\)/g)].map((m) =>
+    m[1].toLowerCase(),
+  )
+  for (const h of new Set(headers)) {
+    if (!api.toLowerCase().includes(h)) {
+      errors.push(`content/api.md never mentions the ${h} header, which ingest.ts requires`)
+    }
+  }
+
+  // The canonical payload template must be reproduced exactly.
+  const tmpl = ingest.match(/return `(nband\/v1[^`]*)`/)
+  if (!tmpl) {
+    errors.push('could not find the canonicalPayload template in ingest.ts')
+  } else {
+    const documented = tmpl[1].replace(/\$\{(\w+)\}/g, '{$1}').replace(/\n/g, '\\n')
+    if (!api.includes(documented)) {
+      errors.push(`content/api.md does not show the canonical payload as "${documented}"`)
+    }
+  }
+
+  // The skew window is a number a client must implement.
+  const skew = ingest.match(/MAX_CLOCK_SKEW_S\s*=\s*(\d+)/)
+  if (skew && !api.includes(skew[1])) {
+    errors.push(`content/api.md does not state the ${skew[1]}-second clock skew window`)
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return `${new Set(headers).size} headers, canonical payload and skew window all documented`
 })
 
 // ---------------------------------------------------------------------------

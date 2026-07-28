@@ -73,7 +73,7 @@ Two details in the storage schema are worth knowing. Timestamps are stored as a 
 
 ## The API surface
 
-Four endpoints, all requiring an Ed25519 signature over the request body using the node's key.
+Four endpoints, all requiring an Ed25519 signature using the node's key. The signature covers a canonical payload — `nband/v1\n{path}\n{timestamp}\n{nonce}\n{body}` — rather than the body alone, so a captured request cannot be replayed onto a different endpoint or reused at all. See [the API reference](/reference/api) for the exact header set.
 
 `POST /api/grid/register` enrols a node and declares its channels. Re-enrolment by a node signing with the key already on record is allowed and is how you update the channel list after adding hardware. Enrolling a new slug requires the grid enrolment secret.
 

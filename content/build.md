@@ -189,24 +189,35 @@ A malformed mask fails loudly at startup rather than silently defaulting to an u
 
 ## Step 9: Enrol with the grid
 
+Enrolling a new node needs a secret, and there is no self-service way to get one yet. Ask for it: open an issue on the repository titled "node enrolment", or email the address in [SECURITY.md](https://github.com/Xaxis/nband/blob/main/SECURITY.md). Say roughly where the node will be and which tier you built. You will get a secret back.
+
+That gate exists because the archive's only real asset is that its contents are trustworthy, and an open write endpoint is an open invitation to poison it. It is a deliberate bottleneck rather than a permanent policy, and it will be replaced by something self-service once there is a reviewed way to admit a node without a human in the loop.
+
+You do not need a secret to develop against the grid. `--simulate` runs the whole agent against synthetic data, and a simulated node's data is excluded from the public feed and can never reach a verdict, so you can exercise every code path before asking anyone for anything.
+
 Set your node's slug, position, and the enrolment secret in `~/node.toml`, then:
 
 ```bash
 ~/.nband-venv/bin/python -m nband_node.agent --config ~/node.toml --enroll
 ```
 
-**Verify.** The response contains a `node_id`, the channel count you expect, and a `published_position` that is **not** your exact coordinates. The published point is deterministically offset by the precision you declared, so your home address does not appear on a public map. Confirm the offset is what you intended before continuing; you can raise `location_precision_m` and re-enrol at any time.
+**Verify.** The response contains a `node_id`, the channel count you expect, and a `published_position` that is **not** your exact coordinates. The published point sits somewhere inside a disc of the radius you declared — a random place inside it, not a fixed distance away — and the direction is derived from a secret the grid server holds, so it cannot be recomputed and subtracted by someone reading this page. Your home address does not appear on a public map.
+
+Check the published point on a map before continuing. If it lands somewhere you would rather it did not, raise `location_precision_m` and re-enrol; the offset is recomputed from the new radius. If you are in a sparsely populated area, consider that a one-kilometre disc may still contain only a handful of buildings, and set the precision accordingly.
 
 Your node key was generated on first run at the path in `[grid].key_path` and is `0600`. It never leaves the machine. Back it up somewhere safe: losing it means enrolling under a new slug, and the archive cannot connect the two.
 
 ## Step 10: Run it for real
 
-Install the service and start it:
+Everything so far has run as you, out of your home directory, because that is the fastest way to find a miswired sensor. The service does not run that way. It runs as an unprivileged `nband` user with `ProtectHome=true`, which means it cannot read your home directory at all — not the venv, not the config, not the key. So installing it is a real step rather than a file copy:
 
 ```bash
-sudo cp ~/nband/firmware/systemd/nband-node.service /etc/systemd/system/
-sudo systemctl enable --now nband-node
+sudo ~/nband/firmware/install.sh
 ```
+
+That creates the `nband` service account, builds `/opt/nband/venv`, copies your config to `/etc/nband/node.toml` with the paths rewritten, moves your node key to `/var/lib/nband/node.key` so the service can reach it, installs the unit, and starts it. Run it again any time you change your config. If your config is not at `~/node.toml`, pass the path as an argument.
+
+Back up `/var/lib/nband/node.key` before you delete the copy in your home directory. Losing it means enrolling under a new slug, and the archive cannot connect the two.
 
 **Verify.** The service is running, the clock is disciplined, and the grid has heard from you:
 
