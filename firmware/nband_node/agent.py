@@ -19,11 +19,13 @@ import argparse
 import json
 import logging
 import os
+import queue
 import secrets
 import subprocess
 import shutil
 import signal
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -335,6 +337,76 @@ class GridClient:
 
 
 # ---------------------------------------------------------------------------
+# Channel workers
+# ---------------------------------------------------------------------------
+
+
+class ChannelWorker(threading.Thread):
+    """Reads one channel on its own thread and posts samples to a queue.
+
+    Every driver read used to happen inline on the single main loop, so any
+    channel that blocked blocked all of them. That is not a hypothetical: an
+    SDR read is tens of milliseconds, a camera capture can be hundreds, and a
+    serial read sits on its timeout when the sensor is unplugged. One unplugged
+    UART could stall a node's optical channels indefinitely, and the resulting
+    gaps would look like quiet sky rather than a wiring fault.
+
+    Each worker owns its own driver and its own cadence. A slow channel now
+    delays only itself.
+    """
+
+    def __init__(
+        self,
+        channel: configmod.ChannelConfig,
+        driver: "sensors.Driver",
+        out: "queue.Queue[Sample]",
+        clock: Clock,
+        stop: threading.Event,
+    ) -> None:
+        super().__init__(name=f"ch-{channel.channel_id}", daemon=True)
+        self.channel = channel
+        self.driver = driver
+        self.out = out
+        self.clock = clock
+        # NOT `self._stop`: threading.Thread has an internal _stop() that join()
+        # calls, and shadowing it with an Event makes every join raise
+        # TypeError after the thread has already done its work.
+        self._halt = stop
+        #: Samples discarded because the queue was full. Reported in heartbeats
+        #: rather than silently lost, because a node dropping data should say so.
+        self.dropped = 0
+        self.failures = 0
+
+    def run(self) -> None:
+        interval = 1.0 / self.channel.sample_rate_hz
+        next_read = time.monotonic()
+        while not self._halt.is_set():
+            now = time.monotonic()
+            if now < next_read:
+                # Sleep in slices so shutdown is prompt even on a 0.1 Hz channel.
+                self._halt.wait(min(next_read - now, 0.25))
+                continue
+            next_read = now + interval
+            try:
+                sample = self.driver.read(self.clock.now_ns())
+            except Exception as exc:  # noqa: BLE001
+                self.failures += 1
+                log.error("channel %s read failed: %s", self.channel.channel_id, exc)
+                # Back off so a hard-failing driver cannot spin the CPU.
+                self._halt.wait(1.0)
+                continue
+            if sample is None:
+                continue
+            try:
+                self.out.put_nowait(sample)
+            except queue.Full:
+                # Bounded on purpose: the memory budget is the whole reason
+                # tier 1 fits a 2 GB board. Dropping the newest sample keeps the
+                # backlog ordered, and the count surfaces in the heartbeat.
+                self.dropped += 1
+
+
+# ---------------------------------------------------------------------------
 # Agent
 # ---------------------------------------------------------------------------
 
@@ -365,7 +437,13 @@ class Agent:
         self.drivers: dict[str, sensors.Driver] = {}
         self.floors: dict[str, NoiseFloor] = {}
         self.buffers: dict[str, RingBuffer] = {}
-        self._next_read: dict[str, float] = {}
+        self._stop_workers = threading.Event()
+        self._workers: list[ChannelWorker] = []
+        # Sized to a couple of seconds of the busiest plausible channel set.
+        # Bounded rather than unbounded because an unbounded queue turns a slow
+        # consumer into unbounded memory growth, which is exactly the failure
+        # the 2 GB budget exists to avoid.
+        self._samples: "queue.Queue[Sample]" = queue.Queue(maxsize=4096)
 
         for ch in cfg.channels:
             if not ch.enabled:
@@ -376,7 +454,6 @@ class Agent:
             # Bounded at construction: pre-roll seconds of samples, floor 64.
             depth = max(int(ch.sample_rate_hz * (cfg.pre_roll_s + cfg.post_roll_s)), 64)
             self.buffers[ch.channel_id] = RingBuffer(min(depth, 20_000))
-            self._next_read[ch.channel_id] = 0.0
 
     def stop(self, *_: object) -> None:
         self._running = False
@@ -488,6 +565,29 @@ class Agent:
 
         self.spool.enforce_ceiling()
 
+    def _start_workers(self, by_id: dict[str, configmod.ChannelConfig]) -> None:
+        for cid, drv in self.drivers.items():
+            worker = ChannelWorker(by_id[cid], drv, self._samples, self.clock, self._stop_workers)
+            worker.start()
+            self._workers.append(worker)
+        log.info("%d channel workers started", len(self._workers))
+
+    def _drain_remaining(self, by_id: dict[str, configmod.ChannelConfig]) -> None:
+        """Consume anything left in the queue at shutdown."""
+        while True:
+            try:
+                sample = self._samples.get_nowait()
+            except queue.Empty:
+                return
+            ch = by_id.get(sample.channel_id)
+            if ch is None:
+                continue
+            self._record(sample)
+
+    @property
+    def dropped_samples(self) -> int:
+        return sum(w.dropped for w in self._workers)
+
     def _grade_clock(self) -> None:
         """Ask chrony how well disciplined we actually are.
 
@@ -525,10 +625,17 @@ class Agent:
                 "clock_offset_ns": self.clock.offset_ns,
                 "uptime_s": int(time.monotonic() - self._started),
                 "firmware_version": PLATFORM_VERSION,
+                # Health from the workers themselves rather than from whether a
+                # driver object exists. A channel whose reads are all failing is
+                # not "ok" simply because it opened successfully at startup.
                 "channel_health": {
-                    cid: "ok" if cid in self.drivers else "failed"
-                    for cid in (c.channel_id for c in self.cfg.channels if c.enabled)
-                },
+                    w.channel.channel_id: (
+                        "failing" if w.failures else "dropping" if w.dropped else "ok"
+                    )
+                    for w in self._workers
+                }
+                or {cid: "ok" for cid in self.drivers},
+                "dropped_samples": self.dropped_samples,
             }
         )
 
@@ -552,6 +659,7 @@ class Agent:
         last_flush = last_beat = time.monotonic()
         last_clock = last_ping = 0.0
         self._grade_clock()
+        self._start_workers(by_id)
 
         try:
             while self._running:
@@ -559,20 +667,22 @@ class Agent:
                 if deadline and now >= deadline:
                     break
 
-                for cid, drv in self.drivers.items():
-                    if now < self._next_read[cid]:
-                        continue
-                    ch = by_id[cid]
-                    self._next_read[cid] = now + 1.0 / ch.sample_rate_hz
+                # Drain whatever the workers have produced. Triggering and
+                # spooling stay on this one thread, so the coincidence detector
+                # and the noise floors need no locking: exactly one thread ever
+                # touches them.
+                drained = 0
+                while drained < 512:
                     try:
-                        s = drv.read(self.clock.now_ns())
-                    except Exception as exc:  # noqa: BLE001
-                        log.error("channel %s read failed: %s", cid, exc)
+                        sample = self._samples.get(timeout=0.05 if drained == 0 else 0)
+                    except queue.Empty:
+                        break
+                    drained += 1
+                    ch = by_id.get(sample.channel_id)
+                    if ch is None:
                         continue
-                    if s is None:
-                        continue
-                    self._record(s)
-                    det = self._maybe_trigger(s, ch)
+                    self._record(sample)
+                    det = self._maybe_trigger(sample, ch)
                     if det:
                         self._emit_detection(det)
 
@@ -592,9 +702,16 @@ class Agent:
                     sd_notify("WATCHDOG=1")
                     last_ping = now
 
-                time.sleep(0.002)
+                # No sleep here: the queue get above already blocks briefly
+                # when there is nothing to do, which is both responsive and
+                # idle-friendly.
         finally:
             sd_notify("STOPPING=1")
+            self._stop_workers.set()
+            for w in self._workers:
+                w.join(timeout=3.0)
+            # Anything the workers produced before stopping is still data.
+            self._drain_remaining(by_id)
             self._flush()
             self.close_all()
             log.info("nband node stopped")

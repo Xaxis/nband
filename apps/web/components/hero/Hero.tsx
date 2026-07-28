@@ -55,6 +55,16 @@ export function HeroScene({ children }: { children: React.ReactNode }) {
           ? 'fixed inset-0 z-[60] h-[100dvh] w-screen bg-[var(--surface-1)]'
           : 'relative isolate overflow-hidden border-b border-[var(--line)]'
       }
+      {...(expanded
+        ? {
+            // Covering the viewport without saying so left everything behind it
+            // tabbable and exposed to a screen reader, which then read a page
+            // the user could not see.
+            role: 'dialog' as const,
+            'aria-modal': true,
+            'aria-label': 'Sensor volume, expanded',
+          }
+        : {})}
     >
       {/* The scene. Absolutely positioned so hero text composes on top of it. */}
       {/* On wide screens the scene gets its own box on the right rather than

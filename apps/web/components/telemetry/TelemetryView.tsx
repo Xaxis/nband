@@ -51,6 +51,40 @@ function fmtStamp(t: number): string {
   return new Date(t).toISOString().replace('T', ' ').slice(0, 19) + 'Z'
 }
 
+/**
+ * What a chart says, in a sentence.
+ *
+ * A line chart is an image to a screen reader, and "sky temperature, 320
+ * samples" conveys nothing about what the sky did. This states the range, the
+ * direction of travel, and whether anything was flagged, which is most of what
+ * the picture shows at a glance.
+ */
+function summarise(series: Series, lo: number, hi: number): string {
+  const pts = series.points
+  if (pts.length === 0) return `${series.label}: no samples in this window`
+
+  const values = pts.map((p) => p.v)
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+  const mean = values.reduce((a, b) => a + b, 0) / values.length
+  const first = values[0]
+  const last = values[values.length - 1]
+  const spread = Math.max(hi - lo, 1e-9)
+  const drift =
+    Math.abs(last - first) < spread * 0.05
+      ? 'roughly flat'
+      : last > first
+        ? 'rising'
+        : 'falling'
+  const flagged = pts.filter((p) => p.q !== 0).length
+
+  return (
+    `${series.label}, ${series.unit}. ${pts.length} samples, ${drift}. ` +
+    `Range ${fmtValue(min)} to ${fmtValue(max)}, mean ${fmtValue(mean)}. ` +
+    (flagged ? `${flagged} samples flagged as compromised.` : 'No samples flagged.')
+  )
+}
+
 /** One band, one chart. Bands are never overlaid: fourteen hues cannot be told
  *  apart reliably, so identity comes from the heading and colour only accents. */
 function Facet({
@@ -160,7 +194,7 @@ function Facet({
         onPointerLeave={() => onCursor(null)}
         className="block touch-none"
         role="img"
-        aria-label={`${series.label} in ${series.unit}, ${series.points.length} samples`}
+        aria-label={summarise(series, lo, hi)}
       >
         {/* Event bands sit behind the data. */}
         {events.map((ev) => {
@@ -475,7 +509,7 @@ export function TelemetryView({
 
       {/* Small multiples: one facet per channel, shared x-axis and cursor. */}
       {showTable ? (
-        <div className="card scroll-x">
+        <div className="card scroll-x" role="region" aria-label="Telemetry summary table">
           <table className="w-full min-w-[560px] border-collapse text-[12.5px]">
             <thead>
               <tr className="bg-[var(--surface-3)] text-left">
@@ -515,6 +549,13 @@ export function TelemetryView({
         </div>
       ) : (
         <div className="card overflow-hidden">
+          {/* Points a screen reader at the equivalent data. Each chart carries
+              its own spoken summary, but a table is what you want if you are
+              actually reading numbers rather than skimming shapes. */}
+          <p className="sr-only">
+            {series.length} charts follow, one per channel. Each has a spoken summary of its
+            range and direction. For exact values, use the Table view control above.
+          </p>
           {loading && series.length === 0 && (
             <div className="num p-8 text-center text-[12.5px] text-[var(--ink-3)]">
               loading window…

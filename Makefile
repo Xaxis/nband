@@ -43,9 +43,10 @@ parity: ## The browser discriminator matches the Python engine
 links: ## Every internal link and every document resolves
 	@node tools/check-links.mjs
 
-test-firmware: ## Node agent: clock, buffers, triggering, driver registry
+test-firmware: ## Node agent: clock, buffers, triggering, registry, concurrency
 	@$(PY) firmware/tests/test_core.py
 	@$(PY) firmware/tests/test_registry.py
+	@$(PY) firmware/tests/test_workers.py
 
 test-discriminator: ## Scoring engine, mostly asserting refusals
 	@$(PY) discriminator/tests/test_engine.py
