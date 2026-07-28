@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
 import { BandChip } from '../../../components/Bands'
 import {
@@ -20,11 +20,12 @@ import {
   type Tier,
 } from '../../../lib/schema/generated'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Hardware and bill of materials',
   description:
     'Three build tiers with sourced part prices, what each sensor actually buys you, and where the money is best spent.',
-}
+  path: '/hardware',
+})
 
 const TIER_ORDER: Tier[] = ['t1', 't2', 't3']
 

@@ -1,13 +1,14 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '../../../lib/metadata'
 import { TelemetryView } from '../../../components/telemetry/TelemetryView'
 import { Container, Note } from '../../../components/ui'
 import { getFeed } from '../../../lib/feed'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Live telemetry',
   description:
     'Band-by-band telemetry from the NBAND grid, with historical scrub and discriminator verdicts overlaid.',
-}
+  path: '/telemetry',
+})
 
 export const dynamic = 'force-dynamic'
 

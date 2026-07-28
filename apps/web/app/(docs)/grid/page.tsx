@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
 import { BandChip } from '../../../components/Bands'
 import { Container, Note, Section } from '../../../components/ui'
@@ -6,11 +6,12 @@ import { getFeed } from '../../../lib/feed'
 import { NODESTATUS, THRESHOLDS, TIER } from '../../../lib/schema/generated'
 import { STATUS } from '../../../lib/spectrum'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'The grid',
   description:
     'Every node reporting to NBAND, what it carries, and whether its clock is good enough to contribute geometry.',
-}
+  path: '/grid',
+})
 
 export const dynamic = 'force-dynamic'
 
@@ -103,10 +104,13 @@ export default async function GridPage() {
                 const p = project(n.lat!, n.lon!)
                 const c = STATUS_COLOR[n.status] ?? '#6f7788'
                 return (
-                  <g key={n.slug}>
+                  <g
+                    key={n.slug}
+                    role="img"
+                    aria-label={`${n.displayName}, ${n.status}, clock ${n.clock}`}
+                  >
                     <circle cx={p.x} cy={p.y / 2} r="1.6" fill={c} opacity="0.22" />
                     <circle cx={p.x} cy={p.y / 2} r="0.7" fill={c} />
-                    <title>{`${n.displayName} — ${n.status}, clock ${n.clock}`}</title>
                   </g>
                 )
               })}

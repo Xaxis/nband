@@ -33,7 +33,7 @@ interface Shell {
 const MAX_R = 5.2
 const MIN_R = 1.15
 
-export default function SkyScene() {
+export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<string[]>([])
   const [detections, setDetections] = useState(0)
@@ -59,9 +59,23 @@ export default function SkyScene() {
     host.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(42, host.clientWidth / host.clientHeight, 0.1, 100)
-    camera.position.set(0, 4.4, 10.5)
-    camera.lookAt(0, 0.6, 0)
+    const FOV = 42
+    const camera = new THREE.PerspectiveCamera(FOV, host.clientWidth / host.clientHeight, 0.1, 200)
+
+    // Frame to the largest shell rather than a hard-coded position. The dome is
+    // a hemisphere of radius MAX_R sitting on the ground plane, so the subject
+    // is a box roughly 2*MAX_R wide and MAX_R tall centred at half height. A
+    // fixed camera clipped the top of it, and clipped it differently at every
+    // aspect ratio; as a wide, short hero underlay it clipped worst of all.
+    const LOOK_AT = new THREE.Vector3(0, MAX_R * 0.32, 0)
+    function frameCamera(aspect: number, pad: number) {
+      const vFov = (FOV * Math.PI) / 180
+      const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect)
+      const halfH = MAX_R * 0.62 * pad   // dome height above the look-at point
+      const halfW = MAX_R * pad          // dome radius
+      // Distance needed to contain the subject on each axis; take the larger.
+      return Math.max(halfH / Math.tan(vFov / 2), halfW / Math.tan(hFov / 2))
+    }
 
     const disposables: { dispose(): void }[] = []
     const track = <T extends { dispose(): void }>(x: T) => {
@@ -71,8 +85,8 @@ export default function SkyScene() {
 
     // --- ground ------------------------------------------------------------
     const grid = new THREE.GridHelper(
-      22,
-      22,
+      MAX_R * 2.6,
+      18,
       new THREE.Color(dark ? 0x2a3340 : 0xc8d0da),
       new THREE.Color(dark ? 0x1a2029 : 0xdfe4ea),
     )
@@ -207,10 +221,10 @@ export default function SkyScene() {
       halo.position.copy(p)
 
       // Which shells currently contain the object.
-      const dist = p.length()
+      const targetDist = p.length()
       const nowActive: string[] = []
       for (const s of shells) {
-        const inside = dist <= s.radius
+        const inside = targetDist <= s.radius
         s.lit = THREE.MathUtils.damp(s.lit, inside ? 1 : 0, 6, dt || 0.016)
         ;(s.mesh.material as THREE.MeshBasicMaterial).opacity = 0.028 + s.lit * 0.075
         ;(s.ring.material as THREE.LineBasicMaterial).opacity = 0.22 + s.lit * 0.62
@@ -249,11 +263,15 @@ export default function SkyScene() {
       trailGeo.attributes.position.needsUpdate = true
 
       // Slow camera drift keeps the volume legible without demanding input.
-      const cam = reduced ? 0 : t * 0.055
-      camera.position.x = Math.sin(cam) * 2.4
-      camera.position.z = 10.4 + Math.cos(cam) * 1.1
-      camera.position.y = 4.3 + Math.sin(cam * 0.7) * 0.5
-      camera.lookAt(0, 0.7, 0)
+      // The orbit radius comes from the framing calculation, so the dome stays
+      // fully inside the frame at every aspect ratio and in fullscreen.
+      const cam = reduced ? 0.3 : t * 0.055
+      const camDist = frameCamera(camera.aspect, 1.12)
+      const elev = 0.42 + Math.sin(cam * 0.7) * 0.05
+      camera.position.x = Math.sin(cam) * camDist * Math.cos(elev)
+      camera.position.z = Math.cos(cam) * camDist * Math.cos(elev)
+      camera.position.y = LOOK_AT.y + camDist * Math.sin(elev)
+      camera.lookAt(LOOK_AT)
 
       renderer.render(scene, camera)
       setActive((prev) =>
@@ -274,7 +292,7 @@ export default function SkyScene() {
     frame()
 
     const onResize = () => {
-      if (!host.clientWidth) return
+      if (!host.clientWidth || !host.clientHeight) return
       camera.aspect = host.clientWidth / host.clientHeight
       camera.updateProjectionMatrix()
       renderer.setSize(host.clientWidth, host.clientHeight)
@@ -293,11 +311,11 @@ export default function SkyScene() {
   }, [])
 
   return (
-    <div className="relative">
-      <div ref={hostRef} className="h-[300px] w-full sm:h-[400px] lg:h-[460px]" aria-hidden="true" />
+    <div className="relative h-full w-full">
+      <div ref={hostRef} className="h-full w-full" aria-hidden="true" />
 
       {/* The scene is decorative to a screen reader; the readout is not. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-2 p-1">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-end gap-2 p-3 pr-24">
         <div className="flex flex-wrap gap-1.5">
           {active.length === 0 ? (
             <span className="num rounded border border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_80%,transparent)] px-2 py-1 text-[11px] text-[var(--ink-3)]">

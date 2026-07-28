@@ -17,7 +17,7 @@ const HEADER_LINKS = [
   { href: '/grid', label: 'Grid' },
 ]
 
-function Mark({ size = 22 }: { size?: number }) {
+function Mark({ size = 30 }: { size?: number }) {
   // Seven arcs, shortest wavelength innermost. The bridge is the spectrum.
   const hues = [295, 258, 150, 20, 48, 320, 205]
   return (
@@ -34,7 +34,7 @@ function Mark({ size = 22 }: { size?: number }) {
           d={`M ${3 + i * 1.6} 27 A ${13 - i * 1.6} ${13 - i * 1.6} 0 0 1 ${29 - i * 1.6} 27`}
           fill="none"
           stroke={`oklch(0.7 0.16 ${h})`}
-          strokeWidth="1.9"
+          strokeWidth="2.15"
           strokeLinecap="round"
         />
       ))}
@@ -100,7 +100,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_88%,transparent)] backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-[1180px] items-center gap-3 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight">
+        <Link href="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
           <Mark />
           <span>NBAND</span>
         </Link>
@@ -178,8 +178,8 @@ export function SiteFooter({ version }: { version: string }) {
     <footer className="mt-24 border-t border-[var(--line)] bg-[var(--surface-0)]">
       <div className="mx-auto grid max-w-[1180px] gap-8 px-4 py-12 sm:px-6 md:grid-cols-[1.6fr_repeat(4,1fr)]">
         <div>
-          <div className="flex items-center gap-2.5 font-semibold tracking-tight">
-            <Mark size={20} />
+          <div className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
+            <Mark size={28} />
             NBAND
           </div>
           <p className="mt-3 max-w-[38ch] text-[13.5px] leading-relaxed text-[var(--ink-3)]">

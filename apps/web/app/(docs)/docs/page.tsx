@@ -1,14 +1,15 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
 import { Container, Section } from '../../../components/ui'
 import { NAV } from '../../../lib/nav'
 import { PLATFORM_VERSION, tierCost, tierPower } from '../../../lib/schema/generated'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Documentation',
   description:
     'How the pieces of nband fit together, and the shortest path through them depending on what you are trying to do.',
-}
+  path: '/docs',
+})
 
 const PATHS = [
   {

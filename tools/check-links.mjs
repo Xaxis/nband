@@ -124,6 +124,24 @@ for (const [path, sources] of [...found].sort()) {
   broken.push({ path, sources, why: 'has no page.tsx' })
 }
 
+// The sitemap is another place that used to keep its own copy of the site's
+// shape, and it fell behind within a day. Assert it derives from the manifest.
+const sitemapSrc = readFileSync(resolve(root, 'apps/web/app/sitemap.ts'), 'utf8')
+if (!/NAV_FLAT/.test(sitemapSrc)) {
+  console.error(
+    '  BROKEN  apps/web/app/sitemap.ts does not derive from lib/nav.ts.\n' +
+      '          A hand-maintained sitemap drifts from the routes it describes.',
+  )
+  process.exit(1)
+}
+
+// Same for the chrome: header and footer must read the manifest, not a list.
+const chromeSrc = readFileSync(resolve(root, 'apps/web/components/Chrome.tsx'), 'utf8')
+if (!/from '\.\.\/lib\/nav'/.test(chromeSrc)) {
+  console.error('  BROKEN  apps/web/components/Chrome.tsx does not read lib/nav.ts.')
+  process.exit(1)
+}
+
 console.log(`Link check: ${found.size} distinct internal paths against ${routes.size} routes\n`)
 
 if (broken.length) {

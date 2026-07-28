@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '../../../lib/metadata'
 import { DiscriminatorPlayground } from '../../../components/DiscriminatorPlayground'
 import { Container, Note, Section } from '../../../components/ui'
 import {
@@ -12,11 +12,12 @@ import {
 } from '../../../lib/schema/generated'
 import { VERDICT } from '../../../lib/spectrum'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'The discriminator',
   description:
     'How NBAND decides what an event was, what it refuses to decide, and why the top of the ladder is “unresolved”.',
-}
+  path: '/discriminator',
+})
 
 export default function DiscriminatorPage() {
   return (

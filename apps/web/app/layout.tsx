@@ -16,13 +16,25 @@ export const metadata: Metadata = {
   applicationName: 'NBAND',
   openGraph: {
     type: 'website',
-    siteName: 'NBAND',
-    title: 'NBAND — an open multi-spectral sensing platform',
+    siteName: 'nband',
+    // Next does not derive openGraph.title from the page title, so without an
+    // explicit template every page shared the site-wide one. Templates here
+    // mirror the document title, so a shared link names the page it points at.
+    title: {
+      default: 'nband — an open multi-spectral sensing platform',
+      template: '%s — nband',
+    },
     description:
       'Fourteen bands, one clock, an open archive. Build a node, join the grid, read the data.',
     url: SITE_URL,
   },
-  twitter: { card: 'summary_large_image' },
+  twitter: {
+    card: 'summary_large_image',
+    title: {
+      default: 'nband — an open multi-spectral sensing platform',
+      template: '%s — nband',
+    },
+  },
   robots: { index: true, follow: true },
 }
 

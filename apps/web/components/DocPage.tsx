@@ -2,12 +2,13 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Container } from './ui'
 import { getDoc, listDocs } from '../lib/content'
+import { pageMetadata } from '../lib/metadata'
 import { PLATFORM_VERSION } from '../lib/schema/generated'
 
-export function docMetadata(slug: string) {
+export function docMetadata(slug: string, path?: string) {
   const doc = getDoc(slug)
   if (!doc) return {}
-  return { title: doc.title, description: doc.description }
+  return pageMetadata({ title: doc.title, description: doc.description, path })
 }
 
 export function DocPage({ slug }: { slug: string }) {

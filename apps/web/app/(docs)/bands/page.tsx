@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
 import { SpectrumBar } from '../../../components/Bands'
 import {
@@ -18,11 +18,12 @@ import {
 } from '../../../lib/schema/generated'
 import { SPECTRAL, bandExtent } from '../../../lib/spectrum'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'The fourteen bands',
   description:
     'What each band physically detects, how far it reaches, what weather kills it, and what it costs to open. With the full band-versus-phenomenon detection matrix.',
-}
+  path: '/bands',
+})
 
 function StrengthPills({ band }: { band: Band }) {
   const strong = PHENOMENA.filter((p) => band.profile.detects[p.id as PhenomenonId] >= 2)

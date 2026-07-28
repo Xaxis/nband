@@ -17,16 +17,9 @@ export default function HomePage() {
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
-      <section className="gridfield relative overflow-hidden border-b border-[var(--line)]">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-[0.5]"
-          style={{
-            background:
-              'radial-gradient(80% 120% at 50% -20%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 70%)',
-          }}
-        />
-        <Container className="relative py-16 sm:py-24">
+      {/* The scene underlays this whole block; the headline composes on top. */}
+      <HeroScene>
+        <Container className="relative min-h-[560px] py-16 sm:min-h-[640px] sm:py-24">
           <p className="eyebrow">Open multi-spectral sensing · v0.1.0</p>
 
           <h1 className="mt-4 max-w-[19ch] text-[38px] font-semibold leading-[1.05] tracking-[-0.03em] text-[var(--ink)] sm:text-[58px]">
@@ -50,24 +43,20 @@ export default function HomePage() {
             </Button>
           </div>
 
-          <div className="mt-10 lg:mt-4">
-            <p className="eyebrow mb-2">
-              One node, eleven detection shells, an object crossing them
-            </p>
-            <HeroScene />
-            <p className="mt-2 max-w-[74ch] text-[12px] leading-relaxed text-[var(--ink-3)]">
-              Range rings are the real detection distances from the band schema, on a log scale
-              because the channels span thirty metres to three hundred kilometres. A band lights
-              when the object enters its shell. Two lit at once is a coincidence, which is the
-              cheapest strong evidence the platform can produce and the only thing that promotes a
-              buffered window to permanent storage.
-            </p>
-          </div>
+          <p className="mt-10 max-w-[52ch] text-[12.5px] leading-relaxed text-[var(--ink-3)]">
+            Behind this text: one node and eleven detection shells at their real ranges from the
+            band schema, log-scaled because the channels span thirty metres to three hundred
+            kilometres. A band lights as the object enters its shell. Two lit at once is a
+            coincidence, which is the only thing that promotes a buffered window to permanent
+            storage.
+          </p>
+        </Container>
+      </HeroScene>
 
-          <div className="mt-12">
-            <p className="eyebrow mb-3">The instrument, by wavelength</p>
-            <SpectrumBar />
-          </div>
+      <section className="border-b border-[var(--line)]">
+        <Container className="py-10">
+          <p className="eyebrow mb-3">The instrument, by wavelength</p>
+          <SpectrumBar />
         </Container>
       </section>
 

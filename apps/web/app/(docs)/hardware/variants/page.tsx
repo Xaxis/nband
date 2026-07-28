@@ -1,14 +1,15 @@
-import type { Metadata } from 'next'
+import { pageMetadata } from '../../../../lib/metadata'
 import Link from 'next/link'
 import { BandChip } from '../../../../components/Bands'
 import { Container, Note, Section } from '../../../../components/ui'
 import { PARTS, VARIANTSTATUS, type VariantStatus } from '../../../../lib/schema/generated'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Hardware variant registry',
   description:
     'Every part the grid knows how to calibrate, including community substitutes, and how to register one it does not.',
-}
+  path: '/hardware/variants',
+})
 
 const ORDER: VariantStatus[] = ['reference', 'verified', 'submitted', 'unsupported']
 
