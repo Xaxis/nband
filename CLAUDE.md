@@ -26,29 +26,28 @@ firmware/       nband_node — the node agent (Python 3.11+)
 discriminator/  nband_discriminator — analysis engine + CLI
 apps/web/       Next.js 15 App Router site + grid ingest API
 content/        Flat-file docs, versioned beside the firmware
-tools/          codegen, check-drift, seed, gen-palette
+tools/          codegen, checks, seed, fixtures, gen-palette
 ```
 
 ## Commands
 
+Everything is a `make` target, and CI runs the same ones. `make` lists them.
+
 ```bash
-yarn codegen                                   # regenerate TS + Python from schema/
-node tools/check-drift.mjs                     # schema/SQL/docs/xref agreement
-python3 firmware/tests/test_core.py            # 16 tests
-python3 firmware/tests/test_registry.py        # 6 tests
-python3 discriminator/tests/test_engine.py     # 16 tests
-yarn workspace @nband/web build
-
-# Node agent, no hardware needed
-cd firmware && python3 -m nband_node.agent --config config.example.toml --simulate --self-test
-
-# Discriminator against the live grid
-cd discriminator && python3 -m nband_discriminator.cli --limit 50 --dry-run
+make check          # everything CI runs: drift, parity, links, tests, lint, build
+make check-fast     # the same without the web build
+make codegen        # regenerate bindings and the search index from schema/
+make fixtures       # regenerate discriminator conformance fixtures
+make node-selftest  # open every channel in simulation
+make format         # ruff + prettier in place
 ```
+
+Run `make codegen` after touching anything in `schema/`, and `make fixtures`
+after changing discriminator scoring. Both are checked in CI.
 
 ## Things that will bite you
 
-**`schema/bands.json` + `schema/spec.json` are canonical.** TypeScript and Python are generated. Never hand-edit `apps/web/lib/schema/generated.ts` or `firmware/nband_node/schema_generated.py`. Run `yarn codegen` and commit the result; `check-drift` fails the build otherwise.
+**`schema/bands.json` + `schema/spec.json` are canonical.** TypeScript and Python are generated. Never hand-edit `apps/web/lib/schema/generated.ts` or `firmware/nband_node/schema_generated.py`. Run `make codegen` and commit the result; `make drift` fails otherwise.
 
 **Band `ordinal` values are persisted in Postgres.** Reordering bands is a breaking change requiring a migration, not an edit.
 

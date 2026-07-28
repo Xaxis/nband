@@ -8,7 +8,7 @@ The motivating question is whether anything crosses the sky that conventional ex
 
 ## What is in here
 
-Hardware, firmware, database, analysis, and documentation are one repository on one version, because documentation that drifts from the hardware is worse than no documentation. `yarn check:drift` fails the build when they diverge.
+Hardware, firmware, database, analysis, and documentation are one repository on one version, because documentation that drifts from the hardware is worse than no documentation. `make check` fails when they diverge.
 
 ```
 schema/         Canonical source of truth. bands.json and spec.json define the band
@@ -21,7 +21,7 @@ discriminator/  The analysis engine. Subtracts known sources, scores hypotheses,
 apps/web/       The site: landing, documentation, hardware registry, live telemetry,
                 and the grid ingest API.
 content/        Flat-file documentation, versioned beside the firmware it describes.
-tools/          codegen, drift checks, seeding, palette derivation.
+tools/          codegen, the four checks, seeding, fixtures, palette derivation.
 ```
 
 ## The parts that are load-bearing
@@ -36,22 +36,30 @@ tools/          codegen, drift checks, seeding, palette derivation.
 
 **Colour never carries meaning alone.** Fourteen bands cannot be separated by hue under colour-vision deficiency at any spacing; this was measured with a palette validator, not assumed. So band colour is an accent beside a written label, and the telemetry view uses one chart per band rather than fourteen overlaid traces.
 
+**Requests are single-use.** Every write is Ed25519-signed over the path, a timestamp, and a nonce as well as the body. The grid records each nonce, so a captured request cannot be replayed to fabricate archive content.
+
 ## Running it
 
+Everything goes through `make`. `make` on its own lists the targets.
+
 ```bash
-yarn install
-yarn codegen          # regenerate bindings from schema/
-yarn dev              # site at localhost:3000, mock telemetry feed
-
-# Node agent, no hardware required
-cd firmware
-python3 -m nband_node.agent --config config.example.toml --simulate --self-test
-
-# Tests
-python3 firmware/tests/test_core.py          # 16 tests: clock, buffers, triggering
-python3 discriminator/tests/test_engine.py   # 16 tests: mostly refusals
-node tools/check-drift.mjs                   # schema, SQL, docs, cross-references
+make install        # JS and Python dependencies
+make dev            # site at localhost:3000, against the mock feed
+make check          # everything CI runs
+make node-selftest  # open every channel in simulation, no hardware needed
 ```
+
+`make check` runs six things, each of which is a claim this repository makes
+about itself:
+
+| Target | What it proves |
+|---|---|
+| `make drift` | Generated bindings, Postgres enums, document versions, part cross-references, tier budgets and power sizing all agree |
+| `make parity` | The browser discriminator scores identically to the Python engine |
+| `make links` | Every internal link resolves and every document has a route |
+| `make test-firmware` | Clock grading, bounded buffers, coincidence triggering, driver registry |
+| `make test-discriminator` | The scoring engine, mostly asserting what it refuses to conclude |
+| `make lint` `make build` | Types, lints, and a production build |
 
 ## Build one
 
@@ -61,6 +69,24 @@ See [/hardware](https://nband.space/hardware) for the bill of materials and [/bu
 
 If you are within 60 km of an existing node, put yours there. A second node with a good clock converts both from bearing-only instruments into a system that measures position, and that is worth more than any single sensor upgrade.
 
+## Documentation
+
+Everything is published at [nband.space](https://nband.space) and lives in
+`content/` beside the firmware it describes. Start at
+[nband.space/docs](https://nband.space/docs).
+
+- [What the fourteen bands can and cannot see](https://nband.space/bands)
+- [Bill of materials, wiring, and power budget](https://nband.space/hardware)
+- [Build guide](https://nband.space/build) — ten steps, each one verifiable
+- [How verdicts are reached](https://nband.space/discriminator) — runs live
+- [Safety and regulation](https://nband.space/safety) — read before building an emitter
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md), and
+[SECURITY.md](SECURITY.md) for the threat model and how to report a
+vulnerability. Changes of note are recorded in [CHANGELOG.md](CHANGELOG.md).
+
 ## Licence
 
-Code MIT. Documentation and recorded data CC BY 4.0.
+Code MIT. Documentation and recorded data CC BY 4.0. See [LICENSE](LICENSE).

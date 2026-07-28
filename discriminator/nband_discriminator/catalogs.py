@@ -99,7 +99,7 @@ class AdsbCatalog(Catalog):
             return self._unavailable("no ADS-B provider configured")
         try:
             contacts = self._provider(obs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return self._unavailable(f"provider error: {type(exc).__name__}")
         if contacts is None:
             return self._unavailable("provider returned no data")
@@ -114,20 +114,24 @@ class AdsbCatalog(Catalog):
 
         best: tuple[float, dict] | None = None
         for c in contacts:
-            sep = angular_separation(obs.azimuth_deg, obs.elev_angle_deg,
-                                     c["azimuth_deg"], c["elevation_deg"])
+            sep = angular_separation(
+                obs.azimuth_deg, obs.elev_angle_deg, c["azimuth_deg"], c["elevation_deg"]
+            )
             if best is None or sep < best[0]:
                 best = (sep, c)
 
         if best is None:
-            return CatalogResult(self.source, available=True, matched=False,
-                                 detail={"contacts": 0})
+            return CatalogResult(self.source, available=True, matched=False, detail={"contacts": 0})
 
         sep, contact = best
         if sep > self._tol:
-            return CatalogResult(self.source, available=True, matched=False,
-                                 delta_bearing_deg=round(sep, 3),
-                                 detail={"nearest": contact.get("hex"), "contacts": len(contacts)})
+            return CatalogResult(
+                self.source,
+                available=True,
+                matched=False,
+                delta_bearing_deg=round(sep, 3),
+                detail={"nearest": contact.get("hex"), "contacts": len(contacts)},
+            )
 
         return CatalogResult(
             self.source,
@@ -154,7 +158,7 @@ class TleCatalog(Catalog):
             return self._unavailable("no TLE provider configured")
         try:
             passes = self._provider(obs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return self._unavailable(f"provider error: {type(exc).__name__}")
         if passes is None:
             return self._unavailable("provider returned no data")
@@ -162,11 +166,14 @@ class TleCatalog(Catalog):
             return self._unavailable("event has no bearing; TLE comparison not possible")
 
         for p in passes:
-            sep = angular_separation(obs.azimuth_deg, obs.elev_angle_deg,
-                                     p["azimuth_deg"], p["elevation_deg"])
+            sep = angular_separation(
+                obs.azimuth_deg, obs.elev_angle_deg, p["azimuth_deg"], p["elevation_deg"]
+            )
             if sep <= self._tol:
                 return CatalogResult(
-                    self.source, available=True, matched=True,
+                    self.source,
+                    available=True,
+                    matched=True,
                     object_id=str(p.get("norad_id")),
                     match_score=round(max(0.0, 1.0 - sep / self._tol), 3),
                     delta_bearing_deg=round(sep, 3),
@@ -174,8 +181,9 @@ class TleCatalog(Catalog):
                     # detection, so illumination is part of the match, not a note.
                     detail={"name": p.get("name"), "illuminated": p.get("illuminated", True)},
                 )
-        return CatalogResult(self.source, available=True, matched=False,
-                             detail={"passes_considered": len(passes)})
+        return CatalogResult(
+            self.source, available=True, matched=False, detail={"passes_considered": len(passes)}
+        )
 
 
 class LightningCatalog(Catalog):
@@ -193,7 +201,7 @@ class LightningCatalog(Catalog):
             return self._unavailable("no lightning provider configured")
         try:
             strokes = self._provider(obs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return self._unavailable(f"provider error: {type(exc).__name__}")
         if strokes is None:
             return self._unavailable("provider returned no data")
@@ -201,14 +209,20 @@ class LightningCatalog(Catalog):
         for s in strokes:
             if s["distance_km"] <= self._radius_km and abs(s["delta_t_s"]) <= self._window_s:
                 return CatalogResult(
-                    self.source, available=True, matched=True,
+                    self.source,
+                    available=True,
+                    matched=True,
                     object_id=str(s.get("id")),
                     match_score=round(1.0 - s["distance_km"] / self._radius_km, 3),
                     delta_t_s=s["delta_t_s"],
-                    detail={"distance_km": s["distance_km"], "peak_current_ka": s.get("peak_current_ka")},
+                    detail={
+                        "distance_km": s["distance_km"],
+                        "peak_current_ka": s.get("peak_current_ka"),
+                    },
                 )
-        return CatalogResult(self.source, available=True, matched=False,
-                             detail={"strokes_considered": len(strokes)})
+        return CatalogResult(
+            self.source, available=True, matched=False, detail={"strokes_considered": len(strokes)}
+        )
 
 
 class RfiBaselineCatalog(Catalog):
@@ -226,8 +240,12 @@ class RfiBaselineCatalog(Catalog):
 
     def check(self, obs: Observation) -> CatalogResult:
         if "rf" not in obs.bands:
-            return CatalogResult(self.source, available=True, matched=False,
-                                 detail={"reason": "no RF component in this event"})
+            return CatalogResult(
+                self.source,
+                available=True,
+                matched=False,
+                detail={"reason": "no RF component in this event"},
+            )
         peak = obs.metrics.get("rf")
         if peak is None:
             return self._unavailable("RF component present but no peak level recorded")
@@ -235,13 +253,16 @@ class RfiBaselineCatalog(Catalog):
         for sig in self._sigs:
             if abs(peak - sig["level_dbm"]) <= sig.get("tolerance_db", 3.0):
                 return CatalogResult(
-                    self.source, available=True, matched=True,
+                    self.source,
+                    available=True,
+                    matched=True,
                     object_id=sig.get("label"),
                     match_score=0.85,
                     detail={"learned_level_dbm": sig["level_dbm"], "seen_count": sig.get("count")},
                 )
-        return CatalogResult(self.source, available=True, matched=False,
-                             detail={"signatures_known": len(self._sigs)})
+        return CatalogResult(
+            self.source, available=True, matched=False, detail={"signatures_known": len(self._sigs)}
+        )
 
 
 class WeatherCatalog(Catalog):
@@ -258,7 +279,7 @@ class WeatherCatalog(Catalog):
             return self._unavailable("no weather provider configured")
         try:
             wx = self._provider(obs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return self._unavailable(f"provider error: {type(exc).__name__}")
         if wx is None:
             return self._unavailable("provider returned no data")
@@ -267,10 +288,16 @@ class WeatherCatalog(Catalog):
         low_angle = obs.elev_angle_deg is not None and obs.elev_angle_deg < 8.0
         if inversion and low_angle:
             return CatalogResult(
-                self.source, available=True, matched=True, object_id="inversion",
+                self.source,
+                available=True,
+                matched=True,
+                object_id="inversion",
                 match_score=0.65,
-                detail={"note": "temperature inversion with a sub-8-degree track; "
-                                "refraction and mirage effects are plausible", **wx},
+                detail={
+                    "note": "temperature inversion with a sub-8-degree track; "
+                    "refraction and mirage effects are plausible",
+                    **wx,
+                },
             )
         return CatalogResult(self.source, available=True, matched=False, detail=wx)
 
@@ -288,7 +315,7 @@ class MeteorCatalog(Catalog):
             return self._unavailable("no meteor-rate provider configured")
         try:
             data = self._provider(obs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return self._unavailable(f"provider error: {type(exc).__name__}")
         if data is None:
             return self._unavailable("provider returned no data")
@@ -301,13 +328,20 @@ class MeteorCatalog(Catalog):
             )
             if sep <= 20 and obs.duration_s < 3:
                 return CatalogResult(
-                    self.source, available=True, matched=True, object_id=shower.get("name"),
+                    self.source,
+                    available=True,
+                    matched=True,
+                    object_id=shower.get("name"),
                     match_score=round(max(0.0, 1.0 - sep / 20), 3),
                     delta_bearing_deg=round(sep, 2),
                     detail={"zhr": shower.get("zhr")},
                 )
-        return CatalogResult(self.source, available=True, matched=False,
-                             detail={"showers_active": len(data.get("active", []))})
+        return CatalogResult(
+            self.source,
+            available=True,
+            matched=False,
+            detail={"showers_active": len(data.get("active", []))},
+        )
 
 
 class SolarCatalog(Catalog):
@@ -327,7 +361,7 @@ class SolarCatalog(Catalog):
             return self._unavailable("no solar/geomagnetic provider configured")
         try:
             data = self._provider(obs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return self._unavailable(f"provider error: {type(exc).__name__}")
         if data is None:
             return self._unavailable("provider returned no data")
@@ -337,9 +371,15 @@ class SolarCatalog(Catalog):
         magnetic = "elf_vlf" in obs.bands
         if disturbed and magnetic:
             return CatalogResult(
-                self.source, available=True, matched=True, object_id=f"kp{kp}",
+                self.source,
+                available=True,
+                matched=True,
+                object_id=f"kp{kp}",
                 match_score=0.7,
-                detail={"kp": kp, "note": "geomagnetically disturbed; magnetometer excursions expected"},
+                detail={
+                    "kp": kp,
+                    "note": "geomagnetically disturbed; magnetometer excursions expected",
+                },
             )
         return CatalogResult(self.source, available=True, matched=False, detail=data)
 
@@ -357,17 +397,20 @@ class AirspaceCatalog(Catalog):
             return self._unavailable("no airspace/NOTAM provider configured")
         try:
             data = self._provider(obs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return self._unavailable(f"provider error: {type(exc).__name__}")
         if data is None:
             return self._unavailable("provider returned no data")
         for item in data.get("active", []):
             return CatalogResult(
-                self.source, available=True, matched=True, object_id=item.get("id"),
-                match_score=0.6, detail=item,
+                self.source,
+                available=True,
+                matched=True,
+                object_id=item.get("id"),
+                match_score=0.6,
+                detail=item,
             )
-        return CatalogResult(self.source, available=True, matched=False,
-                             detail={"active": 0})
+        return CatalogResult(self.source, available=True, matched=False, detail={"active": 0})
 
 
 # All eight catalogues the schema declares. Three of these had no

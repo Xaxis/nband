@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+# Generated. Collapsed in diffs and excluded from language statistics, because
+# they are outputs of tools/codegen.mjs rather than authored code.
+apps/web/lib/schema/generated.ts     linguist-generated=true -diff
+apps/web/lib/schema/constants.mjs    linguist-generated=true -diff
+apps/web/lib/search-index.json       linguist-generated=true -diff
+firmware/nband_node/schema_generated.py linguist-generated=true -diff
+discriminator/fixtures/expected.json  linguist-generated=true -diff
+yarn.lock                             linguist-generated=true -diff
+
+# The schema is the source of truth and should read as data, not code.
+schema/*.json linguist-language=JSON

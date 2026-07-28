@@ -62,13 +62,17 @@ class Grid:
         if prefer:
             headers["Prefer"] = prefer
         data = json.dumps(body).encode() if body is not None else None
-        req = urllib.request.Request(f"{self.base}{path}", data=data, headers=headers, method=method)
+        req = urllib.request.Request(
+            f"{self.base}{path}", data=data, headers=headers, method=method
+        )
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 raw = resp.read()
                 return json.loads(raw) if raw else []
         except urllib.error.HTTPError as exc:
-            raise RuntimeError(f"{method} {path} -> {exc.code} {exc.read().decode()[:400]}") from None
+            raise RuntimeError(
+                f"{method} {path} -> {exc.code} {exc.read().decode()[:400]}"
+            ) from None
 
     def get(self, path: str):
         return self._request("GET", path)
@@ -175,7 +179,9 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="nband-discriminator")
     p.add_argument("--limit", type=int, default=50, help="max events to score in this pass")
     p.add_argument("--event", help="score one specific event id")
-    p.add_argument("--rescore", action="store_true", help="include events that already have a verdict")
+    p.add_argument(
+        "--rescore", action="store_true", help="include events that already have a verdict"
+    )
     p.add_argument("--dry-run", action="store_true", help="print verdicts, write nothing")
     p.add_argument("-v", "--verbose", action="store_true")
     args = p.parse_args(argv)
@@ -214,7 +220,7 @@ def main(argv: list[str] | None = None) -> int:
     skipped_simulated = 0
     for ev in events:
         links = grid.get(f"/event_detections?event_id=eq.{ev['id']}&select=detection_id")
-        det_ids = [l["detection_id"] for l in links]
+        det_ids = [link["detection_id"] for link in links]
         if not det_ids:
             continue
         ids = ",".join(det_ids)
@@ -225,8 +231,7 @@ def main(argv: list[str] | None = None) -> int:
         if not detections:
             continue
         nodes = grid.get(
-            f"/nodes?id=eq.{detections[0]['node_id']}"
-            "&select=lat,lon,elevation_m,is_simulated,slug"
+            f"/nodes?id=eq.{detections[0]['node_id']}&select=lat,lon,elevation_m,is_simulated,slug"
         )
         node = nodes[0] if nodes else {}
         # Synthetic data is useful for exercising the pipeline and worthless as

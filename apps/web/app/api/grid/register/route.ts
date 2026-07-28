@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server'
 import {
   MAX_CLOCK_SKEW_S,
   canonicalPayload,

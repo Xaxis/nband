@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "firmware"))
 
-from nband_node.schema_generated import (  # noqa: E402
+from nband_node.schema_generated import (
     HYPOTHESES,
     SCHEMA_VERSION,
     THRESHOLDS,
@@ -35,7 +35,7 @@ from nband_node.schema_generated import (  # noqa: E402
     Corroboration,
 )
 
-from .catalogs import Catalog, CatalogResult, Observation, DEFAULT_CATALOGS  # noqa: E402
+from .catalogs import DEFAULT_CATALOGS, Catalog, CatalogResult, Observation
 
 DISCRIMINATOR_VERSION = "0.1.0"
 
@@ -103,7 +103,9 @@ class Discriminator:
 
     # -- likelihoods --------------------------------------------------------
 
-    def _likelihoods(self, obs: Observation, results: dict[str, CatalogResult]) -> dict[str, tuple[float, list[str]]]:
+    def _likelihoods(
+        self, obs: Observation, results: dict[str, CatalogResult]
+    ) -> dict[str, tuple[float, list[str]]]:
         """P(observation | hypothesis) for each hypothesis, with reasons.
 
         These are deliberately coarse. A model with more parameters than the
@@ -151,7 +153,9 @@ class Discriminator:
             illuminated = tle.detail.get("illuminated", True)
             if illuminated:
                 lk = 0.96
-                r.append(f"illuminated pass of NORAD {tle.object_id} within {tle.delta_bearing_deg}°")
+                r.append(
+                    f"illuminated pass of NORAD {tle.object_id} within {tle.delta_bearing_deg}°"
+                )
             else:
                 # An eclipsed satellite cannot produce an optical detection.
                 lk = 0.15
@@ -189,7 +193,9 @@ class Discriminator:
         # real detection.
         if obs.range_m is not None and obs.range_m > 400:
             lk *= 0.03
-            r.append(f"radar range of {obs.range_m:.0f} m is far beyond bird or insect detectability")
+            r.append(
+                f"radar range of {obs.range_m:.0f} m is far beyond bird or insect detectability"
+            )
         out["bird_insect"] = (min(lk, 1.0), r)
 
         # Meteor
@@ -239,10 +245,14 @@ class Discriminator:
         lk = 0.05
         if wx and wx.explains:
             lk = 0.6
-            r.append(str(wx.detail.get("note", "atmospheric conditions favour a refraction artefact")))
+            r.append(
+                str(wx.detail.get("note", "atmospheric conditions favour a refraction artefact"))
+            )
         if light and light.explains:
             lk = 0.9
-            r.append(f"lightning fix at {light.detail.get('distance_km')} km, Δt {light.delta_t_s} s")
+            r.append(
+                f"lightning fix at {light.detail.get('distance_km')} km, Δt {light.delta_t_s} s"
+            )
         out["atmospheric"] = (min(lk, 1.0), r)
 
         # Instrumental
@@ -256,7 +266,9 @@ class Discriminator:
             r.append(f"matches the site's learned RFI signature '{rfi.object_id}'")
         if obs.peak_z > 30:
             lk *= 1.5
-            r.append(f"excursion of {obs.peak_z:.0f} sigma is more typical of a fault than a source")
+            r.append(
+                f"excursion of {obs.peak_z:.0f} sigma is more typical of a fault than a source"
+            )
         if n_bands >= 3:
             lk *= 0.05
             r.append("three independent bands agreeing is very hard to produce with one fault")
@@ -287,7 +299,7 @@ class Discriminator:
         for cat in self.catalogs:
             try:
                 results[cat.source] = cat.check(obs)
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 results[cat.source] = CatalogResult(
                     cat.source, available=False, detail={"reason": f"raised {type(exc).__name__}"}
                 )
@@ -298,7 +310,9 @@ class Discriminator:
         scored: list[HypothesisScore] = []
         for h in HYPOTHESES:
             lk, reasons = likelihoods.get(h["id"], (0.05, []))
-            scored.append(HypothesisScore(h["id"], h["label"], float(h["prior"]), lk, reasons=reasons))
+            scored.append(
+                HypothesisScore(h["id"], h["label"], float(h["prior"]), lk, reasons=reasons)
+            )
 
         evidence = sum(h.prior * h.likelihood for h in scored)
         if evidence <= 0:
@@ -312,7 +326,9 @@ class Discriminator:
         corroboration = self._corroboration(obs)
         anomaly = self._anomaly_score(obs, scored, results, corroboration)
         classification = self._classify(obs, scored, results, unavailable, corroboration, anomaly)
-        explanation = self._explain(obs, scored, results, unavailable, classification, corroboration)
+        explanation = self._explain(
+            obs, scored, results, unavailable, classification, corroboration
+        )
 
         return Verdict(
             classification=classification,
@@ -435,7 +451,9 @@ class Discriminator:
 
         for v in results.values():
             if v.explains:
-                parts.append(f"{v.source.upper()} explained it: {v.object_id} (score {v.match_score}).")
+                parts.append(
+                    f"{v.source.upper()} explained it: {v.object_id} (score {v.match_score})."
+                )
             elif v.available and not v.matched:
                 parts.append(f"{v.source.upper()} was reachable and found no match.")
 

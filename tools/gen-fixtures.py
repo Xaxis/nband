@@ -7,6 +7,7 @@ against this file. Regenerate whenever the engine's scoring changes:
 
     python3 tools/gen-fixtures.py
 """
+
 import json
 import pathlib
 import sys
@@ -15,8 +16,12 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "discriminator"), str(ROOT / "firmware")]
 
 from nband_discriminator.catalogs import (  # noqa: E402
-    AdsbCatalog, LightningCatalog, Observation, RfiBaselineCatalog,
-    TleCatalog, WeatherCatalog,
+    AdsbCatalog,
+    LightningCatalog,
+    Observation,
+    RfiBaselineCatalog,
+    TleCatalog,
+    WeatherCatalog,
 )
 from nband_discriminator.engine import Discriminator  # noqa: E402
 
@@ -27,31 +32,61 @@ LOW_BEARING = dict(azimuth_deg=180.0, elev_angle_deg=5.0)
 
 def catalogs_for(spec):
     """Build a catalogue set matching each case's declared availability."""
+
     def provider(state, payload):
         if state == "unavailable":
-            return None            # reachable=False
+            return None  # reachable=False
         if state == "match":
             return [payload]
-        return []                  # reachable, no match
+        return []  # reachable, no match
 
     return (
-        AdsbCatalog(provider=lambda o, s=spec["adsb"]: provider(s, {
-            "hex": "a4f81c", "azimuth_deg": 180.2, "elevation_deg": 40.1,
-            "altitude_m": 10300, "callsign": "TEST123"})),
+        AdsbCatalog(
+            provider=lambda o, s=spec["adsb"]: provider(
+                s,
+                {
+                    "hex": "a4f81c",
+                    "azimuth_deg": 180.2,
+                    "elevation_deg": 40.1,
+                    "altitude_m": 10300,
+                    "callsign": "TEST123",
+                },
+            )
+        ),
         # "eclipsed" is a bearing match that cannot explain an optical event.
-        TleCatalog(provider=lambda o, s=spec["tle"]: provider(
-            "match" if s == "eclipsed" else s,
-            {"norad_id": 25544, "azimuth_deg": 180.1, "elevation_deg": 40.0,
-             "name": "TESTSAT", "illuminated": s != "eclipsed"})),
-        LightningCatalog(provider=lambda o, s=spec["lightning"]: provider(s, {
-            "id": "L1", "distance_km": 41.0, "delta_t_s": 0.2, "peak_current_ka": -18})),
+        TleCatalog(
+            provider=lambda o, s=spec["tle"]: provider(
+                "match" if s == "eclipsed" else s,
+                {
+                    "norad_id": 25544,
+                    "azimuth_deg": 180.1,
+                    "elevation_deg": 40.0,
+                    "name": "TESTSAT",
+                    "illuminated": s != "eclipsed",
+                },
+            )
+        ),
+        LightningCatalog(
+            provider=lambda o, s=spec["lightning"]: provider(
+                s, {"id": "L1", "distance_km": 41.0, "delta_t_s": 0.2, "peak_current_ka": -18}
+            )
+        ),
         RfiBaselineCatalog(
-            known_signatures=[{"label": "site-sig", "level_dbm": -62.0, "tolerance_db": 3.0,
-                               "count": 100}] if spec["rfi"] == "match" else []),
-        WeatherCatalog(provider=lambda o, s=spec["weather"]: (
-            None if s == "unavailable"
-            else {"temperature_inversion": True} if s == "match"
-            else {})),
+            known_signatures=[
+                {"label": "site-sig", "level_dbm": -62.0, "tolerance_db": 3.0, "count": 100}
+            ]
+            if spec["rfi"] == "match"
+            else []
+        ),
+        WeatherCatalog(
+            provider=lambda o, s=spec["weather"]: (
+                None
+                if s == "unavailable"
+                else {"temperature_inversion": True}
+                if s == "match"
+                else {}
+            )
+        ),
     )
 
 
@@ -64,8 +99,12 @@ def main() -> int:
             t_end_ns=int((1_700_000_000 + c["duration_s"]) * NS),
             bands=tuple(c["bands"]),
             clock=c["clock"],
-            lat=31.94, lon=-109.31, elevation_m=1402.0,
-            range_m=c["range_m"], peak_z=c["peak_z"], node_count=c["node_count"],
+            lat=31.94,
+            lon=-109.31,
+            elevation_m=1402.0,
+            range_m=c["range_m"],
+            peak_z=c["peak_z"],
+            node_count=c["node_count"],
             metrics={"rf": -61.5} if "rf" in c["bands"] else {},
             **(LOW_BEARING if c["catalogs"].get("weather") == "match" else BEARING),
         )

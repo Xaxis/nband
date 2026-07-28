@@ -88,8 +88,6 @@ def test_context_bands_reject_triggers():
     # environmental "detections". This is a structural guarantee, not a policy.
     from nband_node.config import ConfigError
 
-    import tomllib
-
     raw = (ROOT / "firmware" / "config.example.toml").read_text()
     bad = raw.replace(
         'id = "env.temp"\nband = "env"',

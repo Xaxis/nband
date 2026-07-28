@@ -2,10 +2,12 @@
   "name": "nband",
   "version": "0.1.0",
   "private": true,
-  "description": "NBAND - an open multi-spectral telemetry platform. Node hardware, grid database, discriminator, and documentation, versioned together.",
+  "description": "nband - open multi-spectral sensing platform for anomalous aerial phenomena. Node hardware, grid database, discriminator, and documentation, versioned together.",
   "license": "MIT",
   "packageManager": "yarn@1.22.22",
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "dev": "yarn workspace @nband/web dev",
     "build": "yarn codegen && yarn workspace @nband/web build",
@@ -18,9 +20,21 @@
     "check:links": "node tools/check-links.mjs",
     "fixtures": "python3 tools/gen-fixtures.py",
     "db:seed": "node tools/seed.mjs",
-    "check": "yarn check:drift && yarn check:parity && yarn check:links && yarn type-check && yarn lint"
+    "check": "make check",
+    "check:fast": "make check-fast"
   },
   "devDependencies": {
     "prettier": "^3.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xaxis/nband.git"
+  },
+  "homepage": "https://nband.space",
+  "bugs": {
+    "url": "https://github.com/Xaxis/nband/issues"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

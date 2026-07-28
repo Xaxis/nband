@@ -1,4 +1,3 @@
-import type { BandId } from '../schema/generated'
 import {
   QUALITY_BITS,
   type ChannelSummary,
@@ -404,7 +403,8 @@ export class MockFeed implements TelemetryFeed {
   async listChannels(nodeSlug: string): Promise<ChannelSummary[]> {
     const node = await this.getNode(nodeSlug)
     if (!node) return []
-    return defineChannels(node).map(({ generate, ...rest }) => rest)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- destructured to omit
+    return defineChannels(node).map(({ generate: _generate, ...rest }) => rest)
   }
 
   async getSeries(nodeSlug: string, window: Window, maxPoints = 320): Promise<Series[]> {

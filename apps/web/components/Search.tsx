@@ -89,8 +89,6 @@ export function Search() {
       .map((r) => r.e)
   }, [q])
 
-  useEffect(() => setActive(0), [q])
-
   const close = useCallback(() => {
     setOpen(false)
     setQ('')
@@ -228,7 +226,12 @@ export function Search() {
               <input
                 ref={inputRef}
                 value={q}
-                onChange={(e) => setQ(e.target.value)}
+                onChange={(e) => {
+                  setQ(e.target.value)
+                  // Reset the highlight here rather than in an effect on [q],
+                  // which re-rendered after every keystroke.
+                  setActive(0)
+                }}
                 onKeyDown={onKeyDown}
                 placeholder="Bands, parts, pins, thresholds…"
                 className="flex-1 bg-transparent text-[15px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-3)]"

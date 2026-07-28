@@ -2,58 +2,52 @@ name: ci
 
 # The premise of this repository is that hardware, firmware, database, and
 # documentation move together. This workflow is what makes that claim checkable
-# rather than aspirational.
+# rather than aspirational. Every job here is also a `make` target, so what CI
+# runs and what a contributor runs locally cannot diverge.
 
 on:
   push:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  drift:
-    name: schema, SQL, and docs agree
+  agreement:
+    name: schema, docs, and ports agree
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
+          cache: yarn
       - run: yarn install --frozen-lockfile
-      # Fails when generated bindings are stale, when a Postgres enum has
-      # drifted from the schema files, when a document claims a version that
-      # does not exist, or when a part references something that is not there.
-      - run: node tools/check-drift.mjs
-      # The playground scores client-side, so the logic exists in Python and in
-      # JavaScript. This fails the build the moment the two disagree.
-      - run: node tools/check-parity.mjs
-      # Catches links to pages that were never built. The footer shipped two.
-      - run: node tools/check-links.mjs
+      # Generated bindings current; Postgres enums match the schema; every
+      # document declares a real version; part cross-references resolve; tier
+      # budgets match their parts; power sizing covers the load it ships with.
+      - run: make drift
+      # The browser discriminator scores identically to the Python engine.
+      - run: make parity
+      # Every internal link resolves, and every document has a route.
+      - run: make links
 
-  firmware:
-    name: firmware tests
+  python:
+    name: firmware and discriminator
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install cryptography
-      - run: python firmware/tests/test_core.py
-      # Catches drivers that are advertised in the registry or the example
-      # config but never implemented. That gap shipped once already.
-      - run: python firmware/tests/test_registry.py
-
-  discriminator:
-    name: discriminator tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      # Mostly asserts refusals: that a degraded clock, a single band, or an
-      # unreachable catalogue all block promotion to the unresolved rung.
-      - run: python discriminator/tests/test_engine.py
+      - run: pip install --quiet cryptography ruff
+      - run: make test
+      - name: lint
+        run: ruff check firmware discriminator tools
+      - name: format
+        run: ruff format --check firmware discriminator tools
 
   web:
     name: web build
@@ -62,7 +56,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
+          cache: yarn
       - run: yarn install --frozen-lockfile
-      - run: yarn workspace @nband/web type-check
-      - run: yarn workspace @nband/web build
+      - run: make lint
+      - run: make build

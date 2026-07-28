@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server'
 import { authenticate, fail, ok, splitNanos, telemetryBatchSchema } from '../../../../lib/grid/ingest'
 
 export const dynamic = 'force-dynamic'

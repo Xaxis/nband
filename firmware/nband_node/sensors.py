@@ -475,7 +475,9 @@ class Rm3100Driver(Driver):
         self._spi.xfer2([0x04, hi, lo, hi, lo, hi, lo])
         self._spi.xfer2([0x01, 0x79])
         self._axis = str(self.channel.options.get("axis", "z")).lower()
-        self._offset_nt = float(self.channel.calibration.get("hard_iron_nt", {}).get(self._axis, 0.0))
+        self._offset_nt = float(
+            self.channel.calibration.get("hard_iron_nt", {}).get(self._axis, 0.0)
+        )
         self._opened = True
 
     def capabilities(self) -> Capabilities:
@@ -483,7 +485,9 @@ class Rm3100Driver(Driver):
         return Capabilities(
             accuracy=15.0,
             notes="~13 nT resolution, 15 nT noise"
-            + ("" if calibrated else "; hard-iron offset NOT calibrated, absolute field unreliable"),
+            + (
+                "" if calibrated else "; hard-iron offset NOT calibrated, absolute field unreliable"
+            ),
         )
 
     def close(self) -> None:
@@ -597,9 +601,7 @@ class Ld2450Driver(Driver):
             count += 1
             targets.extend([x / 1000.0, y / 1000.0])
 
-        return Sample(
-            self.channel_id, self.band, t_ns, float(count), vector=tuple(targets) or None
-        )
+        return Sample(self.channel_id, self.band, t_ns, float(count), vector=tuple(targets) or None)
 
 
 class I2sMicDriver(Driver):
@@ -716,14 +718,10 @@ class Bno08xDriver(Driver):
         if q is None:
             return None
         qi, qj, qk, qr = q
-        yaw = math.degrees(
-            math.atan2(2 * (qr * qk + qi * qj), 1 - 2 * (qj * qj + qk * qk))
-        ) % 360.0
+        yaw = math.degrees(math.atan2(2 * (qr * qk + qi * qj), 1 - 2 * (qj * qj + qk * qk))) % 360.0
         pitch = math.degrees(math.asin(max(-1.0, min(1.0, 2 * (qr * qj - qk * qi)))))
         value = yaw if self._field == "heading" else pitch
-        return Sample(
-            self.channel_id, self.band, t_ns, round(value, 2), vector=(qi, qj, qk, qr)
-        )
+        return Sample(self.channel_id, self.band, t_ns, round(value, 2), vector=(qi, qj, qk, qr))
 
 
 class Ina226Driver(Driver):
@@ -874,7 +872,9 @@ class GeophoneDriver(Driver):
         import spidev  # type: ignore[import-not-found]
 
         self._spi = spidev.SpiDev()
-        self._spi.open(int(self.channel.options.get("bus", 0)), int(self.channel.options.get("device", 1)))
+        self._spi.open(
+            int(self.channel.options.get("bus", 0)), int(self.channel.options.get("device", 1))
+        )
         self._spi.max_speed_hz = int(self.channel.options.get("speed_hz", 1_920_000))
         self._spi.mode = 1
         self._v_ref = float(self.channel.options.get("v_ref", 2.5))
@@ -896,9 +896,7 @@ class GeophoneDriver(Driver):
         if v & 0x800000:
             v -= 1 << 24
         volts = (v / 0x7FFFFF) * self._v_ref
-        return Sample(
-            self.channel_id, self.band, t_ns, round(volts / self._sensitivity, 12)
-        )
+        return Sample(self.channel_id, self.band, t_ns, round(volts / self._sensitivity, 12))
 
 
 class SemBeaconDriver(Driver):

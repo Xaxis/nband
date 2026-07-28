@@ -1,6 +1,5 @@
 import {
   BAND_BY_ID,
-  PARTS,
   partsForTier,
   tierPower,
   type Part,

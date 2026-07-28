@@ -161,7 +161,11 @@ class Spool:
         lines = self.telemetry.read_text(encoding="utf-8").splitlines()
         keep = lines[len(lines) // 2 :]
         self.telemetry.write_text("\n".join(keep) + ("\n" if keep else ""), encoding="utf-8")
-        log.warning("spool over %d bytes: dropped %d oldest telemetry records", self.max_bytes, len(lines) - len(keep))
+        log.warning(
+            "spool over %d bytes: dropped %d oldest telemetry records",
+            self.max_bytes,
+            len(lines) - len(keep),
+        )
 
     def drain(self, path: Path, limit: int) -> list[dict]:
         """Read up to `limit` records, skipping any line that will not parse.
@@ -228,7 +232,10 @@ class GridClient:
         timestamp = str(int(time.time()))
         nonce = secrets.token_urlsafe(18)
         canonical = b"nband/v1\n%s\n%s\n%s\n%s" % (
-            path.encode(), timestamp.encode(), nonce.encode(), payload,
+            path.encode(),
+            timestamp.encode(),
+            nonce.encode(),
+            payload,
         )
 
         req = urllib.request.Request(
@@ -505,7 +512,9 @@ class Agent:
         if self.clock.quality is not before:
             log.info(
                 "clock quality %s -> %s (offset %d ns)",
-                before.value, self.clock.quality.value, self.clock.offset_ns,
+                before.value,
+                self.clock.quality.value,
+                self.clock.offset_ns,
             )
 
     def _heartbeat(self) -> None:
@@ -605,10 +614,16 @@ def main(argv: list[str] | None = None) -> int:
         help="override [grid].key_path. The packaged config points at /var/lib/nband, "
         "which needs root; use this to dry-run as an ordinary user.",
     )
-    p.add_argument("--simulate", action="store_true", help="run every channel against a synthetic source")
+    p.add_argument(
+        "--simulate", action="store_true", help="run every channel against a synthetic source"
+    )
     p.add_argument("--duration", type=float, help="stop after N seconds (used by the build guide)")
-    p.add_argument("--self-test", action="store_true", help="open every channel, print one reading, exit")
-    p.add_argument("--enroll", action="store_true", help="register this node with the grid and exit")
+    p.add_argument(
+        "--self-test", action="store_true", help="open every channel, print one reading, exit"
+    )
+    p.add_argument(
+        "--enroll", action="store_true", help="register this node with the grid and exit"
+    )
     p.add_argument("-v", "--verbose", action="store_true")
     args = p.parse_args(argv)
 
@@ -643,7 +658,9 @@ def main(argv: list[str] | None = None) -> int:
             drv = sensors.build(ch, simulate=cfg.simulate, longitude=cfg.site.longitude)
             passed, detail = drv.self_test()
             ok &= passed
-            print(f"{ch.channel_id:<20} {ch.band.value:<10} {'PASS' if passed else 'FAIL'}  {detail}")
+            print(
+                f"{ch.channel_id:<20} {ch.band.value:<10} {'PASS' if passed else 'FAIL'}  {detail}"
+            )
         return 0 if ok else 1
 
     agent = Agent(cfg, Path(args.spool))

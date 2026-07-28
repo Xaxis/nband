@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { NAV } from '../lib/nav'
 import { Search } from './Search'
 
@@ -52,18 +52,43 @@ function Mark({ size = 30 }: { size?: number }) {
   )
 }
 
-function ThemeToggle() {
-  const [theme, setTheme] = useState<'light' | 'dark' | null>(null)
+/**
+ * Read the active theme from the two places it can live.
+ *
+ * The theme is external mutable state: a localStorage entry the bootstrap
+ * script applies before paint, falling back to the OS preference.
+ * useSyncExternalStore is the API for exactly this, and it avoids the
+ * mount-effect-then-setState pattern that renders twice on every page.
+ */
+function subscribeTheme(onChange: () => void) {
+  const media = window.matchMedia('(prefers-color-scheme: light)')
+  media.addEventListener('change', onChange)
+  window.addEventListener('storage', onChange)
+  const observer = new MutationObserver(onChange)
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  return () => {
+    media.removeEventListener('change', onChange)
+    window.removeEventListener('storage', onChange)
+    observer.disconnect()
+  }
+}
 
-  useEffect(() => {
-    const stored = localStorage.getItem('nband-theme')
-    if (stored === 'light' || stored === 'dark') setTheme(stored)
-    else setTheme(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
-  }, [])
+function readTheme(): 'light' | 'dark' {
+  const stamped = document.documentElement.getAttribute('data-theme')
+  if (stamped === 'light' || stamped === 'dark') return stamped
+  const stored = localStorage.getItem('nband-theme')
+  if (stored === 'light' || stored === 'dark') return stored
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
+function ThemeToggle() {
+  // The server cannot know the theme, so it renders the dark-mode affordance
+  // and the client corrects on hydration without an extra render pass.
+  const theme = useSyncExternalStore(subscribeTheme, readTheme, () => 'dark' as const)
 
   function toggle() {
     const next = theme === 'light' ? 'dark' : 'light'
-    setTheme(next)
+    // The MutationObserver in subscribeTheme picks this up and re-renders.
     document.documentElement.setAttribute('data-theme', next)
     localStorage.setItem('nband-theme', next)
   }
@@ -102,10 +127,6 @@ function ThemeToggle() {
 export function SiteHeader() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    setOpen(false)
-  }, [pathname])
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_88%,transparent)] backdrop-blur-md">
@@ -173,6 +194,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => setOpen(false)}
               className="block rounded-md px-2 py-2 text-[15px] text-[var(--ink-2)] hover:bg-[var(--surface-3)] hover:text-[var(--ink)]"
             >
               {item.label}

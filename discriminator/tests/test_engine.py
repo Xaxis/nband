@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "discriminator"))
 sys.path.insert(0, str(ROOT / "firmware"))
 
-from nband_discriminator.catalogs import (  # noqa: E402
+from nband_discriminator.catalogs import (
     AdsbCatalog,
     LightningCatalog,
     Observation,
@@ -24,8 +24,8 @@ from nband_discriminator.catalogs import (  # noqa: E402
     WeatherCatalog,
     angular_separation,
 )
-from nband_discriminator.engine import Discriminator  # noqa: E402
-from nband_node.schema_generated import Classification, Corroboration  # noqa: E402
+from nband_discriminator.engine import Discriminator
+from nband_node.schema_generated import Classification, Corroboration
 
 NS = 1_000_000_000
 
@@ -104,8 +104,15 @@ def test_reachable_provider_with_no_contacts_is_a_clean_check():
 
 def test_adsb_match_classifies_as_known():
     cats = all_available(
-        adsb_contacts=[{"hex": "a4f81c", "azimuth_deg": 180.4, "elevation_deg": 40.2,
-                        "altitude_m": 10300, "callsign": "SWA1234"}]
+        adsb_contacts=[
+            {
+                "hex": "a4f81c",
+                "azimuth_deg": 180.4,
+                "elevation_deg": 40.2,
+                "altitude_m": 10300,
+                "callsign": "SWA1234",
+            }
+        ]
     )
     v = Discriminator(cats).evaluate(obs(bands=("vis", "nir", "acoustic")))
     assert v.classification is Classification.TERRESTRIAL_KNOWN
@@ -117,8 +124,15 @@ def test_eclipsed_satellite_does_not_explain_an_optical_event():
     # A satellite in Earth's shadow emits no visible light, so a bearing match
     # alone must not close an optical detection.
     cats = all_available(
-        tle_passes=[{"norad_id": 25544, "azimuth_deg": 180.1, "elevation_deg": 40.0,
-                     "name": "ISS", "illuminated": False}]
+        tle_passes=[
+            {
+                "norad_id": 25544,
+                "azimuth_deg": 180.1,
+                "elevation_deg": 40.0,
+                "name": "ISS",
+                "illuminated": False,
+            }
+        ]
     )
     v = Discriminator(cats).evaluate(obs(bands=("vis",)))
     sat = next(h for h in v.hypotheses if h.id == "satellite")
@@ -127,16 +141,20 @@ def test_eclipsed_satellite_does_not_explain_an_optical_event():
 
 
 def test_lightning_explains_a_uv_rf_magnetic_coincidence():
-    cats = all_available(strokes=[{"id": "L1", "distance_km": 41.0, "delta_t_s": 0.2,
-                                   "peak_current_ka": -18}])
+    cats = all_available(
+        strokes=[{"id": "L1", "distance_km": 41.0, "delta_t_s": 0.2, "peak_current_ka": -18}]
+    )
     v = Discriminator(cats).evaluate(obs(bands=("uv", "rf", "elf_vlf")))
     assert v.classification in {Classification.TERRESTRIAL_KNOWN, Classification.TERRESTRIAL_LIKELY}
     assert v.anomaly_score < 30
 
 
 def test_learned_rfi_signature_marks_event_instrumental():
-    cats = all_available(rfi_sigs=[{"label": "site-pager-462MHz", "level_dbm": -62.0,
-                                    "tolerance_db": 3.0, "count": 4120}])
+    cats = all_available(
+        rfi_sigs=[
+            {"label": "site-pager-462MHz", "level_dbm": -62.0, "tolerance_db": 3.0, "count": 4120}
+        ]
+    )
     v = Discriminator(cats).evaluate(obs(bands=("rf",), metrics={"rf": -61.5}))
     assert v.classification is Classification.INSTRUMENTAL
 
@@ -160,9 +178,7 @@ def test_unavailable_catalog_blocks_unresolved():
         RfiBaselineCatalog([]),
         WeatherCatalog(provider=lambda o: {}),
     )
-    v = Discriminator(cats).evaluate(
-        obs(bands=("vis", "lwir", "mmw"), node_count=2, range_m=900.0)
-    )
+    v = Discriminator(cats).evaluate(obs(bands=("vis", "lwir", "mmw"), node_count=2, range_m=900.0))
     # The guarantee is that the top rung is unreachable and the gap is on the
     # record, not that the verdict must be 'ambiguous'. With ADS-B down,
     # "probably an aircraft" is the honest reading, and the engine reaching it
@@ -227,7 +243,7 @@ def _run():
         except AssertionError as exc:
             failed += 1
             print(f"  FAIL  {name}  {exc}")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             failed += 1
             print(f"  ERROR {name}  {type(exc).__name__}: {exc}")
     print(f"\n{len(tests) - failed}/{len(tests)} passed")

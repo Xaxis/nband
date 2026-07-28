@@ -1,5 +1,4 @@
 import { pageMetadata } from '../../../lib/metadata'
-import Link from 'next/link'
 import { BandChip } from '../../../components/Bands'
 import {
   NodeBlockDiagram,

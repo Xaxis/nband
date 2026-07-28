@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.104.0",
@@ -27,6 +28,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^20.19.0",
     "@types/react": "^19.1.8",
@@ -34,6 +36,7 @@
     "@types/three": "^0.170.0",
     "eslint": "^9.31.0",
     "eslint-config-next": "15.5.18",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
   }

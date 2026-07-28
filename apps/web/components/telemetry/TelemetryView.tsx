@@ -1,10 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { BAND_BY_ID, CLASSIFICATION, type BandId } from '../../lib/schema/generated'
+import { BAND_BY_ID, CLASSIFICATION } from '../../lib/schema/generated'
 import { SPECTRAL, VERDICT } from '../../lib/spectrum'
 import {
-  qualityLabels,
   type EventMarker,
   type NodeSummary,
   type Series,
@@ -264,9 +263,12 @@ export function TelemetryView({
   const [loading, setLoading] = useState(true)
   const [feedError, setFeedError] = useState<string | null>(null)
 
-  // `now` is resolved on the client only. Deriving it during render would make
-  // the server and client disagree about what "now" is.
+  // `now` is resolved on the client only, because deriving it during render
+  // would make the server and client disagree about what "now" is and the
+  // charts would hydrate against a different window than they rendered with.
+  // The rule below flags the mount-time write; that write is the entire point.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setNow(Date.now())
     if (!live) return
     const id = setInterval(() => setNow(Date.now()), 5000)
@@ -280,9 +282,13 @@ export function TelemetryView({
     return { from: to - range.ms, to }
   }, [now, scrub, range])
 
+  // Fetching the window is a genuine side effect, and showing the loading
+  // state before the request goes out is what stops the previous window's data
+  // reading as though it were the new one.
   useEffect(() => {
     if (!window) return
     let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true)
     const params = new URLSearchParams({
       node: nodeSlug,

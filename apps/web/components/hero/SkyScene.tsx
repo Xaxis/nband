@@ -33,7 +33,9 @@ interface Shell {
 const MAX_R = 5.2
 const MIN_R = 1.15
 
-export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
+// `expanded` is accepted so the caller can express intent, but sizing comes
+// entirely from the container, which the camera fit already solves against.
+export default function SkyScene({ expanded: _expanded = false }: { expanded?: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<string[]>([])
   const [detections, setDetections] = useState(0)
