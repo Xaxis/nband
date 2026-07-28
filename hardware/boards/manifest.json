@@ -1,0 +1,20 @@
+{
+  "generatedFrom": "schema/hardware.json",
+  "boards": [
+    {
+      "tier": "t1",
+      "modules": 4,
+      "signals": 17
+    },
+    {
+      "tier": "t2",
+      "modules": 7,
+      "signals": 32
+    },
+    {
+      "tier": "t3",
+      "modules": 8,
+      "signals": 37
+    }
+  ]
+}

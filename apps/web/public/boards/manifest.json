@@ -1,0 +1,52 @@
+{
+  "generatedFrom": "schema/hardware.json",
+  "status": "reference-only",
+  "caveat": "Generated from the hardware registry to check the pin assignments. Component placement is machine-generated and the autorouter does not finish; the schematic is authoritative, the PCB and 3D views are a starting point for layout. No board here has been fabricated.",
+  "boards": [
+    {
+      "tier": "t1",
+      "modules": 4,
+      "signals": 17,
+      "artifacts": {
+        "schematic-svg": "/boards/t1-schematic.svg",
+        "pcb-svg": "/boards/t1-pcb.svg",
+        "glb": "/boards/t1-board.glb"
+      },
+      "routing": {
+        "routed": 17,
+        "nets": 21,
+        "unresolved": 1
+      }
+    },
+    {
+      "tier": "t2",
+      "modules": 7,
+      "signals": 32,
+      "artifacts": {
+        "schematic-svg": "/boards/t2-schematic.svg",
+        "pcb-svg": "/boards/t2-pcb.svg",
+        "glb": "/boards/t2-board.glb"
+      },
+      "routing": {
+        "routed": 31,
+        "nets": 40,
+        "unresolved": 5
+      }
+    },
+    {
+      "tier": "t3",
+      "modules": 8,
+      "signals": 37,
+      "artifacts": {
+        "schematic-svg": "/boards/t3-schematic.svg",
+        "pcb-svg": "/boards/t3-pcb.svg",
+        "glb": "/boards/t3-board.glb"
+      },
+      "routing": {
+        "routed": 31,
+        "nets": 46,
+        "unresolved": 21
+      }
+    }
+  ]
+}

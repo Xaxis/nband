@@ -15,7 +15,8 @@ PY ?= python3
 
 .PHONY: help install codegen check check-fast lint lint-web lint-python format test \
         test-firmware test-discriminator \
-        drift parity links privacy build dev deploy fixtures seed clean node-selftest
+        drift parity links privacy boards boards-deps boards-check boards-verify build dev deploy \
+        fixtures seed clean node-selftest
 
 help: ## List available targets
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -32,6 +33,13 @@ codegen: ## Regenerate bindings and the search index from schema/
 fixtures: ## Regenerate discriminator conformance fixtures from the Python engine
 	$(PY) tools/gen-fixtures.py
 
+boards-deps: ## Install the board toolchain (isolated from the web workspace on purpose)
+	@cd hardware && npm install --silent
+
+boards: boards-deps ## Regenerate the tier carrier boards from the hardware registry and render them
+	@node tools/gen-boards.mjs
+	@node tools/build-boards.mjs
+
 # --- verification ------------------------------------------------------------
 # Each of these is a claim the repository makes about itself.
 
@@ -46,6 +54,12 @@ links: ## Every internal link and every document resolves
 
 privacy: ## Published positions do not give away where an operator lives
 	@node tools/check-privacy.mjs
+
+boards-check: ## Carrier board netlists match the hardware registry
+	@node tools/check-boards.mjs
+
+boards-verify: ## The above, plus a full routing and design-rule pass (needs the tscircuit CLI)
+	@node tools/check-boards.mjs --full
 
 test-firmware: ## Node agent: clock, buffers, triggering, registry, concurrency
 	@$(PY) firmware/tests/test_core.py
@@ -83,7 +97,7 @@ format: ## Format Python and web sources in place
 build: ## Production build of the site
 	@yarn workspace @nband/web build
 
-check-fast: drift parity links privacy test ## Everything except the web build
+check-fast: drift parity links privacy boards-check test ## Everything except the web build
 	@echo "fast checks green"
 
 check: check-fast lint build ## Everything CI runs

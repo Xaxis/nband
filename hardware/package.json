@@ -1,0 +1,12 @@
+{
+  "name": "@nband/boards",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Carrier board generation for nband tiers. Deliberately outside the yarn workspace: installing tscircuit at the repository root rehoists node_modules and removes next from where eslint expects to find it, breaking lint and build for everyone who has never touched a board. This directory keeps its own node_modules and is installed on demand by `make boards-deps`.",
+  "scripts": {
+    "postinstall": "echo '  tscircuit installed. Run `make boards` from the repository root.'"
+  },
+  "devDependencies": {
+    "tscircuit": "0.0.2167"
+  }
+}

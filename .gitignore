@@ -32,3 +32,9 @@ firmware/captures/
 .vscode/
 .DS_Store
 .vercel
+
+# tscircuit intermediate exports; the published artifacts live in apps/web/public/boards
+hardware/boards/.build/
+# The CLI drops these beside the source when run by hand.
+hardware/boards/*.circuit.json
+hardware/node_modules/

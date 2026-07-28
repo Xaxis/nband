@@ -7,6 +7,7 @@ import {
   WiringTable,
 } from '../../../components/HardwareVisuals'
 import { Button, Container, Note, Section } from '../../../components/ui'
+import { CarrierBoards } from '../../../components/CarrierBoard'
 import {
   PARTS,
   PRICES_AS_OF,
@@ -220,6 +221,15 @@ export default function HardwarePage() {
           </div>
         </Section>
       )}
+
+      <Section
+        className="border-t border-[var(--line)]"
+        eyebrow="Generated from the registry"
+        title="The wiring table, as a circuit"
+        lede="Every part above records which physical header pin each of its signals lands on. That table used to be checked by reading it, and reading it is how a UART ended up routed to two pins that have no UART function, one of which was already assigned to something else. It is now compiled into a netlist per tier, so a pin conflict is a build failure rather than a discovery made with a soldering iron in hand."
+      >
+        <CarrierBoards />
+      </Section>
 
       <Section className="border-t border-[var(--line)] bg-[var(--surface-0)]">
         <div className="grid gap-4 md:grid-cols-2">
