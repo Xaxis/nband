@@ -1,111 +1,63 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { TIER } from '../lib/schema/generated'
+import { BoardViewer, type BoardEntry } from './boards/BoardViewer'
 import { Note } from './ui'
 
 /**
- * The generated carrier board for a tier.
+ * The generated carrier board for each tier.
  *
  * `schema/hardware.json` records which physical header pin each signal lands
- * on. That table used to exist only as prose and a diagram, and prose does not
- * fail to compile: it claimed the radar's UART went to pins with no UART
- * function while assigning one of those same pins to the beacon as well, and
- * both errors survived into a published wiring guide.
+ * on. That table used to be checked by reading it, and reading it is how a UART
+ * ended up routed to two pins with no UART function, one of which was already
+ * assigned to the infrared beacon. `make boards` compiles the table into a
+ * tscircuit netlist per tier, so a pin conflict is a build failure.
  *
- * `make boards` turns the table into a tscircuit netlist per tier, so the pin
- * assignments are checked by a router rather than by a reader. What is rendered
- * here is the schematic, which is derived from the netlist alone and is exactly
- * as correct as the registry is.
- *
- * The PCB and 3D views are deliberately not shown as though they were finished.
- * Component placement is generated on a grid and the autorouter leaves between
- * a fifth and a third of the nets unrouted, which is what layout by a person is
- * for. Publishing a convincing board render without saying that is precisely
- * the kind of overclaim this project is built to avoid.
+ * This half runs on the server: it reads the manifest the build wrote and hands
+ * it to a client component, so the panel's own JavaScript is the only thing
+ * that ships, and only the tier being looked at loads a model.
  */
 
-interface BoardManifest {
+interface Manifest {
   status: string
   caveat: string
-  boards: {
-    tier: string
-    modules: number
-    signals: number
-    artifacts: Record<string, string>
-    routing: { routed: number; nets: number; unresolved: number }
-  }[]
+  boards: Omit<BoardEntry, 'label'>[]
 }
 
-function loadManifest(): BoardManifest | null {
+function loadManifest(): Manifest | null {
   const path = resolve(process.cwd(), 'public/boards/manifest.json')
   if (!existsSync(path)) return null
-  return JSON.parse(readFileSync(path, 'utf8')) as BoardManifest
+  return JSON.parse(readFileSync(path, 'utf8')) as Manifest
 }
 
 export function CarrierBoards() {
   const manifest = loadManifest()
   if (!manifest || manifest.boards.length === 0) return null
 
+  const boards: BoardEntry[] = manifest.boards.map((b) => ({
+    ...b,
+    label: TIER[b.tier as keyof typeof TIER]?.label ?? b.tier.toUpperCase(),
+  }))
+
   return (
     <div className="mt-7">
-      <Note kind="warning" title="These boards have never been fabricated">
-        The schematic is generated from the hardware registry and is as correct as the registry
-        is. The board layout is not finished: components are placed on a grid by a script and the
-        autorouter leaves a portion of the nets unrouted, which is stated per tier below. Treat
-        the schematic as the wiring reference and the layout as a starting point, and do not send
-        either to a fabricator without laying it out properly first.
+      <Note kind="warning" title="No board here has been fabricated">
+        The schematic is generated from the hardware registry and is as correct as the registry is;
+        it is the wiring reference and it is checked on every build. The layout is not finished.
+        Components are placed by a script and the autorouter leaves a portion of the nets unplaced,
+        which each view states in the open. Do not send any of this to a fabricator without laying
+        it out properly first.
       </Note>
 
-      <div className="mt-6 grid gap-6">
-        {manifest.boards.map((b) => {
-          const tier = TIER[b.tier as keyof typeof TIER]
-          const pct = b.routing.nets
-            ? Math.round((b.routing.routed / b.routing.nets) * 100)
-            : 0
-          return (
-            <figure key={b.tier} className="card overflow-hidden">
-              <figcaption className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-[var(--line)] bg-[var(--surface-3)] px-4 py-3">
-                <span className="text-[14px] font-semibold text-[var(--ink)]">
-                  {tier?.label ?? b.tier.toUpperCase()} carrier
-                </span>
-                <span className="num text-[12px] text-[var(--ink-2)]">
-                  {b.modules} modules · {b.signals} signals · {pct}% auto-routed
-                </span>
-              </figcaption>
+      <BoardViewer boards={boards} />
 
-              {/* The schematic, not the PCB. White background because the
-                  generated sheet is drawn for paper and its own colours do not
-                  invert cleanly into the dark theme. */}
-              <div className="scroll-x bg-white p-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={b.artifacts['schematic-svg']}
-                  alt={`Generated schematic for the ${tier?.label ?? b.tier} carrier board: the Raspberry Pi 40-pin header on the left, ${b.modules} sensor module connectors, and ${b.signals} signal connections between them.`}
-                  className="mx-auto block h-auto min-w-[860px] max-w-none"
-                />
-              </div>
-
-              <div className="flex flex-wrap gap-x-5 gap-y-1 px-4 py-3 text-[12.5px] text-[var(--ink-2)]">
-                <a className="link" href={b.artifacts['schematic-svg']}>
-                  Schematic SVG
-                </a>
-                <a className="link" href={b.artifacts['pcb-svg']}>
-                  PCB layout (unfinished)
-                </a>
-                <a className="link" href={b.artifacts.glb}>
-                  3D model, GLB (unfinished)
-                </a>
-                {b.routing.unresolved > 0 && (
-                  <span className="num">
-                    {b.routing.nets - b.routing.routed} net
-                    {b.routing.nets - b.routing.routed === 1 ? '' : 's'} still unrouted
-                  </span>
-                )}
-              </div>
-            </figure>
-          )
-        })}
-      </div>
+      <p className="mt-4 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+        Only modules that touch the GPIO header appear here. USB peripherals and the CSI cameras
+        connect elsewhere and are not carried by the board, so tier 3 shows eight modules against a
+        bill of materials listing considerably more. The header pins are labelled by Raspberry Pi
+        physical number rather than by the connector&rsquo;s own numbering, which runs
+        counter-clockwise and agrees with the Pi on only two of its forty pins.
+      </p>
     </div>
   )
 }

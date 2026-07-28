@@ -22,6 +22,7 @@
  * has earned.
  */
 
+import { createHash } from 'node:crypto'
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -46,6 +47,46 @@ const isRail = (s) => /^(3V3|5V|GND|VCC|VIN)$/i.test(s)
 /** A JSX-safe identifier for a signal name: "TXD->RXD" is not one. */
 const ident = (s) => s.replace(/[^A-Za-z0-9]/g, '_')
 
+/**
+ * Raspberry Pi physical pin number to tscircuit pinheader index.
+ *
+ * These are not the same numbering and the difference is invisible until the
+ * board is fabricated and nothing works. A `doubleRow` pinheader numbers its
+ * pins the way an integrated circuit package does, counter-clockwise: pin 1 at
+ * one end of the top row, then along the bottom row left to right, then back
+ * along the top row right to left. So the top row reads 1, 40, 39, 38 … 22 and
+ * the bottom row reads 2, 3, 4 … 21.
+ *
+ * The Raspberry Pi header is numbered by row instead. Odd pins 1, 3, 5 … 39 run
+ * along one row and even pins 2, 4, 6 … 40 along the other.
+ *
+ * Only pins 1 and 2 mean the same thing in both schemes. Physical pin 7, the
+ * GNSS pulse-per-second input and the single most load-bearing connection on
+ * the whole node, is index 38 in the connector's own numbering. A generator
+ * that emitted `.J1 > .pin7` would have quietly wired the PPS line to physical
+ * pin 12, the I2S bit clock.
+ *
+ * So nothing downstream uses the connector's numbering. Every pin is labelled
+ * with its Raspberry Pi number and referenced by that label, and
+ * tools/check-boards.mjs re-derives this mapping from the exported geometry
+ * rather than trusting this comment.
+ */
+export function piPinToHeaderIndex(piPin) {
+  if (!Number.isInteger(piPin) || piPin < 1 || piPin > 40) {
+    throw new Error(`not a Raspberry Pi header pin: ${piPin}`)
+  }
+  const along = Math.floor((piPin - 1) / 2) // position along the header, 0..19
+  // Odd Pi pins share a row with pin 1, which is the connector's top row.
+  if (piPin % 2 === 1) return along === 0 ? 1 : 41 - along
+  // Even Pi pins run along the connector's bottom row, which starts at 2.
+  return along + 2
+}
+
+/** The label carried by each connector pin: "P7" is Raspberry Pi physical 7. */
+const HEADER_LABELS = Object.fromEntries(
+  Array.from({ length: 40 }, (_, i) => [`pin${piPinToHeaderIndex(i + 1)}`, `P${i + 1}`]),
+)
+
 function boardFor(tier) {
   const modules = hardware.parts
     .filter((p) => p.tiers?.includes(tier.id))
@@ -59,22 +100,71 @@ function boardFor(tier) {
 
   if (modules.length === 0) return null
 
-  // Two columns above the header, tallest spacing the layout can afford. This
-  // is deliberately generous rather than dense: the board has one job, which is
-  // to make the pin assignment physical, and a crowded layout only adds
-  // design-rule violations that say nothing about the wiring being correct.
-  const COLS = 2
-  const placed = modules.map((m, i) => {
-    const col = i % COLS
-    const row = Math.floor(i / COLS)
-    return {
-      ...m,
-      ref: `J${i + 2}`,
-      pcbX: col === 0 ? -19 : 15,
-      pcbY: 20 - row * 10,
-      schX: col * 7,
-      schY: 4 - row * 4,
+  // Place each module above the header pins it actually uses.
+  //
+  // The first version of this laid modules out on a fixed two-column grid,
+  // which put the I2C sensors at one end of the board and their bus pins at the
+  // other. A third of tier 3's nets could not be routed at all. Sorting by the
+  // mean position of a module's own signal pins is the crudest possible
+  // placement heuristic and it recovers most of that, because a connector sat
+  // above its destination has almost nothing to route around.
+  //
+  // Rails are excluded from the centroid: every module touches 3V3 and GND, so
+  // including them pulls every centroid toward the same middle and throws away
+  // the signal the heuristic runs on.
+  const headerX = (piPin) => (Math.floor((piPin - 1) / 2) - 9.5) * 2.54
+
+  const withCentroid = modules.map((m) => {
+    const signals = m.pins.filter((s) => !isRail(s.signal))
+    const xs = (signals.length ? signals : m.pins).map((s) => headerX(Number(s.pin)))
+    return { ...m, centroid: xs.reduce((a, b) => a + b, 0) / xs.length }
+  })
+
+  withCentroid.sort((a, b) => a.centroid - b.centroid)
+
+  // Deal into rows round-robin so that modules wanting nearby header pins end
+  // up on different rows rather than fighting for the same x.
+  const ROWS = Math.max(2, Math.min(3, Math.ceil(withCentroid.length / 2)))
+  const rows = Array.from({ length: ROWS }, () => [])
+  withCentroid.forEach((m, i) => rows[i % ROWS].push(m))
+
+  // Then push apart within each row until nothing overlaps. Centroid placement
+  // alone put two I2C connectors on exactly the same coordinates — the router
+  // laid down no copper at all and the only symptom was 31 "plated hole
+  // overlaps" buried in the circuit JSON. A connector is pinCount * 2.54 wide
+  // and needs its own space.
+  const HALF = (m) => (m.pins.length * 2.54) / 2
+  const GAP = 2.0
+  const EDGE = 31 // board half-width less a margin
+
+  const placed = []
+  rows.forEach((row, r) => {
+    // Left to right, each module no further left than its predecessor allows.
+    let cursor = -EDGE
+    for (const m of row) {
+      const x = Math.max(cursor + HALF(m), Math.min(EDGE - HALF(m), m.centroid))
+      m.x = x
+      cursor = x + HALF(m) + GAP
     }
+    // If that pushed the last one off the right edge, walk the whole row back.
+    const overflow = cursor - GAP - EDGE
+    if (overflow > 0) for (const m of row) m.x -= overflow
+    row.forEach((m) => {
+      placed.push({
+        ...m,
+        pcbX: Number(m.x.toFixed(2)),
+        pcbY: Number((22 - r * 9.5).toFixed(2)),
+        schX: (placed.length % ROWS) * 7,
+        schY: 4 - r * 4,
+      })
+    })
+  })
+
+  // Reference designators follow final left-to-right, top-to-bottom order so a
+  // reader can find J4 on the board without hunting.
+  placed.sort((a, b) => b.pcbY - a.pcbY || a.pcbX - b.pcbX)
+  placed.forEach((m, i) => {
+    m.ref = `J${i + 2}`
   })
 
   const decls = placed
@@ -118,7 +208,7 @@ function boardFor(tier) {
         // bus and so is SPI, so pins 3 and 5 carry every I2C device here. That
         // is a shared net, not a conflict, and the pin-exclusivity check in
         // check-drift.mjs already distinguishes the two cases.
-        signalTraces.push(`    <trace from=".${m.ref} > .${sig}" to=".J1 > .pin${s.pin}" />`)
+        signalTraces.push(`    <trace from=".${m.ref} > .${sig}" to=".J1 > .P${s.pin}" />`)
       }
     }
   }
@@ -129,7 +219,7 @@ function boardFor(tier) {
       ...members.map((m) => `    <trace from=".${m.ref} > .${m.sig}" to="net.${net}" />`),
       // Tie the net to every header pin the registry assigns to that rail.
       ...[...new Set(members.map((m) => m.headerPin))].map(
-        (pin) => `    <trace from=".J1 > .pin${pin}" to="net.${net}" />`,
+        (pin) => `    <trace from=".J1 > .P${pin}" to="net.${net}" />`,
       ),
     ])
     .join('\n')
@@ -173,12 +263,17 @@ export default () => (
   >
     {/* Raspberry Pi 5 40-pin GPIO header. Pin numbering is physical, matching
         the "pin" field in schema/hardware.json. */}
+    {/* Pins are labelled P1..P40 by Raspberry Pi physical number. The
+        connector's own numbering is counter-clockwise and does not match; see
+        piPinToHeaderIndex in tools/gen-boards.mjs. Everything below references
+        the P-labels, never the connector index. */}
     <pinheader
       name="J1"
       pinCount={40}
       gender="male"
       pitch="2.54mm"
       doubleRow
+      pinLabels={${JSON.stringify(HEADER_LABELS)}}
       pcbX={0} pcbY={${HEADER_Y}} schX={-9} schY={0}
     />
 
@@ -203,7 +298,18 @@ for (const tier of spec.enums.tier.values) {
 writeFileSync(
   join(OUT, 'manifest.json'),
   JSON.stringify(
-    { generatedFrom: 'schema/hardware.json', boards: built.map(({ source: _s, ...m }) => m) },
+    {
+      generatedFrom: 'schema/hardware.json',
+      // A digest of the emitted source, so a re-render can be demanded when the
+      // netlist changes in ways the module and signal counts do not show. The
+      // pin labels moved from connector index to Raspberry Pi physical number
+      // without either count changing, and the published schematic stayed stale
+      // through a check that only compared counts.
+      boards: built.map(({ source, ...m }) => ({
+        ...m,
+        digest: createHash('sha256').update(source).digest('hex').slice(0, 16),
+      })),
+    },
     null,
     2,
   ) + '\n',

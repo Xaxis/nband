@@ -69,7 +69,7 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
       .flatMap((p) => (p.electrical?.pins ?? []).filter((x) => /^\d+$/.test(String(x.pin))))
     for (const pin of expected) {
       // The board must terminate this signal on the header pin the registry names.
-      if (!src.includes(`.J1 > .pin${pin.pin}"`)) {
+      if (!src.includes(`.J1 > .P${pin.pin}"`)) {
         problems.push(`${b.tier}: no trace reaches header pin ${pin.pin} (${pin.signal})`)
       }
     }
@@ -85,7 +85,7 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
           if (!src.includes(`> .${sig}" to="net.`)) {
             problems.push(`${b.tier}: ${p2.id} ${pin.signal} is not tied to a rail net`)
           }
-        } else if (!src.includes(`> .${sig}" to=".J1 > .pin${pin.pin}"`)) {
+        } else if (!src.includes(`> .${sig}" to=".J1 > .P${pin.pin}"`)) {
           problems.push(`${b.tier}: ${p2.id} ${pin.signal} does not reach header pin ${pin.pin}`)
         }
       }
@@ -111,7 +111,16 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
     for (const b of manifest.boards) {
       const r = rendered.boards.find((x) => x.tier === b.tier)
       if (!r) problems.push(`${b.tier} has no rendered artifacts`)
-      else if (r.modules !== b.modules || r.signals !== b.signals) {
+      else if (r.digest !== b.digest) {
+        // Counts are not enough. Renaming every header pin from the connector's
+        // index to its Raspberry Pi number changed every trace in the netlist
+        // and neither count moved, so the site served a schematic labelled the
+        // old way while the checks reported agreement.
+        problems.push(
+          `${b.tier}: rendered from source ${r.digest ?? 'unknown'}, current source is ` +
+            `${b.digest}. Run \`make boards\`.`,
+        )
+      } else if (r.modules !== b.modules || r.signals !== b.signals) {
         problems.push(
           `${b.tier}: rendered as ${r.modules} modules / ${r.signals} signals, ` +
             `source now has ${b.modules} / ${b.signals}. Run \`make boards\`.`,
@@ -177,6 +186,65 @@ if (!full) {
         `${b.tier}: netlist exports, ${routed}/${netlist} nets auto-routed (${pct}%), ` +
           `${count('pcb_plated_hole')} plated holes`,
       )
+    }
+
+    // The header pin numbering, re-derived from the exported geometry.
+    //
+    // tscircuit numbers a doubleRow pinheader the way an IC package is
+    // numbered — counter-clockwise, so the top row reads 1, 40, 39 … 22 — while
+    // the Raspberry Pi numbers odd pins along one row and even along the other.
+    // Only pins 1 and 2 agree. A generator emitting `.J1 > .pin7` would have
+    // wired the GNSS pulse-per-second line, the one connection the whole clock
+    // discipline rests on, to the I2S bit clock instead. Nothing about that is
+    // visible in a schematic or a render; it shows up when a fabricated board
+    // does not work.
+    //
+    // So the labels are checked against physics rather than against the comment
+    // that explains them: P1 and P2 must sit at the same end, odd labels must
+    // share a row, and consecutive odd labels must be one pitch apart.
+    {
+      const bySrc = Object.fromEntries(
+        circuit.filter((e) => e.type === 'source_component').map((e) => [e.source_component_id, e]),
+      )
+      const j1 = circuit.find(
+        (e) => e.type === 'pcb_component' && bySrc[e.source_component_id]?.name === 'J1',
+      )
+      const ports = Object.fromEntries(
+        circuit.filter((e) => e.type === 'source_port').map((e) => [e.source_port_id, e]),
+      )
+      const at = {}
+      for (const p of circuit.filter((e) => e.type === 'pcb_port' && e.pcb_component_id === j1?.pcb_component_id)) {
+        const hints = ports[p.source_port_id]?.port_hints ?? []
+        for (const h of hints) if (/^P\d+$/.test(h)) at[h] = { x: p.x, y: p.y }
+      }
+
+      const geomProblems = []
+      if (Object.keys(at).length !== 40) {
+        geomProblems.push(`header exposes ${Object.keys(at).length} P-labels, expected 40`)
+      } else {
+        // Odd pins share one row, even pins the other.
+        const oddY = new Set(), evenY = new Set()
+        for (let n = 1; n <= 40; n++) (n % 2 ? oddY : evenY).add(at[`P${n}`].y.toFixed(2))
+        if (oddY.size !== 1 || evenY.size !== 1) {
+          geomProblems.push(`odd/even pins are not each on a single row`)
+        }
+        if ([...oddY][0] === [...evenY][0]) geomProblems.push('odd and even pins share a row')
+        // Consecutive same-parity pins are one 2.54 mm pitch apart, ascending.
+        for (let n = 1; n <= 36; n += 2) {
+          const d = at[`P${n + 2}`].x - at[`P${n}`].x
+          if (Math.abs(d - 2.54) > 0.01) {
+            geomProblems.push(`P${n} to P${n + 2} is ${d.toFixed(2)} mm, expected 2.54`)
+            break
+          }
+        }
+        // Pins 1 and 2 face each other at the same end.
+        if (Math.abs(at.P1.x - at.P2.x) > 0.01) geomProblems.push('P1 and P2 are not aligned')
+      }
+      if (geomProblems.length) {
+        geomProblems.forEach((g) => fail(`${b.tier}: header numbering — ${g}`))
+      } else {
+        ok(`${b.tier}: all 40 header labels sit where the Raspberry Pi pin does`)
+      }
     }
 
     const errors = circuit.filter((e) => String(e.type).includes('error'))

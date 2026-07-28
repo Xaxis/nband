@@ -4,17 +4,20 @@
     {
       "tier": "t1",
       "modules": 4,
-      "signals": 17
+      "signals": 17,
+      "digest": "66870029e3ea9850"
     },
     {
       "tier": "t2",
       "modules": 7,
-      "signals": 32
+      "signals": 32,
+      "digest": "6bce7f63c105f797"
     },
     {
       "tier": "t3",
       "modules": 8,
-      "signals": 37
+      "signals": 37,
+      "digest": "d9b61db2f77025b6"
     }
   ]
 }

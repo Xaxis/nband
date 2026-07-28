@@ -7,14 +7,14 @@
 // by a reader. Do not send these outputs to a fab without reviewing them.
 //
 // Modules on this board:
-//   J2  gnss-lc29h       uart+gpio
-//   J3  env-bme688       i2c
-//   J4  imu-bno085       i2c
-//   J5  uv-as7331        i2c
-//   J6  mag-rm3100       spi
+//   J2  env-bme688       i2c
+//   J3  gnss-lc29h       uart+gpio
+//   J4  seis-sm24        adc
+//   J5  imu-bno085       i2c
+//   J6  sem-ir-beacon    gpio+pwm
 //   J7  mic-ics43434     i2s
-//   J8  seis-sm24        adc
-//   J9  sem-ir-beacon    gpio+pwm
+//   J8  uv-as7331        i2c
+//   J9  mag-rm3100       spi
 //
 // Not on this board: USB peripherals and CSI cameras, which do not touch the
 // GPIO header. See schema/hardware.json for the full tier bill of materials.
@@ -34,59 +34,64 @@ export default () => (
   >
     {/* Raspberry Pi 5 40-pin GPIO header. Pin numbering is physical, matching
         the "pin" field in schema/hardware.json. */}
+    {/* Pins are labelled P1..P40 by Raspberry Pi physical number. The
+        connector's own numbering is counter-clockwise and does not match; see
+        piPinToHeaderIndex in tools/gen-boards.mjs. Everything below references
+        the P-labels, never the connector index. */}
     <pinheader
       name="J1"
       pinCount={40}
       gender="male"
       pitch="2.54mm"
       doubleRow
+      pinLabels={{"pin1":"P1","pin2":"P2","pin40":"P3","pin3":"P4","pin39":"P5","pin4":"P6","pin38":"P7","pin5":"P8","pin37":"P9","pin6":"P10","pin36":"P11","pin7":"P12","pin35":"P13","pin8":"P14","pin34":"P15","pin9":"P16","pin33":"P17","pin10":"P18","pin32":"P19","pin11":"P20","pin31":"P21","pin12":"P22","pin30":"P23","pin13":"P24","pin29":"P25","pin14":"P26","pin28":"P27","pin15":"P28","pin27":"P29","pin16":"P30","pin26":"P31","pin17":"P32","pin25":"P33","pin18":"P34","pin24":"P35","pin19":"P36","pin23":"P37","pin20":"P38","pin22":"P39","pin21":"P40"}}
       pcbX={0} pcbY={-21} schX={-9} schY={0}
     />
 
-    {/* gnss-lc29h — Quectel / Waveshare LC29H(DA) RTK HAT with PPS (uart+gpio) */}
+    {/* env-bme688 — Bosch BME688 (i2c) */}
     <pinheader
       name="J2"
+      pinCount={4}
+      gender="female"
+      pitch="2.54mm"
+      pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
+      pcbX={-20.32} pcbY={22} schX={0} schY={4}
+    />
+    {/* gnss-lc29h — Quectel / Waveshare LC29H(DA) RTK HAT with PPS (uart+gpio) */}
+    <pinheader
+      name="J3"
       pinCount={5}
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"TXD__RXD","pin4":"RXD__TXD","pin5":"PPS"}}
-      pcbX={-19} pcbY={20} schX={0} schY={4}
+      pcbX={-6.89} pcbY={22} schX={7} schY={4}
     />
-    {/* env-bme688 — Bosch BME688 (i2c) */}
-    <pinheader
-      name="J3"
-      pinCount={4}
-      gender="female"
-      pitch="2.54mm"
-      pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={15} pcbY={20} schX={7} schY={4}
-    />
-    {/* imu-bno085 — CEVA / Adafruit BNO085 9-DoF IMU (i2c) */}
+    {/* seis-sm24 — ION / Sercel SM-24 geophone element (adc) */}
     <pinheader
       name="J4"
-      pinCount={4}
+      pinCount={6}
       gender="female"
       pitch="2.54mm"
-      pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-19} pcbY={10} schX={0} schY={0}
+      pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"MOSI","pin4":"MISO","pin5":"SCLK","pin6":"CS"}}
+      pcbX={9.08} pcbY={22} schX={14} schY={4}
     />
-    {/* uv-as7331 — ams OSRAM AS7331 UVA/UVB/UVC sensor (i2c) */}
+    {/* imu-bno085 — CEVA / Adafruit BNO085 9-DoF IMU (i2c) */}
     <pinheader
       name="J5"
       pinCount={4}
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={15} pcbY={10} schX={7} schY={0}
+      pcbX={-20.32} pcbY={12.5} schX={0} schY={0}
     />
-    {/* mag-rm3100 — PNI Sensor RM3100 3-axis geomagnetic sensor (spi) */}
+    {/* sem-ir-beacon — generic 850 nm pulsed IR beacon, 5 W peak (gpio+pwm) */}
     <pinheader
       name="J6"
-      pinCount={6}
+      pinCount={3}
       gender="female"
       pitch="2.54mm"
-      pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"MOSI","pin4":"MISO","pin5":"SCLK","pin6":"CS"}}
-      pcbX={-19} pcbY={0} schX={0} schY={-4}
+      pinLabels={{"pin1":"5V","pin2":"GND","pin3":"GATE"}}
+      pcbX={-6.35} pcbY={12.5} schX={7} schY={0}
     />
     {/* mic-ics43434 — TDK InvenSense ICS-43434 I2S MEMS microphone (i2s) */}
     <pinheader
@@ -95,25 +100,25 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"BCLK","pin4":"LRCL","pin5":"DOUT"}}
-      pcbX={15} pcbY={0} schX={7} schY={-4}
+      pcbX={9.74} pcbY={12.5} schX={14} schY={0}
     />
-    {/* seis-sm24 — ION / Sercel SM-24 geophone element (adc) */}
+    {/* uv-as7331 — ams OSRAM AS7331 UVA/UVB/UVC sensor (i2c) */}
     <pinheader
       name="J8"
+      pinCount={4}
+      gender="female"
+      pitch="2.54mm"
+      pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
+      pcbX={-20.32} pcbY={3} schX={0} schY={-4}
+    />
+    {/* mag-rm3100 — PNI Sensor RM3100 3-axis geomagnetic sensor (spi) */}
+    <pinheader
+      name="J9"
       pinCount={6}
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"MOSI","pin4":"MISO","pin5":"SCLK","pin6":"CS"}}
-      pcbX={-19} pcbY={-10} schX={0} schY={-8}
-    />
-    {/* sem-ir-beacon — generic 850 nm pulsed IR beacon, 5 W peak (gpio+pwm) */}
-    <pinheader
-      name="J9"
-      pinCount={3}
-      gender="female"
-      pitch="2.54mm"
-      pinLabels={{"pin1":"5V","pin2":"GND","pin3":"GATE"}}
-      pcbX={15} pcbY={-10} schX={7} schY={-8}
+      pcbX={1.91} pcbY={3} schX={7} schY={-4}
     />
 
     <net name="V33" />
@@ -123,11 +128,11 @@ export default () => (
     <trace from=".J3 > .3V3" to="net.V33" />
     <trace from=".J4 > .3V3" to="net.V33" />
     <trace from=".J5 > .3V3" to="net.V33" />
-    <trace from=".J6 > .3V3" to="net.V33" />
     <trace from=".J7 > .3V3" to="net.V33" />
     <trace from=".J8 > .3V3" to="net.V33" />
-    <trace from=".J1 > .pin1" to="net.V33" />
-    <trace from=".J1 > .pin17" to="net.V33" />
+    <trace from=".J9 > .3V3" to="net.V33" />
+    <trace from=".J1 > .P17" to="net.V33" />
+    <trace from=".J1 > .P1" to="net.V33" />
     <trace from=".J2 > .GND" to="net.GND" />
     <trace from=".J3 > .GND" to="net.GND" />
     <trace from=".J4 > .GND" to="net.GND" />
@@ -136,34 +141,34 @@ export default () => (
     <trace from=".J7 > .GND" to="net.GND" />
     <trace from=".J8 > .GND" to="net.GND" />
     <trace from=".J9 > .GND" to="net.GND" />
-    <trace from=".J1 > .pin6" to="net.GND" />
-    <trace from=".J1 > .pin9" to="net.GND" />
-    <trace from=".J1 > .pin25" to="net.GND" />
-    <trace from=".J1 > .pin20" to="net.GND" />
-    <trace from=".J1 > .pin39" to="net.GND" />
-    <trace from=".J1 > .pin30" to="net.GND" />
-    <trace from=".J9 > .5V" to="net.V5" />
-    <trace from=".J1 > .pin2" to="net.V5" />
-    <trace from=".J2 > .TXD__RXD" to=".J1 > .pin10" />
-    <trace from=".J2 > .RXD__TXD" to=".J1 > .pin8" />
-    <trace from=".J2 > .PPS" to=".J1 > .pin7" />
-    <trace from=".J3 > .SDA" to=".J1 > .pin3" />
-    <trace from=".J3 > .SCL" to=".J1 > .pin5" />
-    <trace from=".J4 > .SDA" to=".J1 > .pin3" />
-    <trace from=".J4 > .SCL" to=".J1 > .pin5" />
-    <trace from=".J5 > .SDA" to=".J1 > .pin3" />
-    <trace from=".J5 > .SCL" to=".J1 > .pin5" />
-    <trace from=".J6 > .MOSI" to=".J1 > .pin19" />
-    <trace from=".J6 > .MISO" to=".J1 > .pin21" />
-    <trace from=".J6 > .SCLK" to=".J1 > .pin23" />
-    <trace from=".J6 > .CS" to=".J1 > .pin24" />
-    <trace from=".J7 > .BCLK" to=".J1 > .pin12" />
-    <trace from=".J7 > .LRCL" to=".J1 > .pin35" />
-    <trace from=".J7 > .DOUT" to=".J1 > .pin38" />
-    <trace from=".J8 > .MOSI" to=".J1 > .pin19" />
-    <trace from=".J8 > .MISO" to=".J1 > .pin21" />
-    <trace from=".J8 > .SCLK" to=".J1 > .pin23" />
-    <trace from=".J8 > .CS" to=".J1 > .pin26" />
-    <trace from=".J9 > .GATE" to=".J1 > .pin16" />
+    <trace from=".J1 > .P9" to="net.GND" />
+    <trace from=".J1 > .P6" to="net.GND" />
+    <trace from=".J1 > .P39" to="net.GND" />
+    <trace from=".J1 > .P30" to="net.GND" />
+    <trace from=".J1 > .P20" to="net.GND" />
+    <trace from=".J1 > .P25" to="net.GND" />
+    <trace from=".J6 > .5V" to="net.V5" />
+    <trace from=".J1 > .P2" to="net.V5" />
+    <trace from=".J2 > .SDA" to=".J1 > .P3" />
+    <trace from=".J2 > .SCL" to=".J1 > .P5" />
+    <trace from=".J3 > .TXD__RXD" to=".J1 > .P10" />
+    <trace from=".J3 > .RXD__TXD" to=".J1 > .P8" />
+    <trace from=".J3 > .PPS" to=".J1 > .P7" />
+    <trace from=".J4 > .MOSI" to=".J1 > .P19" />
+    <trace from=".J4 > .MISO" to=".J1 > .P21" />
+    <trace from=".J4 > .SCLK" to=".J1 > .P23" />
+    <trace from=".J4 > .CS" to=".J1 > .P26" />
+    <trace from=".J5 > .SDA" to=".J1 > .P3" />
+    <trace from=".J5 > .SCL" to=".J1 > .P5" />
+    <trace from=".J6 > .GATE" to=".J1 > .P16" />
+    <trace from=".J7 > .BCLK" to=".J1 > .P12" />
+    <trace from=".J7 > .LRCL" to=".J1 > .P35" />
+    <trace from=".J7 > .DOUT" to=".J1 > .P38" />
+    <trace from=".J8 > .SDA" to=".J1 > .P3" />
+    <trace from=".J8 > .SCL" to=".J1 > .P5" />
+    <trace from=".J9 > .MOSI" to=".J1 > .P19" />
+    <trace from=".J9 > .MISO" to=".J1 > .P21" />
+    <trace from=".J9 > .SCLK" to=".J1 > .P23" />
+    <trace from=".J9 > .CS" to=".J1 > .P24" />
   </board>
 )
