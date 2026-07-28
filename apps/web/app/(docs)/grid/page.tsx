@@ -9,7 +9,7 @@ import { STATUS } from '../../../lib/spectrum'
 export const metadata = pageMetadata({
   title: 'The grid',
   description:
-    'Every node reporting to NBAND, what it carries, and whether its clock is good enough to contribute geometry.',
+    'Every node reporting to nband, what it carries, and whether its clock is good enough to contribute geometry.',
   path: '/grid',
 })
 

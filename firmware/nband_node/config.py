@@ -1,6 +1,6 @@
 """Node configuration.
 
-A NBAND node is defined by a single TOML file. Everything the agent does is
+A nband node is defined by a single TOML file. Everything the agent does is
 determined by it: which sensors exist, where they point, how they are wired,
 and where telemetry goes. There is no hidden state and no auto-detection, on
 purpose. A node that silently reconfigures itself produces an archive nobody

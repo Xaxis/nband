@@ -62,19 +62,61 @@ export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
     const FOV = 42
     const camera = new THREE.PerspectiveCamera(FOV, host.clientWidth / host.clientHeight, 0.1, 200)
 
-    // Frame to the largest shell rather than a hard-coded position. The dome is
-    // a hemisphere of radius MAX_R sitting on the ground plane, so the subject
-    // is a box roughly 2*MAX_R wide and MAX_R tall centred at half height. A
-    // fixed camera clipped the top of it, and clipped it differently at every
-    // aspect ratio; as a wide, short hero underlay it clipped worst of all.
-    const LOOK_AT = new THREE.Vector3(0, MAX_R * 0.32, 0)
-    function frameCamera(aspect: number, pad: number) {
-      const vFov = (FOV * Math.PI) / 180
-      const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect)
-      const halfH = MAX_R * 0.62 * pad   // dome height above the look-at point
-      const halfW = MAX_R * pad          // dome radius
-      // Distance needed to contain the subject on each axis; take the larger.
-      return Math.max(halfH / Math.tan(vFov / 2), halfW / Math.tan(hFov / 2))
+    // Frame by projecting the actual geometry, not by approximating it.
+    //
+    // The first attempt treated the subject as a sphere of radius MAX_R and
+    // solved the trigonometry analytically. That is wrong: the range rings lie
+    // on the ground plane, and viewed from a shallow elevation their near edge
+    // is much closer to the camera than the far edge, so perspective stretches
+    // them well outside a sphere's silhouette. The dome fitted; the rings ran
+    // off both sides of the frame.
+    //
+    // So instead: take the extreme points of the outermost ring plus the dome
+    // apex, and binary-search the camera distance until every one of them
+    // projects inside the frame with a margin. Correct at any aspect ratio by
+    // construction, including the wide short hero and the expanded overlay.
+    const LOOK_AT = new THREE.Vector3(0, MAX_R * 0.3, 0)
+    const FIT_POINTS = [
+      new THREE.Vector3(MAX_R, 0, 0),
+      new THREE.Vector3(-MAX_R, 0, 0),
+      new THREE.Vector3(0, 0, MAX_R),
+      new THREE.Vector3(0, 0, -MAX_R),
+      new THREE.Vector3(MAX_R * 0.71, 0, MAX_R * 0.71),
+      new THREE.Vector3(-MAX_R * 0.71, 0, -MAX_R * 0.71),
+      new THREE.Vector3(0, MAX_R, 0), // dome apex
+    ]
+
+    const probe = new THREE.PerspectiveCamera(FOV, 1, 0.1, 200)
+
+    /** True when every fit point lands inside the frame with `margin` to spare. */
+    function fitsAt(dist: number, angle: number, elev: number, aspect: number, margin: number) {
+      probe.aspect = aspect
+      probe.position.set(
+        Math.sin(angle) * dist * Math.cos(elev),
+        LOOK_AT.y + dist * Math.sin(elev),
+        Math.cos(angle) * dist * Math.cos(elev),
+      )
+      probe.lookAt(LOOK_AT)
+      probe.updateMatrixWorld()
+      probe.updateProjectionMatrix()
+      const limit = 1 - margin
+      for (const p of FIT_POINTS) {
+        const v = p.clone().project(probe)
+        if (Math.abs(v.x) > limit || Math.abs(v.y) > limit || v.z > 1) return false
+      }
+      return true
+    }
+
+    function fitDistance(angle: number, elev: number, aspect: number, margin = 0.06) {
+      let lo = MAX_R * 1.2
+      let hi = MAX_R * 12
+      if (!fitsAt(hi, angle, elev, aspect, margin)) return hi
+      for (let i = 0; i < 22; i++) {
+        const mid = (lo + hi) / 2
+        if (fitsAt(mid, angle, elev, aspect, margin)) hi = mid
+        else lo = mid
+      }
+      return hi
     }
 
     const disposables: { dispose(): void }[] = []
@@ -85,8 +127,8 @@ export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
 
     // --- ground ------------------------------------------------------------
     const grid = new THREE.GridHelper(
-      MAX_R * 2.6,
-      18,
+      MAX_R * 2.05,
+      14,
       new THREE.Color(dark ? 0x2a3340 : 0xc8d0da),
       new THREE.Color(dark ? 0x1a2029 : 0xdfe4ea),
     )
@@ -266,8 +308,10 @@ export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
       // The orbit radius comes from the framing calculation, so the dome stays
       // fully inside the frame at every aspect ratio and in fullscreen.
       const cam = reduced ? 0.3 : t * 0.055
-      const camDist = frameCamera(camera.aspect, 1.12)
-      const elev = 0.42 + Math.sin(cam * 0.7) * 0.05
+      // A higher elevation reduces the perspective stretch on the ground rings,
+      // which is what made them overflow at a shallow angle.
+      const elev = 0.62 + Math.sin(cam * 0.7) * 0.05
+      const camDist = fitDistance(cam, elev, camera.aspect)
       camera.position.x = Math.sin(cam) * camDist * Math.cos(elev)
       camera.position.z = Math.cos(cam) * camDist * Math.cos(elev)
       camera.position.y = LOOK_AT.y + camDist * Math.sin(elev)
@@ -315,21 +359,30 @@ export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
       <div ref={hostRef} className="h-full w-full" aria-hidden="true" />
 
       {/* The scene is decorative to a screen reader; the readout is not. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-end gap-2 p-3">
-        <div className="flex flex-wrap gap-1.5">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-end gap-2 overflow-hidden p-3">
+        <div className="flex flex-nowrap items-center gap-1.5 overflow-hidden">
           {active.length === 0 ? (
             <span className="num rounded border border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_80%,transparent)] px-2 py-1 text-[11px] text-[var(--ink-3)]">
               no band holding contact
             </span>
           ) : (
-            active.map((label) => (
-              <span
-                key={label}
-                className="num rounded border border-[var(--line-strong)] bg-[color-mix(in_oklab,var(--surface-1)_80%,transparent)] px-2 py-1 text-[11px] text-[var(--ink)]"
-              >
-                {label}
-              </span>
-            ))
+            // Capped and never wrapped. Every band lighting at once produced a
+            // second row that ran off the bottom of the hero and was clipped.
+            <>
+              {active.slice(0, 3).map((label) => (
+                <span
+                  key={label}
+                  className="num whitespace-nowrap rounded border border-[var(--line-strong)] bg-[color-mix(in_oklab,var(--surface-1)_80%,transparent)] px-2 py-1 text-[11px] text-[var(--ink)]"
+                >
+                  {label}
+                </span>
+              ))}
+              {active.length > 3 && (
+                <span className="num whitespace-nowrap text-[11px] text-[var(--ink-3)]">
+                  +{active.length - 3}
+                </span>
+              )}
+            </>
           )}
         </div>
         <span className="num rounded border border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_80%,transparent)] px-2 py-1 text-[11px] text-[var(--ink-2)]">

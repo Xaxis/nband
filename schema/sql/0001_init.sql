@@ -1,4 +1,4 @@
--- NBAND grid schema, migration 0001
+-- nband grid schema, migration 0001
 -- Generated against schema/bands.json and schema/spec.json at schemaVersion 0.1.0.
 -- Enum members are checked against those files by tools/check-drift.mjs; adding a
 -- value here without adding it there (or vice versa) fails the build.

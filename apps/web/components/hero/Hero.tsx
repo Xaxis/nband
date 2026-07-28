@@ -57,8 +57,17 @@ export function HeroScene({ children }: { children: React.ReactNode }) {
       }
     >
       {/* The scene. Absolutely positioned so hero text composes on top of it. */}
+      {/* On wide screens the scene gets its own box on the right rather than
+          spanning the full width. Two reasons: the camera fit solves against
+          the container it is given, so a dedicated box keeps the dome whole
+          instead of letting it run off both edges, and the headline then sits
+          on flat surface rather than on moving geometry. */}
       <div
-        className={expanded ? 'absolute inset-0' : 'absolute inset-0 -z-10'}
+        className={
+          expanded
+            ? 'absolute inset-0'
+            : 'absolute inset-y-0 right-0 -z-10 w-full lg:w-[56%]'
+        }
         aria-hidden="true"
       >
         <SkyScene expanded={expanded} />
@@ -73,7 +82,7 @@ export function HeroScene({ children }: { children: React.ReactNode }) {
           className="pointer-events-none absolute inset-0 -z-10"
           style={{
             background:
-              'linear-gradient(100deg, var(--surface-1) 0%, color-mix(in oklab, var(--surface-1) 88%, transparent) 34%, color-mix(in oklab, var(--surface-1) 30%, transparent) 62%, transparent 100%)',
+              'linear-gradient(95deg, var(--surface-1) 0%, var(--surface-1) 38%, color-mix(in oklab, var(--surface-1) 55%, transparent) 56%, transparent 78%)',
           }}
         />
       )}

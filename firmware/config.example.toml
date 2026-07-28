@@ -1,4 +1,4 @@
-# NBAND node configuration.
+# nband node configuration.
 #
 # Copy to /etc/nband/node.toml and edit. The agent validates this file hard
 # at startup: a node that cannot fully describe itself refuses to run rather

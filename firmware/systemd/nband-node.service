@@ -1,5 +1,5 @@
 [Unit]
-Description=NBAND node agent
+Description=nband node agent
 Documentation=https://nband.space/software
 After=network-online.target chronyd.service
 Wants=network-online.target

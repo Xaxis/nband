@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-// Derives NBAND's two colour sets from schema/bands.json and prints them for
+// Derives nband's two colour sets from schema/bands.json and prints them for
 // the dataviz validator.
 //
-// NBAND has an unusual constraint: fourteen bands is far more than any
+// nband has an unusual constraint: fourteen bands is far more than any
 // categorical palette can separate under colour-vision deficiency (360/14 is
 // roughly 26 degrees of hue apart, well below the separation floor). So there
 // are deliberately two sets with two different jobs:

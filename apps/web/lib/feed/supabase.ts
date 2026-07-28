@@ -14,7 +14,7 @@ import type {
  *
  * This is the implementation the mock is shaped to imitate. It reads through
  * the anon key, which is read-only by row-level-security policy: every write
- * path in NBAND goes through the ingest API using the service role, so a
+ * path in nband goes through the ingest API using the service role, so a
  * compromised browser key cannot forge telemetry.
  *
  * It is wired but unexercised until nodes are actually reporting. Selecting it

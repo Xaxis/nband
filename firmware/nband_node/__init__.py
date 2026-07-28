@@ -1,4 +1,4 @@
-"""NBAND node agent."""
+"""nband node agent."""
 
 from .schema_generated import PLATFORM_VERSION, SCHEMA_VERSION
 

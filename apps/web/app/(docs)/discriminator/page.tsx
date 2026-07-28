@@ -15,7 +15,7 @@ import { VERDICT } from '../../../lib/spectrum'
 export const metadata = pageMetadata({
   title: 'The discriminator',
   description:
-    'How NBAND decides what an event was, what it refuses to decide, and why the top of the ladder is “unresolved”.',
+    'How nband decides what an event was, what it refuses to decide, and why the top of the ladder is “unresolved”.',
   path: '/discriminator',
 })
 

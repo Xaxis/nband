@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Generates language bindings from the canonical schema files.
 //
-// The whole point of this file is that NBAND's band taxonomy, enum values,
+// The whole point of this file is that nband's band taxonomy, enum values,
 // and platform thresholds exist in exactly one place. Firmware running on a
 // mast in the desert, the Postgres enum backing the archive, and the colour a
 // chart uses for the LWIR trace all derive from schema/bands.json and

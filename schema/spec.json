@@ -1,5 +1,5 @@
 {
-  "$comment": "Canonical NBAND enums and record contracts. Together with bands.json this file is the single source of truth for the platform. `tools/codegen.mjs` generates TypeScript, Python, and the SQL enum block from these two files; `tools/check-drift.mjs` fails CI if the generated artefacts are stale. Never hand-edit a generated file.",
+  "$comment": "Canonical nband enums and record contracts. Together with bands.json this file is the single source of truth for the platform. `tools/codegen.mjs` generates TypeScript, Python, and the SQL enum block from these two files; `tools/check-drift.mjs` fails CI if the generated artefacts are stale. Never hand-edit a generated file.",
   "schemaVersion": "0.1.0",
 
   "enums": {
@@ -35,7 +35,7 @@
     },
 
     "triggerReason": {
-      "description": "Why the node decided a window of data was worth keeping. NBAND records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection.",
+      "description": "Why the node decided a window of data was worth keeping. nband records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection.",
       "values": [
         { "id": "threshold", "label": "Threshold", "summary": "A channel exceeded its adaptive noise-floor threshold." },
         { "id": "motion", "label": "Motion", "summary": "Frame-differencing on an imaging channel found a moving object above the size and persistence floor." },
@@ -48,7 +48,7 @@
     },
 
     "classification": {
-      "description": "The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. NBAND can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support.",
+      "description": "The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. nband can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support.",
       "values": [
         { "id": "instrumental", "ordinal": 0, "label": "Instrumental", "hue": 220, "summary": "The signal originated in the instrument: sensor glitch, hot pixel, shutter event, self-interference from the node's own emitters, condensation on optics, or a cable fault." },
         { "id": "terrestrial_known", "ordinal": 1, "label": "Known source", "hue": 160, "summary": "Matched to a specific catalogued object. An ADS-B airframe by hex code, a satellite by NORAD ID, a lightning stroke by network fix, a licensed transmitter by frequency and bearing." },

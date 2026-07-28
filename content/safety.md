@@ -1,6 +1,6 @@
 ---
 title: Safety and regulation
-description: Optical, radio, electrical, and radiological hazards in a NBAND build, and the rules that apply to each.
+description: Optical, radio, electrical, and radiological hazards in an nband build, and the rules that apply to each.
 version: 0.1.0
 section: Reference
 order: 60
@@ -8,7 +8,7 @@ updated: 2026-07-27
 audience: Anyone building the active-emission module, and everyone else before they power up outdoors
 ---
 
-Most of a NBAND node is passive and carries no more risk than a garden camera. The exceptions are concentrated in the optional active-emission module and in the fact that the whole thing lives outdoors on a mast.
+Most of a nband node is passive and carries no more risk than a garden camera. The exceptions are concentrated in the optional active-emission module and in the fact that the whole thing lives outdoors on a mast.
 
 Nothing here is legal advice. Rules differ by country and the operator is responsible for the ones that apply where the node stands.
 

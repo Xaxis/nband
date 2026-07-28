@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Fails the build when the parts of NBAND that must agree have stopped agreeing.
+// Fails the build when the parts of nband that must agree have stopped agreeing.
 //
 // The premise of this repository is that hardware, firmware, database, and
 // documentation are versioned together. That is only true if something checks.
@@ -206,7 +206,7 @@ check('off-grid power sizing matches the tier load', () => {
 
 // ---------------------------------------------------------------------------
 
-console.log(`NBAND drift check — platform v${version}, schema v${spec.schemaVersion}\n`)
+console.log(`nband drift check — platform v${version}, schema v${spec.schemaVersion}\n`)
 for (const c of checks) {
   console.log(`  ${c.ok ? 'PASS' : 'FAIL'}  ${c.name}`)
   if (c.detail) {

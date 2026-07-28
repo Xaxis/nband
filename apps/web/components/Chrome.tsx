@@ -19,8 +19,13 @@ const HEADER_LINKS = [
 ]
 
 function Mark({ size = 30 }: { size?: number }) {
-  // Seven arcs, shortest wavelength innermost. The bridge is the spectrum.
-  const hues = [295, 258, 150, 20, 48, 320, 205]
+  // Five arcs, not seven. At 30 px the earlier seven merged into a coloured
+  // smudge: the strokes plus their gaps needed more room than the glyph had.
+  // Fewer bands, wider spacing, and a flatter sweep read as a spectrum arc at
+  // the size it is actually rendered rather than only when zoomed in.
+  const hues = [295, 205, 150, 48, 20]
+  const R = 15
+  const STEP = 2.9
   return (
     <svg
       width={size}
@@ -28,17 +33,21 @@ function Mark({ size = 30 }: { size?: number }) {
       viewBox="0 0 32 32"
       aria-hidden="true"
       className="shrink-0 overflow-visible"
+      fill="none"
     >
-      {hues.map((h, i) => (
-        <path
-          key={h}
-          d={`M ${3 + i * 1.6} 27 A ${13 - i * 1.6} ${13 - i * 1.6} 0 0 1 ${29 - i * 1.6} 27`}
-          fill="none"
-          stroke={`oklch(0.7 0.16 ${h})`}
-          strokeWidth="2.15"
-          strokeLinecap="round"
-        />
-      ))}
+      {hues.map((h, i) => {
+        const r = R - i * STEP
+        return (
+          <path
+            key={h}
+            d={`M ${16 - r} 24 A ${r} ${r} 0 0 1 ${16 + r} 24`}
+            stroke={`oklch(0.72 0.17 ${h})`}
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+        )
+      })}
+      <circle cx="16" cy="24" r="1.5" fill="currentColor" />
     </svg>
   )
 }
@@ -103,7 +112,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-14 max-w-[1180px] items-center gap-3 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
           <Mark />
-          <span>NBAND</span>
+          <span>nband</span>
         </Link>
 
         <nav className="ml-4 hidden items-center gap-0.5 lg:flex" aria-label="Main">
@@ -182,7 +191,7 @@ export function SiteFooter({ version }: { version: string }) {
         <div>
           <div className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
             <Mark size={28} />
-            NBAND
+            nband
           </div>
           <p className="mt-3 max-w-[38ch] text-[13.5px] leading-relaxed text-[var(--ink-3)]">
             An open multi-spectral sensing platform. Build a node, join the grid, read the archive.
@@ -216,7 +225,7 @@ export function SiteFooter({ version }: { version: string }) {
         <div className="mx-auto flex max-w-[1180px] flex-col gap-2 px-4 py-5 text-[12.5px] text-[var(--ink-3)] sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>Code MIT. Documentation and recorded data CC BY 4.0.</p>
           <p>
-            NBAND records what it sees and says what it cannot explain. It does not claim to know
+            nband records what it sees and says what it cannot explain. It does not claim to know
             what anything is.
           </p>
         </div>

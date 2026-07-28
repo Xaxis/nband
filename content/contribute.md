@@ -8,7 +8,7 @@ updated: 2026-07-27
 audience: Anyone who wants to extend the platform
 ---
 
-NBAND is built on the assumption that people will construct it with parts nobody anticipated. The registry, the driver interface, and the capability declaration all exist to make that a supported path rather than a fork.
+nband is built on the assumption that people will construct it with parts nobody anticipated. The registry, the driver interface, and the capability declaration all exist to make that a supported path rather than a fork.
 
 ## The one rule that matters
 

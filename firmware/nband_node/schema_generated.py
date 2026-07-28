@@ -158,7 +158,7 @@ class ClockQuality(str, Enum):
     FREERUN = "freerun"
 
 class TriggerReason(str, Enum):
-    """Why the node decided a window of data was worth keeping. NBAND records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection."""
+    """Why the node decided a window of data was worth keeping. nband records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection."""
     THRESHOLD = "threshold"
     MOTION = "motion"
     SPECTRAL = "spectral"
@@ -168,7 +168,7 @@ class TriggerReason(str, Enum):
     MANUAL = "manual"
 
 class Classification(str, Enum):
-    """The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. NBAND can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support."""
+    """The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. nband can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support."""
     INSTRUMENTAL = "instrumental"
     TERRESTRIAL_KNOWN = "terrestrial_known"
     TERRESTRIAL_LIKELY = "terrestrial_likely"

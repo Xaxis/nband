@@ -1,7 +1,7 @@
 [project]
 name = "nband-node"
 version = "0.1.0"
-description = "NBAND node agent: multi-spectral sampling, coincidence triggering, and offline-first delivery to the grid."
+description = "nband node agent: multi-spectral sampling, coincidence triggering, and offline-first delivery to the grid."
 requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = ["cryptography>=42"]

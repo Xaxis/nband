@@ -1,5 +1,5 @@
 {
-  "$comment": "Canonical NBAND band taxonomy. This file is the single source of truth for every band the platform knows about. Firmware, database enums, discriminator, and website colour system are all generated from it. Bands are ordered by increasing wavelength (decreasing photon energy); the non-electromagnetic channels follow, then the context channels. Do not reorder without bumping the schema version - `ordinal` is persisted in the database.",
+  "$comment": "Canonical nband band taxonomy. This file is the single source of truth for every band the platform knows about. Firmware, database enums, discriminator, and website colour system are all generated from it. Bands are ordered by increasing wavelength (decreasing photon energy); the non-electromagnetic channels follow, then the context channels. Do not reorder without bumping the schema version - `ordinal` is persisted in the database.",
   "schemaVersion": "0.1.0",
   "bands": [
     {
@@ -123,7 +123,7 @@
       "unitDefault": "adu",
       "shortDescription": "380 to 750 nanometres, the band your eye already covers.",
       "whatItSees": "Anything that reflects sunlight or emits its own light: aircraft, satellites, meteors, balloons, birds, and the occasional thing that fits none of those. Provides the astrometry that turns a detection into a bearing.",
-      "limits": "Useless through cloud and nearly useless in daylight against a bright sky for dim targets. A single camera gives bearing but never range, which is why NBAND treats single-node visible detections as unresolvable in distance by construction.",
+      "limits": "Useless through cloud and nearly useless in daylight against a bright sky for dim targets. A single camera gives bearing but never range, which is why nband treats single-node visible detections as unresolvable in distance by construction.",
       "typicalSensors": [
         "imx477-hq",
         "imx296-gs",
@@ -550,7 +550,7 @@
       "unitDefault": "nGal",
       "shortDescription": "Absolute local gravitational acceleration.",
       "whatItSees": "The only channel that responds to mass-energy directly rather than to photons or fields. A discrepancy between the mass implied by radar cross-section and the mass implied by gravitational perturbation is a measurement no other instrument in the stack can produce.",
-      "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every NBAND node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
+      "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every nband node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
       "typicalSensors": [
         "atom-interferometer",
         "squid-gradiometer"

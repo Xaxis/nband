@@ -473,7 +473,7 @@ class Agent:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(prog="nband-node", description="NBAND node agent")
+    p = argparse.ArgumentParser(prog="nband-node", description="nband node agent")
     p.add_argument("-c", "--config", default="/etc/nband/node.toml")
     p.add_argument("--spool", default="/var/lib/nband/spool")
     p.add_argument(

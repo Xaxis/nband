@@ -211,7 +211,7 @@ export const BANDS: readonly Band[] = [
     "unitDefault": "adu",
     "shortDescription": "380 to 750 nanometres, the band your eye already covers.",
     "whatItSees": "Anything that reflects sunlight or emits its own light: aircraft, satellites, meteors, balloons, birds, and the occasional thing that fits none of those. Provides the astrometry that turns a detection into a bearing.",
-    "limits": "Useless through cloud and nearly useless in daylight against a bright sky for dim targets. A single camera gives bearing but never range, which is why NBAND treats single-node visible detections as unresolvable in distance by construction.",
+    "limits": "Useless through cloud and nearly useless in daylight against a bright sky for dim targets. A single camera gives bearing but never range, which is why nband treats single-node visible detections as unresolvable in distance by construction.",
     "typicalSensors": [
       "imx477-hq",
       "imx296-gs",
@@ -638,7 +638,7 @@ export const BANDS: readonly Band[] = [
     "unitDefault": "nGal",
     "shortDescription": "Absolute local gravitational acceleration.",
     "whatItSees": "The only channel that responds to mass-energy directly rather than to photons or fields. A discrepancy between the mass implied by radar cross-section and the mass implied by gravitational perturbation is a measurement no other instrument in the stack can produce.",
-    "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every NBAND node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
+    "limits": "Research tier only. Atom-interferometer gravimeters cost six figures and need vibration isolation and a co-located seismometer for noise subtraction. A 1000 kilogram object at 50 metres produces roughly 2.7 nanogal, which is at the edge of a portable instrument's single-shot floor and needs matched filtering to recover. Almost every nband node will never carry one, and the schema is built so that absence is recorded rather than assumed.",
     "typicalSensors": [
       "atom-interferometer",
       "squid-gradiometer"
@@ -882,7 +882,7 @@ export interface ClockQualityMeta {
 
 export const CLOCKQUALITY_ORDER: readonly ClockQuality[] = ['gnss_pps', 'gnss_nopps', 'ntp', 'freerun'] as const
 
-/** Why the node decided a window of data was worth keeping. NBAND records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection. */
+/** Why the node decided a window of data was worth keeping. nband records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection. */
 export type TriggerReason = 'threshold' | 'motion' | 'spectral' | 'coincidence' | 'cross_node' | 'scheduled' | 'manual'
 
 export const TRIGGERREASON: Record<TriggerReason, TriggerReasonMeta> = {
@@ -931,7 +931,7 @@ export interface TriggerReasonMeta {
 
 export const TRIGGERREASON_ORDER: readonly TriggerReason[] = ['threshold', 'motion', 'spectral', 'coincidence', 'cross_node', 'scheduled', 'manual'] as const
 
-/** The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. NBAND can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support. */
+/** The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. nband can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support. */
 export type Classification = 'instrumental' | 'terrestrial_known' | 'terrestrial_likely' | 'ambiguous' | 'anomalous_unresolved'
 
 export const CLASSIFICATION: Record<Classification, ClassificationMeta> = {
