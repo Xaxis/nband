@@ -403,7 +403,7 @@ export class MockFeed implements TelemetryFeed {
   async listChannels(nodeSlug: string): Promise<ChannelSummary[]> {
     const node = await this.getNode(nodeSlug)
     if (!node) return []
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- destructured to omit
+    // `generate` is destructured purely to omit it from the result.
     return defineChannels(node).map(({ generate: _generate, ...rest }) => rest)
   }
 

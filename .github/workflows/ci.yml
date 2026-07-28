@@ -46,10 +46,7 @@ jobs:
       # author's and failed on rules their local run had never seen.
       - run: pip install --quiet -r requirements-dev.txt
       - run: make test
-      - name: lint
-        run: ruff check firmware discriminator tools
-      - name: format
-        run: ruff format --check firmware discriminator tools
+      - run: make lint-python
 
   web:
     name: web build
@@ -61,5 +58,5 @@ jobs:
           node-version-file: .nvmrc
           cache: yarn
       - run: yarn install --frozen-lockfile
-      - run: make lint
+      - run: make lint-web
       - run: make build

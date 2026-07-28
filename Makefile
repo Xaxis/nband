@@ -13,7 +13,8 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 PY ?= python3
 
-.PHONY: help install codegen check check-fast lint format test test-firmware test-discriminator \
+.PHONY: help install codegen check check-fast lint lint-web lint-python format test \
+        test-firmware test-discriminator \
         drift parity links build dev deploy fixtures seed clean node-selftest
 
 help: ## List available targets
@@ -53,14 +54,23 @@ test-discriminator: ## Scoring engine, mostly asserting refusals
 
 test: test-firmware test-discriminator ## All Python tests
 
-lint: ## Type-check and lint everything
+# Split by toolchain, because CI runs them in different jobs: the web job has
+# node and no python, the python job has neither yarn nor the web dependencies.
+# A single combined target meant whichever job ran it failed on the half it was
+# not provisioned for.
+
+lint-web: ## Type-check and lint the web app
 	@yarn workspace @nband/web type-check
 	@yarn workspace @nband/web lint
+
+lint-python: ## Lint and format-check the Python packages
 	@command -v ruff >/dev/null 2>&1 || { \
-	  echo "  ruff is not installed, so this check would silently pass locally"; \
+	  echo "  ruff is not installed, so this check would silently pass here"; \
 	  echo "  and fail in CI. Run: make install"; exit 1; }
 	@ruff check firmware discriminator tools
 	@ruff format --check firmware discriminator tools
+
+lint: lint-web lint-python ## Lint everything (what a contributor runs)
 
 format: ## Format Python and web sources in place
 	@command -v ruff >/dev/null 2>&1 && ruff format firmware discriminator tools || true
