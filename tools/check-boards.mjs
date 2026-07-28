@@ -369,6 +369,48 @@ if (!full) {
       }
     }
 
+    // Where the header sits relative to the mounting holes.
+    //
+    // The HAT mechanical specification fixes the holes at (3.5, 3.5),
+    // (61.5, 3.5), (3.5, 52.5) and (61.5, 52.5) from the board corner and the
+    // 40-way connector's pin 1 at (7.5, 52.5): level with the top row of holes,
+    // 4 mm inboard of the left column. The hole pattern here was right from the
+    // first version. The header was not — it sat 44 mm away on the opposite
+    // edge, because its position was a literal nobody had checked against
+    // anything. A board fabricated that way bolts to the standoffs and does not
+    // reach the Pi's pins.
+    {
+      const bySrc2 = Object.fromEntries(
+        circuit.filter((e) => e.type === 'source_component').map((e) => [e.source_component_id, e]),
+      )
+      const hdr = circuit.find(
+        (e) => e.type === 'pcb_component' && bySrc2[e.source_component_id]?.name === 'J1',
+      )
+      const ports = Object.fromEntries(
+        circuit.filter((e) => e.type === 'source_port').map((e) => [e.source_port_id, e]),
+      )
+      const p1 = circuit.find(
+        (e) =>
+          e.type === 'pcb_port' &&
+          e.pcb_component_id === hdr?.pcb_component_id &&
+          (ports[e.source_port_id]?.port_hints ?? []).includes('P1'),
+      )
+      const holes = circuit.filter((e) => e.type === 'pcb_hole')
+      if (!p1 || holes.length !== 4) {
+        fail(`${b.tier}: cannot locate pin 1 or the four mounting holes`)
+      } else {
+        const hx = [...new Set(holes.map((h) => Number(h.x.toFixed(2))))].sort((a, c) => a - c)
+        const hy = [...new Set(holes.map((h) => Number(h.y.toFixed(2))))].sort((a, c) => a - c)
+        const problems = []
+        if (Math.abs(hx[1] - hx[0] - 58) > 0.05) problems.push(`holes span ${(hx[1] - hx[0]).toFixed(1)} mm in x, spec 58`)
+        if (Math.abs(hy[1] - hy[0] - 49) > 0.05) problems.push(`holes span ${(hy[1] - hy[0]).toFixed(1)} mm in y, spec 49`)
+        if (Math.abs(p1.x - hx[0] - 4.0) > 0.1) problems.push(`pin 1 is ${(p1.x - hx[0]).toFixed(2)} mm from the left hole column, spec 4.0`)
+        if (Math.abs(p1.y - hy[1]) > 0.1) problems.push(`pin 1 is ${(p1.y - hy[1]).toFixed(2)} mm from the top hole row, spec 0.0`)
+        if (problems.length) fail(`${b.tier}: HAT geometry — ${problems.join('; ')}`)
+        else ok(`${b.tier}: header and mounting holes match the HAT mechanical specification`)
+      }
+    }
+
     // How badly the reference plane is cut up, stated rather than implied.
     //
     // A four-layer mixed-signal board wants signal / ground / power / signal,

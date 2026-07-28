@@ -17,7 +17,7 @@
 
 export default () => (
   <board
-    width="105mm"
+    width="90mm"
     height="56mm"
     /* Four layers. Two could not route tier 3's 37 nets, and a carrier with
        this many buses crossing wants an inner ground plane anyway. */
@@ -42,7 +42,7 @@ export default () => (
       pitch="2.54mm"
       doubleRow
       pinLabels={{"pin1":"P1","pin2":"P2","pin40":"P3","pin3":"P4","pin39":"P5","pin4":"P6","pin38":"P7","pin5":"P8","pin37":"P9","pin6":"P10","pin36":"P11","pin7":"P12","pin35":"P13","pin8":"P14","pin34":"P15","pin9":"P16","pin33":"P17","pin10":"P18","pin32":"P19","pin11":"P20","pin31":"P21","pin12":"P22","pin30":"P23","pin13":"P24","pin29":"P25","pin14":"P26","pin28":"P27","pin15":"P28","pin27":"P29","pin16":"P30","pin26":"P31","pin17":"P32","pin25":"P33","pin18":"P34","pin24":"P35","pin19":"P36","pin23":"P37","pin20":"P38","pin22":"P39","pin21":"P40"}}
-      pcbX={0} pcbY={-21} schX={-9} schY={0}
+      pcbX={-0.87} pcbY={23.23} schX={-9} schY={0}
     />
 
     {/* env-bme688 — Bosch BME688 (i2c) */}
@@ -52,7 +52,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-20.32} pcbY={22} schX={0} schY={4}
+      pcbX={-20.32} pcbY={14.23} schX={0} schY={4}
     />
     {/* lwir-mlx90640 — Melexis MLX90640 32x24 thermal array (i2c) */}
     <pinheader
@@ -61,7 +61,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-8.16} pcbY={22} schX={7} schY={4}
+      pcbX={-8.16} pcbY={14.23} schX={7} schY={4}
     />
     {/* imu-bno085 — CEVA / Adafruit BNO085 9-DoF IMU (i2c) */}
     <pinheader
@@ -70,7 +70,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-20.32} pcbY={12.5} schX={0} schY={0}
+      pcbX={-20.32} pcbY={4.73} schX={0} schY={0}
     />
     {/* gnss-lc29h — Quectel / Waveshare LC29H(DA) RTK HAT with PPS (uart+gpio) */}
     <pinheader
@@ -79,7 +79,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"TXD__RXD","pin4":"RXD__TXD","pin5":"PPS"}}
-      pcbX={-6.89} pcbY={12.5} schX={7} schY={0}
+      pcbX={-6.89} pcbY={4.73} schX={7} schY={0}
     />
 
     <net name="SDA" />
@@ -93,36 +93,36 @@ export default () => (
     <hole name="H4" diameter="2.75mm" pcbX={29} pcbY={24.5} />
     {/* decoupling for J2 (env-bme688) */}
     <capacitor name="C1" capacitance="100nF" footprint="0402"
-      pcbX={-19.32} pcbY={18.40} schX={0} schY={2.4} />
+      pcbX={-19.32} pcbY={10.63} schX={0} schY={2.4} />
     {/* decoupling for J3 (lwir-mlx90640) */}
     <capacitor name="C2" capacitance="100nF" footprint="0402"
-      pcbX={-7.16} pcbY={18.40} schX={7} schY={2.4} />
+      pcbX={-7.16} pcbY={10.63} schX={7} schY={2.4} />
     {/* decoupling for J4 (imu-bno085) */}
     <capacitor name="C3" capacitance="100nF" footprint="0402"
-      pcbX={-19.32} pcbY={8.90} schX={0} schY={-1.6} />
+      pcbX={-19.32} pcbY={1.13} schX={0} schY={-1.6} />
     {/* decoupling for J5 (gnss-lc29h) */}
     <capacitor name="C4" capacitance="100nF" footprint="0402"
-      pcbX={-5.89} pcbY={8.90} schX={7} schY={-1.6} />
+      pcbX={-5.89} pcbY={1.13} schX={7} schY={-1.6} />
     {/* bulk reservoir on V33 */}
     <capacitor name="C5" capacitance="10uF" footprint="0805"
-      pcbX={-19.00} pcbY={-11.5} schX={-4} schY={-15} />
+      pcbX={-19.00} pcbY={-15.77} schX={-4} schY={-15} />
     {/* TVS clamp on SDA, which leaves the enclosure toward
         env-bme688. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D1" footprint="sot23" pcbX={-49.00} pcbY={-7.5}
+    <diode name="D1" footprint="sot23" pcbX={-41.50} pcbY={-9.77}
       schX={0} schY={1.6} />
     {/* TVS clamp on SCL, which leaves the enclosure toward
         env-bme688. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D2" footprint="sot23" pcbX={-43.50} pcbY={-7.5}
+    <diode name="D2" footprint="sot23" pcbX={-36.00} pcbY={-9.77}
       schX={0} schY={1.6} />
     {/* V33 supply: resettable fuse and reverse-polarity diode. An
         off-grid node is wired by whoever installed it, in the field,
         often in the dark, and battery leads get reversed. */}
     <fuse name="F1" currentRating="2A" footprint="1206"
-      pcbX={-38.00} pcbY={-7.5} schX={-6} schY={-9} />
+      pcbX={-30.50} pcbY={-9.77} schX={-6} schY={-9} />
     <diode name="D3" footprint="sod123"
-      pcbX={-33.00} pcbY={-7.5} schX={-4} schY={-9} />
+      pcbX={-25.50} pcbY={-9.77} schX={-4} schY={-9} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J4 > .SDA" to="net.SDA" />

@@ -246,7 +246,7 @@
           "mount": "hat",
           "glb": "/boards/t2-board.glb",
           "size": [
-            145,
+            175,
             1.6,
             56
           ],
@@ -256,7 +256,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. 145 x 56 mm, mounting on the HAT hole pattern."
+          "note": "Generated from the hardware registry. 175 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "imu-bno085",
@@ -270,7 +270,7 @@
             18
           ],
           "pos": [
-            -57,
+            -72,
             54.699999999999996,
             -16
           ],
@@ -290,7 +290,7 @@
             25
           ],
           "pos": [
-            -24,
+            -39,
             55.199999999999996,
             -12.5
           ],
@@ -579,7 +579,7 @@
           "mount": "hat",
           "glb": "/boards/t3-board.glb",
           "size": [
-            140,
+            155,
             1.6,
             56
           ],
@@ -589,7 +589,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. 140 x 56 mm, mounting on the HAT hole pattern."
+          "note": "Generated from the hardware registry. 155 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "imu-bno085",
@@ -603,7 +603,7 @@
             18
           ],
           "pos": [
-            -54.5,
+            -62,
             54.699999999999996,
             -16
           ],
@@ -623,7 +623,7 @@
             35
           ],
           "pos": [
-            -11.5,
+            -19,
             58.199999999999996,
             -7.5
           ],

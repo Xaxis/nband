@@ -53,9 +53,29 @@ const WIDTH_OVERRIDES = existsSync(OVERRIDES_PATH)
 // all. So the width follows the part count and the holes stay where the
 // standard puts them.
 const BOARD_H_BASE = 56
-const HEADER_Y = -21
 const HOLE_X = 29
 const HOLE_Y = 24.5
+
+// Where the header actually goes, from the HAT mechanical specification rather
+// than from a number that looked about right.
+//
+// The spec fixes the mounting holes at (3.5, 3.5), (61.5, 3.5), (3.5, 52.5) and
+// (61.5, 52.5) from the board corner, and the 40-way connector's pin 1 at
+// (7.5, 52.5) — level with the top row of holes, 4 mm inboard of the left
+// column. The hole pattern here was right from the start. The header was not:
+// it sat at y = -21, which is 44 mm from the specified position and on the
+// opposite edge, so a fabricated board would not have mated with the Pi while
+// bolted to the standoffs. Nothing checked it, because it was a literal.
+//
+// Expressed relative to the holes, since the board is no longer always 65 mm
+// wide and the hole pattern is the thing that does not move.
+const P1_FROM_LEFT_HOLE = 4.0
+const P1_FROM_TOP_HOLE = 0.0
+const HEADER_PITCH = 2.54
+// Pin 1 is at one end of the connector's top row; the body centre is half its
+// length inboard of that.
+const HEADER_X = -HOLE_X + P1_FROM_LEFT_HOLE + (19 * HEADER_PITCH) / 2
+const HEADER_Y = HOLE_Y + P1_FROM_TOP_HOLE - HEADER_PITCH / 2
 
 /** Signals that are power or ground, which every module needs and which route short. */
 const isRail = (s) => /^(3V3|5V|GND|VCC|VIN)$/i.test(s)
@@ -145,6 +165,12 @@ function boardFor(tier) {
   // Deal into rows round-robin so that modules wanting nearby header pins end
   // up on different rows rather than fighting for the same x.
   const ROWS = Math.max(2, Math.min(3, Math.ceil(withCentroid.length / 2)))
+  // The band below the connector rows where passives and protection live.
+  // Declared here because the bulk capacitors are placed before the protection
+  // section reaches it, and a const used above its declaration is a hard error
+  // rather than an undefined — which is how this was caught.
+  const PROT_Y = HEADER_Y - 9 - ROWS * 9.5 - 5
+
   const rows = Array.from({ length: ROWS }, () => [])
   withCentroid.forEach((m, i) => rows[i % ROWS].push(m))
 
@@ -208,7 +234,7 @@ function boardFor(tier) {
       placed.push({
         ...m,
         pcbX: Number(m.x.toFixed(2)),
-        pcbY: Number((22 - r * 9.5).toFixed(2)),
+        pcbY: Number((HEADER_Y - 9 - r * 9.5).toFixed(2)),
         schX: (placed.length % ROWS) * 7,
         schY: 4 - r * 4,
       })
@@ -343,7 +369,7 @@ function boardFor(tier) {
     passives.push(
       `    {/* bulk reservoir on ${rail} */}\n` +
         `    <capacitor name="${ref}" capacitance="10uF" footprint="0805"\n` +
-        `      pcbX={${(-25 + bulkIdx * 6).toFixed(2)}} pcbY={-11.5} schX={-4} schY={${-6 - cIdx * 1.5}} />`,
+        `      pcbX={${(-25 + bulkIdx * 6).toFixed(2)}} pcbY={${(PROT_Y - 6).toFixed(2)}} schX={-4} schY={${-6 - cIdx * 1.5}} />`,
     )
     passiveTraces.push(`    <trace from=".${ref} > .pin1" to="net.${rail}" />`)
     passiveTraces.push(`    <trace from=".${ref} > .pin2" to="net.GND" />`)
@@ -388,9 +414,9 @@ function boardFor(tier) {
         `        pull-down the gate floats from power-on until the agent claims\n` +
         `        the pin, and a floating gate is not an off gate. */}\n` +
         `    <resistor name="${rs}" resistance="100" footprint="0402"\n` +
-        `      pcbX={${(-6 + k * 8).toFixed(2)}} pcbY={-11.5} schX={2} schY={${-7 - k * 2}} />\n` +
+        `      pcbX={${(-6 + k * 8).toFixed(2)}} pcbY={${(PROT_Y - 6).toFixed(2)}} schX={2} schY={${-7 - k * 2}} />\n` +
         `    <resistor name="${rpd}" resistance="10k" footprint="0402"\n` +
-        `      pcbX={${(-2 + k * 8).toFixed(2)}} pcbY={-11.5} schX={4} schY={${-7 - k * 2}} />`,
+        `      pcbX={${(-2 + k * 8).toFixed(2)}} pcbY={${(PROT_Y - 6).toFixed(2)}} schX={4} schY={${-7 - k * 2}} />`,
     )
     passiveTraces.push(`    <trace from=".J1 > .P${g.pin}" to=".${rs} > .pin1" />`)
     passiveTraces.push(`    <trace from=".${rs} > .pin2" to=".${g.ref} > .${g.sig}" />`)
@@ -420,7 +446,6 @@ function boardFor(tier) {
   // header, rather than tucked under each connector. Tucking put every diode
   // on top of the module in the row below: a board is not a spreadsheet and
   // "just under this one" is somewhere else's space.
-  const PROT_Y = -7.5
   let protX = -EDGE + 2
 
   // One TVS per line that leaves the box, not one per module. Four I2C sensors
@@ -589,7 +614,7 @@ export default () => (
       pitch="2.54mm"
       doubleRow
       pinLabels={${JSON.stringify(HEADER_LABELS)}}
-      pcbX={0} pcbY={${HEADER_Y}} schX={-9} schY={0}
+      pcbX={${HEADER_X.toFixed(2)}} pcbY={${HEADER_Y.toFixed(2)}} schX={-9} schY={0}
     />
 
 ${decls}

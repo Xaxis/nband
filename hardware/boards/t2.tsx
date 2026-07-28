@@ -21,7 +21,7 @@
 
 export default () => (
   <board
-    width="145mm"
+    width="175mm"
     height="76mm"
     /* Four layers. Two could not route tier 3's 37 nets, and a carrier with
        this many buses crossing wants an inner ground plane anyway. */
@@ -46,7 +46,7 @@ export default () => (
       pitch="2.54mm"
       doubleRow
       pinLabels={{"pin1":"P1","pin2":"P2","pin40":"P3","pin3":"P4","pin39":"P5","pin4":"P6","pin38":"P7","pin5":"P8","pin37":"P9","pin6":"P10","pin36":"P11","pin7":"P12","pin35":"P13","pin8":"P14","pin34":"P15","pin9":"P16","pin33":"P17","pin10":"P18","pin32":"P19","pin11":"P20","pin31":"P21","pin12":"P22","pin30":"P23","pin13":"P24","pin29":"P25","pin14":"P26","pin28":"P27","pin15":"P28","pin27":"P29","pin16":"P30","pin26":"P31","pin17":"P32","pin25":"P33","pin18":"P34","pin24":"P35","pin19":"P36","pin23":"P37","pin20":"P38","pin22":"P39","pin21":"P40"}}
-      pcbX={0} pcbY={-21} schX={-9} schY={0}
+      pcbX={-0.87} pcbY={23.23} schX={-9} schY={0}
     />
 
     {/* env-bme688 — Bosch BME688 (i2c) */}
@@ -56,7 +56,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-20.32} pcbY={22} schX={0} schY={4}
+      pcbX={-20.32} pcbY={14.23} schX={0} schY={4}
     />
     {/* pwr-ina226 — Texas Instruments / generic breakout INA226 bidirectional current and power monitor (i2c) */}
     <pinheader
@@ -65,7 +65,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-8.16} pcbY={22} schX={7} schY={4}
+      pcbX={-8.16} pcbY={14.23} schX={7} schY={4}
     />
     {/* mic-ics43434 — TDK InvenSense ICS-43434 I2S MEMS microphone (i2s) */}
     <pinheader
@@ -74,7 +74,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"BCLK","pin4":"LRCL","pin5":"DOUT"}}
-      pcbX={9.74} pcbY={22} schX={14} schY={4}
+      pcbX={9.74} pcbY={14.23} schX={14} schY={4}
     />
     {/* imu-bno085 — CEVA / Adafruit BNO085 9-DoF IMU (i2c) */}
     <pinheader
@@ -83,7 +83,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-20.32} pcbY={12.5} schX={0} schY={0}
+      pcbX={-20.32} pcbY={4.73} schX={0} schY={0}
     />
     {/* gnss-lc29h — Quectel / Waveshare LC29H(DA) RTK HAT with PPS (uart+gpio) */}
     <pinheader
@@ -92,7 +92,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"TXD__RXD","pin4":"RXD__TXD","pin5":"PPS"}}
-      pcbX={-6.89} pcbY={12.5} schX={7} schY={0}
+      pcbX={-6.89} pcbY={4.73} schX={7} schY={0}
     />
     {/* radar-ld2450 — Hi-Link LD2450 24 GHz tracking radar (uart) */}
     <pinheader
@@ -101,7 +101,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"5V","pin2":"GND","pin3":"TX","pin4":"RX"}}
-      pcbX={15.24} pcbY={12.5} schX={14} schY={0}
+      pcbX={15.24} pcbY={4.73} schX={14} schY={0}
     />
     {/* uv-as7331 — ams OSRAM AS7331 UVA/UVB/UVC sensor (i2c) */}
     <pinheader
@@ -110,7 +110,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"SDA","pin4":"SCL"}}
-      pcbX={-20.32} pcbY={3} schX={0} schY={-4}
+      pcbX={-20.32} pcbY={-4.77} schX={0} schY={-4}
     />
     {/* mag-rm3100 — PNI Sensor RM3100 3-axis geomagnetic sensor (spi) */}
     <pinheader
@@ -119,7 +119,7 @@ export default () => (
       gender="female"
       pitch="2.54mm"
       pinLabels={{"pin1":"3V3","pin2":"GND","pin3":"MOSI","pin4":"MISO","pin5":"SCLK","pin6":"CS"}}
-      pcbX={1.91} pcbY={3} schX={7} schY={-4}
+      pcbX={1.91} pcbY={-4.77} schX={7} schY={-4}
     />
 
     <net name="SDA" />
@@ -134,93 +134,93 @@ export default () => (
     <hole name="H4" diameter="2.75mm" pcbX={29} pcbY={24.5} />
     {/* decoupling for J2 (env-bme688) */}
     <capacitor name="C1" capacitance="100nF" footprint="0402"
-      pcbX={-19.32} pcbY={18.40} schX={0} schY={2.4} />
+      pcbX={-19.32} pcbY={10.63} schX={0} schY={2.4} />
     {/* decoupling for J3 (pwr-ina226) */}
     <capacitor name="C2" capacitance="100nF" footprint="0402"
-      pcbX={-7.16} pcbY={18.40} schX={7} schY={2.4} />
+      pcbX={-7.16} pcbY={10.63} schX={7} schY={2.4} />
     {/* decoupling for J4 (mic-ics43434) */}
     <capacitor name="C3" capacitance="100nF" footprint="0402"
-      pcbX={10.74} pcbY={18.40} schX={14} schY={2.4} />
+      pcbX={10.74} pcbY={10.63} schX={14} schY={2.4} />
     {/* decoupling for J5 (imu-bno085) */}
     <capacitor name="C4" capacitance="100nF" footprint="0402"
-      pcbX={-19.32} pcbY={8.90} schX={0} schY={-1.6} />
+      pcbX={-19.32} pcbY={1.13} schX={0} schY={-1.6} />
     {/* decoupling for J6 (gnss-lc29h) */}
     <capacitor name="C5" capacitance="100nF" footprint="0402"
-      pcbX={-5.89} pcbY={8.90} schX={7} schY={-1.6} />
+      pcbX={-5.89} pcbY={1.13} schX={7} schY={-1.6} />
     {/* decoupling for J7 (radar-ld2450) */}
     <capacitor name="C6" capacitance="100nF" footprint="0402"
-      pcbX={16.24} pcbY={8.90} schX={14} schY={-1.6} />
+      pcbX={16.24} pcbY={1.13} schX={14} schY={-1.6} />
     {/* decoupling for J8 (uv-as7331) */}
     <capacitor name="C7" capacitance="100nF" footprint="0402"
-      pcbX={-19.32} pcbY={-0.60} schX={0} schY={-5.6} />
+      pcbX={-19.32} pcbY={-8.37} schX={0} schY={-5.6} />
     {/* decoupling for J9 (mag-rm3100) */}
     <capacitor name="C8" capacitance="100nF" footprint="0402"
-      pcbX={2.91} pcbY={-0.60} schX={7} schY={-5.6} />
+      pcbX={2.91} pcbY={-8.37} schX={7} schY={-5.6} />
     {/* bulk reservoir on V33 */}
     <capacitor name="C9" capacitance="10uF" footprint="0805"
-      pcbX={-19.00} pcbY={-11.5} schX={-4} schY={-21} />
+      pcbX={-19.00} pcbY={-25.27} schX={-4} schY={-21} />
     {/* bulk reservoir on V5 */}
     <capacitor name="C10" capacitance="10uF" footprint="0805"
-      pcbX={-13.00} pcbY={-11.5} schX={-4} schY={-22.5} />
+      pcbX={-13.00} pcbY={-25.27} schX={-4} schY={-22.5} />
     {/* TVS clamp on SDA, which leaves the enclosure toward
         env-bme688. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D1" footprint="sot23" pcbX={-69.00} pcbY={-7.5}
+    <diode name="D1" footprint="sot23" pcbX={-84.00} pcbY={-19.27}
       schX={0} schY={1.6} />
     {/* TVS clamp on SCL, which leaves the enclosure toward
         env-bme688. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D2" footprint="sot23" pcbX={-63.50} pcbY={-7.5}
+    <diode name="D2" footprint="sot23" pcbX={-78.50} pcbY={-19.27}
       schX={0} schY={1.6} />
     {/* TVS clamp on BCLK, which leaves the enclosure toward
         mic-ics43434. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D3" footprint="sot23" pcbX={-58.00} pcbY={-7.5}
+    <diode name="D3" footprint="sot23" pcbX={-73.00} pcbY={-19.27}
       schX={14} schY={1.6} />
     {/* TVS clamp on LRCL, which leaves the enclosure toward
         mic-ics43434. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D4" footprint="sot23" pcbX={-52.50} pcbY={-7.5}
+    <diode name="D4" footprint="sot23" pcbX={-67.50} pcbY={-19.27}
       schX={14} schY={1.6} />
     {/* TVS clamp on DOUT, which leaves the enclosure toward
         mic-ics43434. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D5" footprint="sot23" pcbX={-47.00} pcbY={-7.5}
+    <diode name="D5" footprint="sot23" pcbX={-62.00} pcbY={-19.27}
       schX={14} schY={1.6} />
     {/* TVS clamp on MOSI, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D6" footprint="sot23" pcbX={-41.50} pcbY={-7.5}
+    <diode name="D6" footprint="sot23" pcbX={-56.50} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* TVS clamp on MISO, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D7" footprint="sot23" pcbX={-36.00} pcbY={-7.5}
+    <diode name="D7" footprint="sot23" pcbX={-51.00} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* TVS clamp on SCLK, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D8" footprint="sot23" pcbX={-30.50} pcbY={-7.5}
+    <diode name="D8" footprint="sot23" pcbX={-45.50} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* TVS clamp on CS, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D9" footprint="sot23" pcbX={-25.00} pcbY={-7.5}
+    <diode name="D9" footprint="sot23" pcbX={-40.00} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* V33 supply: resettable fuse and reverse-polarity diode. An
         off-grid node is wired by whoever installed it, in the field,
         often in the dark, and battery leads get reversed. */}
     <fuse name="F1" currentRating="2A" footprint="1206"
-      pcbX={-19.50} pcbY={-7.5} schX={-6} schY={-9} />
+      pcbX={-34.50} pcbY={-19.27} schX={-6} schY={-9} />
     <diode name="D10" footprint="sod123"
-      pcbX={-14.50} pcbY={-7.5} schX={-4} schY={-9} />
+      pcbX={-29.50} pcbY={-19.27} schX={-4} schY={-9} />
     {/* V5 supply: resettable fuse and reverse-polarity diode. An
         off-grid node is wired by whoever installed it, in the field,
         often in the dark, and battery leads get reversed. */}
     <fuse name="F2" currentRating="2A" footprint="1206"
-      pcbX={-8.50} pcbY={-7.5} schX={-6} schY={-11} />
+      pcbX={-23.50} pcbY={-19.27} schX={-6} schY={-11} />
     <diode name="D11" footprint="sod123"
-      pcbX={-3.50} pcbY={-7.5} schX={-4} schY={-11} />
+      pcbX={-18.50} pcbY={-19.27} schX={-4} schY={-11} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J5 > .SDA" to="net.SDA" />
