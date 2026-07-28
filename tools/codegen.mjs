@@ -220,6 +220,30 @@ function generateTypeScript() {
 }
 
 // ---------------------------------------------------------------------------
+// Plain-JS constants
+// ---------------------------------------------------------------------------
+
+// Runtime constants as a bare ES module. This exists so that logic shared
+// between the website bundle and a plain `node` process (the discriminator
+// parity check) can import the same values without a transpile step. Types
+// live in generated.ts; values live here.
+function generateConstantsModule() {
+  return [
+    BANNER('//'),
+    ``,
+    `export const PLATFORM_VERSION = '${version}'`,
+    `export const SCHEMA_VERSION = '${spec.schemaVersion}'`,
+    ``,
+    `export const HYPOTHESES = ${JSON.stringify(spec.hypotheses.defaults, null, 2)}`,
+    ``,
+    `export const THRESHOLDS = ${JSON.stringify(spec.thresholds, null, 2)}`,
+    ``,
+    `export const BAND_IDS = ${JSON.stringify(bands.bands.map((b) => b.id), null, 2)}`,
+    ``,
+  ].join('\n')
+}
+
+// ---------------------------------------------------------------------------
 // Python
 // ---------------------------------------------------------------------------
 
@@ -302,6 +326,7 @@ function generatePython() {
 
 console.log(checkOnly ? 'Checking generated files...' : 'Generating...')
 emit('apps/web/lib/schema/generated.ts', generateTypeScript())
+emit('apps/web/lib/schema/constants.mjs', generateConstantsModule())
 emit('firmware/nband_node/schema_generated.py', generatePython())
 
 if (checkOnly) {

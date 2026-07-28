@@ -1,0 +1,189 @@
+{
+  "clean-3band-2node-ranged": {
+    "classification": "anomalous_unresolved",
+    "anomaly_score": 88.96,
+    "corroboration": "multi_node",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "aircraft",
+    "posteriors": {
+      "aircraft": 0.3411,
+      "unmodelled": 0.2707,
+      "drone": 0.1895,
+      "atmospheric": 0.0677,
+      "balloon_debris": 0.065,
+      "bird_insect": 0.038,
+      "satellite": 0.0119,
+      "instrument": 0.0097,
+      "meteor": 0.0065
+    }
+  },
+  "adsb-unavailable": {
+    "classification": "terrestrial_likely",
+    "anomaly_score": 21.86,
+    "corroboration": "multi_node",
+    "unavailable_catalogs": [
+      "adsb"
+    ],
+    "top_hypothesis": "aircraft",
+    "posteriors": {
+      "aircraft": 0.8381,
+      "unmodelled": 0.0665,
+      "drone": 0.0466,
+      "atmospheric": 0.0166,
+      "balloon_debris": 0.016,
+      "bird_insect": 0.0093,
+      "satellite": 0.0029,
+      "instrument": 0.0024,
+      "meteor": 0.0016
+    }
+  },
+  "degraded-clock": {
+    "classification": "ambiguous",
+    "anomaly_score": 45.0,
+    "corroboration": "multi_node",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "aircraft",
+    "posteriors": {
+      "aircraft": 0.3411,
+      "unmodelled": 0.2707,
+      "drone": 0.1895,
+      "atmospheric": 0.0677,
+      "balloon_debris": 0.065,
+      "bird_insect": 0.038,
+      "satellite": 0.0119,
+      "instrument": 0.0097,
+      "meteor": 0.0065
+    }
+  },
+  "single-band": {
+    "classification": "ambiguous",
+    "anomaly_score": 66.85,
+    "corroboration": "single_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "bird_insect",
+    "posteriors": {
+      "bird_insect": 0.3315,
+      "instrument": 0.2901,
+      "aircraft": 0.116,
+      "meteor": 0.1105,
+      "drone": 0.0645,
+      "satellite": 0.0405,
+      "atmospheric": 0.023,
+      "balloon_debris": 0.0221,
+      "unmodelled": 0.0018
+    }
+  },
+  "adsb-match": {
+    "classification": "terrestrial_known",
+    "anomaly_score": 1.57,
+    "corroboration": "multi_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "aircraft",
+    "posteriors": {
+      "aircraft": 0.9051,
+      "bird_insect": 0.0776,
+      "atmospheric": 0.0054,
+      "drone": 0.0053,
+      "balloon_debris": 0.0052,
+      "instrument": 0.0008,
+      "unmodelled": 0.0004,
+      "satellite": 0.0002,
+      "meteor": 0.0001
+    }
+  },
+  "satellite-match-illuminated": {
+    "classification": "terrestrial_known",
+    "anomaly_score": 6.49,
+    "corroboration": "multi_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "satellite",
+    "posteriors": {
+      "satellite": 0.6065,
+      "bird_insect": 0.2068,
+      "aircraft": 0.0724,
+      "instrument": 0.0414,
+      "drone": 0.0402,
+      "atmospheric": 0.0144,
+      "balloon_debris": 0.0138,
+      "meteor": 0.0034,
+      "unmodelled": 0.0011
+    }
+  },
+  "lightning-coincidence": {
+    "classification": "terrestrial_known",
+    "anomaly_score": 7.16,
+    "corroboration": "multi_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "atmospheric",
+    "posteriors": {
+      "atmospheric": 0.5662,
+      "drone": 0.1585,
+      "aircraft": 0.1585,
+      "satellite": 0.0554,
+      "balloon_debris": 0.0302,
+      "bird_insect": 0.0226,
+      "instrument": 0.0045,
+      "unmodelled": 0.0025,
+      "meteor": 0.0015
+    }
+  },
+  "rfi-selfmatch": {
+    "classification": "instrumental",
+    "anomaly_score": 5.06,
+    "corroboration": "single_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "instrument",
+    "posteriors": {
+      "instrument": 0.6629,
+      "drone": 0.116,
+      "aircraft": 0.116,
+      "satellite": 0.0405,
+      "atmospheric": 0.023,
+      "balloon_debris": 0.0221,
+      "bird_insect": 0.0166,
+      "unmodelled": 0.0018,
+      "meteor": 0.0011
+    }
+  },
+  "all-catalogs-down": {
+    "classification": "terrestrial_likely",
+    "anomaly_score": 44.22,
+    "corroboration": "multi_channel",
+    "unavailable_catalogs": [
+      "adsb",
+      "lightning",
+      "tle",
+      "weather"
+    ],
+    "top_hypothesis": "aircraft",
+    "posteriors": {
+      "aircraft": 0.598,
+      "bird_insect": 0.2221,
+      "satellite": 0.0626,
+      "instrument": 0.0342,
+      "drone": 0.0332,
+      "unmodelled": 0.0237,
+      "atmospheric": 0.0119,
+      "balloon_debris": 0.0114,
+      "meteor": 0.0028
+    }
+  },
+  "huge-excursion-single-band": {
+    "classification": "ambiguous",
+    "anomaly_score": 61.82,
+    "corroboration": "single_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "instrument",
+    "posteriors": {
+      "instrument": 0.3818,
+      "bird_insect": 0.3782,
+      "aircraft": 0.1018,
+      "drone": 0.0566,
+      "satellite": 0.0356,
+      "atmospheric": 0.0202,
+      "balloon_debris": 0.0194,
+      "meteor": 0.0048,
+      "unmodelled": 0.0016
+    }
+  }
+}

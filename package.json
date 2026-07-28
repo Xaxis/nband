@@ -14,8 +14,10 @@
     "type-check": "yarn workspace @nband/web type-check",
     "codegen": "node tools/codegen.mjs",
     "check:drift": "node tools/check-drift.mjs",
+    "check:parity": "node tools/check-parity.mjs",
+    "fixtures": "python3 tools/gen-fixtures.py",
     "db:seed": "node tools/seed.mjs",
-    "check": "yarn check:drift && yarn type-check && yarn lint"
+    "check": "yarn check:drift && yarn check:parity && yarn type-check && yarn lint"
   },
   "devDependencies": {
     "prettier": "^3.6.2"

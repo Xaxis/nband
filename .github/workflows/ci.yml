@@ -23,6 +23,9 @@ jobs:
       # drifted from the schema files, when a document claims a version that
       # does not exist, or when a part references something that is not there.
       - run: node tools/check-drift.mjs
+      # The playground scores client-side, so the logic exists in Python and in
+      # JavaScript. This fails the build the moment the two disagree.
+      - run: node tools/check-parity.mjs
 
   firmware:
     name: firmware tests

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { DiscriminatorPlayground } from '../../components/DiscriminatorPlayground'
 import { Container, Note, Section } from '../../components/ui'
 import {
   CATALOGSOURCE,
@@ -36,6 +37,17 @@ export default function DiscriminatorPage() {
       </section>
 
       <Section
+        eyebrow="Try it"
+        title="Turn a gate off and watch the verdict fall"
+        lede="This runs the real scoring logic, not a demonstration of it. The module below is the same one a conformance check holds against the Python engine that scores the archive, so a verdict here is the verdict the database would record."
+      >
+        <div className="mt-8">
+          <DiscriminatorPlayground />
+        </div>
+      </Section>
+
+      <Section
+        className="border-y border-[var(--line)] bg-[var(--surface-0)]"
         eyebrow="Step one"
         title="Subtract everything that is already catalogued"
         lede="Before an event can be called anything, it is checked against every source that could plausibly explain it. Most events close here, and that is the system working rather than the system being boring."
@@ -62,7 +74,6 @@ export default function DiscriminatorPage() {
       </Section>
 
       <Section
-        className="border-y border-[var(--line)] bg-[var(--surface-0)]"
         eyebrow="Step two"
         title="Score what is left against a fixed hypothesis set"
         lede="Nine hypotheses, with per-site priors learned from that site’s own history. The cold-start values below are what a node uses before it has accumulated its own statistics. The model is deliberately coarse: more parameters than the archive can constrain would produce confident numbers that mean nothing."
