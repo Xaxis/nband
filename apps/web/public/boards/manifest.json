@@ -8,56 +8,56 @@
       "widthMm": 90,
       "modules": 4,
       "signals": 17,
-      "digest": "4b6c4a3908b7cc0c",
+      "digest": "02a0dd8050ae239c",
       "artifacts": {
         "schematic-svg": "/boards/t1-schematic.svg",
         "pcb-svg": "/boards/t1-pcb.svg",
         "glb": "/boards/t1-board.glb"
       },
-      "components": 14,
+      "components": 15,
       "routing": {
-        "routed": 35,
-        "nets": 39,
+        "routed": 40,
+        "nets": 44,
         "unrouted": 0,
         "drc": 0
       }
     },
     {
       "tier": "t2",
-      "widthMm": 175,
+      "widthMm": 115,
       "modules": 8,
       "signals": 36,
-      "digest": "750bf7a6c45ea9e5",
+      "digest": "520bea1b356bd7d7",
       "artifacts": {
         "schematic-svg": "/boards/t2-schematic.svg",
         "pcb-svg": "/boards/t2-pcb.svg",
         "glb": "/boards/t2-board.glb"
       },
-      "components": 32,
+      "components": 33,
       "routing": {
-        "routed": 83,
-        "nets": 88,
+        "routed": 88,
+        "nets": 93,
         "unrouted": 0,
-        "drc": 0
+        "drc": 1
       }
     },
     {
       "tier": "t3",
-      "widthMm": 155,
+      "widthMm": 140,
       "modules": 9,
       "signals": 41,
-      "digest": "da5889852be0b474",
+      "digest": "814fb51a24442421",
       "artifacts": {
         "schematic-svg": "/boards/t3-schematic.svg",
         "pcb-svg": "/boards/t3-pcb.svg",
         "glb": "/boards/t3-board.glb"
       },
-      "components": 37,
+      "components": 38,
       "routing": {
-        "routed": 96,
-        "nets": 104,
+        "routed": 101,
+        "nets": 109,
         "unrouted": 0,
-        "drc": 0
+        "drc": 1
       }
     }
   ]

@@ -105,12 +105,36 @@ const exportBoard = (tier, format, out) =>
 // Widen whatever does not clear the fab minimum, then regenerate everything so
 // the checked-in sources match what was measured.
 const extra = {}
-for (let round = 0; round < 6; round++) {
+for (let round = 0; round < 10; round++) {
   const tight = []
   for (const b of manifest.boards) {
     try {
       exportBoard(b.tier, 'circuit-json', `.build/${b.tier}-probe.json`)
       const circuit = JSON.parse(readFileSync(join(BOARDS, `.build/${b.tier}-probe.json`), 'utf8'))
+      const routed = circuit.filter((e) => e.type === 'pcb_trace').length
+      const nets = circuit.filter((e) => e.type === 'source_trace').length
+
+      // Widen on total routing failure as well as on tight clearance. The loop
+      // only watched clearance at first, so when the ID EEPROM pushed tier 2
+      // and tier 3 past what the router could place, it laid down no copper at
+      // all, reported success, and the loop saw a clearance of Infinity and
+      // decided everything was fine. The board check caught it downstream,
+      // which is what it is for, but the build should not have needed telling.
+      if (nets > 0 && routed === 0) {
+        extra[b.tier] = (extra[b.tier] ?? 0) + 25
+        tight.push(`${b.tier} unrouted`)
+        continue
+      }
+
+      const unroutable = circuit.filter((e) =>
+        /could not find a route/i.test(String(e.message ?? '')),
+      ).length
+      if (unroutable > 0) {
+        extra[b.tier] = (extra[b.tier] ?? 0) + 20
+        tight.push(`${b.tier} ${unroutable} unroutable`)
+        continue
+      }
+
       const worst = worstClearance(circuit)
       if (Number.isFinite(worst) && worst < HARD_MM) {
         extra[b.tier] = (extra[b.tier] ?? 0) + 15

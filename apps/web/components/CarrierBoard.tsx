@@ -78,7 +78,8 @@ export function CarrierBoards() {
         100&nbsp;nF decoupling capacitor per module, a bulk reservoir per supply rail, a ground
         plane poured on an inner layer, a series resistor and pull-down on any gate driven from a
         GPIO, a TVS clamp on every line that leaves the enclosure, a resettable fuse and a
-        reverse-polarity diode on each supply rail, and the four HAT mounting holes. The clamps
+        reverse-polarity diode on each supply rail, an identification EEPROM on the ID_SD and
+        ID_SC pins the HAT specification reserves for it, and the four mounting holes. The clamps
         matter because two signals leave the box on multi-metre cables &mdash; the magnetometer
         two metres out on a mast, the geophone further and in the ground &mdash; and a cable that
         long is an antenna. The boards overhang the HAT footprint as a result; the mounting holes

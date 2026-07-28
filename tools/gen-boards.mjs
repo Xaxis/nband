@@ -497,6 +497,37 @@ function boardFor(tier) {
     passiveTraces.push(`    <trace from=".${f} > .pin1" to="net.${rail}" />`)
     passiveTraces.push(`    <trace from=".${d} > .pin1" to="net.GND" />`)
   })
+  // Advance the cursor past the supply parts. It was not, so the EEPROM landed
+  // on top of the fuse row: fifty-three overlapping pads, a router that gave up
+  // entirely, and an export that still reported success.
+  protX += supplyRails.length * 11 + 6
+
+  // The HAT identification EEPROM, which the specification requires and this
+  // board did not have.
+  //
+  // Pins 27 and 28 are ID_SD and ID_SC, a dedicated I2C bus the Pi reads at
+  // boot and nothing else may use. A 24C32 there lets the firmware identify
+  // the board, its revision and its GPIO setup, and load a device tree overlay
+  // automatically. Without it the board is a piece of stripboard as far as the
+  // Pi is concerned, every builder configures their own overlays by hand, and
+  // the platform loses the one mechanism that would let a node say what
+  // hardware it is carrying without being told.
+  //
+  // It also matters for what this project is for: a node that can read its own
+  // carrier can report the board revision alongside its data, and an archive
+  // that knows which hardware revision produced a reading can revisit it later.
+  passives.push(
+    `    {/* HAT ID EEPROM on ID_SD/ID_SC (pins 27 and 28), per the HAT\n` +
+      `        specification. Write-protected in normal operation. */}\n` +
+      `    <chip name="U1" footprint="soic8"\n` +
+      `      pinLabels={{ pin1: "A0", pin2: "A1", pin3: "A2", pin4: "GND", pin5: "SDA", pin6: "SCL", pin7: "WP", pin8: "VCC" }}\n` +
+      `      pcbX={${protX.toFixed(2)}} pcbY={${PROT_Y}} schX={8} schY={-8} />`,
+  )
+  passiveTraces.push(`    <trace from=".U1 > .SDA" to=".J1 > .P27" />`)
+  passiveTraces.push(`    <trace from=".U1 > .SCL" to=".J1 > .P28" />`)
+  passiveTraces.push(`    <trace from=".U1 > .VCC" to="net.V33" />`)
+  passiveTraces.push(`    <trace from=".U1 > .GND" to="net.GND" />`)
+  passiveTraces.push(`    <trace from=".U1 > .WP" to="net.V33" />`)
 
   // ---- Mechanical ------------------------------------------------------
   // The four HAT mounting holes, at the positions the mechanical standard

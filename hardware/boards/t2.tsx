@@ -21,7 +21,7 @@
 
 export default () => (
   <board
-    width="175mm"
+    width="115mm"
     height="76mm"
     /* Four layers. Two could not route tier 3's 37 nets, and a carrier with
        this many buses crossing wants an inner ground plane anyway. */
@@ -165,62 +165,67 @@ export default () => (
     {/* TVS clamp on SDA, which leaves the enclosure toward
         env-bme688. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D1" footprint="sot23" pcbX={-84.00} pcbY={-19.27}
+    <diode name="D1" footprint="sot23" pcbX={-54.00} pcbY={-19.27}
       schX={0} schY={1.6} />
     {/* TVS clamp on SCL, which leaves the enclosure toward
         env-bme688. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D2" footprint="sot23" pcbX={-78.50} pcbY={-19.27}
+    <diode name="D2" footprint="sot23" pcbX={-48.50} pcbY={-19.27}
       schX={0} schY={1.6} />
     {/* TVS clamp on BCLK, which leaves the enclosure toward
         mic-ics43434. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D3" footprint="sot23" pcbX={-73.00} pcbY={-19.27}
+    <diode name="D3" footprint="sot23" pcbX={-43.00} pcbY={-19.27}
       schX={14} schY={1.6} />
     {/* TVS clamp on LRCL, which leaves the enclosure toward
         mic-ics43434. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D4" footprint="sot23" pcbX={-67.50} pcbY={-19.27}
+    <diode name="D4" footprint="sot23" pcbX={-37.50} pcbY={-19.27}
       schX={14} schY={1.6} />
     {/* TVS clamp on DOUT, which leaves the enclosure toward
         mic-ics43434. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D5" footprint="sot23" pcbX={-62.00} pcbY={-19.27}
+    <diode name="D5" footprint="sot23" pcbX={-32.00} pcbY={-19.27}
       schX={14} schY={1.6} />
     {/* TVS clamp on MOSI, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D6" footprint="sot23" pcbX={-56.50} pcbY={-19.27}
+    <diode name="D6" footprint="sot23" pcbX={-26.50} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* TVS clamp on MISO, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D7" footprint="sot23" pcbX={-51.00} pcbY={-19.27}
+    <diode name="D7" footprint="sot23" pcbX={-21.00} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* TVS clamp on SCLK, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D8" footprint="sot23" pcbX={-45.50} pcbY={-19.27}
+    <diode name="D8" footprint="sot23" pcbX={-15.50} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* TVS clamp on CS, which leaves the enclosure toward
         mag-rm3100. That cable is an antenna on a mast, and its far
         end is outside every protection the box provides. */}
-    <diode name="D9" footprint="sot23" pcbX={-40.00} pcbY={-19.27}
+    <diode name="D9" footprint="sot23" pcbX={-10.00} pcbY={-19.27}
       schX={7} schY={-6.4} />
     {/* V33 supply: resettable fuse and reverse-polarity diode. An
         off-grid node is wired by whoever installed it, in the field,
         often in the dark, and battery leads get reversed. */}
     <fuse name="F1" currentRating="2A" footprint="1206"
-      pcbX={-34.50} pcbY={-19.27} schX={-6} schY={-9} />
+      pcbX={-4.50} pcbY={-19.27} schX={-6} schY={-9} />
     <diode name="D10" footprint="sod123"
-      pcbX={-29.50} pcbY={-19.27} schX={-4} schY={-9} />
+      pcbX={0.50} pcbY={-19.27} schX={-4} schY={-9} />
     {/* V5 supply: resettable fuse and reverse-polarity diode. An
         off-grid node is wired by whoever installed it, in the field,
         often in the dark, and battery leads get reversed. */}
     <fuse name="F2" currentRating="2A" footprint="1206"
-      pcbX={-23.50} pcbY={-19.27} schX={-6} schY={-11} />
+      pcbX={6.50} pcbY={-19.27} schX={-6} schY={-11} />
     <diode name="D11" footprint="sod123"
-      pcbX={-18.50} pcbY={-19.27} schX={-4} schY={-11} />
+      pcbX={11.50} pcbY={-19.27} schX={-4} schY={-11} />
+    {/* HAT ID EEPROM on ID_SD/ID_SC (pins 27 and 28), per the HAT
+        specification. Write-protected in normal operation. */}
+    <chip name="U1" footprint="soic8"
+      pinLabels={{ pin1: "A0", pin2: "A1", pin3: "A2", pin4: "GND", pin5: "SDA", pin6: "SCL", pin7: "WP", pin8: "VCC" }}
+      pcbX={23.50} pcbY={-19.27} schX={8} schY={-8} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J5 > .SDA" to="net.SDA" />
@@ -297,6 +302,11 @@ export default () => (
     <trace from=".D10 > .pin1" to="net.GND" />
     <trace from=".F2 > .pin1" to="net.V5" />
     <trace from=".D11 > .pin1" to="net.GND" />
+    <trace from=".U1 > .SDA" to=".J1 > .P27" />
+    <trace from=".U1 > .SCL" to=".J1 > .P28" />
+    <trace from=".U1 > .VCC" to="net.V33" />
+    <trace from=".U1 > .GND" to="net.GND" />
+    <trace from=".U1 > .WP" to="net.V33" />
     <trace from=".J4 > .BCLK" to=".J1 > .P12" />
     <trace from=".J4 > .LRCL" to=".J1 > .P35" />
     <trace from=".J4 > .DOUT" to=".J1 > .P38" />

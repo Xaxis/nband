@@ -123,6 +123,11 @@ export default () => (
       pcbX={-30.50} pcbY={-9.77} schX={-6} schY={-9} />
     <diode name="D3" footprint="sod123"
       pcbX={-25.50} pcbY={-9.77} schX={-4} schY={-9} />
+    {/* HAT ID EEPROM on ID_SD/ID_SC (pins 27 and 28), per the HAT
+        specification. Write-protected in normal operation. */}
+    <chip name="U1" footprint="soic8"
+      pinLabels={{ pin1: "A0", pin2: "A1", pin3: "A2", pin4: "GND", pin5: "SDA", pin6: "SCL", pin7: "WP", pin8: "VCC" }}
+      pcbX={-13.50} pcbY={-9.77} schX={8} schY={-8} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J4 > .SDA" to="net.SDA" />
@@ -159,6 +164,11 @@ export default () => (
     <trace from=".D2 > .pin2" to="net.SCL" />
     <trace from=".F1 > .pin1" to="net.V33" />
     <trace from=".D3 > .pin1" to="net.GND" />
+    <trace from=".U1 > .SDA" to=".J1 > .P27" />
+    <trace from=".U1 > .SCL" to=".J1 > .P28" />
+    <trace from=".U1 > .VCC" to="net.V33" />
+    <trace from=".U1 > .GND" to="net.GND" />
+    <trace from=".U1 > .WP" to="net.V33" />
     <trace from=".J5 > .TXD__RXD" to=".J1 > .P10" />
     <trace from=".J5 > .RXD__TXD" to=".J1 > .P8" />
     <trace from=".J5 > .PPS" to=".J1 > .P7" />
