@@ -33,6 +33,10 @@ interface Body {
   band?: string | null
   hue?: number | null
   mount: string
+  parent?: string
+  colour?: string
+  cylinder?: boolean
+  boardOnly?: boolean
   size: [number, number, number]
   pos: [number, number, number]
   sourced: boolean
@@ -43,10 +47,19 @@ interface Body {
   interface?: string | null
 }
 
+interface Cable {
+  id: string
+  label: string
+  from: [number, number, number]
+  to: [number, number, number]
+  kind: 'cable' | 'ribbon'
+}
+
 export interface Assembly {
   tier: string
   label: string
   bodies: Body[]
+  cables?: Cable[]
   counts: { total: number; sourced: number; approximate: number }
 }
 
@@ -131,6 +144,23 @@ export default function NodeScene({
 
     const disposables: { dispose(): void }[] = []
     const pickable: THREE.Object3D[] = []
+
+    // Share materials and geometry rather than minting one of each per body.
+    // A tier 3 node is forty-two bodies plus twelve board features plus cables,
+    // and the first version created a MeshStandardMaterial and an EdgesGeometry
+    // for every one. That is dozens of draw calls and dozens of shader
+    // compilations for a scene of boxes, which a laptop hides and a phone does
+    // not.
+    const matCache = new Map<string, THREE.MeshStandardMaterial>()
+    const material = (key: string, make: () => THREE.MeshStandardMaterial) => {
+      let m = matCache.get(key)
+      if (!m) {
+        m = make()
+        matCache.set(key, m)
+        disposables.push(m)
+      }
+      return m
+    }
     const group = new THREE.Group()
     scene.add(group)
 
@@ -143,18 +173,29 @@ export default function NodeScene({
     for (const b of visible) {
       if (b.glb) continue // loaded separately below
       const [w, h, d] = b.size
-      const geo = new THREE.BoxGeometry(w, h, d)
+      // Standoffs are round. Drawing them as cubes made the one thing
+      // physically holding the stack together look like more scattered debris.
+      const geo = b.cylinder
+        ? new THREE.CylinderGeometry(w / 2, w / 2, h, 8)
+        : new THREE.BoxGeometry(w, h, d)
       disposables.push(geo)
 
-      const colour = b.hue != null ? new THREE.Color(`hsl(${b.hue}, 45%, 52%)`) : new THREE.Color(MOUNT_COLOUR[b.mount] ?? 0x5a5a62)
-      const mat = new THREE.MeshStandardMaterial({
-        color: colour,
-        roughness: 0.72,
-        metalness: 0.06,
-        transparent: b.wireframe === true,
-        opacity: b.wireframe ? 0.06 : 1,
-      })
-      disposables.push(mat)
+      const colour = b.colour
+        ? new THREE.Color(b.colour)
+        : b.hue != null
+          ? new THREE.Color(`hsl(${b.hue}, 45%, 52%)`)
+          : new THREE.Color(MOUNT_COLOUR[b.mount] ?? 0x5a5a62)
+      const mat = material(
+        `${colour.getHexString()}-${b.mount}-${b.wireframe ? 'w' : 's'}`,
+        () =>
+          new THREE.MeshStandardMaterial({
+            color: colour,
+            roughness: b.mount === 'standoff' ? 0.35 : 0.72,
+            metalness: b.mount === 'standoff' ? 0.75 : 0.06,
+            transparent: b.wireframe === true,
+            opacity: b.wireframe ? 0.06 : 1,
+          }),
+      )
 
       const mesh = new THREE.Mesh(geo, mat)
       mesh.position.set(...b.pos)
@@ -162,19 +203,49 @@ export default function NodeScene({
       group.add(mesh)
       if (!b.wireframe) pickable.push(mesh)
 
-      // Approximate bodies get a drawn edge; sourced ones do not. The
-      // difference is meant to be noticed.
-      const edges = new THREE.EdgesGeometry(geo)
-      disposables.push(edges)
-      const lineMat = new THREE.LineBasicMaterial({
-        color: b.sourced ? 0xdfe6f2 : 0x93a4bd,
-        transparent: true,
-        opacity: b.wireframe ? 0.5 : b.sourced ? 0.5 : 0.85,
-      })
-      disposables.push(lineMat)
-      const line = new THREE.LineSegments(edges, lineMat)
-      line.position.copy(mesh.position)
-      group.add(line)
+      // Approximate bodies get a drawn edge; sourced ones do not, and the
+      // difference is meant to be noticed. Skipped on the board's own features
+      // and on standoffs, which are small, numerous, and turn into a hairball
+      // of outlines that hides the thing they are outlining.
+      if (!b.parent && b.mount !== 'standoff') {
+        const edges = new THREE.EdgesGeometry(geo)
+        disposables.push(edges)
+        const lineMat = new THREE.LineBasicMaterial({
+          color: b.sourced ? 0xdfe6f2 : 0x93a4bd,
+          transparent: true,
+          opacity: b.wireframe ? 0.5 : b.sourced ? 0.5 : 0.85,
+        })
+        disposables.push(lineMat)
+        const line = new THREE.LineSegments(edges, lineMat)
+        line.position.copy(mesh.position)
+        group.add(line)
+      }
+    }
+
+    // Cables. A node is what plugs into what, and without them every
+    // peripheral floated beside a board it had no visible relationship to.
+    // Drawn as a sag rather than a straight line, because a straight line
+    // between two components reads as a dimension, not a wire.
+    for (const c of assembly.cables ?? []) {
+      const a = new THREE.Vector3(...c.from)
+      const bb = new THREE.Vector3(...c.to)
+      const mid = a.clone().lerp(bb, 0.5)
+      mid.y -= a.distanceTo(bb) * 0.16
+      const curve = new THREE.QuadraticBezierCurve3(a, mid, bb)
+      const tube = new THREE.TubeGeometry(curve, 10, c.kind === 'ribbon' ? 1.4 : 0.9, 4, false)
+      disposables.push(tube)
+      const cmat = material(
+        `cable-${c.kind}`,
+        () =>
+          new THREE.MeshStandardMaterial({
+            color: c.kind === 'ribbon' ? 0xd8c79a : 0x2c2f36,
+            roughness: 0.85,
+            metalness: 0.02,
+          }),
+      )
+      const mesh = new THREE.Mesh(tube, cmat)
+      mesh.userData.body = { label: c.label, size: [0, 0, 0], sourced: false, mount: 'cable' }
+      group.add(mesh)
     }
 
     // The real carrier PCB, dropped into the stack.

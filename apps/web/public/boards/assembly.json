@@ -15,17 +15,18 @@
           "mount": "host",
           "size": [
             85,
-            18,
+            1.6,
             56
           ],
           "pos": [
             0,
-            7.4,
+            0.8,
             0
           ],
           "sourced": true,
           "note": "Raspberry Pi 5 mechanical spec: 85 x 56 mm board, ~18 mm to the top of the Ethernet jack.",
-          "interface": "host"
+          "interface": "host",
+          "boardOnly": true
         },
         {
           "id": "gnss-lc29h",
@@ -184,12 +185,461 @@
           "sourced": false,
           "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
           "interface": "i2c"
+        },
+        {
+          "id": "standoff-gnss-lc29h--29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            27.599999999999998,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h-29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            27.599999999999998,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h--29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            27.599999999999998,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h-29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            27.599999999999998,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t1--29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            45.1,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t1-29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            45.1,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t1--29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            45.1,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t1-29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            45.1,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "pi5-2gb-gpio",
+          "label": "40-pin GPIO header",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            51,
+            8.5,
+            5.1
+          ],
+          "pos": [
+            -13.5,
+            5.85,
+            23.549999999999997
+          ],
+          "colour": "#22252b",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-usb3a",
+          "label": "USB 3.0",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            17,
+            16.4,
+            15.5
+          ],
+          "pos": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "colour": "#2f4f8f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-usb2a",
+          "label": "USB 2.0",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            17,
+            16.4,
+            15.5
+          ],
+          "pos": [
+            34,
+            9.799999999999999,
+            -10.25
+          ],
+          "colour": "#2b2f36",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-eth",
+          "label": "Ethernet",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            17,
+            13.5,
+            16
+          ],
+          "pos": [
+            34,
+            8.35,
+            25
+          ],
+          "colour": "#3a3f47",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-usbc",
+          "label": "USB-C power",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            9,
+            3.2,
+            3.2
+          ],
+          "pos": [
+            -35,
+            3.2,
+            -2.3999999999999986
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-hdmi0",
+          "label": "micro-HDMI 0",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            7.5,
+            3.2,
+            3
+          ],
+          "pos": [
+            -35.75,
+            3.2,
+            -12.5
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-hdmi1",
+          "label": "micro-HDMI 1",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            7.5,
+            3.2,
+            3
+          ],
+          "pos": [
+            -35.75,
+            3.2,
+            -22.5
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-csi0",
+          "label": "CSI/DSI 0",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            22,
+            3,
+            2.5
+          ],
+          "pos": [
+            -1.5,
+            3.1,
+            -25.25
+          ],
+          "colour": "#c8b48a",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-csi1",
+          "label": "CSI/DSI 1",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            22,
+            3,
+            2.5
+          ],
+          "pos": [
+            24.5,
+            3.1,
+            -25.25
+          ],
+          "colour": "#c8b48a",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-soc",
+          "label": "BCM2712 SoC",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            15,
+            2.2,
+            15
+          ],
+          "pos": [
+            -2,
+            2.7,
+            1.5
+          ],
+          "colour": "#4a4f58",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-ram",
+          "label": "LPDDR4X",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            12,
+            1.4,
+            9
+          ],
+          "pos": [
+            -3.5,
+            2.3,
+            16.5
+          ],
+          "colour": "#3c4148",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-pmic",
+          "label": "RP1 southbridge",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            10,
+            1.6,
+            10
+          ],
+          "pos": [
+            14.5,
+            2.4000000000000004,
+            -1
+          ],
+          "colour": "#4a4f58",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        }
+      ],
+      "cables": [
+        {
+          "id": "cable-sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0",
+          "from": [
+            112,
+            7.5,
+            -30
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
+          "from": [
+            -79,
+            24,
+            55
+          ],
+          "to": [
+            -1.5,
+            3.1,
+            -25.25
+          ],
+          "kind": "ribbon"
+        },
+        {
+          "id": "cable-cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
+          "from": [
+            -133,
+            24,
+            55
+          ],
+          "to": [
+            24.5,
+            3.1,
+            -25.25
+          ],
+          "kind": "ribbon"
+        },
+        {
+          "id": "cable-env-bme688",
+          "label": "Bosch BME688 to the carrier",
+          "from": [
+            -47.5,
+            40,
+            -70
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-lwir-mlx90640",
+          "label": "Melexis MLX90640 32x24 thermal array to the carrier",
+          "from": [
+            -12.5,
+            40,
+            -70
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
         }
       ],
       "counts": {
-        "total": 9,
-        "sourced": 3,
-        "approximate": 6,
+        "total": 29,
+        "sourced": 11,
+        "approximate": 18,
         "onCarrier": 1,
         "onWall": 2,
         "usb": 1,
@@ -208,17 +658,18 @@
           "mount": "host",
           "size": [
             85,
-            18,
+            1.6,
             56
           ],
           "pos": [
             0,
-            7.4,
+            0.8,
             0
           ],
           "sourced": true,
           "note": "Raspberry Pi 5 mechanical spec.",
-          "interface": "host"
+          "interface": "host",
+          "boardOnly": true
         },
         {
           "id": "gnss-lc29h",
@@ -501,6 +952,378 @@
           "remote": true
         },
         {
+          "id": "standoff-gnss-lc29h--29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            27.599999999999998,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h-29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            27.599999999999998,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h--29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            27.599999999999998,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h-29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            27.599999999999998,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t2--29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            45.1,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t2-29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            45.1,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t2--29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            45.1,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t2-29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            45.1,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "pi5-4gb-gpio",
+          "label": "40-pin GPIO header",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            51,
+            8.5,
+            5.1
+          ],
+          "pos": [
+            -13.5,
+            5.85,
+            23.549999999999997
+          ],
+          "colour": "#22252b",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-usb3a",
+          "label": "USB 3.0",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            17,
+            16.4,
+            15.5
+          ],
+          "pos": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "colour": "#2f4f8f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-usb2a",
+          "label": "USB 2.0",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            17,
+            16.4,
+            15.5
+          ],
+          "pos": [
+            34,
+            9.799999999999999,
+            -10.25
+          ],
+          "colour": "#2b2f36",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-eth",
+          "label": "Ethernet",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            17,
+            13.5,
+            16
+          ],
+          "pos": [
+            34,
+            8.35,
+            25
+          ],
+          "colour": "#3a3f47",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-usbc",
+          "label": "USB-C power",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            9,
+            3.2,
+            3.2
+          ],
+          "pos": [
+            -35,
+            3.2,
+            -2.3999999999999986
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-hdmi0",
+          "label": "micro-HDMI 0",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            7.5,
+            3.2,
+            3
+          ],
+          "pos": [
+            -35.75,
+            3.2,
+            -12.5
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-hdmi1",
+          "label": "micro-HDMI 1",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            7.5,
+            3.2,
+            3
+          ],
+          "pos": [
+            -35.75,
+            3.2,
+            -22.5
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-csi0",
+          "label": "CSI/DSI 0",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            22,
+            3,
+            2.5
+          ],
+          "pos": [
+            -1.5,
+            3.1,
+            -25.25
+          ],
+          "colour": "#c8b48a",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-csi1",
+          "label": "CSI/DSI 1",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            22,
+            3,
+            2.5
+          ],
+          "pos": [
+            24.5,
+            3.1,
+            -25.25
+          ],
+          "colour": "#c8b48a",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-soc",
+          "label": "BCM2712 SoC",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            15,
+            2.2,
+            15
+          ],
+          "pos": [
+            -2,
+            2.7,
+            1.5
+          ],
+          "colour": "#4a4f58",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-ram",
+          "label": "LPDDR4X",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            12,
+            1.4,
+            9
+          ],
+          "pos": [
+            -3.5,
+            2.3,
+            16.5
+          ],
+          "colour": "#3c4148",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-pmic",
+          "label": "RP1 southbridge",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            10,
+            1.6,
+            10
+          ],
+          "pos": [
+            14.5,
+            2.4000000000000004,
+            -1
+          ],
+          "colour": "#4a4f58",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
           "id": "case-pelican1500",
           "label": "Pelican 1500 case with breather vent and feedthroughs",
           "mount": "enclosure",
@@ -519,10 +1342,162 @@
           "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The model used to be drawn from the exterior alone, which answers how big the box is and not the question anyone actually has, which is whether the node fits in it."
         }
       ],
+      "cables": [
+        {
+          "id": "cable-sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0",
+          "from": [
+            112,
+            7.5,
+            -30
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to USB 3.0",
+          "from": [
+            181,
+            6,
+            -30
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
+          "from": [
+            -79,
+            24,
+            55
+          ],
+          "to": [
+            -1.5,
+            3.1,
+            -25.25
+          ],
+          "kind": "ribbon"
+        },
+        {
+          "id": "cable-cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
+          "from": [
+            -133,
+            24,
+            55
+          ],
+          "to": [
+            24.5,
+            3.1,
+            -25.25
+          ],
+          "kind": "ribbon"
+        },
+        {
+          "id": "cable-env-bme688",
+          "label": "Bosch BME688 to the carrier",
+          "from": [
+            -47.5,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
+          "from": [
+            -12.5,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-mic-ics43434",
+          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
+          "from": [
+            20,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-pwr-ina226",
+          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
+          "from": [
+            52.5,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-mag-rm3100",
+          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor to the carrier",
+          "from": [
+            -272.5,
+            2.5,
+            190
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-power-solar-150w",
+          "label": "generic 120 W panel + 30 A MPPT + 180 Ah LiFePO4 to the carrier",
+          "from": [
+            -1085,
+            17.5,
+            190
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        }
+      ],
       "counts": {
-        "total": 16,
-        "sourced": 4,
-        "approximate": 12,
+        "total": 36,
+        "sourced": 12,
+        "approximate": 24,
         "onCarrier": 2,
         "onWall": 4,
         "usb": 2,
@@ -541,17 +1516,18 @@
           "mount": "host",
           "size": [
             85,
-            18,
+            1.6,
             56
           ],
           "pos": [
             0,
-            7.4,
+            0.8,
             0
           ],
           "sourced": true,
           "note": "Raspberry Pi 5 mechanical spec.",
-          "interface": "host"
+          "interface": "host",
+          "boardOnly": true
         },
         {
           "id": "gnss-lc29h",
@@ -956,6 +1932,378 @@
           "remote": true
         },
         {
+          "id": "standoff-gnss-lc29h--29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            27.599999999999998,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h-29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            27.599999999999998,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h--29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            27.599999999999998,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-gnss-lc29h-29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            27.599999999999998,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t3--29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            45.1,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t3-29--24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            45.1,
+            -24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t3--29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            -29,
+            45.1,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "standoff-carrier-t3-29-24.5",
+          "label": "M2.5 standoff",
+          "mount": "standoff",
+          "size": [
+            5,
+            11,
+            5
+          ],
+          "pos": [
+            29,
+            45.1,
+            24.5
+          ],
+          "cylinder": true,
+          "sourced": true,
+          "note": "M2.5 x 11 mm, the usual HAT spacing."
+        },
+        {
+          "id": "pi5-8gb-gpio",
+          "label": "40-pin GPIO header",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            51,
+            8.5,
+            5.1
+          ],
+          "pos": [
+            -13.5,
+            5.85,
+            23.549999999999997
+          ],
+          "colour": "#22252b",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-usb3a",
+          "label": "USB 3.0",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            17,
+            16.4,
+            15.5
+          ],
+          "pos": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "colour": "#2f4f8f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-usb2a",
+          "label": "USB 2.0",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            17,
+            16.4,
+            15.5
+          ],
+          "pos": [
+            34,
+            9.799999999999999,
+            -10.25
+          ],
+          "colour": "#2b2f36",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-eth",
+          "label": "Ethernet",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            17,
+            13.5,
+            16
+          ],
+          "pos": [
+            34,
+            8.35,
+            25
+          ],
+          "colour": "#3a3f47",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-usbc",
+          "label": "USB-C power",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            9,
+            3.2,
+            3.2
+          ],
+          "pos": [
+            -35,
+            3.2,
+            -2.3999999999999986
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-hdmi0",
+          "label": "micro-HDMI 0",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            7.5,
+            3.2,
+            3
+          ],
+          "pos": [
+            -35.75,
+            3.2,
+            -12.5
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-hdmi1",
+          "label": "micro-HDMI 1",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            7.5,
+            3.2,
+            3
+          ],
+          "pos": [
+            -35.75,
+            3.2,
+            -22.5
+          ],
+          "colour": "#8a8f98",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-csi0",
+          "label": "CSI/DSI 0",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            22,
+            3,
+            2.5
+          ],
+          "pos": [
+            -1.5,
+            3.1,
+            -25.25
+          ],
+          "colour": "#c8b48a",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-csi1",
+          "label": "CSI/DSI 1",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            22,
+            3,
+            2.5
+          ],
+          "pos": [
+            24.5,
+            3.1,
+            -25.25
+          ],
+          "colour": "#c8b48a",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-soc",
+          "label": "BCM2712 SoC",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            15,
+            2.2,
+            15
+          ],
+          "pos": [
+            -2,
+            2.7,
+            1.5
+          ],
+          "colour": "#4a4f58",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-ram",
+          "label": "LPDDR4X",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            12,
+            1.4,
+            9
+          ],
+          "pos": [
+            -3.5,
+            2.3,
+            16.5
+          ],
+          "colour": "#3c4148",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-pmic",
+          "label": "RP1 southbridge",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            10,
+            1.6,
+            10
+          ],
+          "pos": [
+            14.5,
+            2.4000000000000004,
+            -1
+          ],
+          "colour": "#4a4f58",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
           "id": "case-pelican1500",
           "label": "Pelican 1500 case with breather vent and feedthroughs",
           "mount": "enclosure",
@@ -974,10 +2322,252 @@
           "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The model used to be drawn from the exterior alone, which answers how big the box is and not the question anyone actually has, which is whether the node fits in it."
         }
       ],
+      "cables": [
+        {
+          "id": "cable-sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0",
+          "from": [
+            112,
+            7.5,
+            -30
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to USB 3.0",
+          "from": [
+            181,
+            6,
+            -30
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-radar-iwr6843",
+          "label": "Texas Instruments IWR6843ISK 60 GHz mmWave to USB 2.0",
+          "from": [
+            99.5,
+            8,
+            14
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            -10.25
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-gamma-csi-sipm",
+          "label": "OpenGammaDetector CsI(Tl) + SiPM open gamma spectrometer to USB 2.0",
+          "from": [
+            176,
+            11,
+            14
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            -10.25
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-swir-ingaas640",
+          "label": "various InGaAs 640x512 SWIR module to USB 3.0",
+          "from": [
+            102,
+            37.5,
+            83
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-usb-hub-powered",
+          "label": "generic 4-port USB 3.0 hub with 5 V 4 A external supply to USB 3.0",
+          "from": [
+            196,
+            11,
+            83
+          ],
+          "to": [
+            34,
+            9.799999999999999,
+            9.75
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
+          "from": [
+            -79,
+            24,
+            55
+          ],
+          "to": [
+            -1.5,
+            3.1,
+            -25.25
+          ],
+          "kind": "ribbon"
+        },
+        {
+          "id": "cable-cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
+          "from": [
+            -133,
+            24,
+            55
+          ],
+          "to": [
+            24.5,
+            3.1,
+            -25.25
+          ],
+          "kind": "ribbon"
+        },
+        {
+          "id": "cable-env-bme688",
+          "label": "Bosch BME688 to the carrier",
+          "from": [
+            -47.5,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
+          "from": [
+            -12.5,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-mic-ics43434",
+          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
+          "from": [
+            20,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-pwr-ina226",
+          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
+          "from": [
+            52.5,
+            30,
+            -154
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-mag-rm3100",
+          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor to the carrier",
+          "from": [
+            -272.5,
+            2.5,
+            190
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-seis-sm24",
+          "label": "ION / Sercel SM-24 geophone element to the carrier",
+          "from": [
+            -361,
+            17.5,
+            190
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-sem-ir-beacon",
+          "label": "generic 850 nm pulsed IR beacon, 5 W peak to the carrier",
+          "from": [
+            -452,
+            6,
+            190
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-power-solar-200w",
+          "label": "generic 220 W array + 40 A MPPT + 300 Ah LiFePO4 to the carrier",
+          "from": [
+            -1337,
+            17.5,
+            190
+          ],
+          "to": [
+            0,
+            51.4,
+            0
+          ],
+          "kind": "cable"
+        }
+      ],
       "counts": {
-        "total": 22,
-        "sourced": 4,
-        "approximate": 18,
+        "total": 42,
+        "sourced": 12,
+        "approximate": 30,
         "onCarrier": 2,
         "onWall": 4,
         "usb": 6,

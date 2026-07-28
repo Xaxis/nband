@@ -1321,7 +1321,130 @@ export const PARTS: readonly Part[] = [
       "heightMm": 18,
       "mount": "host",
       "dimensionsSourced": true,
-      "note": "Raspberry Pi 5 mechanical spec: 85 x 56 mm board, ~18 mm to the top of the Ethernet jack."
+      "note": "Raspberry Pi 5 mechanical spec: 85 x 56 mm board, ~18 mm to the top of the Ethernet jack.",
+      "features": [
+        {
+          "id": "gpio",
+          "label": "40-pin GPIO header",
+          "x": 3.5,
+          "y": 49,
+          "w": 51,
+          "d": 5.1,
+          "h": 8.5,
+          "colour": "#22252b"
+        },
+        {
+          "id": "usb3a",
+          "label": "USB 3.0",
+          "x": 68,
+          "y": 30,
+          "w": 17,
+          "d": 15.5,
+          "h": 16.4,
+          "colour": "#2f4f8f"
+        },
+        {
+          "id": "usb2a",
+          "label": "USB 2.0",
+          "x": 68,
+          "y": 10,
+          "w": 17,
+          "d": 15.5,
+          "h": 16.4,
+          "colour": "#2b2f36"
+        },
+        {
+          "id": "eth",
+          "label": "Ethernet",
+          "x": 68,
+          "y": 45,
+          "w": 17,
+          "d": 16,
+          "h": 13.5,
+          "colour": "#3a3f47"
+        },
+        {
+          "id": "usbc",
+          "label": "USB-C power",
+          "x": 3,
+          "y": 24,
+          "w": 9,
+          "d": 3.2,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "hdmi0",
+          "label": "micro-HDMI 0",
+          "x": 3,
+          "y": 14,
+          "w": 7.5,
+          "d": 3,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "hdmi1",
+          "label": "micro-HDMI 1",
+          "x": 3,
+          "y": 4,
+          "w": 7.5,
+          "d": 3,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "csi0",
+          "label": "CSI/DSI 0",
+          "x": 30,
+          "y": 1.5,
+          "w": 22,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#c8b48a"
+        },
+        {
+          "id": "csi1",
+          "label": "CSI/DSI 1",
+          "x": 56,
+          "y": 1.5,
+          "w": 22,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#c8b48a"
+        },
+        {
+          "id": "soc",
+          "label": "BCM2712 SoC",
+          "x": 33,
+          "y": 22,
+          "w": 15,
+          "d": 15,
+          "h": 2.2,
+          "colour": "#4a4f58"
+        },
+        {
+          "id": "ram",
+          "label": "LPDDR4X",
+          "x": 33,
+          "y": 40,
+          "w": 12,
+          "d": 9,
+          "h": 1.4,
+          "colour": "#3c4148"
+        },
+        {
+          "id": "pmic",
+          "label": "RP1 southbridge",
+          "x": 52,
+          "y": 22,
+          "w": 10,
+          "d": 10,
+          "h": 1.6,
+          "colour": "#4a4f58"
+        }
+      ],
+      "featureNote": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
     }
   },
   {
@@ -1361,7 +1484,130 @@ export const PARTS: readonly Part[] = [
       "heightMm": 18,
       "mount": "host",
       "dimensionsSourced": true,
-      "note": "Raspberry Pi 5 mechanical spec."
+      "note": "Raspberry Pi 5 mechanical spec.",
+      "features": [
+        {
+          "id": "gpio",
+          "label": "40-pin GPIO header",
+          "x": 3.5,
+          "y": 49,
+          "w": 51,
+          "d": 5.1,
+          "h": 8.5,
+          "colour": "#22252b"
+        },
+        {
+          "id": "usb3a",
+          "label": "USB 3.0",
+          "x": 68,
+          "y": 30,
+          "w": 17,
+          "d": 15.5,
+          "h": 16.4,
+          "colour": "#2f4f8f"
+        },
+        {
+          "id": "usb2a",
+          "label": "USB 2.0",
+          "x": 68,
+          "y": 10,
+          "w": 17,
+          "d": 15.5,
+          "h": 16.4,
+          "colour": "#2b2f36"
+        },
+        {
+          "id": "eth",
+          "label": "Ethernet",
+          "x": 68,
+          "y": 45,
+          "w": 17,
+          "d": 16,
+          "h": 13.5,
+          "colour": "#3a3f47"
+        },
+        {
+          "id": "usbc",
+          "label": "USB-C power",
+          "x": 3,
+          "y": 24,
+          "w": 9,
+          "d": 3.2,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "hdmi0",
+          "label": "micro-HDMI 0",
+          "x": 3,
+          "y": 14,
+          "w": 7.5,
+          "d": 3,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "hdmi1",
+          "label": "micro-HDMI 1",
+          "x": 3,
+          "y": 4,
+          "w": 7.5,
+          "d": 3,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "csi0",
+          "label": "CSI/DSI 0",
+          "x": 30,
+          "y": 1.5,
+          "w": 22,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#c8b48a"
+        },
+        {
+          "id": "csi1",
+          "label": "CSI/DSI 1",
+          "x": 56,
+          "y": 1.5,
+          "w": 22,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#c8b48a"
+        },
+        {
+          "id": "soc",
+          "label": "BCM2712 SoC",
+          "x": 33,
+          "y": 22,
+          "w": 15,
+          "d": 15,
+          "h": 2.2,
+          "colour": "#4a4f58"
+        },
+        {
+          "id": "ram",
+          "label": "LPDDR4X",
+          "x": 33,
+          "y": 40,
+          "w": 12,
+          "d": 9,
+          "h": 1.4,
+          "colour": "#3c4148"
+        },
+        {
+          "id": "pmic",
+          "label": "RP1 southbridge",
+          "x": 52,
+          "y": 22,
+          "w": 10,
+          "d": 10,
+          "h": 1.6,
+          "colour": "#4a4f58"
+        }
+      ],
+      "featureNote": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
     }
   },
   {
@@ -1400,7 +1646,130 @@ export const PARTS: readonly Part[] = [
       "heightMm": 18,
       "mount": "host",
       "dimensionsSourced": true,
-      "note": "Raspberry Pi 5 mechanical spec."
+      "note": "Raspberry Pi 5 mechanical spec.",
+      "features": [
+        {
+          "id": "gpio",
+          "label": "40-pin GPIO header",
+          "x": 3.5,
+          "y": 49,
+          "w": 51,
+          "d": 5.1,
+          "h": 8.5,
+          "colour": "#22252b"
+        },
+        {
+          "id": "usb3a",
+          "label": "USB 3.0",
+          "x": 68,
+          "y": 30,
+          "w": 17,
+          "d": 15.5,
+          "h": 16.4,
+          "colour": "#2f4f8f"
+        },
+        {
+          "id": "usb2a",
+          "label": "USB 2.0",
+          "x": 68,
+          "y": 10,
+          "w": 17,
+          "d": 15.5,
+          "h": 16.4,
+          "colour": "#2b2f36"
+        },
+        {
+          "id": "eth",
+          "label": "Ethernet",
+          "x": 68,
+          "y": 45,
+          "w": 17,
+          "d": 16,
+          "h": 13.5,
+          "colour": "#3a3f47"
+        },
+        {
+          "id": "usbc",
+          "label": "USB-C power",
+          "x": 3,
+          "y": 24,
+          "w": 9,
+          "d": 3.2,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "hdmi0",
+          "label": "micro-HDMI 0",
+          "x": 3,
+          "y": 14,
+          "w": 7.5,
+          "d": 3,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "hdmi1",
+          "label": "micro-HDMI 1",
+          "x": 3,
+          "y": 4,
+          "w": 7.5,
+          "d": 3,
+          "h": 3.2,
+          "colour": "#8a8f98"
+        },
+        {
+          "id": "csi0",
+          "label": "CSI/DSI 0",
+          "x": 30,
+          "y": 1.5,
+          "w": 22,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#c8b48a"
+        },
+        {
+          "id": "csi1",
+          "label": "CSI/DSI 1",
+          "x": 56,
+          "y": 1.5,
+          "w": 22,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#c8b48a"
+        },
+        {
+          "id": "soc",
+          "label": "BCM2712 SoC",
+          "x": 33,
+          "y": 22,
+          "w": 15,
+          "d": 15,
+          "h": 2.2,
+          "colour": "#4a4f58"
+        },
+        {
+          "id": "ram",
+          "label": "LPDDR4X",
+          "x": 33,
+          "y": 40,
+          "w": 12,
+          "d": 9,
+          "h": 1.4,
+          "colour": "#3c4148"
+        },
+        {
+          "id": "pmic",
+          "label": "RP1 southbridge",
+          "x": 52,
+          "y": 22,
+          "w": 10,
+          "d": 10,
+          "h": 1.6,
+          "colour": "#4a4f58"
+        }
+      ],
+      "featureNote": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
     }
   },
   {
@@ -1516,7 +1885,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 48,
       "mount": "csi",
       "dimensionsSourced": false,
-      "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+      "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+      "plugsInto": "csi0"
     }
   },
   {
@@ -1563,7 +1933,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 48,
       "mount": "csi",
       "dimensionsSourced": false,
-      "note": "As above, with the bandpass filter fitted."
+      "note": "As above, with the bandpass filter fitted.",
+      "plugsInto": "csi1"
     }
   },
   {
@@ -1612,7 +1983,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 15,
       "mount": "usb",
       "dimensionsSourced": false,
-      "note": "Approximate dongle body, excluding the antenna."
+      "note": "Approximate dongle body, excluding the antenna.",
+      "plugsInto": "usb3a"
     }
   },
   {
@@ -1785,7 +2157,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 12,
       "mount": "usb",
       "dimensionsSourced": false,
-      "note": "Approximate PureThermal carrier footprint."
+      "note": "Approximate PureThermal carrier footprint.",
+      "plugsInto": "usb3a"
     }
   },
   {
@@ -2014,7 +2387,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 16,
       "mount": "usb",
       "dimensionsSourced": false,
-      "note": "Approximate evaluation-module footprint."
+      "note": "Approximate evaluation-module footprint.",
+      "plugsInto": "usb2a"
     }
   },
   {
@@ -2197,7 +2571,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 22,
       "mount": "usb",
       "dimensionsSourced": false,
-      "note": "Approximate; the CsI crystal sets the depth."
+      "note": "Approximate; the CsI crystal sets the depth.",
+      "plugsInto": "usb2a"
     }
   },
   {
@@ -2239,7 +2614,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 75,
       "mount": "usb",
       "dimensionsSourced": false,
-      "note": "Approximate camera body with lens."
+      "note": "Approximate camera body with lens.",
+      "plugsInto": "usb3a"
     }
   },
   {
@@ -2499,7 +2875,8 @@ export const PARTS: readonly Part[] = [
       "heightMm": 22,
       "mount": "usb",
       "dimensionsSourced": false,
-      "note": "Approximate 4-port hub body."
+      "note": "Approximate 4-port hub body.",
+      "plugsInto": "usb3a"
     }
   },
   {

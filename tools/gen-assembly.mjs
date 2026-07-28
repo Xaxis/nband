@@ -59,24 +59,52 @@ function assemblyFor(tier) {
 
   const push = (part, x, y, z, extra = {}) => {
     const m = part.mechanical
+    const { heightOverride, ...rest } = extra
     bodies.push({
       id: part.id,
       label: `${part.vendor} ${part.model}`.trim(),
       band: part.band ?? null,
       hue: part.band ? hue[part.band] : null,
       mount: m.mount,
-      size: [m.widthMm, m.heightMm, m.depthMm], // three.js is x, y(up), z
+      size: [m.widthMm, heightOverride ?? m.heightMm, m.depthMm], // three.js is x, y(up), z
       pos: [x, y, z],
       sourced: m.dimensionsSourced === true,
       note: m.note,
       interface: part.interface ?? null,
-      ...extra,
+      ...rest,
     })
   }
 
-  // 1. The host, centred at the origin with its board top at y = 0.
+  // 1. The host, centred at the origin. Drawn as the bare board with its
+  //    connectors, chips and header on top, rather than as one solid block the
+  //    height of the Ethernet jack — which is what it was, and which is why the
+  //    model read as a pile of anonymous boxes. A Raspberry Pi is recognisable
+  //    almost entirely by its connector layout.
   const host = by('host')[0]
-  if (host) push(host, 0, host.mechanical.heightMm / 2 - PI_BOARD_T, 0)
+  const featureBodies = []
+  if (host) {
+    const m = host.mechanical
+    push(host, 0, PI_BOARD_T / 2, 0, { boardOnly: true, heightOverride: PI_BOARD_T })
+    for (const f of m.features ?? []) {
+      // Registry coordinates put the board origin at its bottom-left corner;
+      // the scene is centred on the board.
+      featureBodies.push({
+        id: `${host.id}-${f.id}`,
+        label: f.label,
+        parent: host.id,
+        mount: 'feature',
+        size: [f.w, f.h, f.d],
+        pos: [
+          f.x + f.w / 2 - m.widthMm / 2,
+          PI_BOARD_T + f.h / 2,
+          f.y + f.d / 2 - m.depthMm / 2,
+        ],
+        colour: f.colour,
+        sourced: false,
+        note: m.featureNote,
+      })
+    }
+  }
 
   // 2. Any HAT that is a bought board rather than the generated carrier. The
   //    GNSS receiver is one, and it was silently absent from every assembly:
@@ -188,7 +216,67 @@ function assemblyFor(tier) {
     ex -= p.mechanical.widthMm + 60
   }
 
-  // 9. The case, as an outline the rest sits inside.
+  // 10. Standoffs. Boards floating above one another with nothing between them
+  //     is most of why the stack read as unrelated slabs rather than as a
+  //     stack. These are the parts actually holding it together.
+  const stackBoards = bodies.filter((b) => b.mount === 'hat' || b.glb)
+  for (const board of stackBoards) {
+    const [bw, , bd] = board.size
+    const below = board.pos[1] - STANDOFF / 2 - 0.8
+    for (const [sx, sz] of [
+      [-Math.min(bw / 2 - 3.5, 29), -24.5],
+      [Math.min(bw / 2 - 3.5, 29), -24.5],
+      [-Math.min(bw / 2 - 3.5, 29), 24.5],
+      [Math.min(bw / 2 - 3.5, 29), 24.5],
+    ]) {
+      bodies.push({
+        id: `standoff-${board.id}-${sx}-${sz}`,
+        label: 'M2.5 standoff',
+        mount: 'standoff',
+        size: [5, STANDOFF, 5],
+        pos: [sx, below, sz],
+        cylinder: true,
+        sourced: true,
+        note: 'M2.5 x 11 mm, the usual HAT spacing.',
+      })
+    }
+  }
+
+  // 11. Cables. A node is defined by what plugs into what, and nothing in the
+  //     model said so: every peripheral floated unconnected beside a board it
+  //     had no visible relationship to.
+  const featureAt = (fid) => featureBodies.find((f) => f.id === `${host?.id}-${fid}`)
+  const cables = []
+  for (const b of bodies) {
+    const part = parts.find((p) => p.id === b.id)
+    const plug = part?.mechanical?.plugsInto
+    if (!plug) continue
+    const target = featureAt(plug)
+    if (!target) continue
+    cables.push({
+      id: `cable-${b.id}`,
+      label: `${b.label} to ${target.label}`,
+      from: [b.pos[0], b.pos[1], b.pos[2]],
+      to: [target.pos[0], target.pos[1], target.pos[2]],
+      kind: part.interface === 'csi' || plug.startsWith('csi') ? 'ribbon' : 'cable',
+    })
+  }
+  // Anything at the wall or on the mast reaches the carrier by cable too.
+  const carrierBody = bodies.find((b) => b.glb)
+  for (const b of bodies) {
+    if (!['enclosure-wall', 'external'].includes(b.mount) || !carrierBody) continue
+    cables.push({
+      id: `cable-${b.id}`,
+      label: `${b.label} to the carrier`,
+      from: [b.pos[0], b.pos[1], b.pos[2]],
+      to: [carrierBody.pos[0], carrierBody.pos[1], carrierBody.pos[2]],
+      kind: 'cable',
+    })
+  }
+
+  bodies.push(...featureBodies)
+
+  // 12. The case, as an outline the rest sits inside.
   const shell = by('enclosure')[0]
   if (shell) {
     bodies.push({
@@ -207,7 +295,7 @@ function assemblyFor(tier) {
   // from all three assemblies for weeks because its mount landed in a slot the
   // layout did not handle, and no check noticed. An omission that looks like
   // "this tier does not include one" is worse than a crash.
-  const shown = new Set(bodies.map((b) => b.id))
+  const shown = new Set(bodies.filter((b) => !b.parent).map((b) => b.id))
   const missing = parts.filter((p) => !shown.has(p.id))
   if (missing.length > 0) {
     throw new Error(
@@ -221,6 +309,7 @@ function assemblyFor(tier) {
     tier: tier.id,
     label: tier.label,
     bodies,
+    cables,
     counts: {
       total: bodies.length,
       sourced,
