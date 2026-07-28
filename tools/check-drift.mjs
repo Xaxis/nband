@@ -240,6 +240,37 @@ check('off-grid power sizing matches the tier load', () => {
   return 'panel and battery cover the summed draw of every tier that ships them'
 })
 
+check('every part in a tier has mechanical data', () => {
+  // The whole-node view sizes each body from schema/hardware.json. A part with
+  // no mechanical block is silently absent from the assembly, which reads as
+  // "this tier does not include one" rather than "nobody entered its size" —
+  // exactly the kind of quiet omission the project is built to refuse.
+  const errors = []
+  for (const tier of spec.enums.tier.values) {
+    for (const part of hardware.parts.filter((p) => p.tiers?.includes(tier.id))) {
+      const m = part.mechanical
+      if (!m) {
+        errors.push(`${part.id} (${tier.id}) has no mechanical block`)
+        continue
+      }
+      for (const k of ['widthMm', 'depthMm', 'heightMm']) {
+        if (!(typeof m[k] === 'number' && m[k] > 0)) {
+          errors.push(`${part.id}: mechanical.${k} is missing or not positive`)
+        }
+      }
+      if (typeof m.dimensionsSourced !== 'boolean') {
+        // Whether a figure came from a published spec or was estimated is the
+        // difference the viewer draws on screen. It cannot be left implicit.
+        errors.push(`${part.id}: mechanical.dimensionsSourced must be true or false`)
+      }
+      if (!m.mount) errors.push(`${part.id}: mechanical.mount is missing`)
+    }
+  }
+  if (errors.length) throw new Error(errors.join('; '))
+  const sourced = hardware.parts.filter((p) => p.mechanical?.dimensionsSourced).length
+  return `${hardware.parts.length} parts sized, ${sourced} from published specs`
+})
+
 check('USB peripherals fit the host, or ship a powered hub', () => {
   // Tier 3 listed five bus-powered peripherals drawing 2.46 A across four ports
   // on a board that budgets 1.6 A for all of them. The failure mode is not a

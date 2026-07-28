@@ -1,8 +1,9 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useId, useSyncExternalStore } from 'react'
+import { useId, useState, useSyncExternalStore } from 'react'
 import { PanZoom } from './PanZoom'
+import type { Assembly } from './NodeScene'
 
 /**
  * The generated carrier boards, one tier at a time, in three views.
@@ -17,6 +18,15 @@ import { PanZoom } from './PanZoom'
  * confident classification with no error bars, which is the thing this whole
  * project is built to refuse.
  */
+
+const NodeScene = dynamic(() => import('./NodeScene'), {
+  ssr: false,
+  loading: () => (
+    <p className="grid h-[460px] place-items-center text-[13px] text-[var(--ink-3)] sm:h-[580px]">
+      Assembling node…
+    </p>
+  ),
+})
 
 const BoardScene = dynamic(() => import('./BoardScene'), {
   ssr: false,
@@ -37,9 +47,15 @@ export interface BoardEntry {
   routing: { routed: number; nets: number; unrouted: number; drc: number }
 }
 
-type View = 'schematic' | 'pcb' | 'model'
+type View = 'node' | 'schematic' | 'pcb' | 'model'
 
 const VIEWS: { id: View; label: string; blurb: string }[] = [
+  {
+    id: 'node',
+    label: 'Whole node',
+    blurb:
+      'Everything in the tier, assembled: the Pi, the carrier on standoffs, the breakouts on top of it, the USB peripherals on cables, the cameras, and the case. A massing model for scale and stacking, not CAD.',
+  },
   {
     id: 'schematic',
     label: 'Schematic',
@@ -96,12 +112,18 @@ function selectHash(hash: string) {
 }
 
 function parseHash(hash: string, boards: BoardEntry[]): { tier: string; view: View } {
-  const m = /^#boards-([a-z0-9]+)(?:-(schematic|pcb|model))?$/.exec(hash)
+  const m = /^#boards-([a-z0-9]+)(?:-(node|schematic|pcb|model))?$/.exec(hash)
   const tier = m && boards.some((b) => b.tier === m[1]) ? m[1] : (boards[0]?.tier ?? '')
   return { tier, view: (m?.[2] as View) ?? 'schematic' }
 }
 
-export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
+export function BoardViewer({
+  boards,
+  assemblies = [],
+}: {
+  boards: BoardEntry[]
+  assemblies?: Assembly[]
+}) {
   const hash = useSyncExternalStore(
     subscribeToHash,
     () => window.location.hash,
@@ -111,8 +133,13 @@ export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
   const setTier = (t: string) => selectHash(`#boards-${t}-${view}`)
   const setView = (v: View) => selectHash(`#boards-${tier}-${v}`)
   const panelId = useId()
+  // Local rather than in the URL: these are display toggles, not a view worth
+  // linking to, and putting four booleans in the hash makes the link unreadable.
+  const [showCase, setShowCase] = useState(false)
+  const [showRemote, setShowRemote] = useState(false)
 
   const board = boards.find((b) => b.tier === tier) ?? boards[0]
+  const assembly = assemblies.find((a) => a.tier === board?.tier)
   if (!board) return null
 
   // Routed-trace count is not a completeness measure: several connections on
@@ -181,6 +208,44 @@ export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
       </div>
 
       <div id={panelId} role="tabpanel">
+        {view === 'node' &&
+          (assembly ? (
+            <>
+              <div className="flex flex-wrap items-center gap-4 border-b border-[var(--line)] px-4 py-2.5 text-[12.5px] text-[var(--ink-2)]">
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={showCase}
+                    onChange={(e) => setShowCase(e.target.checked)}
+                    className="accent-[var(--accent)]"
+                  />
+                  Show the case
+                </label>
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={showRemote}
+                    onChange={(e) => setShowRemote(e.target.checked)}
+                    className="accent-[var(--accent)]"
+                  />
+                  Show mast and ground-mounted parts
+                </label>
+                <span className="num ml-auto text-[11.5px] text-[var(--ink-3)]">
+                  {assembly.counts.sourced} sourced · {assembly.counts.approximate} approximate
+                </span>
+              </div>
+              <NodeScene
+                key={`${board.tier}-node`}
+                assembly={assembly}
+                showCase={showCase}
+                showRemote={showRemote}
+              />
+            </>
+          ) : (
+            <p className="grid h-[460px] place-items-center text-[13px] text-[var(--ink-3)]">
+              No assembly generated for this tier.
+            </p>
+          ))}
         {view === 'schematic' && (
           <PanZoom
             key={`${board.tier}-sch`}
@@ -205,7 +270,7 @@ export function BoardViewer({ boards }: { boards: BoardEntry[] }) {
       <div className="border-t border-[var(--line)] px-4 py-3">
         <p className="text-[13px] leading-relaxed text-[var(--ink-2)]">
           <span className="font-semibold text-[var(--ink)]">{active.label}.</span> {active.blurb}
-          {view !== 'schematic' && (
+          {(view === 'pcb' || view === 'model') && (
             <>
               {' '}
               <span className="num">

@@ -1314,6 +1314,14 @@ export const PARTS: readonly Part[] = [
       "activeW": 6.4,
       "rail": "5V",
       "pins": []
+    },
+    "mechanical": {
+      "widthMm": 85,
+      "depthMm": 56,
+      "heightMm": 18,
+      "mount": "host",
+      "dimensionsSourced": true,
+      "note": "Raspberry Pi 5 mechanical spec: 85 x 56 mm board, ~18 mm to the top of the Ethernet jack."
     }
   },
   {
@@ -1346,6 +1354,14 @@ export const PARTS: readonly Part[] = [
       "activeW": 7,
       "rail": "5V",
       "pins": []
+    },
+    "mechanical": {
+      "widthMm": 85,
+      "depthMm": 56,
+      "heightMm": 18,
+      "mount": "host",
+      "dimensionsSourced": true,
+      "note": "Raspberry Pi 5 mechanical spec."
     }
   },
   {
@@ -1377,6 +1393,14 @@ export const PARTS: readonly Part[] = [
       "activeW": 7.6,
       "rail": "5V",
       "pins": []
+    },
+    "mechanical": {
+      "widthMm": 85,
+      "depthMm": 56,
+      "heightMm": 18,
+      "mount": "host",
+      "dimensionsSourced": true,
+      "note": "Raspberry Pi 5 mechanical spec."
     }
   },
   {
@@ -1433,6 +1457,14 @@ export const PARTS: readonly Part[] = [
           "pin": "7"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 65,
+      "depthMm": 56,
+      "heightMm": 13,
+      "mount": "hat",
+      "dimensionsSourced": true,
+      "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm."
     }
   },
   {
@@ -1474,6 +1506,14 @@ export const PARTS: readonly Part[] = [
           "pin": "CAM0"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 38,
+      "depthMm": 38,
+      "heightMm": 48,
+      "mount": "csi",
+      "dimensionsSourced": false,
+      "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
     }
   },
   {
@@ -1513,6 +1553,14 @@ export const PARTS: readonly Part[] = [
           "pin": "CAM1"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 38,
+      "depthMm": 38,
+      "heightMm": 48,
+      "mount": "csi",
+      "dimensionsSourced": false,
+      "note": "As above, with the bandpass filter fitted."
     }
   },
   {
@@ -1554,6 +1602,14 @@ export const PARTS: readonly Part[] = [
           "pin": "USB-A"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 80,
+      "depthMm": 27,
+      "heightMm": 15,
+      "mount": "usb",
+      "dimensionsSourced": false,
+      "note": "Approximate dongle body, excluding the antenna."
     }
   },
   {
@@ -1605,6 +1661,14 @@ export const PARTS: readonly Part[] = [
           "pin": "5"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 25,
+      "depthMm": 18,
+      "heightMm": 5,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint."
     }
   },
   {
@@ -1655,6 +1719,14 @@ export const PARTS: readonly Part[] = [
           "pin": "5"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 25,
+      "depthMm": 18,
+      "heightMm": 5,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate: typical breakout footprint."
     }
   },
   {
@@ -1697,6 +1769,14 @@ export const PARTS: readonly Part[] = [
           "pin": "USB-A"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 30,
+      "depthMm": 30,
+      "heightMm": 12,
+      "mount": "usb",
+      "dimensionsSourced": false,
+      "note": "Approximate PureThermal carrier footprint."
     }
   },
   {
@@ -1747,6 +1827,14 @@ export const PARTS: readonly Part[] = [
           "pin": "5"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 25,
+      "depthMm": 25,
+      "heightMm": 9,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate; the lens dominates the height."
     }
   },
   {
@@ -1796,6 +1884,14 @@ export const PARTS: readonly Part[] = [
           "pin": "5"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 25,
+      "depthMm": 18,
+      "heightMm": 5,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate: typical breakout footprint."
     }
   },
   {
@@ -1848,6 +1944,14 @@ export const PARTS: readonly Part[] = [
           "pin": "32"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 35,
+      "depthMm": 25,
+      "heightMm": 6,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate module footprint."
     }
   },
   {
@@ -1885,6 +1989,14 @@ export const PARTS: readonly Part[] = [
           "pin": "USB-A"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 55,
+      "depthMm": 55,
+      "heightMm": 16,
+      "mount": "usb",
+      "dimensionsSourced": false,
+      "note": "Approximate evaluation-module footprint."
     }
   },
   {
@@ -1945,6 +2057,14 @@ export const PARTS: readonly Part[] = [
           "pin": "24"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 25,
+      "depthMm": 25,
+      "heightMm": 5,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section."
     }
   },
   {
@@ -2000,6 +2120,14 @@ export const PARTS: readonly Part[] = [
           "pin": "38"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 20,
+      "depthMm": 15,
+      "heightMm": 4,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate breakout footprint."
     }
   },
   {
@@ -2038,6 +2166,14 @@ export const PARTS: readonly Part[] = [
           "pin": "USB-A"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 70,
+      "depthMm": 40,
+      "heightMm": 22,
+      "mount": "usb",
+      "dimensionsSourced": false,
+      "note": "Approximate; the CsI crystal sets the depth."
     }
   },
   {
@@ -2072,6 +2208,14 @@ export const PARTS: readonly Part[] = [
           "pin": "USB-A"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 60,
+      "depthMm": 60,
+      "heightMm": 75,
+      "mount": "usb",
+      "dimensionsSourced": false,
+      "note": "Approximate camera body with lens."
     }
   },
   {
@@ -2129,6 +2273,14 @@ export const PARTS: readonly Part[] = [
           "pin": "26"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 32,
+      "depthMm": 32,
+      "heightMm": 35,
+      "mount": "external",
+      "dimensionsSourced": false,
+      "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled."
     }
   },
   {
@@ -2172,6 +2324,14 @@ export const PARTS: readonly Part[] = [
           "pin": "16"
         }
       ]
+    },
+    "mechanical": {
+      "widthMm": 30,
+      "depthMm": 20,
+      "heightMm": 12,
+      "mount": "carrier",
+      "dimensionsSourced": false,
+      "note": "Approximate."
     }
   },
   {
@@ -2200,6 +2360,14 @@ export const PARTS: readonly Part[] = [
       "activeW": 0,
       "rail": "none",
       "pins": []
+    },
+    "mechanical": {
+      "widthMm": 434,
+      "depthMm": 332,
+      "heightMm": 157,
+      "mount": "enclosure",
+      "dimensionsSourced": true,
+      "note": "Pelican 1500 published exterior dimensions."
     }
   },
   {
@@ -2228,6 +2396,14 @@ export const PARTS: readonly Part[] = [
       "activeW": 0,
       "rail": "none",
       "pins": []
+    },
+    "mechanical": {
+      "widthMm": 1480,
+      "depthMm": 670,
+      "heightMm": 35,
+      "mount": "external",
+      "dimensionsSourced": false,
+      "note": "Approximate 120 W panel; the MPPT and battery are separate bodies not modelled."
     }
   },
   {
@@ -2256,6 +2432,14 @@ export const PARTS: readonly Part[] = [
       "activeW": 0,
       "rail": "none",
       "pins": []
+    },
+    "mechanical": {
+      "widthMm": 1620,
+      "depthMm": 700,
+      "heightMm": 35,
+      "mount": "external",
+      "dimensionsSourced": false,
+      "note": "Approximate 220 W array; the MPPT and battery are separate bodies not modelled."
     }
   },
   {
@@ -2291,7 +2475,15 @@ export const PARTS: readonly Part[] = [
         }
       ]
     },
-    "notes": "Not optional on tier 3, and its absence was a real defect in an earlier bill of materials. That tier lists five bus-powered peripherals drawing 12.3 W between them, which is 2.46 A at 5 V, against a Raspberry Pi 5 that budgets 1.6 A across all USB ports even with a 5 A supply, and has four ports for five devices. Plugged in directly, the short-wave infrared imager and the millimetre-wave radar alone exceed the budget, and the failure mode is not a clean refusal: the Pi brown-outs peripherals under load, so channels drop out intermittently under exactly the conditions that matter. Put the two highest-draw devices on the hub at minimum."
+    "notes": "Not optional on tier 3, and its absence was a real defect in an earlier bill of materials. That tier lists five bus-powered peripherals drawing 12.3 W between them, which is 2.46 A at 5 V, against a Raspberry Pi 5 that budgets 1.6 A across all USB ports even with a 5 A supply, and has four ports for five devices. Plugged in directly, the short-wave infrared imager and the millimetre-wave radar alone exceed the budget, and the failure mode is not a clean refusal: the Pi brown-outs peripherals under load, so channels drop out intermittently under exactly the conditions that matter. Put the two highest-draw devices on the hub at minimum.",
+    "mechanical": {
+      "widthMm": 100,
+      "depthMm": 42,
+      "heightMm": 22,
+      "mount": "usb",
+      "dimensionsSourced": false,
+      "note": "Approximate 4-port hub body."
+    }
   }
 ] as unknown as readonly Part[]
 export const PRICES_AS_OF = '2026-07-27' as const

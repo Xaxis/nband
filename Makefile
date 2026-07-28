@@ -36,9 +36,10 @@ fixtures: ## Regenerate discriminator conformance fixtures from the Python engin
 boards-deps: ## Install the board toolchain (isolated from the web workspace on purpose)
 	@cd hardware && npm install --silent
 
-boards: boards-deps ## Regenerate the tier carrier boards from the hardware registry and render them
+boards: boards-deps ## Regenerate the tier carrier boards and node assemblies, and render them
 	@node tools/gen-boards.mjs
 	@node tools/build-boards.mjs
+	@node tools/gen-assembly.mjs
 
 # --- verification ------------------------------------------------------------
 # Each of these is a claim the repository makes about itself.

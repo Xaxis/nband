@@ -2,6 +2,7 @@ import { readFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { TIER } from '../lib/schema/generated'
 import { BoardViewer, type BoardEntry } from './boards/BoardViewer'
+import type { Assembly } from './boards/NodeScene'
 import { Note } from './ui'
 
 /**
@@ -30,6 +31,12 @@ function loadManifest(): Manifest | null {
   return JSON.parse(readFileSync(path, 'utf8')) as Manifest
 }
 
+function loadAssemblies(): Assembly[] {
+  const path = resolve(process.cwd(), 'public/boards/assembly.json')
+  if (!existsSync(path)) return []
+  return (JSON.parse(readFileSync(path, 'utf8')) as { assemblies: Assembly[] }).assemblies ?? []
+}
+
 export function CarrierBoards() {
   const manifest = loadManifest()
   if (!manifest || manifest.boards.length === 0) return null
@@ -41,15 +48,18 @@ export function CarrierBoards() {
 
   return (
     <div className="mt-7">
-      <Note kind="warning" title="No board here has been fabricated or electrically verified">
-        The schematic is generated from the hardware registry and is as correct as the registry is,
-        and it is checked on every build. Every connection routes, but component placement is
-        machine-generated rather than laid out by a person, so treat the board as a reference
-        design: read it, take the netlist from it, and lay it out yourself before sending anything
-        to a fabricator.
+      <Note kind="warning" title="None of this has been built, fabricated or measured">
+        Two different kinds of thing are shown here and they deserve different amounts of trust.
+        The schematic and the carrier board are generated from the hardware registry, every
+        connection routes, and both are checked on every build &mdash; but placement is machine
+        generated rather than laid out by a person, so take the netlist and lay it out yourself
+        before sending anything to a fabricator. The whole-node view is weaker still: it is a
+        massing model. Only the Raspberry Pi and HAT outlines and the case are published
+        mechanical figures; every other body is an approximation sized to show scale and
+        stacking, drawn with a visible edge so you can tell which is which.
       </Note>
 
-      <BoardViewer boards={boards} />
+      <BoardViewer boards={boards} assemblies={loadAssemblies()} />
 
       <p className="mt-4 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
         Only modules that touch the GPIO header appear here. USB peripherals and the CSI cameras

@@ -1,0 +1,862 @@
+{
+  "generatedFrom": "schema/hardware.json",
+  "units": "mm",
+  "caveat": "A massing model, not CAD. The Raspberry Pi and HAT outlines and the case are published mechanical figures; every other body is an approximation sized to show scale and stacking. Nothing here has been built or measured.",
+  "assemblies": [
+    {
+      "tier": "t1",
+      "label": "Tier 1 - Baseline",
+      "bodies": [
+        {
+          "id": "pi5-2gb",
+          "label": "Raspberry Pi Raspberry Pi 5, 2GB",
+          "band": null,
+          "hue": null,
+          "mount": "host",
+          "size": [
+            85,
+            18,
+            56
+          ],
+          "pos": [
+            0,
+            7.4,
+            0
+          ],
+          "sourced": true,
+          "note": "Raspberry Pi 5 mechanical spec: 85 x 56 mm board, ~18 mm to the top of the Ethernet jack.",
+          "interface": "host"
+        },
+        {
+          "id": "carrier-t1",
+          "label": "Tier 1 - Baseline carrier board",
+          "mount": "hat",
+          "glb": "/boards/t1-board.glb",
+          "size": [
+            65,
+            1.6,
+            56
+          ],
+          "pos": [
+            0,
+            27.4,
+            0
+          ],
+          "sourced": true,
+          "note": "Generated from the hardware registry. HAT mechanical standard, 65 x 56 mm."
+        },
+        {
+          "id": "env-bme688",
+          "label": "Bosch BME688",
+          "band": "env",
+          "hue": 180,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            -14
+          ],
+          "sourced": false,
+          "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "imu-bno085",
+          "label": "CEVA / Adafruit BNO085 9-DoF IMU",
+          "band": "nav",
+          "hue": 0,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            15.5,
+            30.7,
+            -14
+          ],
+          "sourced": false,
+          "note": "Approximate: typical breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "lwir-mlx90640",
+          "label": "Melexis MLX90640 32x24 thermal array",
+          "band": "lwir",
+          "hue": 4,
+          "mount": "carrier",
+          "size": [
+            25,
+            9,
+            25
+          ],
+          "pos": [
+            -13.5,
+            32.7,
+            8
+          ],
+          "sourced": false,
+          "note": "Approximate; the lens dominates the height.",
+          "interface": "i2c"
+        },
+        {
+          "id": "sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3",
+          "band": "rf",
+          "hue": 205,
+          "mount": "usb",
+          "size": [
+            80,
+            15,
+            27
+          ],
+          "pos": [
+            112,
+            7.5,
+            -30
+          ],
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna.",
+          "interface": "usb"
+        },
+        {
+          "id": "cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens",
+          "band": "vis",
+          "hue": 150,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -79,
+            24,
+            55
+          ],
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "interface": "csi"
+        },
+        {
+          "id": "cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass",
+          "band": "nir",
+          "hue": 20,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -133,
+            24,
+            55
+          ],
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "interface": "csi"
+        }
+      ],
+      "counts": {
+        "total": 8,
+        "sourced": 2,
+        "approximate": 6,
+        "onCarrier": 3,
+        "usb": 1,
+        "csi": 2
+      }
+    },
+    {
+      "tier": "t2",
+      "label": "Tier 2 - Core",
+      "bodies": [
+        {
+          "id": "pi5-4gb",
+          "label": "Raspberry Pi Raspberry Pi 5, 4GB",
+          "band": null,
+          "hue": null,
+          "mount": "host",
+          "size": [
+            85,
+            18,
+            56
+          ],
+          "pos": [
+            0,
+            7.4,
+            0
+          ],
+          "sourced": true,
+          "note": "Raspberry Pi 5 mechanical spec.",
+          "interface": "host"
+        },
+        {
+          "id": "carrier-t2",
+          "label": "Tier 2 - Core carrier board",
+          "mount": "hat",
+          "glb": "/boards/t2-board.glb",
+          "size": [
+            65,
+            1.6,
+            56
+          ],
+          "pos": [
+            0,
+            27.4,
+            0
+          ],
+          "sourced": true,
+          "note": "Generated from the hardware registry. HAT mechanical standard, 65 x 56 mm."
+        },
+        {
+          "id": "env-bme688",
+          "label": "Bosch BME688",
+          "band": "env",
+          "hue": 180,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            -14
+          ],
+          "sourced": false,
+          "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "imu-bno085",
+          "label": "CEVA / Adafruit BNO085 9-DoF IMU",
+          "band": "nav",
+          "hue": 0,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            15.5,
+            30.7,
+            -14
+          ],
+          "sourced": false,
+          "note": "Approximate: typical breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
+          "band": "uv",
+          "hue": 258,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            8
+          ],
+          "sourced": false,
+          "note": "Approximate: typical breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "radar-ld2450",
+          "label": "Hi-Link LD2450 24 GHz tracking radar",
+          "band": "mmw",
+          "hue": 320,
+          "mount": "carrier",
+          "size": [
+            35,
+            6,
+            25
+          ],
+          "pos": [
+            -8.5,
+            31.2,
+            30
+          ],
+          "sourced": false,
+          "note": "Approximate module footprint.",
+          "interface": "uart"
+        },
+        {
+          "id": "mag-rm3100",
+          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor",
+          "band": "elf_vlf",
+          "hue": 237,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            25
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            52
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section.",
+          "interface": "spi"
+        },
+        {
+          "id": "mic-ics43434",
+          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
+          "band": "acoustic",
+          "hue": 108,
+          "mount": "carrier",
+          "size": [
+            20,
+            4,
+            15
+          ],
+          "pos": [
+            13,
+            30.2,
+            52
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint.",
+          "interface": "i2s"
+        },
+        {
+          "id": "sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3",
+          "band": "rf",
+          "hue": 205,
+          "mount": "usb",
+          "size": [
+            80,
+            15,
+            27
+          ],
+          "pos": [
+            112,
+            7.5,
+            -30
+          ],
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna.",
+          "interface": "usb"
+        },
+        {
+          "id": "lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3",
+          "band": "lwir",
+          "hue": 4,
+          "mount": "usb",
+          "size": [
+            30,
+            12,
+            30
+          ],
+          "pos": [
+            181,
+            6,
+            -30
+          ],
+          "sourced": false,
+          "note": "Approximate PureThermal carrier footprint.",
+          "interface": "usb"
+        },
+        {
+          "id": "cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens",
+          "band": "vis",
+          "hue": 150,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -79,
+            24,
+            55
+          ],
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "interface": "csi"
+        },
+        {
+          "id": "cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass",
+          "band": "nir",
+          "hue": 20,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -133,
+            24,
+            55
+          ],
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "interface": "csi"
+        },
+        {
+          "id": "power-solar-150w",
+          "label": "generic 120 W panel + 30 A MPPT + 180 Ah LiFePO4",
+          "band": null,
+          "hue": null,
+          "mount": "external",
+          "size": [
+            1480,
+            35,
+            670
+          ],
+          "pos": [
+            -1000,
+            17.5,
+            190
+          ],
+          "sourced": false,
+          "note": "Approximate 120 W panel; the MPPT and battery are separate bodies not modelled.",
+          "interface": "none",
+          "remote": true
+        },
+        {
+          "id": "case-pelican1500",
+          "label": "Pelican 1500 case with breather vent and feedthroughs",
+          "mount": "enclosure",
+          "size": [
+            434,
+            157,
+            332
+          ],
+          "pos": [
+            0,
+            48.5,
+            0
+          ],
+          "wireframe": true,
+          "sourced": true,
+          "note": "Pelican 1500 published exterior dimensions."
+        }
+      ],
+      "counts": {
+        "total": 14,
+        "sourced": 3,
+        "approximate": 11,
+        "onCarrier": 6,
+        "usb": 2,
+        "csi": 2
+      }
+    },
+    {
+      "tier": "t3",
+      "label": "Tier 3 - Extended",
+      "bodies": [
+        {
+          "id": "pi5-8gb",
+          "label": "Raspberry Pi Raspberry Pi 5, 8GB",
+          "band": null,
+          "hue": null,
+          "mount": "host",
+          "size": [
+            85,
+            18,
+            56
+          ],
+          "pos": [
+            0,
+            7.4,
+            0
+          ],
+          "sourced": true,
+          "note": "Raspberry Pi 5 mechanical spec.",
+          "interface": "host"
+        },
+        {
+          "id": "carrier-t3",
+          "label": "Tier 3 - Extended carrier board",
+          "mount": "hat",
+          "glb": "/boards/t3-board.glb",
+          "size": [
+            65,
+            1.6,
+            56
+          ],
+          "pos": [
+            0,
+            27.4,
+            0
+          ],
+          "sourced": true,
+          "note": "Generated from the hardware registry. HAT mechanical standard, 65 x 56 mm."
+        },
+        {
+          "id": "env-bme688",
+          "label": "Bosch BME688",
+          "band": "env",
+          "hue": 180,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            -14
+          ],
+          "sourced": false,
+          "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "imu-bno085",
+          "label": "CEVA / Adafruit BNO085 9-DoF IMU",
+          "band": "nav",
+          "hue": 0,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            15.5,
+            30.7,
+            -14
+          ],
+          "sourced": false,
+          "note": "Approximate: typical breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
+          "band": "uv",
+          "hue": 258,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            8
+          ],
+          "sourced": false,
+          "note": "Approximate: typical breakout footprint.",
+          "interface": "i2c"
+        },
+        {
+          "id": "mag-rm3100",
+          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor",
+          "band": "elf_vlf",
+          "hue": 237,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            25
+          ],
+          "pos": [
+            15.5,
+            30.7,
+            8
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section.",
+          "interface": "spi"
+        },
+        {
+          "id": "mic-ics43434",
+          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
+          "band": "acoustic",
+          "hue": 108,
+          "mount": "carrier",
+          "size": [
+            20,
+            4,
+            15
+          ],
+          "pos": [
+            -16,
+            30.2,
+            30
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint.",
+          "interface": "i2s"
+        },
+        {
+          "id": "sem-ir-beacon",
+          "label": "generic 850 nm pulsed IR beacon, 5 W peak",
+          "band": "nir",
+          "hue": 20,
+          "mount": "carrier",
+          "size": [
+            30,
+            12,
+            20
+          ],
+          "pos": [
+            13,
+            34.2,
+            30
+          ],
+          "sourced": false,
+          "note": "Approximate.",
+          "interface": "gpio+pwm"
+        },
+        {
+          "id": "sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3",
+          "band": "rf",
+          "hue": 205,
+          "mount": "usb",
+          "size": [
+            80,
+            15,
+            27
+          ],
+          "pos": [
+            112,
+            7.5,
+            -30
+          ],
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna.",
+          "interface": "usb"
+        },
+        {
+          "id": "lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3",
+          "band": "lwir",
+          "hue": 4,
+          "mount": "usb",
+          "size": [
+            30,
+            12,
+            30
+          ],
+          "pos": [
+            181,
+            6,
+            -30
+          ],
+          "sourced": false,
+          "note": "Approximate PureThermal carrier footprint.",
+          "interface": "usb"
+        },
+        {
+          "id": "radar-iwr6843",
+          "label": "Texas Instruments IWR6843ISK 60 GHz mmWave",
+          "band": "mmw",
+          "hue": 320,
+          "mount": "usb",
+          "size": [
+            55,
+            16,
+            55
+          ],
+          "pos": [
+            99.5,
+            8,
+            14
+          ],
+          "sourced": false,
+          "note": "Approximate evaluation-module footprint.",
+          "interface": "usb"
+        },
+        {
+          "id": "gamma-csi-sipm",
+          "label": "OpenGammaDetector CsI(Tl) + SiPM open gamma spectrometer",
+          "band": "gamma",
+          "hue": 295,
+          "mount": "usb",
+          "size": [
+            70,
+            22,
+            40
+          ],
+          "pos": [
+            176,
+            11,
+            14
+          ],
+          "sourced": false,
+          "note": "Approximate; the CsI crystal sets the depth.",
+          "interface": "usb"
+        },
+        {
+          "id": "swir-ingaas640",
+          "label": "various InGaAs 640x512 SWIR module",
+          "band": "swir",
+          "hue": 48,
+          "mount": "usb",
+          "size": [
+            60,
+            75,
+            60
+          ],
+          "pos": [
+            102,
+            37.5,
+            83
+          ],
+          "sourced": false,
+          "note": "Approximate camera body with lens.",
+          "interface": "usb3"
+        },
+        {
+          "id": "usb-hub-powered",
+          "label": "generic 4-port USB 3.0 hub with 5 V 4 A external supply",
+          "band": null,
+          "hue": null,
+          "mount": "usb",
+          "size": [
+            100,
+            22,
+            42
+          ],
+          "pos": [
+            196,
+            11,
+            83
+          ],
+          "sourced": false,
+          "note": "Approximate 4-port hub body.",
+          "interface": "usb"
+        },
+        {
+          "id": "cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens",
+          "band": "vis",
+          "hue": 150,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -79,
+            24,
+            55
+          ],
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "interface": "csi"
+        },
+        {
+          "id": "cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass",
+          "band": "nir",
+          "hue": 20,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -133,
+            24,
+            55
+          ],
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "interface": "csi"
+        },
+        {
+          "id": "seis-sm24",
+          "label": "ION / Sercel SM-24 geophone element",
+          "band": "seismic",
+          "hue": 60,
+          "mount": "external",
+          "size": [
+            32,
+            35,
+            32
+          ],
+          "pos": [
+            -276,
+            17.5,
+            190
+          ],
+          "sourced": false,
+          "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled.",
+          "interface": "adc",
+          "remote": true
+        },
+        {
+          "id": "power-solar-200w",
+          "label": "generic 220 W array + 40 A MPPT + 300 Ah LiFePO4",
+          "band": null,
+          "hue": null,
+          "mount": "external",
+          "size": [
+            1620,
+            35,
+            700
+          ],
+          "pos": [
+            -1162,
+            17.5,
+            190
+          ],
+          "sourced": false,
+          "note": "Approximate 220 W array; the MPPT and battery are separate bodies not modelled.",
+          "interface": "none",
+          "remote": true
+        },
+        {
+          "id": "case-pelican1500",
+          "label": "Pelican 1500 case with breather vent and feedthroughs",
+          "mount": "enclosure",
+          "size": [
+            434,
+            157,
+            332
+          ],
+          "pos": [
+            0,
+            48.5,
+            0
+          ],
+          "wireframe": true,
+          "sourced": true,
+          "note": "Pelican 1500 published exterior dimensions."
+        }
+      ],
+      "counts": {
+        "total": 19,
+        "sourced": 3,
+        "approximate": 16,
+        "onCarrier": 6,
+        "usb": 6,
+        "csi": 2
+      }
+    }
+  ]
+}
