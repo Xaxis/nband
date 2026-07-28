@@ -89,6 +89,43 @@ Health, every 60 seconds. This is the only thing that moves a node between `onli
 
 A node whose clock has fallen below GNSS discipline is marked `degraded` even when every sensor is healthy, because without pulse-per-second lock it can no longer contribute the geometry that makes a node worth having in an array.
 
+## GET /api/archive/events
+
+The query surface over the archive. No authentication: everything the platform records is public.
+
+```
+GET /api/archive/events
+  ?from=<iso8601>&to=<iso8601>
+  &band=<band id, repeatable>
+  &classification=<enum, repeatable>
+  &corroboration=<enum>
+  &min_score=<0-100>
+  &catalogues=complete|any
+  &cursor=<iso8601 from next_cursor>&limit=<=200
+```
+
+`catalogues` defaults to **complete**, and this is the one parameter worth understanding before you use the endpoint. An event whose ADS-B check could not be performed is not evidence of anything: if the transponder feed was unreachable, every aircraft that night looks unexplained. Those events are excluded from the default view and asking for them with `catalogues=any` is a deliberate choice that comes back labelled in the response.
+
+Every response carries the filters that produced it and the denominator behind it:
+
+```json
+{
+  "query":  { "band": ["rf", "vis"], "min_score": 70, "catalogues": "complete", "...": "..." },
+  "counts": { "returned": 12, "examined": 47, "excluded_incomplete_catalogues": 35 },
+  "note":   "Events with any unreachable catalogue check are excluded...",
+  "next_cursor": "2026-07-14T22:19:03.221Z",
+  "events": []
+}
+```
+
+`counts.examined` is there so that "twelve unresolved events" is never quoted without "of forty-seven examined". A count without its denominator is a number designed to mislead, and this endpoint is what people will build that sentence from.
+
+Positions come back as `fix_lat`, `fix_lon` and `fix_altitude_m` with `fix_error_m` beside them, because a fix is something that was solved rather than a property the event has, and a coordinate published without its error bar is the same overclaim as a range that was assumed rather than measured. All three are null unless geometry was actually solvable.
+
+Pagination is by cursor rather than offset. The archive only grows, and an offset into a growing table silently repeats and skips rows as it does. Pass the `next_cursor` you were given; a null means you have reached the end.
+
+Reads are served through the same anonymous key the browser uses, so row-level security applies identically. Simulated nodes are excluded by policy rather than by the query remembering to.
+
 ## Reading
 
 `GET /api/telemetry?node=<slug>&from=<ms>&to=<ms>` returns band-by-band series and the events overlapping that window, capped at 31 days. It reports which feed served it, so a client can tell synthetic data from real.
