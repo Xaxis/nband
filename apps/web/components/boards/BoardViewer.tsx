@@ -54,7 +54,7 @@ const VIEWS: { id: View; label: string; blurb: string }[] = [
     id: 'node',
     label: 'Whole node',
     blurb:
-      'Everything in the tier, assembled: the Pi, the carrier on standoffs, the breakouts on top of it, the USB peripherals on cables, the cameras, and the case. A massing model for scale and stacking, not CAD.',
+      'Everything in the tier, assembled, with each part where it physically has to go: board-mounted parts on the carrier, sensors that measure the outside at the enclosure wall, emitters and the magnetometer out on the mast, USB peripherals on cables. A massing model for scale and stacking, not CAD.',
   },
   {
     id: 'schematic',

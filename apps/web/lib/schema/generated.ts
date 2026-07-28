@@ -1672,9 +1672,9 @@ export const PARTS: readonly Part[] = [
       "widthMm": 25,
       "depthMm": 18,
       "heightMm": 5,
-      "mount": "carrier",
+      "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint."
+      "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
     }
   },
   {
@@ -1735,7 +1735,7 @@ export const PARTS: readonly Part[] = [
       "heightMm": 5,
       "mount": "carrier",
       "dimensionsSourced": false,
-      "note": "Approximate: typical breakout footprint."
+      "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
     }
   },
   {
@@ -1844,9 +1844,9 @@ export const PARTS: readonly Part[] = [
       "widthMm": 25,
       "depthMm": 25,
       "heightMm": 9,
-      "mount": "carrier",
+      "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Approximate; the lens dominates the height."
+      "note": "Points at the sky through a germanium window. Mounted at the enclosure wall."
     }
   },
   {
@@ -1904,9 +1904,9 @@ export const PARTS: readonly Part[] = [
       "widthMm": 25,
       "depthMm": 18,
       "heightMm": 5,
-      "mount": "carrier",
+      "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Approximate: typical breakout footprint."
+      "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
     }
   },
   {
@@ -2083,9 +2083,9 @@ export const PARTS: readonly Part[] = [
       "widthMm": 25,
       "depthMm": 25,
       "heightMm": 5,
-      "mount": "carrier",
+      "mount": "external",
       "dimensionsSourced": false,
-      "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section."
+      "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
     }
   },
   {
@@ -2149,9 +2149,9 @@ export const PARTS: readonly Part[] = [
       "widthMm": 20,
       "depthMm": 15,
       "heightMm": 4,
-      "mount": "carrier",
+      "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Approximate breakout footprint."
+      "note": "Needs acoustic access to outside air through a vented, water-shedding port."
     }
   },
   {
@@ -2340,9 +2340,9 @@ export const PARTS: readonly Part[] = [
       "widthMm": 30,
       "depthMm": 20,
       "heightMm": 12,
-      "mount": "carrier",
+      "mount": "external",
       "dimensionsSourced": false,
-      "note": "Approximate."
+      "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate."
     }
   },
   {
@@ -2560,7 +2560,7 @@ export const PARTS: readonly Part[] = [
       "heightMm": 12,
       "mount": "carrier",
       "dimensionsSourced": false,
-      "note": "Approximate ADS1256 breakout footprint."
+      "note": "Board-mounted alongside the carrier."
     }
   },
   {
@@ -2617,9 +2617,9 @@ export const PARTS: readonly Part[] = [
       "widthMm": 25,
       "depthMm": 18,
       "heightMm": 5,
-      "mount": "carrier",
+      "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Approximate breakout footprint."
+      "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
     }
   }
 ] as unknown as readonly Part[]

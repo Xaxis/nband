@@ -46,26 +46,6 @@
           "note": "Generated from the hardware registry. 65 x 56 mm, mounting on the HAT hole pattern."
         },
         {
-          "id": "env-bme688",
-          "label": "Bosch BME688",
-          "band": "env",
-          "hue": 180,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            -14
-          ],
-          "sourced": false,
-          "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint.",
-          "interface": "i2c"
-        },
-        {
           "id": "imu-bno085",
           "label": "CEVA / Adafruit BNO085 9-DoF IMU",
           "band": "nav",
@@ -77,32 +57,12 @@
             18
           ],
           "pos": [
-            15.5,
+            -17,
             30.7,
-            -14
+            -16
           ],
           "sourced": false,
-          "note": "Approximate: typical breakout footprint.",
-          "interface": "i2c"
-        },
-        {
-          "id": "lwir-mlx90640",
-          "label": "Melexis MLX90640 32x24 thermal array",
-          "band": "lwir",
-          "hue": 4,
-          "mount": "carrier",
-          "size": [
-            25,
-            9,
-            25
-          ],
-          "pos": [
-            -13.5,
-            32.7,
-            8
-          ],
-          "sourced": false,
-          "note": "Approximate; the lens dominates the height.",
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
           "interface": "i2c"
         },
         {
@@ -164,13 +124,54 @@
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
           "interface": "csi"
+        },
+        {
+          "id": "env-bme688",
+          "label": "Bosch BME688",
+          "band": "env",
+          "hue": 180,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -47.5,
+            40,
+            -70
+          ],
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "interface": "i2c"
+        },
+        {
+          "id": "lwir-mlx90640",
+          "label": "Melexis MLX90640 32x24 thermal array",
+          "band": "lwir",
+          "hue": 4,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            9,
+            25
+          ],
+          "pos": [
+            -12.5,
+            40,
+            -70
+          ],
+          "sourced": false,
+          "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
+          "interface": "i2c"
         }
       ],
       "counts": {
         "total": 8,
         "sourced": 2,
         "approximate": 6,
-        "onCarrier": 3,
+        "onCarrier": 1,
+        "onWall": 2,
         "usb": 1,
         "csi": 2
       }
@@ -218,26 +219,6 @@
           "note": "Generated from the hardware registry. 85 x 56 mm, mounting on the HAT hole pattern."
         },
         {
-          "id": "env-bme688",
-          "label": "Bosch BME688",
-          "band": "env",
-          "hue": 180,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            -14
-          ],
-          "sourced": false,
-          "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint.",
-          "interface": "i2c"
-        },
-        {
           "id": "imu-bno085",
           "label": "CEVA / Adafruit BNO085 9-DoF IMU",
           "band": "nav",
@@ -249,32 +230,12 @@
             18
           ],
           "pos": [
-            15.5,
+            -27,
             30.7,
-            -14
+            -16
           ],
           "sourced": false,
-          "note": "Approximate: typical breakout footprint.",
-          "interface": "i2c"
-        },
-        {
-          "id": "uv-as7331",
-          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
-          "band": "uv",
-          "hue": 258,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            8
-          ],
-          "sourced": false,
-          "note": "Approximate: typical breakout footprint.",
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
           "interface": "i2c"
         },
         {
@@ -289,73 +250,13 @@
             25
           ],
           "pos": [
-            -8.5,
+            6,
             31.2,
-            30
+            -12.5
           ],
           "sourced": false,
           "note": "Approximate module footprint.",
           "interface": "uart"
-        },
-        {
-          "id": "mag-rm3100",
-          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor",
-          "band": "elf_vlf",
-          "hue": 237,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            25
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            52
-          ],
-          "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section.",
-          "interface": "spi"
-        },
-        {
-          "id": "mic-ics43434",
-          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
-          "band": "acoustic",
-          "hue": 108,
-          "mount": "carrier",
-          "size": [
-            20,
-            4,
-            15
-          ],
-          "pos": [
-            13,
-            30.2,
-            52
-          ],
-          "sourced": false,
-          "note": "Approximate breakout footprint.",
-          "interface": "i2s"
-        },
-        {
-          "id": "pwr-ina226",
-          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor",
-          "band": "env",
-          "hue": 180,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            74
-          ],
-          "sourced": false,
-          "note": "Approximate breakout footprint.",
-          "interface": "i2c"
         },
         {
           "id": "sdr-rtl-v3",
@@ -438,6 +339,107 @@
           "interface": "csi"
         },
         {
+          "id": "env-bme688",
+          "label": "Bosch BME688",
+          "band": "env",
+          "hue": 180,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -47.5,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "interface": "i2c"
+        },
+        {
+          "id": "uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
+          "band": "uv",
+          "hue": 258,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -12.5,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "interface": "i2c"
+        },
+        {
+          "id": "mic-ics43434",
+          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
+          "band": "acoustic",
+          "hue": 108,
+          "mount": "enclosure-wall",
+          "size": [
+            20,
+            4,
+            15
+          ],
+          "pos": [
+            20,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "interface": "i2s"
+        },
+        {
+          "id": "pwr-ina226",
+          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor",
+          "band": "env",
+          "hue": 180,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            52.5,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "interface": "i2c"
+        },
+        {
+          "id": "mag-rm3100",
+          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor",
+          "band": "elf_vlf",
+          "hue": 237,
+          "mount": "external",
+          "size": [
+            25,
+            5,
+            25
+          ],
+          "pos": [
+            -272.5,
+            2.5,
+            190
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "interface": "spi",
+          "remote": true
+        },
+        {
           "id": "power-solar-150w",
           "label": "generic 120 W panel + 30 A MPPT + 180 Ah LiFePO4",
           "band": null,
@@ -449,7 +451,7 @@
             670
           ],
           "pos": [
-            -1000,
+            -1085,
             17.5,
             190
           ],
@@ -481,7 +483,8 @@
         "total": 15,
         "sourced": 3,
         "approximate": 12,
-        "onCarrier": 7,
+        "onCarrier": 2,
+        "onWall": 4,
         "usb": 2,
         "csi": 2
       }
@@ -529,26 +532,6 @@
           "note": "Generated from the hardware registry. 105 x 56 mm, mounting on the HAT hole pattern."
         },
         {
-          "id": "env-bme688",
-          "label": "Bosch BME688",
-          "band": "env",
-          "hue": 180,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            -14
-          ],
-          "sourced": false,
-          "note": "Approximate: typical STEMMA QT / Qwiic breakout footprint.",
-          "interface": "i2c"
-        },
-        {
           "id": "imu-bno085",
           "label": "CEVA / Adafruit BNO085 9-DoF IMU",
           "band": "nav",
@@ -560,93 +543,13 @@
             18
           ],
           "pos": [
-            15.5,
+            -37,
             30.7,
-            -14
+            -16
           ],
           "sourced": false,
-          "note": "Approximate: typical breakout footprint.",
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
           "interface": "i2c"
-        },
-        {
-          "id": "uv-as7331",
-          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
-          "band": "uv",
-          "hue": 258,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            8
-          ],
-          "sourced": false,
-          "note": "Approximate: typical breakout footprint.",
-          "interface": "i2c"
-        },
-        {
-          "id": "mag-rm3100",
-          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor",
-          "band": "elf_vlf",
-          "hue": 237,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            25
-          ],
-          "pos": [
-            15.5,
-            30.7,
-            8
-          ],
-          "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section.",
-          "interface": "spi"
-        },
-        {
-          "id": "mic-ics43434",
-          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
-          "band": "acoustic",
-          "hue": 108,
-          "mount": "carrier",
-          "size": [
-            20,
-            4,
-            15
-          ],
-          "pos": [
-            -16,
-            30.2,
-            30
-          ],
-          "sourced": false,
-          "note": "Approximate breakout footprint.",
-          "interface": "i2s"
-        },
-        {
-          "id": "sem-ir-beacon",
-          "label": "generic 850 nm pulsed IR beacon, 5 W peak",
-          "band": "nir",
-          "hue": 20,
-          "mount": "carrier",
-          "size": [
-            30,
-            12,
-            20
-          ],
-          "pos": [
-            13,
-            34.2,
-            30
-          ],
-          "sourced": false,
-          "note": "Approximate.",
-          "interface": "gpio+pwm"
         },
         {
           "id": "adc-ads1256",
@@ -660,33 +563,13 @@
             35
           ],
           "pos": [
-            1.5,
+            6,
             34.2,
-            52
+            -7.5
           ],
           "sourced": false,
-          "note": "Approximate ADS1256 breakout footprint.",
+          "note": "Board-mounted alongside the carrier.",
           "interface": "spi"
-        },
-        {
-          "id": "pwr-ina226",
-          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor",
-          "band": "env",
-          "hue": 180,
-          "mount": "carrier",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -13.5,
-            30.7,
-            74
-          ],
-          "sourced": false,
-          "note": "Approximate breakout footprint.",
-          "interface": "i2c"
         },
         {
           "id": "sdr-rtl-v3",
@@ -849,6 +732,107 @@
           "interface": "csi"
         },
         {
+          "id": "env-bme688",
+          "label": "Bosch BME688",
+          "band": "env",
+          "hue": 180,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -47.5,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "interface": "i2c"
+        },
+        {
+          "id": "uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
+          "band": "uv",
+          "hue": 258,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -12.5,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "interface": "i2c"
+        },
+        {
+          "id": "mic-ics43434",
+          "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
+          "band": "acoustic",
+          "hue": 108,
+          "mount": "enclosure-wall",
+          "size": [
+            20,
+            4,
+            15
+          ],
+          "pos": [
+            20,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "interface": "i2s"
+        },
+        {
+          "id": "pwr-ina226",
+          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor",
+          "band": "env",
+          "hue": 180,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            52.5,
+            30,
+            -154
+          ],
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "interface": "i2c"
+        },
+        {
+          "id": "mag-rm3100",
+          "label": "PNI Sensor RM3100 3-axis geomagnetic sensor",
+          "band": "elf_vlf",
+          "hue": 237,
+          "mount": "external",
+          "size": [
+            25,
+            5,
+            25
+          ],
+          "pos": [
+            -272.5,
+            2.5,
+            190
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "interface": "spi",
+          "remote": true
+        },
+        {
           "id": "seis-sm24",
           "label": "ION / Sercel SM-24 geophone element",
           "band": "seismic",
@@ -860,13 +844,34 @@
             32
           ],
           "pos": [
-            -276,
+            -361,
             17.5,
             190
           ],
           "sourced": false,
           "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled.",
           "interface": "analog",
+          "remote": true
+        },
+        {
+          "id": "sem-ir-beacon",
+          "label": "generic 850 nm pulsed IR beacon, 5 W peak",
+          "band": "nir",
+          "hue": 20,
+          "mount": "external",
+          "size": [
+            30,
+            12,
+            20
+          ],
+          "pos": [
+            -452,
+            6,
+            190
+          ],
+          "sourced": false,
+          "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate.",
+          "interface": "gpio+pwm",
           "remote": true
         },
         {
@@ -881,7 +886,7 @@
             700
           ],
           "pos": [
-            -1162,
+            -1337,
             17.5,
             190
           ],
@@ -913,7 +918,8 @@
         "total": 21,
         "sourced": 3,
         "approximate": 18,
-        "onCarrier": 8,
+        "onCarrier": 2,
+        "onWall": 4,
         "usb": 6,
         "csi": 2
       }

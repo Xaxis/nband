@@ -62,6 +62,16 @@ export function CarrierBoards() {
       <BoardViewer boards={boards} assemblies={loadAssemblies()} />
 
       <p className="mt-4 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+        Only modules that touch the GPIO header appear on the board, and fewer of them are
+        board-mounted than a connector count suggests. A BME688 bolted above the Raspberry Pi
+        measures the Pi&rsquo;s temperature rather than the site&rsquo;s, the UV and thermal
+        sensors need to see sky through their own windows, and the magnetometer&rsquo;s own
+        datasheet note asks for two metres of separation from the node&rsquo;s electronics. Those
+        sit at the enclosure wall or on the mast and reach the carrier by cable, which is what the
+        whole-node view shows.
+      </p>
+
+      <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
         Only modules that touch the GPIO header appear here. USB peripherals and the CSI cameras
         connect elsewhere and are not carried by the board, so tier 3 shows eight modules against a
         bill of materials listing considerably more. Beyond the connectors, each board carries a

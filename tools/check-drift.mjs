@@ -329,6 +329,58 @@ check('nothing drives the GPIO header above 3.3 volts', () => {
   return `${n} parts declare a logic voltage, none above 3.3 V`
 })
 
+check('the assembly is physically consistent', () => {
+  // Two things the model claimed that were not true.
+  //
+  // Four tier 3 breakouts floated past the edge of the carrier they were
+  // described as sitting on, one of them 74 mm out on a 56 mm deep board,
+  // because the layout marched outward and never wrapped.
+  //
+  // And the magnetometer was drawn bolted to the carrier while its own registry
+  // note says to mount it at least two metres from the node's electronics. A
+  // render that contradicts the text beside it is worse than no render.
+  const path = resolve(root, 'apps/web/public/boards/assembly.json')
+  if (!existsSync(path)) throw new Error('assembly.json is missing; run `make boards`')
+  const { assemblies } = JSON.parse(readFileSync(path, 'utf8'))
+  const errors = []
+
+  for (const a of assemblies) {
+    const carrier = a.bodies.find((b) => b.glb)
+    if (!carrier) {
+      errors.push(`${a.tier}: no carrier body in the assembly`)
+      continue
+    }
+    const [cw, , cd] = carrier.size
+    for (const b of a.bodies.filter((x) => x.mount === 'carrier')) {
+      const [w, , d] = b.size
+      const [x, , z] = b.pos
+      if (Math.abs(x) + w / 2 > cw / 2 + 0.01 || Math.abs(z) + d / 2 > cd / 2 + 0.01) {
+        errors.push(
+          `${a.tier}: '${b.id}' is drawn on the carrier but extends past its ${cw} x ${cd} mm outline`,
+        )
+      }
+    }
+  }
+
+  // A part whose own notes demand distance from the node cannot be mounted on it.
+  for (const part of hardware.parts) {
+    const wantsDistance = /at least .{0,12}(metre|meter)|remote from the node|away from the node/i.test(
+      part.notes ?? '',
+    )
+    if (wantsDistance && part.mechanical?.mount === 'carrier') {
+      errors.push(
+        `part '${part.id}' says it must be mounted away from the node but mechanical.mount is 'carrier'`,
+      )
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  const onCarrier = assemblies.reduce(
+    (n, a) => n + a.bodies.filter((b) => b.mount === 'carrier').length, 0,
+  )
+  return `${assemblies.length} assemblies, ${onCarrier} carrier-mounted bodies all within their board`
+})
+
 check('every part in a tier has mechanical data', () => {
   // The whole-node view sizes each body from schema/hardware.json. A part with
   // no mechanical block is silently absent from the assembly, which reads as

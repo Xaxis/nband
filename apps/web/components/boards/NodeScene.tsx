@@ -78,6 +78,7 @@ const MOUNT_COLOUR: Record<string, number> = {
   carrier: 0x4e6b8a,
   usb: 0x6b5f8a,
   csi: 0x8a6b4e,
+  'enclosure-wall': 0x7a8a6b,
   external: 0x5a5a62,
   enclosure: 0x8a8a94,
 }

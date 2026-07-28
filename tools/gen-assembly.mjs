@@ -93,19 +93,31 @@ function assemblyFor(tier) {
     note: `Generated from the hardware registry. ${boardWidth(tier.id)} x 56 mm, mounting on the HAT hole pattern.`,
   })
 
-  // 3. Breakouts on the carrier, laid left to right across its top face.
+  // 3. Breakouts on the carrier's top face, wrapped inside its actual outline.
+  //
+  // The first version marched the z coordinate outward without ever wrapping,
+  // so on tier 3 four of eight breakouts floated past the edge of the board
+  // they were described as sitting on, one of them 74 mm out on a 56 mm deep
+  // carrier. The board is also no longer always 65 mm wide, so the bounds come
+  // from the manifest rather than from a literal.
   const onCarrier = by('carrier')
-  let cx = -26
-  const cz = -14
-  let row = 0
+  const cw = boardWidth(tier.id)
+  const cd = 56
+  const PAD = 3
+  let cx = -cw / 2 + PAD
+  let cz = -cd / 2 + PAD
+  let rowDepth = 0
   for (const p of onCarrier) {
     const w = p.mechanical.widthMm
-    if (cx + w > 30) {
-      cx = -26
-      row += 1
+    const dpt = p.mechanical.depthMm
+    if (cx + w > cw / 2 - PAD) {
+      cx = -cw / 2 + PAD
+      cz += rowDepth + PAD
+      rowDepth = 0
     }
-    push(p, cx + w / 2, hatY + HAT_BOARD_T / 2 + p.mechanical.heightMm / 2, cz + row * 22)
-    cx += w + 4
+    push(p, cx + w / 2, hatY + HAT_BOARD_T / 2 + p.mechanical.heightMm / 2, cz + dpt / 2)
+    cx += w + PAD
+    rowDepth = Math.max(rowDepth, dpt)
   }
 
   // 4. USB peripherals, clustered beside the host rather than strung out in a
@@ -135,6 +147,25 @@ function assemblyFor(tier) {
   for (const p of by('csi')) {
     push(p, kx - p.mechanical.widthMm / 2, p.mechanical.heightMm / 2, 55)
     kx -= p.mechanical.widthMm + 16
+  }
+
+  // 5b. Sensors that mount at the enclosure wall rather than on the board,
+  //     because what they measure is outside it: ambient air, sky, sound.
+  //     Drawing these on the carrier was not a layout bug so much as a claim
+  //     about the build that was not true — a BME688 bolted above the Pi reads
+  //     the Pi's temperature, not the site's.
+  //     Placed against the case's own inner face rather than floating above the
+  //     node, which is where they actually go and which stops them reading as
+  //     parts that came loose. The case is much larger than the node, so they
+  //     sit some distance from it — that separation is real and is most of why
+  //     the enclosure is the size it is.
+  const shellPart = by('enclosure')[0]
+  const wallZ = shellPart ? -shellPart.mechanical.depthMm / 2 + 12 : -70
+  const wallY = shellPart ? 30 : 40
+  let wx = -60
+  for (const p of by('enclosure-wall')) {
+    push(p, wx + p.mechanical.widthMm / 2, wallY, wallZ)
+    wx += p.mechanical.widthMm + 10
   }
 
   // 6. Everything that lives away from the node: the geophone in the ground,
@@ -171,6 +202,7 @@ function assemblyFor(tier) {
       sourced,
       approximate: bodies.length - sourced,
       onCarrier: onCarrier.length,
+      onWall: by('enclosure-wall').length,
       usb: by('usb').length,
       csi: by('csi').length,
     },
