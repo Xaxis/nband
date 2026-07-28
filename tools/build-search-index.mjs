@@ -112,11 +112,15 @@ for (const p of hardware.parts) {
 
 // --- concepts: the enums people will actually search for --------------------
 
+// Every one of these used to point at a bare '/discriminator'. Fourteen results
+// all landed the reader at the top of a six-and-a-half-thousand-pixel page with
+// no indication of where the thing they searched for actually was, which is a
+// search index that finds the page rather than the answer.
 for (const v of spec.enums.classification.values) {
   add({
     kind: 'concept',
     title: v.label,
-    href: '/discriminator',
+    href: `/discriminator#class-${v.id}`,
     parent: 'Classification',
     text: v.summary,
   })
@@ -125,7 +129,7 @@ for (const v of spec.enums.catalogSource.values) {
   add({
     kind: 'concept',
     title: v.label,
-    href: '/discriminator',
+    href: `/discriminator#catalog-${v.id}`,
     parent: 'Catalogue',
     text: v.summary,
   })

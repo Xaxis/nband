@@ -55,7 +55,10 @@ export default function DiscriminatorPage() {
       >
         <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {Object.entries(CATALOGSOURCE).map(([id, c]) => (
-            <div key={id} className="card p-4">
+            // Anchored: fourteen search results pointed at this page with no
+            // fragment at all, so searching "ADS-B" landed the reader at the
+            // top of six and a half thousand pixels with no clue where it was.
+            <div key={id} id={`catalog-${id}`} className="card scroll-mt-24 p-4">
               <h3 className="num text-[12.5px] font-semibold text-[var(--ink)]">{c.label}</h3>
               <p className="mt-1.5 text-[12.5px] leading-relaxed text-[var(--ink-2)]">{c.summary}</p>
             </div>
@@ -138,8 +141,9 @@ export default function DiscriminatorPage() {
             const c = CLASSIFICATION[id]
             return (
               <div
+                id={`class-${id}`}
                 key={id}
-                className="card p-4"
+                className="card scroll-mt-24 p-4"
                 style={{
                   borderLeft: `3px solid light-dark(${VERDICT.light[id]}, ${VERDICT.dark[id]})`,
                 }}
