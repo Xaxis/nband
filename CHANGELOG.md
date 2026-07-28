@@ -41,7 +41,9 @@ written against and which `make drift` enforces.
   affected: the node table was empty and the feed was still mock.
 - **The americium-241 dose "correction" was wrong by two orders of magnitude**,
   in the alarming direction, and stood on the live safety page. A tabulated
-  constant of 3.2 × 10⁻² mGy·m²/(GBq·h) was published as "3.2 µSv/h per MBq".
+  constant of 3.2 × 10⁻² mGy·m²/(GBq·h) was published as "3.2 µSv/h per MBq" —
+  the mGy→µGy and GBq→MBq conversions cancel, so the only error was the dropped
+  10⁻², a factor of exactly one hundred.
   The real figure is 1–28 nSv/h at one metre depending on whether the soft
   neptunium L X-rays are counted, against a 340 nSv/h background — a few
   percent of background, never three times it. The retracted original was
