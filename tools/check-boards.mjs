@@ -282,6 +282,81 @@ if (!full) {
       }
     }
 
+    // Copper clearance between different nets, measured rather than trusted.
+    //
+    // tscircuit's own design-rule pass did not report this, and an audit claimed
+    // t3 had a hard short between the 5 V rail and the GNSS UART. The netlist
+    // said otherwise, so the claim could only be about geometry — which nothing
+    // was checking. Measuring it found no short, but did find two chip-select
+    // traces 0.291 mm apart centre to centre.
+    //
+    // Two thresholds, because one number would be either alarmist or useless.
+    // 0.127 mm edge to edge is what the cheap fabs quote as their standard
+    // minimum and is a hard failure. 0.15 mm is the comfortable figure a person
+    // laying this out by hand would target, and falling under it is worth
+    // saying out loud without failing the build.
+    const HARD_MM = 0.127
+    const SOFT_MM = 0.15
+    {
+      const byTrace = Object.fromEntries(
+        circuit.filter((e) => e.type === 'source_trace').map((e) => [e.source_trace_id, e]),
+      )
+      const segs = []
+      for (const t of circuit.filter((e) => e.type === 'pcb_trace')) {
+        const net =
+          byTrace[t.source_trace_id]?.subcircuit_connectivity_map_key ?? t.source_trace_id
+        const pts = (t.route ?? []).filter((r) => r.route_type === 'wire')
+        for (let i = 0; i + 1 < pts.length; i++) {
+          const a = pts[i]
+          const bpt = pts[i + 1]
+          if (a.layer !== bpt.layer) continue
+          segs.push({ net, layer: a.layer, a, b: bpt, w: a.width ?? 0.15, name: t.source_trace_id })
+        }
+      }
+
+      const dist = (p1, p2, p3, p4) => {
+        const ptSeg = (p, q, r) => {
+          const dx = r.x - q.x
+          const dy = r.y - q.y
+          const L = dx * dx + dy * dy
+          if (L === 0) return Math.hypot(p.x - q.x, p.y - q.y)
+          const t = Math.max(0, Math.min(1, ((p.x - q.x) * dx + (p.y - q.y) * dy) / L))
+          return Math.hypot(p.x - (q.x + t * dx), p.y - (q.y + t * dy))
+        }
+        const ccw = (m, n, o) => (o.y - m.y) * (n.x - m.x) > (n.y - m.y) * (o.x - m.x)
+        if (ccw(p1, p3, p4) !== ccw(p2, p3, p4) && ccw(p1, p2, p3) !== ccw(p1, p2, p4)) return 0
+        return Math.min(ptSeg(p1, p3, p4), ptSeg(p2, p3, p4), ptSeg(p3, p1, p2), ptSeg(p4, p1, p2))
+      }
+
+      let hard = 0
+      let soft = 0
+      let worst = Infinity
+      for (let i = 0; i < segs.length; i++) {
+        for (let j = i + 1; j < segs.length; j++) {
+          const x = segs[i]
+          const y = segs[j]
+          if (x.net === y.net || x.layer !== y.layer) continue
+          const edge = dist(x.a, x.b, y.a, y.b) - x.w / 2 - y.w / 2
+          if (edge < worst) worst = edge
+          if (edge < HARD_MM) hard++
+          else if (edge < SOFT_MM) soft++
+        }
+      }
+      if (hard > 0) {
+        fail(
+          `${b.tier}: ${hard} copper clearance violation(s) below ${HARD_MM} mm — ` +
+            `closest ${worst.toFixed(3)} mm. No fab will build this.`,
+        )
+      } else if (soft > 0) {
+        ok(
+          `${b.tier}: no copper closer than ${HARD_MM} mm (closest ${worst.toFixed(3)} mm; ` +
+            `${soft} pair(s) under the comfortable ${SOFT_MM} mm)`,
+        )
+      } else if (segs.length > 0) {
+        ok(`${b.tier}: copper clearance clean, closest ${worst.toFixed(3)} mm`)
+      }
+    }
+
     const errors = circuit.filter((e) => String(e.type).includes('error'))
     if (errors.length) {
       // Not a failure. These boards are a reference carrier that has never been

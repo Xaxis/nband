@@ -240,6 +240,63 @@ check('off-grid power sizing matches the tier load', () => {
   return 'panel and battery cover the summed draw of every tier that ships them'
 })
 
+check('every declared driver is claimed by a wireable part', () => {
+  // The mirror of the check firmware/tests/test_registry.py already runs.
+  // That one asserts a part naming a driver has an implementation; nothing
+  // asserted the converse, so `ina226_monitor` sat on two solar kits that
+  // declared interface "none" and no pins at all. The platform advertised a
+  // current monitor that was in no bill of materials, had no price, and could
+  // not be wired to anything — while one of those kits' own notes called it
+  // "not an accessory".
+  const errors = []
+  for (const part of hardware.parts) {
+    if (!part.driver) continue
+    if (part.interface === 'none' || !part.interface) {
+      errors.push(
+        `part '${part.id}' declares driver '${part.driver}' but has interface ` +
+          `'${part.interface ?? 'none'}': a driver needs something to talk over`,
+      )
+    }
+    if ((part.electrical?.pins ?? []).length === 0 && part.interface !== 'usb') {
+      errors.push(`part '${part.id}' declares driver '${part.driver}' but has no pins`)
+    }
+  }
+  if (errors.length) throw new Error(errors.join('; '))
+  const drivers = new Set(hardware.parts.filter((p) => p.driver).map((p) => p.driver))
+  return `${drivers.size} drivers, each on a part that can carry one`
+})
+
+check('an analogue sensor names the converter that reads it', () => {
+  // The SM-24 geophone is a moving coil: two wires, no supply, no clock, no
+  // chip select. It was listed with six SPI pins and a driver named after an
+  // ADC that was in no bill of materials, so the generated wiring reference
+  // showed a geophone connected directly to the Pi's SPI bus. That is not a
+  // thing that can work, and it was published as "the wiring reference".
+  const ids = new Set(hardware.parts.map((p) => p.id))
+  const errors = []
+  for (const part of hardware.parts.filter((p) => p.interface === 'analog')) {
+    const numeric = (part.electrical?.pins ?? []).filter((x) => /^\d+$/.test(String(x.pin)))
+    if (numeric.length > 0) {
+      errors.push(
+        `part '${part.id}' is analogue but lands ${numeric.length} numbered header pin(s); ` +
+          `an analogue signal cannot terminate on a digital bus`,
+      )
+    }
+    // Its tier must contain something that can actually digitise it.
+    for (const tier of part.tiers ?? []) {
+      const converter = hardware.parts.find(
+        (p) => p.tiers?.includes(tier) && /adc|converter/i.test(`${p.id} ${p.category} ${p.model}`),
+      )
+      if (!converter) {
+        errors.push(`${tier} contains analogue part '${part.id}' but no converter to read it`)
+      }
+    }
+  }
+  if (errors.length) throw new Error(errors.join('; '))
+  const analog = hardware.parts.filter((p) => p.interface === 'analog')
+  return analog.length === 0 ? 'no analogue parts' : `${analog.length} analogue part(s), each with a converter`
+})
+
 check('every part in a tier has mechanical data', () => {
   // The whole-node view sizes each body from schema/hardware.json. A part with
   // no mechanical block is silently absent from the assembly, which reads as

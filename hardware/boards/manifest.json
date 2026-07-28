@@ -3,21 +3,24 @@
   "boards": [
     {
       "tier": "t1",
+      "widthMm": 65,
       "modules": 4,
       "signals": 17,
       "digest": "e14df4884f4badc6"
     },
     {
       "tier": "t2",
-      "modules": 7,
-      "signals": 32,
-      "digest": "13108a9359769530"
+      "widthMm": 85,
+      "modules": 8,
+      "signals": 36,
+      "digest": "6f5a49ef56749663"
     },
     {
       "tier": "t3",
-      "modules": 8,
-      "signals": 37,
-      "digest": "6f7dfce0be8af07f"
+      "widthMm": 105,
+      "modules": 9,
+      "signals": 41,
+      "digest": "14d660a6d710e5e3"
     }
   ]
 }

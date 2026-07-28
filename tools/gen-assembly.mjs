@@ -36,6 +36,15 @@ mkdirSync(OUT, { recursive: true })
 
 const hue = Object.fromEntries(bands.bands.map((b) => [b.id, b.hue]))
 
+// The carrier is no longer always 65 x 56: dense tiers overhang so the router
+// can clear a fabricator's minimum copper gap. Read the real size rather than
+// drawing a HAT-sized rectangle under a board that is not one.
+const boardManifest = JSON.parse(
+  readFileSync(join(root, 'hardware/boards/manifest.json'), 'utf8'),
+)
+const boardWidth = (tierId) =>
+  boardManifest.boards.find((b) => b.tier === tierId)?.widthMm ?? 65
+
 // The stack, in millimetres, measured from the top face of the Pi's PCB.
 const PI_BOARD_T = 1.6
 const STANDOFF = 11 // the usual HAT standoff
@@ -78,10 +87,10 @@ function assemblyFor(tier) {
     label: `${tier.label} carrier board`,
     mount: 'hat',
     glb: `/boards/${tier.id}-board.glb`,
-    size: [65, HAT_BOARD_T, 56],
+    size: [boardWidth(tier.id), HAT_BOARD_T, 56],
     pos: [0, hatY, 0],
     sourced: true,
-    note: 'Generated from the hardware registry. HAT mechanical standard, 65 x 56 mm.',
+    note: `Generated from the hardware registry. ${boardWidth(tier.id)} x 56 mm, mounting on the HAT hole pattern.`,
   })
 
   // 3. Breakouts on the carrier, laid left to right across its top face.

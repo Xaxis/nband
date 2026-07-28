@@ -957,13 +957,13 @@
       "priceUsd": 89.0,
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.sparkfun.com/products/11744",
-      "interface": "adc",
-      "driver": "geophone_ads1256",
+      "interface": "analog",
+      "driver": null,
       "keySpecs": {
         "naturalFrequencyHz": 10,
         "sensitivityVPerMPerS": 28.8
       },
-      "notes": "A 10 Hz element does not reach the infrasound band and is not a substitute for a broadband seismometer. Its role at tier 3 is ground-coupled acoustic detection of low overflights and, more importantly, characterising the site's vibration background, which is the prerequisite for ever siting a gravimeter there.",
+      "notes": "A 10 Hz element does not reach the infrasound band and is not a substitute for a broadband seismometer. Its role at tier 3 is ground-coupled acoustic detection of low overflights and, more importantly, characterising the site's vibration background, which is the prerequisite for ever siting a gravimeter there. Electrically this is a coil moving in a magnetic field: two wires, tens of millivolts, and no digital interface of any kind. An earlier revision of this registry listed it with SPI pins and a driver named for an ADC that was in no bill of materials, so the carrier board drew a geophone wired directly to the Pi's SPI bus, which is not a thing that can work. It reaches the node through the ADS1256 below.",
       "alternatives": [],
       "candidateAlternatives": [
         "seis-trillium",
@@ -975,28 +975,12 @@
         "rail": "3V3",
         "pins": [
           {
-            "signal": "3V3",
-            "pin": "17"
+            "signal": "SIG+",
+            "pin": "ADC-AIN0"
           },
           {
-            "signal": "GND",
-            "pin": "39"
-          },
-          {
-            "signal": "MOSI",
-            "pin": "19"
-          },
-          {
-            "signal": "MISO",
-            "pin": "21"
-          },
-          {
-            "signal": "SCLK",
-            "pin": "23"
-          },
-          {
-            "signal": "CS",
-            "pin": "26"
+            "signal": "SIG-",
+            "pin": "ADC-AIN1"
           }
         ]
       },
@@ -1110,13 +1094,13 @@
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.amazon.com/",
       "interface": "none",
-      "driver": "ina226_monitor",
+      "driver": null,
       "keySpecs": {
         "panelW": 120,
         "batteryWh": 2160,
         "autonomyDays": 3
       },
-      "notes": "Sized against the summed draw of the tier 2 parts list, 12.8 W continuous or 307 Wh per day, not against a round number. An earlier revision of this BOM specified a 100 W panel and 100 Ah battery on the strength of an assumed 11 W load; that would have run a remote node flat during the first sustained overcast. The panel figure carries 35 percent for soiling and cable loss at four peak-sun-hours, which is a conservative mid-latitude winter assumption. LiFePO4 at 50 percent usable depth of discharge, because the duty cycle is a shallow daily cycle for years. The current monitor is not an accessory: node power draw is telemetry, and an unexplained current step is one of the more reliable early indicators of a sensor failing.",
+      "notes": "Sized against the summed draw of the tier 2 parts list, 12.8 W continuous or 307 Wh per day, not against a round number. An earlier revision of this BOM specified a 100 W panel and 100 Ah battery on the strength of an assumed 11 W load; that would have run a remote node flat during the first sustained overcast. The panel figure carries 35 percent for soiling and cable loss at four peak-sun-hours, which is a conservative mid-latitude winter assumption. LiFePO4 at 50 percent usable depth of discharge, because the duty cycle is a shallow daily cycle for years. Node power draw is telemetry rather than an accessory, and the monitor that produces it is a separate part (pwr-ina226) rather than something bundled here, and an unexplained current step is one of the more reliable early indicators of a sensor failing.",
       "electrical": {
         "idleW": 0.0,
         "activeW": 0.0,
@@ -1146,13 +1130,13 @@
       "priceAsOf": "2026-07-27",
       "sourceUrl": "https://www.amazon.com/",
       "interface": "none",
-      "driver": "ina226_monitor",
+      "driver": null,
       "keySpecs": {
         "panelW": 220,
         "batteryWh": 3840,
         "autonomyDays": 3
       },
-      "notes": "Tier 3 draws 24.6 W continuous, 590 Wh per day, which is 92 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. An earlier revision shipped a 180 W array and 270 Ah bank here, which met the project's own sizing rule only because the drift check quietly allowed a ten percent shortfall; at 92 percent of the required panel it would have run a deficit through any overcast week. The allowance has been removed and the kit resized to clear the rule outright. Assumptions: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy.",
+      "notes": "Tier 3 draws 24.6 W continuous, 591 Wh per day, which is 92 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. An earlier revision shipped a 180 W array and 270 Ah bank here, which met the project's own sizing rule only because the drift check quietly allowed a ten percent shortfall; at 92 percent of the required panel it would have run a deficit through any overcast week. The allowance has been removed and the kit resized to clear the rule outright. Assumptions: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy.",
       "electrical": {
         "idleW": 0.0,
         "activeW": 0.0,
@@ -1209,6 +1193,126 @@
         "mount": "usb",
         "dimensionsSourced": false,
         "note": "Approximate 4-port hub body."
+      }
+    },
+    {
+      "id": "adc-ads1256",
+      "category": "seismic",
+      "band": "seismic",
+      "vendor": "generic",
+      "model": "ADS1256 24-bit delta-sigma ADC board",
+      "status": "reference",
+      "tiers": [
+        "t3"
+      ],
+      "priceUsd": 28.0,
+      "priceAsOf": "2026-07-27",
+      "sourceUrl": "https://www.aliexpress.com/w/wholesale-ads1256-module.html",
+      "interface": "spi",
+      "driver": "geophone_ads1256",
+      "keySpecs": {
+        "bits": 24,
+        "channels": 8,
+        "maxSps": 30000,
+        "pgaMax": 64
+      },
+      "notes": "Not optional, and its absence was a real defect: the geophone is an analogue element and cannot reach the node without it. Twenty-four bits and a programmable gain up to 64 are what make a 28.8 V/(m/s) coil readable at the amplitudes that matter, which are microvolts. The differential input pair also rejects the common-mode noise picked up over a multi-metre cable run to a ground-coupled element, which a single-ended input would not.",
+      "alternatives": [],
+      "candidateAlternatives": [],
+      "electrical": {
+        "idleW": 0.03,
+        "activeW": 0.05,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "39"
+          },
+          {
+            "signal": "MOSI",
+            "pin": "19"
+          },
+          {
+            "signal": "MISO",
+            "pin": "21"
+          },
+          {
+            "signal": "SCLK",
+            "pin": "23"
+          },
+          {
+            "signal": "CS",
+            "pin": "26"
+          }
+        ]
+      },
+      "mechanical": {
+        "widthMm": 55,
+        "depthMm": 35,
+        "heightMm": 12,
+        "mount": "carrier",
+        "dimensionsSourced": false,
+        "note": "Approximate ADS1256 breakout footprint."
+      }
+    },
+    {
+      "id": "pwr-ina226",
+      "category": "power",
+      "band": "env",
+      "vendor": "Texas Instruments / generic breakout",
+      "model": "INA226 bidirectional current and power monitor",
+      "status": "reference",
+      "tiers": [
+        "t2",
+        "t3"
+      ],
+      "priceUsd": 12.0,
+      "priceAsOf": "2026-07-27",
+      "sourceUrl": "https://www.adafruit.com/product/5832",
+      "interface": "i2c",
+      "driver": "ina226_monitor",
+      "keySpecs": {
+        "shuntMilliohm": 2,
+        "busVoltageMax": 36,
+        "resolutionUv": 2.5
+      },
+      "notes": "Node power draw is telemetry, not an accessory, and this is the part that produces it. Both solar kits used to declare ina226_monitor as their driver while having no interface, no pins and no place on any board, so the platform advertised a current monitor that appeared in no bill of materials and could not be wired. A node that cannot see its own consumption cannot distinguish a flat battery from a failed sensor, and on an off-grid mast that is the difference between a diagnosable outage and a site visit.",
+      "alternatives": [],
+      "candidateAlternatives": [],
+      "electrical": {
+        "idleW": 0.01,
+        "activeW": 0.02,
+        "rail": "3V3",
+        "pins": [
+          {
+            "signal": "3V3",
+            "pin": "17"
+          },
+          {
+            "signal": "GND",
+            "pin": "9"
+          },
+          {
+            "signal": "SDA",
+            "pin": "3"
+          },
+          {
+            "signal": "SCL",
+            "pin": "5"
+          }
+        ]
+      },
+      "mechanical": {
+        "widthMm": 25,
+        "depthMm": 18,
+        "heightMm": 5,
+        "mount": "carrier",
+        "dimensionsSourced": false,
+        "note": "Approximate breakout footprint."
       }
     }
   ]

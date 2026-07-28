@@ -43,7 +43,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. HAT mechanical standard, 65 x 56 mm."
+          "note": "Generated from the hardware registry. 65 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "env-bme688",
@@ -205,7 +205,7 @@
           "mount": "hat",
           "glb": "/boards/t2-board.glb",
           "size": [
-            65,
+            85,
             1.6,
             56
           ],
@@ -215,7 +215,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. HAT mechanical standard, 65 x 56 mm."
+          "note": "Generated from the hardware registry. 85 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "env-bme688",
@@ -338,6 +338,26 @@
           "interface": "i2s"
         },
         {
+          "id": "pwr-ina226",
+          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor",
+          "band": "env",
+          "hue": 180,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            74
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint.",
+          "interface": "i2c"
+        },
+        {
           "id": "sdr-rtl-v3",
           "label": "RTL-SDR Blog RTL-SDR Blog V3",
           "band": "rf",
@@ -458,10 +478,10 @@
         }
       ],
       "counts": {
-        "total": 14,
+        "total": 15,
         "sourced": 3,
-        "approximate": 11,
-        "onCarrier": 6,
+        "approximate": 12,
+        "onCarrier": 7,
         "usb": 2,
         "csi": 2
       }
@@ -496,7 +516,7 @@
           "mount": "hat",
           "glb": "/boards/t3-board.glb",
           "size": [
-            65,
+            105,
             1.6,
             56
           ],
@@ -506,7 +526,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. HAT mechanical standard, 65 x 56 mm."
+          "note": "Generated from the hardware registry. 105 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "env-bme688",
@@ -627,6 +647,46 @@
           "sourced": false,
           "note": "Approximate.",
           "interface": "gpio+pwm"
+        },
+        {
+          "id": "adc-ads1256",
+          "label": "generic ADS1256 24-bit delta-sigma ADC board",
+          "band": "seismic",
+          "hue": 60,
+          "mount": "carrier",
+          "size": [
+            55,
+            12,
+            35
+          ],
+          "pos": [
+            1.5,
+            34.2,
+            52
+          ],
+          "sourced": false,
+          "note": "Approximate ADS1256 breakout footprint.",
+          "interface": "spi"
+        },
+        {
+          "id": "pwr-ina226",
+          "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor",
+          "band": "env",
+          "hue": 180,
+          "mount": "carrier",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -13.5,
+            30.7,
+            74
+          ],
+          "sourced": false,
+          "note": "Approximate breakout footprint.",
+          "interface": "i2c"
         },
         {
           "id": "sdr-rtl-v3",
@@ -806,7 +866,7 @@
           ],
           "sourced": false,
           "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled.",
-          "interface": "adc",
+          "interface": "analog",
           "remote": true
         },
         {
@@ -850,10 +910,10 @@
         }
       ],
       "counts": {
-        "total": 19,
+        "total": 21,
         "sourced": 3,
-        "approximate": 16,
-        "onCarrier": 6,
+        "approximate": 18,
+        "onCarrier": 8,
         "usb": 6,
         "csi": 2
       }

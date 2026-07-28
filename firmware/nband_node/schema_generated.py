@@ -304,10 +304,12 @@ PART_DRIVERS: Final[dict[str, str | None]] = {
     "mic-ics43434": "i2s_mems",
     "gamma-csi-sipm": "open_gamma",
     "swir-ingaas640": "genicam_swir",
-    "seis-sm24": "geophone_ads1256",
+    "seis-sm24": None,
     "sem-ir-beacon": "sem_beacon",
     "case-pelican1500": None,
-    "power-solar-150w": "ina226_monitor",
-    "power-solar-200w": "ina226_monitor",
-    "usb-hub-powered": None
+    "power-solar-150w": None,
+    "power-solar-200w": None,
+    "usb-hub-powered": None,
+    "adc-ads1256": "geophone_ads1256",
+    "pwr-ina226": "ina226_monitor"
 }

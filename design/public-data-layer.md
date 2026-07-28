@@ -35,7 +35,12 @@ Realtime before archive, and archive before export. Each depends on the one
 before it having a settled shape, and building the query surface against mock
 data would mean designing against a fiction.
 
-### 1. Read the real database
+### 1. Read the real database — gated on data existing
+
+**This does not happen until nodes are actually reporting.** An empty real feed
+renders as a broken page, and a mock that is honestly labelled communicates
+more than a live view of nothing. The switch is gated on data, not on the code
+being ready.
 
 Replace the mock feed with the Supabase one behind the existing `feed`
 interface, which was written for exactly this substitution. Two things must be

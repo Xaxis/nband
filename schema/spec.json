@@ -22,7 +22,7 @@
         {
           "id": "t3",
           "label": "Tier 3 - Extended",
-          "budgetUsd": 5300,
+          "budgetUsd": 5400,
           "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost.",
           "buildable": true
         },
