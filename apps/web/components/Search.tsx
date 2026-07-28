@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { lockScroll } from '../lib/scrollLock'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import index from '../lib/search-index.json'
 
@@ -127,8 +128,7 @@ export function Search() {
     const opener = document.activeElement as HTMLElement | null
     inputRef.current?.focus()
 
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    const unlock = lockScroll()
 
     // Trap Tab inside the dialog. Previously it walked straight out into the
     // page behind, leaving focus on controls the overlay was covering.
@@ -159,7 +159,7 @@ export function Search() {
 
     document.addEventListener('keydown', onTab, true)
     return () => {
-      document.body.style.overflow = prev
+      unlock()
       document.removeEventListener('keydown', onTab, true)
       opener?.focus?.()
     }

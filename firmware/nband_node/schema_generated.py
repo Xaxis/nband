@@ -136,7 +136,7 @@ BAND_META: Final[dict[str, dict[str, Any]]] = {
 
 
 class Tier(str, Enum):
-    """Build tier. Determines which bands a node is expected to carry, never which bands it may carry. A tier 1 node that adds a thermal camera is still a tier 1 node with an extra channel, and the grid treats its LWIR data identically to a tier 3 node's."""
+    """Build tier. Determines which bands a node is expected to carry, never which bands it may carry. A tier 1 node that adds a thermal camera is still a tier 1 node with an extra channel, and the grid treats its LWIR data identically to a tier 3 node's. budgetUsd is the rounded sum of the tier's actual sourced part prices, checked against the registry by tools/check-drift.mjs, not an aspiration."""
     T1 = "t1"
     T2 = "t2"
     T3 = "t3"

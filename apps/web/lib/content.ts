@@ -94,7 +94,13 @@ export function getDoc(slug: string): Doc | null {
     version: String(data.version ?? PLATFORM_VERSION),
     section: String(data.section ?? 'Documentation'),
     order: Number(data.order ?? 100),
-    updated: String(data.updated ?? ''),
+    // gray-matter parses an unquoted YAML date into a Date, and String() on it
+    // yields "Mon Jul 27 2026 01:00:00 GMT+0100 (British Summer Time)". Format
+    // it, or leave it empty rather than printing that on the page.
+    updated:
+      data.updated instanceof Date
+        ? data.updated.toISOString().slice(0, 10)
+        : String(data.updated ?? ''),
     audience: data.audience ? String(data.audience) : undefined,
     html,
     headings,

@@ -89,12 +89,42 @@ def test_noise_floor_needs_warmup():
 
 
 def test_noise_floor_tracks_mean_and_sigma():
+    # Properties, not the arithmetic of one estimator. This previously asserted
+    # exact Welford sample-stdev constants, so replacing the estimator failed
+    # the test even though the behaviour that matters was unchanged.
     f = NoiseFloor(warmup=4)
     for v in (2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0):
         f.update(v)
-    assert abs(f.mean - 5.0) < 1e-9
-    assert abs(f.sigma - 2.13809) < 1e-4  # sample stdev
-    assert abs(f.z_score(9.0) - 1.8708) < 1e-3
+    assert 4.0 < f.mean < 6.0, f.mean
+    assert 0.5 < f.sigma < 4.0, f.sigma
+    # A forgetting estimator holds a tighter variance than Welford does on a
+    # series this short, so the z of the maximum is correspondingly larger.
+    # `ready` gates triggering until warmup completes, so that never reaches
+    # the detector.
+    assert 1.0 < f.z_score(9.0) < 6.0, f.z_score(9.0)
+    assert not NoiseFloor(warmup=64).ready
+
+
+def test_noise_floor_follows_a_shifted_baseline():
+    """The reason the estimator forgets.
+
+    Several channels have a strong diurnal cycle. A lifetime mean sits between
+    day and night rather than tracking either, so the threshold is crossed every
+    dusk and dawn at first and, once enough variance has accumulated, never
+    crossed again. The floor has to follow the channel.
+    """
+    f = NoiseFloor(warmup=8, halflife_samples=50.0)
+    for _ in range(400):
+        f.update(10.0)
+    assert abs(f.mean - 10.0) < 0.5
+
+    # The channel's baseline moves, as it does at dusk.
+    for _ in range(400):
+        f.update(30.0)
+    assert abs(f.mean - 30.0) < 1.0, f"floor did not follow the baseline: {f.mean}"
+
+    # And a genuine excursion above the NEW baseline still registers.
+    assert f.z_score(60.0) > 3.0, f.z_score(60.0)
 
 
 def test_noise_floor_flat_signal_never_triggers():
@@ -170,6 +200,37 @@ def test_pending_triggers_expire():
     d.offer(_trig("vis.wide", Band.VIS, 1000), clock)
     # Far future: the old trigger must have aged out, so this is solo again.
     assert d.offer(_trig("lwir.main", Band.LWIR, 60_000), clock) is None
+
+
+def test_solo_detection_does_not_reappear_in_a_later_coincidence():
+    # One physical crossing must produce one detection. A solo trigger used to
+    # stay pending after publishing, so the next crossing in another band
+    # promoted a coincidence that included it a second time.
+    d = CoincidenceDetector(solo_sigma=8.0)
+    clock = Clock(ClockQuality.GNSS_PPS)
+    solo = d.offer(_trig("rf.sdr0", Band.RF, 1000, z=12.0), clock)
+    assert solo is not None and solo.reason is TriggerReason.THRESHOLD
+
+    later = d.offer(_trig("vis.wide", Band.VIS, 1100, z=5.0), clock)
+    assert later is None, "the consumed solo trigger was counted a second time"
+
+
+def test_out_of_order_trigger_still_coincides():
+    # Channels sample at different rates, so a slow channel's reading can be
+    # stamped behind a fast one's. A one-sided window dropped it.
+    d = CoincidenceDetector()
+    clock = Clock(ClockQuality.GNSS_PPS)
+    assert d.offer(_trig("vis.wide", Band.VIS, 1200), clock) is None
+    det = d.offer(_trig("lwir.main", Band.LWIR, 1100), clock)
+    assert det is not None, "an earlier-stamped trigger inside the window was dropped"
+    assert set(det.bands) == {Band.VIS, Band.LWIR}
+
+
+def test_far_out_of_order_trigger_does_not_coincide():
+    d = CoincidenceDetector()
+    clock = Clock(ClockQuality.GNSS_PPS)
+    assert d.offer(_trig("vis.wide", Band.VIS, 5000), clock) is None
+    assert d.offer(_trig("lwir.main", Band.LWIR, 1000), clock) is None
 
 
 def test_peak_z_reports_largest_excursion():

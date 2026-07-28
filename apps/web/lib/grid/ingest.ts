@@ -40,6 +40,26 @@ function b64uToBytes(s: string): Uint8Array {
   return Uint8Array.from(Buffer.from(b64, 'base64'))
 }
 
+/**
+ * The bytes a node signs.
+ *
+ * The signature previously covered the body alone, so it was valid forever, on
+ * any endpoint, and could be replayed to fabricate archive content. Binding the
+ * path stops a telemetry signature being presented to /detections; binding the
+ * timestamp bounds how long a captured request stays usable; the nonce, checked
+ * against a ledger, makes it usable exactly once inside that window.
+ */
+export function canonicalPayload(
+  path: string,
+  timestamp: string,
+  nonce: string,
+  body: string,
+): string {
+  return `nband/v1\n${path}\n${timestamp}\n${nonce}\n${body}`
+}
+
+export const MAX_CLOCK_SKEW_S = 300
+
 export async function verifySignature(
   rawBody: string,
   pubkeyB64: string,
@@ -113,9 +133,47 @@ export async function authenticate(request: Request): Promise<IngestContext> {
     }
   }
 
+  const timestamp = request.headers.get('x-nband-timestamp')
+  const nonce = request.headers.get('x-nband-nonce')
+  if (!timestamp || !nonce) {
+    return {
+      ok: false,
+      response: fail(401, 'missing X-Nband-Timestamp or X-Nband-Nonce', {
+        hint: 'Requests must be single-use. Update the node agent.',
+      }),
+    }
+  }
+
+  // Bound how long a captured request stays presentable at all.
+  const skew = Math.abs(Date.now() / 1000 - Number(timestamp))
+  if (!Number.isFinite(skew) || skew > MAX_CLOCK_SKEW_S) {
+    return {
+      ok: false,
+      response: fail(401, 'request timestamp outside the accepted window', {
+        skew_s: Math.round(skew),
+        max_s: MAX_CLOCK_SKEW_S,
+      }),
+    }
+  }
+
   const rawBody = await request.text()
-  if (!(await verifySignature(rawBody, pubkey, signature))) {
+  const path = new URL(request.url).pathname
+  if (!(await verifySignature(canonicalPayload(path, timestamp, nonce, rawBody), pubkey, signature))) {
     return { ok: false, response: fail(401, 'signature verification failed') }
+  }
+
+  // Single-use. The unique constraint is the enforcement: a second presentation
+  // of the same nonce collides and is refused.
+  const { error: nonceErr } = await db
+    .from('ingest_nonces')
+    .insert({ node_key: pubkey, nonce })
+  if (nonceErr) {
+    if (nonceErr.code === '23505') {
+      return { ok: false, response: fail(409, 'request already used', {
+        hint: 'Each signed request may be sent once. This is replay protection, not a bug.',
+      }) }
+    }
+    return { ok: false, response: fail(500, 'could not record request nonce', nonceErr.message) }
   }
 
   const { data, error } = await db

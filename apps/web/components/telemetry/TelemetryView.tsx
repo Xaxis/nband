@@ -398,13 +398,18 @@ export function TelemetryView({
           Jump to live
         </button>
 
+        {/* The label used to name the destination while aria-pressed described
+            the current state, so a screen reader announced "Table, pressed"
+            while the charts were showing: the inverse of the truth. The control
+            is now named for what it toggles, and the pressed state carries
+            whether it is active. */}
         <button
           type="button"
           onClick={() => setShowTable((v) => !v)}
           className="num rounded-md border border-[var(--line)] px-2.5 py-1.5 text-[12px] text-[var(--ink-2)] transition-colors hover:text-[var(--ink)]"
           aria-pressed={showTable}
         >
-          {showTable ? 'Charts' : 'Table'}
+          Table view
         </button>
       </div>
 

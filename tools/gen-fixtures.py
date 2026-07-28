@@ -22,6 +22,7 @@ from nband_discriminator.engine import Discriminator  # noqa: E402
 
 NS = 1_000_000_000
 BEARING = dict(azimuth_deg=180.0, elev_angle_deg=40.0)
+LOW_BEARING = dict(azimuth_deg=180.0, elev_angle_deg=5.0)
 
 
 def catalogs_for(spec):
@@ -37,16 +38,20 @@ def catalogs_for(spec):
         AdsbCatalog(provider=lambda o, s=spec["adsb"]: provider(s, {
             "hex": "a4f81c", "azimuth_deg": 180.2, "elevation_deg": 40.1,
             "altitude_m": 10300, "callsign": "TEST123"})),
-        TleCatalog(provider=lambda o, s=spec["tle"]: provider(s, {
-            "norad_id": 25544, "azimuth_deg": 180.1, "elevation_deg": 40.0,
-            "name": "TESTSAT", "illuminated": True})),
+        # "eclipsed" is a bearing match that cannot explain an optical event.
+        TleCatalog(provider=lambda o, s=spec["tle"]: provider(
+            "match" if s == "eclipsed" else s,
+            {"norad_id": 25544, "azimuth_deg": 180.1, "elevation_deg": 40.0,
+             "name": "TESTSAT", "illuminated": s != "eclipsed"})),
         LightningCatalog(provider=lambda o, s=spec["lightning"]: provider(s, {
             "id": "L1", "distance_km": 41.0, "delta_t_s": 0.2, "peak_current_ka": -18})),
         RfiBaselineCatalog(
             known_signatures=[{"label": "site-sig", "level_dbm": -62.0, "tolerance_db": 3.0,
                                "count": 100}] if spec["rfi"] == "match" else []),
         WeatherCatalog(provider=lambda o, s=spec["weather"]: (
-            None if s == "unavailable" else {})),
+            None if s == "unavailable"
+            else {"temperature_inversion": True} if s == "match"
+            else {})),
     )
 
 
@@ -62,7 +67,7 @@ def main() -> int:
             lat=31.94, lon=-109.31, elevation_m=1402.0,
             range_m=c["range_m"], peak_z=c["peak_z"], node_count=c["node_count"],
             metrics={"rf": -61.5} if "rf" in c["bands"] else {},
-            **BEARING,
+            **(LOW_BEARING if c["catalogs"].get("weather") == "match" else BEARING),
         )
         v = Discriminator(catalogs_for(c["catalogs"])).evaluate(obs)
         out[c["id"]] = {

@@ -185,5 +185,41 @@
       "meteor": 0.0048,
       "unmodelled": 0.0016
     }
+  },
+  "satellite-eclipsed": {
+    "classification": "terrestrial_likely",
+    "anomaly_score": 9.51,
+    "corroboration": "multi_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "bird_insect",
+    "posteriors": {
+      "bird_insect": 0.4235,
+      "satellite": 0.1941,
+      "aircraft": 0.1482,
+      "instrument": 0.0847,
+      "drone": 0.0824,
+      "atmospheric": 0.0294,
+      "balloon_debris": 0.0282,
+      "meteor": 0.0071,
+      "unmodelled": 0.0024
+    }
+  },
+  "weather-inversion": {
+    "classification": "ambiguous",
+    "anomaly_score": 10.56,
+    "corroboration": "multi_channel",
+    "unavailable_catalogs": [],
+    "top_hypothesis": "bird_insect",
+    "posteriors": {
+      "bird_insect": 0.3602,
+      "atmospheric": 0.3002,
+      "aircraft": 0.1261,
+      "instrument": 0.072,
+      "drone": 0.07,
+      "satellite": 0.044,
+      "balloon_debris": 0.024,
+      "unmodelled": 0.002,
+      "meteor": 0.0015
+    }
   }
 }

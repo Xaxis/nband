@@ -1,125 +1,375 @@
 {
   "$comment": "Canonical nband enums and record contracts. Together with bands.json this file is the single source of truth for the platform. `tools/codegen.mjs` generates TypeScript, Python, and the SQL enum block from these two files; `tools/check-drift.mjs` fails CI if the generated artefacts are stale. Never hand-edit a generated file.",
   "schemaVersion": "0.1.0",
-
   "enums": {
     "tier": {
-      "description": "Build tier. Determines which bands a node is expected to carry, never which bands it may carry. A tier 1 node that adds a thermal camera is still a tier 1 node with an extra channel, and the grid treats its LWIR data identically to a tier 3 node's.",
+      "description": "Build tier. Determines which bands a node is expected to carry, never which bands it may carry. A tier 1 node that adds a thermal camera is still a tier 1 node with an extra channel, and the grid treats its LWIR data identically to a tier 3 node's. budgetUsd is the rounded sum of the tier's actual sourced part prices, checked against the registry by tools/check-drift.mjs, not an aspiration.",
       "values": [
-        { "id": "t1", "label": "Tier 1 - Baseline", "budgetUsd": 400, "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid." },
-        { "id": "t2", "label": "Tier 2 - Core", "budgetUsd": 1500, "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against." },
-        { "id": "t3", "label": "Tier 3 - Extended", "budgetUsd": 6000, "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost." },
-        { "id": "tr", "label": "Research", "budgetUsd": 200000, "summary": "Tier 3 plus quantum gravimetry and SQUID or NV-centre magnetometry. A handful of sites at most, sited for low seismic background." }
+        {
+          "id": "t1",
+          "label": "Tier 1 - Baseline",
+          "budgetUsd": 460,
+          "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid."
+        },
+        {
+          "id": "t2",
+          "label": "Tier 2 - Core",
+          "budgetUsd": 1650,
+          "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against."
+        },
+        {
+          "id": "t3",
+          "label": "Tier 3 - Extended",
+          "budgetUsd": 5100,
+          "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost."
+        },
+        {
+          "id": "tr",
+          "label": "Research",
+          "budgetUsd": 200000,
+          "summary": "Tier 3 plus quantum gravimetry and SQUID or NV-centre magnetometry. A handful of sites at most, sited for low seismic background."
+        }
       ]
     },
-
     "nodeStatus": {
       "description": "Lifecycle state of a node as the grid sees it.",
       "values": [
-        { "id": "provisioning", "label": "Provisioning", "summary": "Enrolled but has not yet delivered a valid heartbeat." },
-        { "id": "online", "label": "Online", "summary": "Heartbeat within the last 5 minutes, all declared channels reporting." },
-        { "id": "degraded", "label": "Degraded", "summary": "Heartbeat current but one or more declared channels are failing, or clock quality has fallen below GNSS discipline." },
-        { "id": "offline", "label": "Offline", "summary": "No heartbeat for more than 30 minutes. Buffered data may still arrive later; the schema is offline-first." },
-        { "id": "retired", "label": "Retired", "summary": "Permanently decommissioned. Historical data is retained and remains queryable." }
+        {
+          "id": "provisioning",
+          "label": "Provisioning",
+          "summary": "Enrolled but has not yet delivered a valid heartbeat."
+        },
+        {
+          "id": "online",
+          "label": "Online",
+          "summary": "Heartbeat within the last 5 minutes, all declared channels reporting."
+        },
+        {
+          "id": "degraded",
+          "label": "Degraded",
+          "summary": "Heartbeat current but one or more declared channels are failing, or clock quality has fallen below GNSS discipline."
+        },
+        {
+          "id": "offline",
+          "label": "Offline",
+          "summary": "No heartbeat for more than 30 minutes. Buffered data may still arrive later; the schema is offline-first."
+        },
+        {
+          "id": "retired",
+          "label": "Retired",
+          "summary": "Permanently decommissioned. Historical data is retained and remains queryable."
+        }
       ]
     },
-
     "clockQuality": {
       "description": "How well a node's clock is disciplined at the moment a sample is taken. Cross-node time-of-arrival correlation is only meaningful at gnss_pps; every downstream calculation is weighted by this value rather than assuming the timestamp is good.",
       "values": [
-        { "id": "gnss_pps", "label": "GNSS + PPS", "expectedAccuracyNs": 500, "summary": "Pulse-per-second hardware discipline against GNSS. Enables multilateration between nodes." },
-        { "id": "gnss_nopps", "label": "GNSS, no PPS", "expectedAccuracyNs": 100000000, "summary": "Serial NMEA time only. Adequate for single-node work, useless for time-of-arrival." },
-        { "id": "ntp", "label": "NTP", "expectedAccuracyNs": 20000000, "summary": "Network time only. Correlation limited to coarse windowing." },
-        { "id": "freerun", "label": "Free-running", "expectedAccuracyNs": 5000000000, "summary": "No external discipline. Data is accepted and flagged; it never contributes to multi-node geometry." }
+        {
+          "id": "gnss_pps",
+          "label": "GNSS + PPS",
+          "expectedAccuracyNs": 500,
+          "summary": "Pulse-per-second hardware discipline against GNSS. Enables multilateration between nodes."
+        },
+        {
+          "id": "gnss_nopps",
+          "label": "GNSS, no PPS",
+          "expectedAccuracyNs": 100000000,
+          "summary": "Serial NMEA time only. Adequate for single-node work, useless for time-of-arrival."
+        },
+        {
+          "id": "ntp",
+          "label": "NTP",
+          "expectedAccuracyNs": 20000000,
+          "summary": "Network time only. Correlation limited to coarse windowing."
+        },
+        {
+          "id": "freerun",
+          "label": "Free-running",
+          "expectedAccuracyNs": 5000000000,
+          "summary": "No external discipline. Data is accepted and flagged; it never contributes to multi-node geometry."
+        }
       ]
     },
-
     "triggerReason": {
       "description": "Why the node decided a window of data was worth keeping. nband records continuously into a ring buffer and promotes only triggered windows to durable storage, so this field explains the provenance of every stored detection.",
       "values": [
-        { "id": "threshold", "label": "Threshold", "summary": "A channel exceeded its adaptive noise-floor threshold." },
-        { "id": "motion", "label": "Motion", "summary": "Frame-differencing on an imaging channel found a moving object above the size and persistence floor." },
-        { "id": "spectral", "label": "Spectral", "summary": "An RF or gamma channel found power where the learned site baseline says there should be none." },
-        { "id": "coincidence", "label": "Coincidence", "summary": "Two or more channels in different bands triggered inside the coincidence window. The highest-value trigger class." },
-        { "id": "cross_node", "label": "Cross-node", "summary": "A neighbouring node's trigger propagated over the grid and armed this node's buffer retroactively." },
-        { "id": "scheduled", "label": "Scheduled", "summary": "Routine calibration or baseline capture, not a candidate." },
-        { "id": "manual", "label": "Manual", "summary": "An operator marked the window by hand." }
+        {
+          "id": "threshold",
+          "label": "Threshold",
+          "summary": "A channel exceeded its adaptive noise-floor threshold."
+        },
+        {
+          "id": "motion",
+          "label": "Motion",
+          "summary": "Frame-differencing on an imaging channel found a moving object above the size and persistence floor."
+        },
+        {
+          "id": "spectral",
+          "label": "Spectral",
+          "summary": "An RF or gamma channel found power where the learned site baseline says there should be none."
+        },
+        {
+          "id": "coincidence",
+          "label": "Coincidence",
+          "summary": "Two or more channels in different bands triggered inside the coincidence window. The highest-value trigger class."
+        },
+        {
+          "id": "cross_node",
+          "label": "Cross-node",
+          "summary": "A neighbouring node's trigger propagated over the grid and armed this node's buffer retroactively."
+        },
+        {
+          "id": "scheduled",
+          "label": "Scheduled",
+          "summary": "Routine calibration or baseline capture, not a candidate."
+        },
+        {
+          "id": "manual",
+          "label": "Manual",
+          "summary": "An operator marked the window by hand."
+        }
       ]
     },
-
     "classification": {
       "description": "The discriminator's verdict ladder. It is deliberately open at the top: the highest rung is 'unresolved', not 'artificial' or 'non-human'. nband can establish that something was not explained by any catalogue it checked; it cannot establish what that something was, and the schema refuses to encode a claim the instrument cannot support.",
       "values": [
-        { "id": "instrumental", "ordinal": 0, "label": "Instrumental", "hue": 220, "summary": "The signal originated in the instrument: sensor glitch, hot pixel, shutter event, self-interference from the node's own emitters, condensation on optics, or a cable fault." },
-        { "id": "terrestrial_known", "ordinal": 1, "label": "Known source", "hue": 160, "summary": "Matched to a specific catalogued object. An ADS-B airframe by hex code, a satellite by NORAD ID, a lightning stroke by network fix, a licensed transmitter by frequency and bearing." },
-        { "id": "terrestrial_likely", "ordinal": 2, "label": "Likely conventional", "hue": 100, "summary": "Consistent with a known class but not matched to a specific object. A bird, an insect near the lens, a balloon, a meteor, an aircraft not transmitting ADS-B. Common and uninteresting, and by far the largest bucket after known sources." },
-        { "id": "ambiguous", "ordinal": 3, "label": "Ambiguous", "hue": 45, "summary": "Insufficient data to classify. Too few bands, too short a track, clock quality too poor, or the only witness channel was one the discriminator does not score alone. Not a mystery, just a bad measurement." },
-        { "id": "anomalous_unresolved", "ordinal": 4, "label": "Unresolved", "hue": 340, "summary": "Survived every catalogue subtraction available, was witnessed coherently in two or more bands, and has kinematics or energetics the discriminator could not reconcile with any conventional class it knows. This is a statement about the limits of the catalogues, not a claim about the object." }
+        {
+          "id": "instrumental",
+          "ordinal": 0,
+          "label": "Instrumental",
+          "hue": 220,
+          "summary": "The signal originated in the instrument: sensor glitch, hot pixel, shutter event, self-interference from the node's own emitters, condensation on optics, or a cable fault."
+        },
+        {
+          "id": "terrestrial_known",
+          "ordinal": 1,
+          "label": "Known source",
+          "hue": 160,
+          "summary": "Matched to a specific catalogued object. An ADS-B airframe by hex code, a satellite by NORAD ID, a lightning stroke by network fix, a licensed transmitter by frequency and bearing."
+        },
+        {
+          "id": "terrestrial_likely",
+          "ordinal": 2,
+          "label": "Likely conventional",
+          "hue": 100,
+          "summary": "Consistent with a known class but not matched to a specific object. A bird, an insect near the lens, a balloon, a meteor, an aircraft not transmitting ADS-B. Common and uninteresting, and by far the largest bucket after known sources."
+        },
+        {
+          "id": "ambiguous",
+          "ordinal": 3,
+          "label": "Ambiguous",
+          "hue": 45,
+          "summary": "Insufficient data to classify. Too few bands, too short a track, clock quality too poor, or the only witness channel was one the discriminator does not score alone. Not a mystery, just a bad measurement."
+        },
+        {
+          "id": "anomalous_unresolved",
+          "ordinal": 4,
+          "label": "Unresolved",
+          "hue": 340,
+          "summary": "Survived every catalogue subtraction available, was witnessed coherently in two or more bands, and has kinematics or energetics the discriminator could not reconcile with any conventional class it knows. This is a statement about the limits of the catalogues, not a claim about the object."
+        }
       ]
     },
-
     "corroboration": {
       "description": "How much independent support an event has. Orthogonal to classification: an event can be strongly corroborated and still be a known aircraft.",
       "values": [
-        { "id": "single_channel", "ordinal": 0, "label": "Single channel", "summary": "One sensor on one node. Never eligible for the unresolved rung." },
-        { "id": "multi_channel", "ordinal": 1, "label": "Multi-band", "summary": "Two or more bands on one node agreed within the coincidence window." },
-        { "id": "multi_node", "ordinal": 2, "label": "Multi-node", "summary": "Two or more nodes saw it. With PPS-disciplined clocks this yields a geometric fix and therefore a real range, altitude, and speed rather than an angular track." }
+        {
+          "id": "single_channel",
+          "ordinal": 0,
+          "label": "Single channel",
+          "summary": "One sensor on one node. Never eligible for the unresolved rung."
+        },
+        {
+          "id": "multi_channel",
+          "ordinal": 1,
+          "label": "Multi-band",
+          "summary": "Two or more bands on one node agreed within the coincidence window."
+        },
+        {
+          "id": "multi_node",
+          "ordinal": 2,
+          "label": "Multi-node",
+          "summary": "Two or more nodes saw it. With PPS-disciplined clocks this yields a geometric fix and therefore a real range, altitude, and speed rather than an angular track."
+        }
       ]
     },
-
     "artifactKind": {
       "description": "Binary capture types held in object storage and referenced from detections.",
       "values": [
-        { "id": "image", "label": "Still image", "mime": "image/png", "summary": "Single frame, usually the peak frame of an imaging detection." },
-        { "id": "video", "label": "Video clip", "mime": "video/mp4", "summary": "Ring-buffer excerpt spanning the trigger window plus pre-roll." },
-        { "id": "iq", "label": "IQ recording", "mime": "application/octet-stream", "summary": "Raw complex baseband from an SDR channel. Large, and retained only for high-scoring events." },
-        { "id": "spectrogram", "label": "Spectrogram", "mime": "image/png", "summary": "Time-frequency representation of an RF or acoustic window." },
-        { "id": "audio", "label": "Audio", "mime": "audio/flac", "summary": "Lossless acoustic capture including the infrasound band." },
-        { "id": "pointcloud", "label": "Radar point cloud", "mime": "application/octet-stream", "summary": "Range-Doppler detections from a millimetre-wave module." },
-        { "id": "series", "label": "Series export", "mime": "text/csv", "summary": "Numeric channel data over the trigger window, for reproduction of the discriminator's arithmetic." }
+        {
+          "id": "image",
+          "label": "Still image",
+          "mime": "image/png",
+          "summary": "Single frame, usually the peak frame of an imaging detection."
+        },
+        {
+          "id": "video",
+          "label": "Video clip",
+          "mime": "video/mp4",
+          "summary": "Ring-buffer excerpt spanning the trigger window plus pre-roll."
+        },
+        {
+          "id": "iq",
+          "label": "IQ recording",
+          "mime": "application/octet-stream",
+          "summary": "Raw complex baseband from an SDR channel. Large, and retained only for high-scoring events."
+        },
+        {
+          "id": "spectrogram",
+          "label": "Spectrogram",
+          "mime": "image/png",
+          "summary": "Time-frequency representation of an RF or acoustic window."
+        },
+        {
+          "id": "audio",
+          "label": "Audio",
+          "mime": "audio/flac",
+          "summary": "Lossless acoustic capture including the infrasound band."
+        },
+        {
+          "id": "pointcloud",
+          "label": "Radar point cloud",
+          "mime": "application/octet-stream",
+          "summary": "Range-Doppler detections from a millimetre-wave module."
+        },
+        {
+          "id": "series",
+          "label": "Series export",
+          "mime": "text/csv",
+          "summary": "Numeric channel data over the trigger window, for reproduction of the discriminator's arithmetic."
+        }
       ]
     },
-
     "catalogSource": {
       "description": "External catalogues the discriminator subtracts against before an event may be called unresolved. Every check is recorded, including checks that were unavailable, so that a verdict can never quietly benefit from a catalogue that simply failed to load.",
       "values": [
-        { "id": "adsb", "label": "ADS-B", "summary": "Cooperative aircraft transponders, received locally on 1090 MHz or pulled from a network feed. Matches by position, altitude, and time." },
-        { "id": "tle", "label": "Satellite TLE", "summary": "Orbital elements propagated to the node's horizon to find satellites and rocket bodies in the field of view, including their illumination state." },
-        { "id": "lightning", "label": "Lightning", "summary": "Sferic network fixes, used to explain UV, RF, acoustic, and magnetic coincidences." },
-        { "id": "rfi", "label": "RFI baseline", "summary": "The node's own learned per-site radio interference fingerprint, plus licensed transmitter records where available." },
-        { "id": "meteor", "label": "Meteor", "summary": "Shower radiants and sporadic rates for the date, used to weight a fast optical streak." },
-        { "id": "weather", "label": "Weather", "summary": "Cloud, precipitation, temperature profile, and inversion state at the time of the event." },
-        { "id": "solar", "label": "Solar and geomagnetic", "summary": "Solar flux, Kp index, and aurora extent, which explain most wide-area magnetometer and HF excursions." },
-        { "id": "airspace", "label": "Airspace activity", "summary": "NOTAMs, temporary flight restrictions, and published launch or test windows." }
+        {
+          "id": "adsb",
+          "label": "ADS-B",
+          "summary": "Cooperative aircraft transponders, received locally on 1090 MHz or pulled from a network feed. Matches by position, altitude, and time."
+        },
+        {
+          "id": "tle",
+          "label": "Satellite TLE",
+          "summary": "Orbital elements propagated to the node's horizon to find satellites and rocket bodies in the field of view, including their illumination state."
+        },
+        {
+          "id": "lightning",
+          "label": "Lightning",
+          "summary": "Sferic network fixes, used to explain UV, RF, acoustic, and magnetic coincidences."
+        },
+        {
+          "id": "rfi",
+          "label": "RFI baseline",
+          "summary": "The node's own learned per-site radio interference fingerprint, plus licensed transmitter records where available."
+        },
+        {
+          "id": "meteor",
+          "label": "Meteor",
+          "summary": "Shower radiants and sporadic rates for the date, used to weight a fast optical streak."
+        },
+        {
+          "id": "weather",
+          "label": "Weather",
+          "summary": "Cloud, precipitation, temperature profile, and inversion state at the time of the event."
+        },
+        {
+          "id": "solar",
+          "label": "Solar and geomagnetic",
+          "summary": "Solar flux, Kp index, and aurora extent, which explain most wide-area magnetometer and HF excursions."
+        },
+        {
+          "id": "airspace",
+          "label": "Airspace activity",
+          "summary": "NOTAMs, temporary flight restrictions, and published launch or test windows."
+        }
       ]
     },
-
     "variantStatus": {
       "description": "Standing of a hardware variant in the community registry.",
       "values": [
-        { "id": "reference", "label": "Reference", "summary": "Part used in the canonical build. Calibration constants are shipped with the firmware." },
-        { "id": "verified", "label": "Verified", "summary": "Community-submitted substitute that has been run against the conformance suite and produced data the discriminator accepts without adjustment." },
-        { "id": "submitted", "label": "Submitted", "summary": "Proposed by a builder, not yet run against the conformance suite. Data is accepted but flagged." },
-        { "id": "unsupported", "label": "Unsupported", "summary": "Known not to work, or works but produces data the discriminator cannot calibrate. Documented so nobody buys it twice." }
+        {
+          "id": "reference",
+          "label": "Reference",
+          "summary": "Part used in the canonical build. Calibration constants are shipped with the firmware."
+        },
+        {
+          "id": "verified",
+          "label": "Verified",
+          "summary": "Community-submitted substitute that has been run against the conformance suite and produced data the discriminator accepts without adjustment."
+        },
+        {
+          "id": "submitted",
+          "label": "Submitted",
+          "summary": "Proposed by a builder, not yet run against the conformance suite. Data is accepted but flagged."
+        },
+        {
+          "id": "unsupported",
+          "label": "Unsupported",
+          "summary": "Known not to work, or works but produces data the discriminator cannot calibrate. Documented so nobody buys it twice."
+        }
       ]
     }
   },
-
   "hypotheses": {
     "$comment": "The fixed hypothesis set the discriminator scores every event against. Priors are per-site and learned from that site's own history; the values here are the cold-start defaults used before a node has accumulated its own statistics. They must sum to 1.0.",
     "defaults": [
-      { "id": "aircraft", "label": "Aircraft", "prior": 0.42, "classification": "terrestrial_known" },
-      { "id": "satellite", "label": "Satellite or rocket body", "prior": 0.11, "classification": "terrestrial_known" },
-      { "id": "bird_insect", "label": "Bird or insect", "prior": 0.18, "classification": "terrestrial_likely" },
-      { "id": "meteor", "label": "Meteor", "prior": 0.03, "classification": "terrestrial_likely" },
-      { "id": "balloon_debris", "label": "Balloon or wind-borne debris", "prior": 0.04, "classification": "terrestrial_likely" },
-      { "id": "drone", "label": "Small uncrewed aircraft", "prior": 0.07, "classification": "terrestrial_likely" },
-      { "id": "atmospheric", "label": "Atmospheric or optical effect", "prior": 0.05, "classification": "terrestrial_likely" },
-      { "id": "instrument", "label": "Instrumental artefact", "prior": 0.09, "classification": "instrumental" },
-      { "id": "unmodelled", "label": "Unmodelled", "prior": 0.01, "classification": "anomalous_unresolved" }
+      {
+        "id": "aircraft",
+        "label": "Aircraft",
+        "prior": 0.42,
+        "classification": "terrestrial_known"
+      },
+      {
+        "id": "satellite",
+        "label": "Satellite or rocket body",
+        "prior": 0.11,
+        "classification": "terrestrial_known"
+      },
+      {
+        "id": "bird_insect",
+        "label": "Bird or insect",
+        "prior": 0.18,
+        "classification": "terrestrial_likely"
+      },
+      {
+        "id": "meteor",
+        "label": "Meteor",
+        "prior": 0.03,
+        "classification": "terrestrial_likely"
+      },
+      {
+        "id": "balloon_debris",
+        "label": "Balloon or wind-borne debris",
+        "prior": 0.04,
+        "classification": "terrestrial_likely"
+      },
+      {
+        "id": "drone",
+        "label": "Small uncrewed aircraft",
+        "prior": 0.07,
+        "classification": "terrestrial_likely"
+      },
+      {
+        "id": "atmospheric",
+        "label": "Atmospheric or optical effect",
+        "prior": 0.05,
+        "classification": "terrestrial_likely"
+      },
+      {
+        "id": "instrument",
+        "label": "Instrumental artefact",
+        "prior": 0.09,
+        "classification": "instrumental"
+      },
+      {
+        "id": "unmodelled",
+        "label": "Unmodelled",
+        "prior": 0.01,
+        "classification": "anomalous_unresolved"
+      }
     ]
   },
-
   "thresholds": {
     "$comment": "Platform-wide constants the discriminator and firmware both depend on. Changing any of these changes what the archive means, so they live in the schema and are versioned with it rather than sitting in a config file on one machine.",
     "coincidenceWindowMs": 250,

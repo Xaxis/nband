@@ -37,6 +37,23 @@ export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<string[]>([])
   const [detections, setDetections] = useState(0)
+  // Rebuilding on theme change is the simplest correct answer: every material
+  // colour is baked at construction, and the scene was previously left in the
+  // old palette for the rest of the session after a toggle.
+  const [themeKey, setThemeKey] = useState(0)
+
+  useEffect(() => {
+    const root = document.documentElement
+    const observer = new MutationObserver(() => setThemeKey((k) => k + 1))
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] })
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    const onMedia = () => setThemeKey((k) => k + 1)
+    media.addEventListener('change', onMedia)
+    return () => {
+      observer.disconnect()
+      media.removeEventListener('change', onMedia)
+    }
+  }, [])
 
   useEffect(() => {
     const host = hostRef.current
@@ -350,9 +367,13 @@ export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
       ro.disconnect()
       for (const d of disposables) d.dispose()
       renderer.dispose()
+      // dispose() releases three's own resources but leaves the WebGL context
+      // alive. Browsers cap concurrent contexts (typically 16), so remounting
+      // enough times without this eventually refuses to create any more.
+      renderer.forceContextLoss()
       host.removeChild(renderer.domElement)
     }
-  }, [])
+  }, [themeKey])
 
   return (
     <div className="relative h-full w-full">

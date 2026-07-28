@@ -4,70 +4,242 @@
     {
       "id": "clean-3band-2node-ranged",
       "note": "The only shape allowed to reach the top rung.",
-      "bands": ["vis", "lwir", "mmw"], "clock": "gnss_pps", "node_count": 2,
-      "range_m": 900, "duration_s": 2.0, "peak_z": 6.0,
-      "catalogs": {"adsb": "clean", "tle": "clean", "lightning": "clean", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "vis",
+        "lwir",
+        "mmw"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 2,
+      "range_m": 900,
+      "duration_s": 2.0,
+      "peak_z": 6.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
     },
     {
       "id": "adsb-unavailable",
       "note": "Identical, except one catalogue could not be reached.",
-      "bands": ["vis", "lwir", "mmw"], "clock": "gnss_pps", "node_count": 2,
-      "range_m": 900, "duration_s": 2.0, "peak_z": 6.0,
-      "catalogs": {"adsb": "unavailable", "tle": "clean", "lightning": "clean", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "vis",
+        "lwir",
+        "mmw"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 2,
+      "range_m": 900,
+      "duration_s": 2.0,
+      "peak_z": 6.0,
+      "catalogs": {
+        "adsb": "unavailable",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
     },
     {
       "id": "degraded-clock",
       "note": "Identical, except the clock is network time.",
-      "bands": ["vis", "lwir", "mmw"], "clock": "ntp", "node_count": 2,
-      "range_m": 900, "duration_s": 2.0, "peak_z": 6.0,
-      "catalogs": {"adsb": "clean", "tle": "clean", "lightning": "clean", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "vis",
+        "lwir",
+        "mmw"
+      ],
+      "clock": "ntp",
+      "node_count": 2,
+      "range_m": 900,
+      "duration_s": 2.0,
+      "peak_z": 6.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
     },
     {
       "id": "single-band",
       "note": "One channel can never reach the top rung at any score.",
-      "bands": ["vis"], "clock": "gnss_pps", "node_count": 1,
-      "range_m": null, "duration_s": 2.0, "peak_z": 6.0,
-      "catalogs": {"adsb": "clean", "tle": "clean", "lightning": "clean", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "vis"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 2.0,
+      "peak_z": 6.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
     },
     {
       "id": "adsb-match",
       "note": "A catalogue positively identified it.",
-      "bands": ["vis", "nir", "acoustic"], "clock": "gnss_pps", "node_count": 1,
-      "range_m": null, "duration_s": 6.0, "peak_z": 5.0,
-      "catalogs": {"adsb": "match", "tle": "clean", "lightning": "clean", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "vis",
+        "nir",
+        "acoustic"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 6.0,
+      "peak_z": 5.0,
+      "catalogs": {
+        "adsb": "match",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
     },
     {
       "id": "satellite-match-illuminated",
-      "bands": ["vis", "nir"], "clock": "gnss_pps", "node_count": 1,
-      "range_m": null, "duration_s": 4.0, "peak_z": 5.0,
-      "catalogs": {"adsb": "clean", "tle": "match", "lightning": "clean", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "vis",
+        "nir"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 4.0,
+      "peak_z": 5.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "match",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
     },
     {
       "id": "lightning-coincidence",
-      "bands": ["uv", "rf", "elf_vlf"], "clock": "gnss_pps", "node_count": 1,
-      "range_m": null, "duration_s": 0.3, "peak_z": 9.0,
-      "catalogs": {"adsb": "clean", "tle": "clean", "lightning": "match", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "uv",
+        "rf",
+        "elf_vlf"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 0.3,
+      "peak_z": 9.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "clean",
+        "lightning": "match",
+        "rfi": "clean",
+        "weather": "clean"
+      }
     },
     {
       "id": "rfi-selfmatch",
       "note": "The site's own learned interference fingerprint.",
-      "bands": ["rf"], "clock": "gnss_pps", "node_count": 1,
-      "range_m": null, "duration_s": 1.0, "peak_z": 7.0,
-      "catalogs": {"adsb": "clean", "tle": "clean", "lightning": "clean", "rfi": "match", "weather": "clean"}
+      "bands": [
+        "rf"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 1.0,
+      "peak_z": 7.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "match",
+        "weather": "clean"
+      }
     },
     {
       "id": "all-catalogs-down",
       "note": "Nothing could be checked. Must not be interesting.",
-      "bands": ["vis", "lwir"], "clock": "gnss_pps", "node_count": 1,
-      "range_m": null, "duration_s": 3.0, "peak_z": 5.0,
-      "catalogs": {"adsb": "unavailable", "tle": "unavailable", "lightning": "unavailable", "rfi": "unavailable", "weather": "unavailable"}
+      "bands": [
+        "vis",
+        "lwir"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 3.0,
+      "peak_z": 5.0,
+      "catalogs": {
+        "adsb": "unavailable",
+        "tle": "unavailable",
+        "lightning": "unavailable",
+        "rfi": "unavailable",
+        "weather": "unavailable"
+      }
     },
     {
       "id": "huge-excursion-single-band",
       "note": "A 40-sigma spike on one channel is a fault, not a discovery.",
-      "bands": ["lwir"], "clock": "gnss_pps", "node_count": 1,
-      "range_m": null, "duration_s": 0.5, "peak_z": 40.0,
-      "catalogs": {"adsb": "clean", "tle": "clean", "lightning": "clean", "rfi": "clean", "weather": "clean"}
+      "bands": [
+        "lwir"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 0.5,
+      "peak_z": 40.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
+    },
+    {
+      "id": "satellite-eclipsed",
+      "note": "Bearing matches a satellite in Earth's shadow, which cannot emit visible light.",
+      "bands": [
+        "vis",
+        "nir"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 4.0,
+      "peak_z": 5.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "eclipsed",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "clean"
+      }
+    },
+    {
+      "id": "weather-inversion",
+      "note": "A temperature inversion with a low track explains a lot of strange optics.",
+      "bands": [
+        "vis",
+        "nir"
+      ],
+      "clock": "gnss_pps",
+      "node_count": 1,
+      "range_m": null,
+      "duration_s": 20.0,
+      "peak_z": 4.0,
+      "catalogs": {
+        "adsb": "clean",
+        "tle": "clean",
+        "lightning": "clean",
+        "rfi": "clean",
+        "weather": "match"
+      }
     }
   ]
 }

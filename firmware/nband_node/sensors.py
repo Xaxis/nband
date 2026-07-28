@@ -796,12 +796,18 @@ class TiMmwaveDriver(Driver):
         self._opened = False
 
     def read(self, t_ns: int) -> Sample | None:
-        buf = self._data.read_until(self._MAGIC, 4096)
-        i = buf.find(self._MAGIC)
-        if i < 0 or len(buf) < i + 40:
+        # read_until returns everything up to AND INCLUDING the magic word, so
+        # the 40-byte header follows it and has to be read separately. The
+        # previous version searched the buffer it had just consumed for a
+        # header that was still on the wire, and could never return a sample.
+        if not self._data.read_until(self._MAGIC, 8192).endswith(self._MAGIC):
             return None
-        header = buf[i : i + 40]
-        num_objs = int.from_bytes(header[28:32], "little")
+        header = self._data.read(40 - len(self._MAGIC))
+        if len(header) < 40 - len(self._MAGIC):
+            return None
+        # Offsets are relative to the frame start, so subtract the magic length.
+        off = 28 - len(self._MAGIC)
+        num_objs = int.from_bytes(header[off : off + 4], "little")
         # Clutter bins are learned during commissioning and subtracted here so
         # that a fixed return never reaches the trigger.
         return Sample(

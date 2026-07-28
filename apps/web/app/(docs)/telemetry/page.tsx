@@ -43,8 +43,10 @@ export default async function TelemetryPage() {
               simulator that models each band&apos;s real behaviour: Poisson counting noise on the
               scintillator, a solar curve on the ultraviolet and visible channels, the periodic
               flat-field shutter on the thermal camera, and an impulsive rather than smooth radio
-              floor. Reload and you will get identical data, which is what makes a bug in this view
-              reproducible. Switching to a live grid is one environment variable and no code
+              floor. The generator is deterministic in its inputs, so the same window always
+              renders the same data; the window itself advances with the clock, which is what
+              makes the charts move. Pin the scrub to a fixed offset and a reload reproduces the
+              view exactly. Switching to a live grid is one environment variable and no code
               changes above the feed interface.
             </p>
           </Note>

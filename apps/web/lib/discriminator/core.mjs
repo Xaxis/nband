@@ -34,9 +34,19 @@ const UNRESOLVED_FLOOR = THRESHOLDS.anomalyScoreUnresolvedFloor
 const MIN_BANDS_FOR_UNRESOLVED = THRESHOLDS.minBandsForUnresolved
 const CONVENTIONAL_FIT_FLOOR = 0.4
 
-/** Mirrors CatalogResult.explains: available, matched, and score >= 0.6. */
+/** Mirrors CatalogResult.explains: available, matched, and score >= 0.6.
+ *
+ * 'eclipsed' is a TLE match that cannot account for an optical detection, and
+ * is still a match for bookkeeping. The port previously had no way to express
+ * it, so a satellite in Earth's shadow scored as though it were illuminated --
+ * a divergence the fixtures could not catch because every generated case set
+ * illuminated: True. */
 function explains(state) {
-  return state === 'match'
+  // An eclipsed satellite still MATCHED the catalogue; what it fails to do is
+  // account for an optical detection, and that distinction belongs in the
+  // satellite likelihood rather than here. Treating it as "no match" made the
+  // catch-all hypothesis twenty times more likely than the engine says.
+  return state === 'match' || state === 'eclipsed'
 }
 
 function likelihoods(
@@ -74,7 +84,12 @@ function likelihoods(
   {
     const r = []
     let lk = 0.12
-    if (explains(c.tle)) {
+    if (c.tle === 'eclipsed') {
+      // Matched on bearing but in Earth's shadow, so it emits no visible light
+      // and cannot be the source of an optical detection.
+      lk = 0.15
+      r.push('NORAD 25544 was on this bearing but in eclipse')
+    } else if (explains(c.tle)) {
       lk = 0.96
       r.push('illuminated pass of NORAD 25544 within 0.1°')
     } else if (c.tle === 'clean') {
@@ -180,6 +195,10 @@ function likelihoods(
   {
     const r = []
     let lk = 0.05
+    if (explains(c.weather)) {
+      lk = 0.6
+      r.push('temperature inversion with a sub-8-degree track; refraction is plausible')
+    }
     if (explains(c.lightning)) {
       lk = 0.9
       r.push('lightning fix at 41 km, Δt 0.2 s')

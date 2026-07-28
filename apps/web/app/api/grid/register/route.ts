@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import {
+  MAX_CLOCK_SKEW_S,
+  canonicalPayload,
   fail,
   fuzzPosition,
   ok,
@@ -31,12 +33,30 @@ export async function POST(request: Request) {
   const rawBody = await request.text()
   const pubkeyHeader = request.headers.get('x-nband-key')
   const signature = request.headers.get('x-nband-signature')
+  const timestamp = request.headers.get('x-nband-timestamp')
+  const nonce = request.headers.get('x-nband-nonce')
 
-  if (!pubkeyHeader || !signature) {
-    return fail(401, 'missing X-Nband-Key or X-Nband-Signature')
+  if (!pubkeyHeader || !signature || !timestamp || !nonce) {
+    return fail(401, 'missing X-Nband-Key, X-Nband-Signature, X-Nband-Timestamp, or X-Nband-Nonce')
   }
-  if (!(await verifySignature(rawBody, pubkeyHeader, signature))) {
+
+  const skew = Math.abs(Date.now() / 1000 - Number(timestamp))
+  if (!Number.isFinite(skew) || skew > MAX_CLOCK_SKEW_S) {
+    return fail(401, 'request timestamp outside the accepted window', { skew_s: Math.round(skew) })
+  }
+
+  const path = new URL(request.url).pathname
+  if (!(await verifySignature(canonicalPayload(path, timestamp, nonce, rawBody), pubkeyHeader, signature))) {
     return fail(401, 'signature verification failed')
+  }
+
+  // Enrolment is the most damaging endpoint to replay: the secret is only
+  // demanded for a new slug, so a captured enrolment could be resent without
+  // one to reset a live node to 'provisioning' and wipe its channel list.
+  const { error: nonceErr } = await db.from('ingest_nonces').insert({ node_key: pubkeyHeader, nonce })
+  if (nonceErr) {
+    if (nonceErr.code === '23505') return fail(409, 'request already used')
+    return fail(500, 'could not record request nonce', nonceErr.message)
   }
 
   let body: unknown

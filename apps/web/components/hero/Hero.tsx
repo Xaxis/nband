@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { lockScroll } from '../../lib/scrollLock'
 
 /**
  * The scene as a hero underlay.
@@ -38,11 +39,10 @@ export function HeroScene({ children }: { children: React.ReactNode }) {
       if (e.key === 'Escape') setExpanded(false)
     }
     // Stop the page scrolling underneath the overlay.
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    const unlock = lockScroll()
     window.addEventListener('keydown', onKey)
     return () => {
-      document.body.style.overflow = prev
+      unlock()
       window.removeEventListener('keydown', onKey)
     }
   }, [expanded])

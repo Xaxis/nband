@@ -51,7 +51,7 @@ export default function HomePage() {
           </div>
 
           <p className="mt-10 max-w-[52ch] text-[12.5px] leading-relaxed text-[var(--ink-3)]">
-            Behind this text: one node, eleven detection shells at their real ranges, and something
+            Behind this text: one node, its detection shells at their real ranges, and something
             crossing them. A band lights as the object enters its range. Two lit at the same
             instant is a coincidence, and a coincidence is the difference between a story and a
             measurement.

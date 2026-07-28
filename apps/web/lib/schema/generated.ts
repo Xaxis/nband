@@ -769,26 +769,26 @@ export const CONTEXT_BANDS: readonly Band[] = BANDS.filter((b) => b.role === 'co
 
 // --- Enums -----------------------------------------------------------------
 
-/** Build tier. Determines which bands a node is expected to carry, never which bands it may carry. A tier 1 node that adds a thermal camera is still a tier 1 node with an extra channel, and the grid treats its LWIR data identically to a tier 3 node's. */
+/** Build tier. Determines which bands a node is expected to carry, never which bands it may carry. A tier 1 node that adds a thermal camera is still a tier 1 node with an extra channel, and the grid treats its LWIR data identically to a tier 3 node's. budgetUsd is the rounded sum of the tier's actual sourced part prices, checked against the registry by tools/check-drift.mjs, not an aspiration. */
 export type Tier = 't1' | 't2' | 't3' | 'tr'
 
 export const TIER: Record<Tier, TierMeta> = {
   "t1": {
     "id": "t1",
     "label": "Tier 1 - Baseline",
-    "budgetUsd": 400,
+    "budgetUsd": 460,
     "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid."
   },
   "t2": {
     "id": "t2",
     "label": "Tier 2 - Core",
-    "budgetUsd": 1500,
+    "budgetUsd": 1650,
     "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against."
   },
   "t3": {
     "id": "t3",
     "label": "Tier 3 - Extended",
-    "budgetUsd": 6000,
+    "budgetUsd": 5100,
     "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost."
   },
   "tr": {

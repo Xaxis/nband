@@ -163,7 +163,28 @@ check('hardware and band cross-references resolve', () => {
   return `${hardware.parts.length} parts, ${spec.hypotheses.defaults.length} hypotheses`
 })
 
-// 5. Power sizing matches the parts it is sold with --------------------------
+// 5. Tier budgets match what the tier actually costs ------------------------
+
+check('tier budgets match the sourced part prices', () => {
+  const errors = []
+  for (const tier of spec.enums.tier.values) {
+    const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id))
+    if (parts.length === 0) continue
+    const actual = parts.reduce((sum, p) => sum + p.priceUsd, 0)
+    // A budget is a claim the bill of materials has to honour. Both tier 1 and
+    // tier 2 quietly exceeded their own stated figure while the page presented
+    // the two side by side.
+    if (actual > tier.budgetUsd) {
+      errors.push(
+        `${tier.id}: parts total $${actual.toFixed(0)} but budgetUsd says $${tier.budgetUsd}`,
+      )
+    }
+  }
+  if (errors.length) throw new Error(errors.join('; '))
+  return 'every tier costs no more than it claims'
+})
+
+// 6. Power sizing matches the parts it is sold with --------------------------
 
 check('off-grid power sizing matches the tier load', () => {
   const errors = []

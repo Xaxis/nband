@@ -168,28 +168,55 @@ class RingBuffer:
 
 
 class NoiseFloor:
-    """Running mean and standard deviation via Welford's algorithm.
+    """Running mean and standard deviation with exponential forgetting.
 
     Thresholds have to adapt per site: the radio floor at a rural site and a
     suburban one differ by tens of decibels, and a fixed threshold would make
-    one node deaf and the other useless. Welford is used rather than a windowed
-    recomputation because it is constant-memory and numerically stable over the
-    months a node runs without restarting.
+    one node deaf and the other useless.
+
+    Plain Welford over the node's whole lifetime was wrong for a different
+    reason. Several of these channels have a strong diurnal cycle, and a
+    lifetime mean sits between day and night rather than tracking either. On
+    the first day every dusk and dawn crossed the threshold; after a few weeks
+    the accumulated variance was wide enough that nothing crossed it again. The
+    channel went from crying wolf to being deaf, and neither state announced
+    itself.
+
+    An exponentially weighted estimator keeps the constant-memory property and
+    forgets on a timescale set by `halflife_samples`, so the floor follows the
+    channel instead of averaging over it.
     """
 
-    __slots__ = ("_n", "_mean", "_m2", "_warmup")
+    __slots__ = ("_n", "_mean", "_var", "_warmup", "_alpha")
 
-    def __init__(self, warmup: int = 64) -> None:
+    def __init__(self, warmup: int = 64, halflife_samples: float = 3600.0) -> None:
         self._n = 0
         self._mean = 0.0
-        self._m2 = 0.0
+        self._var = 0.0
         self._warmup = warmup
+        # Weight of each new sample. A half-life of 3600 samples is one hour at
+        # 1 Hz and a few minutes on the fast channels, which tracks weather and
+        # the day/night transition without chasing individual events.
+        self._alpha = 1.0 - 0.5 ** (1.0 / max(halflife_samples, 1.0))
 
     def update(self, value: float) -> None:
         self._n += 1
+        if self._n == 1:
+            self._mean = value
+            self._var = 0.0
+            return
+        # Weight is the larger of the forgetting factor and 1/n, for every n.
+        #
+        # Tying the crossover to `warmup` instead was wrong: with a half-life of
+        # 3600 samples, alpha is about 0.0002, so switching to it after 64
+        # samples froze the mean almost immediately and later samples could
+        # barely move it. Taking the maximum makes the estimator a true running
+        # mean until 1/n falls below alpha, around 5000 samples, and an
+        # exponentially weighted one thereafter, with no discontinuity.
+        a = max(self._alpha, 1.0 / self._n)
         delta = value - self._mean
-        self._mean += delta / self._n
-        self._m2 += delta * (value - self._mean)
+        self._mean += a * delta
+        self._var = (1 - a) * (self._var + a * delta * delta)
 
     @property
     def ready(self) -> bool:
@@ -203,7 +230,7 @@ class NoiseFloor:
     def sigma(self) -> float:
         if self._n < 2:
             return 0.0
-        return math.sqrt(self._m2 / (self._n - 1))
+        return math.sqrt(max(self._var, 0.0))
 
     def z_score(self, value: float) -> float:
         s = self.sigma
@@ -272,14 +299,38 @@ class CoincidenceDetector:
         self._pending: deque[ChannelTrigger] = deque(maxlen=512)
 
     def offer(self, trigger: ChannelTrigger, clock: Clock) -> Detection | None:
-        """Feed one crossing. Returns a Detection when the window closes."""
-        cutoff = trigger.t_ns - self._window_ns
-        while self._pending and self._pending[0].t_ns < cutoff:
-            self._pending.popleft()
+        """Feed one crossing. Returns a Detection when the window closes.
 
+        Three things this has to get right, each of which it previously did not.
+
+        The window is bounded on both sides. Channels sample at different rates
+        and a slow channel's read can be stamped behind a fast one's, so a
+        trigger arriving with an older timestamp than one already pending is
+        still legitimately inside the window and must not be silently kept
+        forever by a cutoff computed only from the newest arrival.
+
+        A trigger that fires a solo detection is removed. It used to stay
+        pending, so the very next crossing in another band promoted a
+        coincidence that included a trigger already published on its own: one
+        physical event, counted twice, once as threshold and once as
+        coincidence.
+
+        A band is counted once. Two channels in the same band are one
+        observation, not corroboration, and `distinct_bands` was already a set,
+        but the published detection now also records which channels
+        contributed so that duplication is visible downstream.
+        """
         self._pending.append(trigger)
 
-        in_window = [t for t in self._pending if t.t_ns >= cutoff]
+        # Bound both ways around the newest trigger. Anything further from it
+        # than the window in either direction cannot be part of this event.
+        newest = max(t.t_ns for t in self._pending)
+        self._pending = deque(
+            (t for t in self._pending if abs(newest - t.t_ns) <= self._window_ns),
+            maxlen=self._pending.maxlen,
+        )
+
+        in_window = list(self._pending)
         distinct_bands = {t.band for t in in_window}
 
         if len(distinct_bands) >= self._min_bands:
@@ -294,6 +345,12 @@ class CoincidenceDetector:
             return det
 
         if abs(trigger.z_score) >= self._solo_sigma:
+            # Consume it. Leaving it pending let the same crossing appear again
+            # inside a later coincidence.
+            try:
+                self._pending.remove(trigger)
+            except ValueError:
+                pass
             return Detection(
                 t_start_ns=trigger.t_ns,
                 t_end_ns=trigger.t_ns,

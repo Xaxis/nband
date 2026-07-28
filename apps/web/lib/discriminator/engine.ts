@@ -8,7 +8,7 @@ import type { Classification, Corroboration } from '../schema/generated'
  * node and hold it to the Python engine. This file only adds types.
  */
 
-export type CatalogState = 'match' | 'clean' | 'unavailable'
+export type CatalogState = 'match' | 'clean' | 'unavailable' | 'eclipsed'
 export type CatalogId = 'adsb' | 'tle' | 'lightning' | 'rfi' | 'weather'
 
 export interface ObservationInput {

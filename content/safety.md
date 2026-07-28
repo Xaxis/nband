@@ -44,7 +44,13 @@ The millimetre-wave radar modules are a different case. They are certified devic
 
 The optional signature module aggregates the encapsulated americium-241 foils already present in domestic ionisation smoke detectors. Roughly ten of them, at about 0.9 microcuries each, sit behind a 2 mm aluminium heat sink and an acrylic housing. The aluminium and acrylic absorb the alpha and beta emission entirely while remaining largely transparent to the 59.5 keV gamma line, which is the signature the module exists to produce.
 
-The dose rate from such an assembly is roughly 40 nanogray per hour at one metre, which is well under one percent of natural background and lower than the additional dose from a single commercial flight. The radiological hazard, handled intact, is genuinely small.
+The dose figure this page used to publish was wrong, and wrong in the reassuring direction, which is the worst way to be wrong about radiation.
+
+It said roughly 40 nanogray per hour at one metre and called that "well under one percent of natural background". Working it through: nine microcuries is 0.33 megabecquerels, and the gamma dose constant for americium-241 is about 3.2 microsieverts per hour per megabecquerel at one metre, giving roughly 1,070 nanosieverts per hour from an unshielded point source. Natural background averages around 340 nanosieverts per hour. So the correct statement is about three times background at one metre, not one percent of it, and the published number was low by a factor of nearly thirty.
+
+The shielding does not rescue it. Two millimetres of aluminium attenuates a 59.5 keV photon beam by only about fifteen percent; aluminium and acrylic are there to stop alpha and beta, which they do completely, and they are close to transparent at this photon energy by design, because the gamma line is the entire point of the assembly.
+
+Three times background at one metre is still a small absolute dose, and it falls off as the square of distance, so at three metres it is back under background. It is not the hazard that should stop you. The regulatory position below is.
 
 The regulatory position is the part this page previously got wrong, and the correction matters more than the dose figure. An earlier revision said the assembly "stays below the United States NRC general-license threshold in 10 CFR 30.15". That is not what 10 CFR 30.15 says. It is an exemption rather than a general license, general licenses live in Part 31, and §30.15(a)(7) exempts "ionization chamber smoke detectors containing not more than 1 microcurie of americium-241 per detector in the form of a foil and designed to protect life and property from fires". The limit is per detector, the exemption attaches to the detector as a fire-protection device, and there is no aggregate activity allowance to sit beneath.
 

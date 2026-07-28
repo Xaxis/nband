@@ -21,11 +21,19 @@ import { SPECTRAL, VERDICT } from '../lib/spectrum'
  */
 
 const CATALOGS: CatalogId[] = ['adsb', 'tle', 'lightning', 'rfi', 'weather']
+// 'eclipsed' is offered only for the satellite catalogue, where it means a
+// bearing match that cannot explain an optical detection.
 const CATALOG_STATES: CatalogState[] = ['clean', 'match', 'unavailable']
 const STATE_LABEL: Record<CatalogState, string> = {
   clean: 'checked, no match',
   match: 'matched',
   unavailable: 'unreachable',
+  eclipsed: 'matched, in eclipse',
+}
+
+/** States a given catalogue can actually be in. */
+function statesFor(c: CatalogId): CatalogState[] {
+  return c === 'tle' ? [...CATALOG_STATES, 'eclipsed'] : CATALOG_STATES
 }
 
 const CLOCKS = ['gnss_pps', 'gnss_nopps', 'ntp', 'freerun'] as const
@@ -209,7 +217,7 @@ export function DiscriminatorPlayground() {
                   {CATALOGSOURCE[c].label}
                 </span>
                 <div className="flex overflow-hidden rounded-md border border-[var(--line)]">
-                  {CATALOG_STATES.map((s) => {
+                  {statesFor(c).map((s) => {
                     // The site's own RFI baseline is derived locally, so it can
                     // never be unreachable. Offering the option would be a lie.
                     const disabled = c === 'rfi' && s === 'unavailable'

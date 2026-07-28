@@ -19,6 +19,7 @@ import argparse
 import json
 import logging
 import os
+import secrets
 import subprocess
 import shutil
 import signal
@@ -218,6 +219,18 @@ class GridClient:
 
     def _post(self, path: str, body: dict, timeout: float = 20.0) -> dict:
         payload = json.dumps(body, separators=(",", ":")).encode()
+
+        # The signature covers the path, a timestamp, and a single-use nonce as
+        # well as the body. Signing the body alone left every request valid
+        # forever and replayable on any endpoint, which is enough to fabricate
+        # archive content: replayed detections become distinct events because
+        # each insert mints a fresh id.
+        timestamp = str(int(time.time()))
+        nonce = secrets.token_urlsafe(18)
+        canonical = b"nband/v1\n%s\n%s\n%s\n%s" % (
+            path.encode(), timestamp.encode(), nonce.encode(), payload,
+        )
+
         req = urllib.request.Request(
             f"{self.cfg.endpoint}{path}",
             data=payload,
@@ -225,7 +238,9 @@ class GridClient:
                 "Content-Type": "application/json",
                 "X-Nband-Node": self.cfg.node_slug,
                 "X-Nband-Key": self.identity.public_key_b64,
-                "X-Nband-Signature": self.identity.sign(payload),
+                "X-Nband-Signature": self.identity.sign(canonical),
+                "X-Nband-Timestamp": timestamp,
+                "X-Nband-Nonce": nonce,
                 "X-Nband-Schema": SCHEMA_VERSION,
                 "User-Agent": f"nband-node/{PLATFORM_VERSION}",
             },
