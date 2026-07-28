@@ -1,6 +1,7 @@
 import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
 import { SpectrumBar } from '../../../components/Bands'
+import { DocTabs } from '../../../components/DocTabs'
 import {
   AtmosphericWindow,
   BandProfilePanel,
@@ -154,32 +155,68 @@ export default function BandsPage() {
         </Container>
       </section>
 
-      <Section
-        eyebrow="The whole argument in one table"
-        title="What each band can see, and what it cannot"
-        lede="Detection strength for every band against every phenomenon the discriminator models. This is the reason the platform samples more than one band: read down a column and you will find the same object visible in several, which is what makes a coincidence between two of them evidence."
-      >
-        <div className="mt-8">
-          <DetectionMatrix />
-        </div>
-      </Section>
+      <DocTabs
+        label="Band reference sections"
+        tabs={[
+          {
+            id: 'bands',
+            label: `All ${DETECTION_BANDS.length + CONTEXT_BANDS.length} bands`,
+            hint: 'Ordered by increasing wavelength, which is also the order they appear in the schema and in the database enum. An event needs at least two detection bands to agree before it can be called unresolved.',
+            content: (
+              <>
+                <Section
+                  eyebrow={`Detection bands · ${DETECTION_BANDS.length}`}
+                  title="Channels that can produce a detection"
+                  className="!pt-9"
+                >
+                  <div className="mt-6 space-y-4">
+                    {DETECTION_BANDS.map((b) => (
+                      <BandSection key={b.id} band={b} />
+                    ))}
+                  </div>
+                </Section>
 
-      <Section
-        className="border-y border-[var(--line)] bg-[var(--surface-0)]"
-        eyebrow="Why these bands"
-        title="The atmosphere picked the list, not us"
-        lede="Sea-level opacity plotted against wavelength, with the sampled bands overlaid. The transparent regions are the optical, infrared, and radio windows. Everywhere else, nothing reaches the ground and no sensor is worth building."
-      >
-        <div className="mt-8">
-          <AtmosphericWindow />
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Cost of entry"
-        title="Ranked by what it costs to open the band at all"
-        lede="Cheapest registered part that produces usable data in each band. Three bands cost less than a takeaway meal, and one costs more than a car."
-      >
+                <Section
+                  className="border-t border-[var(--line)]"
+                  eyebrow={`Context bands · ${CONTEXT_BANDS.length}`}
+                  title="Channels that can never produce a detection"
+                  lede="These exist so that every detection carries the conditions it was made under. Treating an environmental excursion as a detection is a well-documented failure mode of amateur sensor networks, so the discriminator will not score on these alone, by construction rather than by policy."
+                >
+                  <div className="mt-8 space-y-4">
+                    {CONTEXT_BANDS.map((b) => (
+                      <BandSection key={b.id} band={b} />
+                    ))}
+                  </div>
+                </Section>
+              </>
+            ),
+          },
+          {
+            id: 'matrix',
+            label: 'Detection matrix',
+            hint: 'Detection strength for every band against every phenomenon the discriminator models. This is the reason the platform samples more than one band: read down a column and you will find the same object visible in several, which is what makes a coincidence between two of them evidence.',
+            content: (
+              <Container className="py-9">
+                <DetectionMatrix />
+              </Container>
+            ),
+          },
+          {
+            id: 'atmosphere',
+            label: 'Why these bands',
+            hint: 'Sea-level opacity plotted against wavelength, with the sampled bands overlaid. The transparent regions are the optical, infrared, and radio windows. Everywhere else, nothing reaches the ground and no sensor is worth building.',
+            content: (
+              <Container className="py-9">
+                <AtmosphericWindow />
+              </Container>
+            ),
+          },
+          {
+            id: 'cost',
+            label: 'Cost of entry',
+            hint: 'Cheapest registered part that produces usable data in each band. Three bands cost less than a takeaway meal, and one costs more than a car.',
+            content: (
+              <Container className="py-9">
         <div className="card scroll-x mt-8">
           <table className="w-full min-w-[560px] border-collapse">
             <thead>
@@ -242,33 +279,12 @@ export default function BandsPage() {
             </tbody>
           </table>
         </div>
-      </Section>
+              </Container>
+            ),
+          },
+        ]}
+      />
 
-      <Section
-        className="border-t border-[var(--line)] bg-[var(--surface-0)]"
-        eyebrow={`Detection bands · ${DETECTION_BANDS.length}`}
-        title="Channels that can produce a detection"
-        lede="Ordered by increasing wavelength, which is also the order they appear in the schema and in the database enum. An event needs at least two of these to agree before it can be called unresolved."
-      >
-        <div className="mt-8 space-y-4">
-          {DETECTION_BANDS.map((b) => (
-            <BandSection key={b.id} band={b} />
-          ))}
-        </div>
-      </Section>
-
-      <Section
-        className="border-t border-[var(--line)]"
-        eyebrow={`Context bands · ${CONTEXT_BANDS.length}`}
-        title="Channels that can never produce a detection"
-        lede="These exist so that every detection carries the conditions it was made under. Treating an environmental excursion as a detection is a well-documented failure mode of amateur sensor networks, so the discriminator will not score on these alone, by construction rather than by policy."
-      >
-        <div className="mt-8 space-y-4">
-          {CONTEXT_BANDS.map((b) => (
-            <BandSection key={b.id} band={b} />
-          ))}
-        </div>
-      </Section>
     </>
   )
 }
