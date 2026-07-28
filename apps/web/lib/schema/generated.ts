@@ -1394,9 +1394,9 @@ export const PARTS: readonly Part[] = [
     "keySpecs": {
       "constellations": "GPS, GLONASS, Galileo, BeiDou",
       "ppsAccuracyNs": 20,
-      "ppsPin": "GPIO18"
+      "ppsPin": "GPIO4 (physical pin 7)"
     },
-    "notes": "The single most important part in the entire build and the one most builders skip. Without a pulse-per-second signal wired to a GPIO and disciplined through chrony, a node's timestamps are good to milliseconds and it can never contribute to multi-node geometry. With it, the node holds a few hundred nanoseconds and becomes a real element of an interferometric array. Budget for this before budgeting for a second camera.",
+    "notes": "The single most important part in the entire build and the one most builders skip. Without a pulse-per-second signal wired to a GPIO and disciplined through chrony, a node's timestamps are good to milliseconds and it can never contribute to multi-node geometry. With it, the node holds a few hundred nanoseconds and becomes a real element of an interferometric array. Budget for this before budgeting for a second camera. PPS lands on GPIO4, physical pin 7. An earlier revision put it on GPIO18, which is the I2S bit clock and is claimed by the microphone in tiers 2 and 3; the two would have fought for the same pin on any node carrying both.",
     "alternatives": [],
     "candidateAlternatives": [
       "gnss-neo-m9n",
@@ -1416,16 +1416,16 @@ export const PARTS: readonly Part[] = [
           "pin": "6"
         },
         {
-          "signal": "TXD→RXD",
+          "signal": "TXD->RXD",
           "pin": "10"
         },
         {
-          "signal": "RXD←TXD",
+          "signal": "RXD<-TXD",
           "pin": "8"
         },
         {
           "signal": "PPS",
-          "pin": "12"
+          "pin": "7"
         }
       ]
     }
@@ -1519,7 +1519,8 @@ export const PARTS: readonly Part[] = [
     "status": "reference",
     "tiers": [
       "t1",
-      "t2"
+      "t2",
+      "t3"
     ],
     "priceUsd": 39.95,
     "priceAsOf": "2026-07-27",
@@ -2126,36 +2127,6 @@ export const PARTS: readonly Part[] = [
     }
   },
   {
-    "id": "sem-am241",
-    "category": "emitter",
-    "band": "gamma",
-    "vendor": "recovered",
-    "model": "Am-241 signature cartridge (10 x 0.9 uCi discs)",
-    "status": "reference",
-    "tiers": [
-      "t3"
-    ],
-    "priceUsd": 0,
-    "priceAsOf": "2026-07-27",
-    "sourceUrl": "https://www.nrc.gov/reading-rm/doc-collections/cfr/part030/part030-0015.html",
-    "interface": "none",
-    "driver": null,
-    "restricted": true,
-    "keySpecs": {
-      "totalActivityUci": 9,
-      "primaryLineKev": 59.5,
-      "doseRateAt1mNgyPerH": 40
-    },
-    "notes": "Part of the optional active-emission module. Sources are the encapsulated foils already present in ionisation smoke detectors, aggregated behind aluminium and acrylic so that alpha and beta are fully absorbed while the 59.5 keV gamma line passes. Total activity stays under the US NRC 10 CFR 30.15 general-license threshold that already covers these devices in ordinary domestic use. Read docs/safety before building this. It is genuinely optional, every passive band works without it, and jurisdictions outside the US have their own rules that the operator is responsible for checking.",
-    "alternatives": [],
-    "electrical": {
-      "idleW": 0,
-      "activeW": 0,
-      "rail": "none",
-      "pins": []
-    }
-  },
-  {
     "id": "sem-ir-beacon",
     "category": "emitter",
     "band": "nir",
@@ -2163,7 +2134,6 @@ export const PARTS: readonly Part[] = [
     "model": "850 nm pulsed IR beacon, 5 W peak",
     "status": "reference",
     "tiers": [
-      "t2",
       "t3"
     ],
     "priceUsd": 34,
@@ -2178,7 +2148,7 @@ export const PARTS: readonly Part[] = [
       "prfHz": 10000,
       "dutyCycle": "randomised"
     },
-    "notes": "LED rather than laser, keeping the emitter below any Class 3R ocular hazard threshold while still producing a distinctive pulse-coded signature. The randomised duty cycle is what makes it identifiable in the archive: the node knows its own emission schedule exactly, so any NIR return correlating with the code is self-illumination and is subtracted rather than reported. Point it above the horizon, never at a road or a flight path.",
+    "notes": "Optional, tier 3 only. LED rather than laser, which changes which standard applies (IEC 62471 photobiological, not the IEC 60825 laser classes) rather than making it inherently safe: a 5 W peak infrared emitter is not automatically exempt at close range. The randomised duty cycle is what makes it identifiable in the archive: the node knows its own emission schedule exactly, so any near-infrared return correlating with the code is self-illumination and is subtracted rather than reported. Point it above head height, never at a road or a flight path, and read /safety before fitting it.",
     "electrical": {
       "idleW": 0.01,
       "activeW": 1.6,

@@ -305,7 +305,6 @@ PART_DRIVERS: Final[dict[str, str | None]] = {
     "gamma-csi-sipm": "open_gamma",
     "swir-ingaas640": "genicam_swir",
     "seis-sm24": "geophone_ads1256",
-    "sem-am241": None,
     "sem-ir-beacon": "sem_beacon",
     "case-pelican1500": None,
     "power-solar-150w": "ina226_monitor",

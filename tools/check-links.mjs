@@ -79,6 +79,8 @@ function walk(dir, exts, acc = []) {
   return acc
 }
 
+const navSrcEarly = readFileSync(resolve(root, 'apps/web/lib/nav.ts'), 'utf8')
+
 const found = new Map() // path -> Set(source files)
 const record = (p, src) => {
   const clean = p.split('#')[0].split('?')[0].replace(/\/$/, '') || '/'
@@ -109,12 +111,42 @@ for (const file of walk(resolve(root, 'content'), ['.md'])) {
 
 // The navigation manifest is the source of truth for the site's shape, so every
 // entry in it must exist even if nothing happens to link to it yet.
-const navSrc = readFileSync(resolve(root, 'apps/web/lib/nav.ts'), 'utf8')
+const navSrc = navSrcEarly
 for (const m of navSrc.matchAll(/href:\s*'(\/[^']*)'/g)) record(m[1], 'apps/web/lib/nav.ts')
+
+// Documents rendered by DocPage are linked by slug, which is resolved through
+// the manifest at build time. A document with no entry in nav.ts produced a
+// link to /<slug>, and two of them 404'd for days because the pattern list
+// above skips interpolated template literals -- exactly the form that bug took.
+// A checker is only worth the failure modes it was built to see, so this closes
+// the one it demonstrably missed.
+const unroutedDocs = []
+{
+  const docSlugs = existsSync(resolve(root, 'content'))
+    ? readdirSync(resolve(root, 'content'))
+        .filter((f) => f.endsWith('.md'))
+        .map((f) => f.replace(/\.md$/, ''))
+    : []
+  const navHrefs = [...navSrc.matchAll(/href:\s*'(\/[^']*)'/g)].map((m) => m[1])
+  for (const slug of docSlugs) {
+    if (!navHrefs.some((h) => h === `/${slug}` || h.endsWith(`/${slug}`))) {
+      unroutedDocs.push(slug)
+    }
+  }
+}
 
 // --- compare ----------------------------------------------------------------
 
 const broken = []
+
+for (const slug of unroutedDocs) {
+  broken.push({
+    path: `/${slug}`,
+    sources: new Set([`content/${slug}.md (rendered by DocPage)`]),
+    why: 'document has no route in lib/nav.ts, so DocPage would link to a 404',
+  })
+}
+
 for (const [path, sources] of [...found].sort()) {
   if (routes.has(path)) continue
   if (handlers.has(path)) {

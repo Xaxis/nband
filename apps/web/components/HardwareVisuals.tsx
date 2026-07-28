@@ -216,9 +216,11 @@ export function PinoutDiagram({ tier }: { tier: Tier }) {
 
       <p className="mt-3 max-w-[74ch] text-[12.5px] leading-relaxed text-[var(--ink-3)]">
         Physical pin numbers, because that is what you count on the board. Every 3V3 and GND pin is
-        shared by several sensors, which is normal and expected. Pin 12 carrying the
+        shared by several sensors, which is normal and expected. Pin 7 carrying the
         pulse-per-second signal is the one that must be exactly right; everything else is
         recoverable, and that one silently downgrades the node to millisecond timing.
+        It sits on GPIO4 rather than GPIO18 because GPIO18 is the I2S bit clock and the
+        microphone claims it on any node carrying both.
       </p>
     </figure>
   )

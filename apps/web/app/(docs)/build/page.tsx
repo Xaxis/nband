@@ -16,7 +16,7 @@ export default function Page() {
         className="border-t border-[var(--line)] bg-[var(--surface-0)]"
         eyebrow="Bench reference"
         title="Keep this open while you wire"
-        lede="Physical pin numbers, because that is what you count on the board. Pin 12 carries the pulse-per-second signal: it is the one connection that must be exactly right, and the one whose absence looks like nothing being wrong."
+        lede="Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal: it is the one connection that must be exactly right, and the one whose absence looks like nothing being wrong."
       >
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start">
           <PinoutDiagram tier="t2" />

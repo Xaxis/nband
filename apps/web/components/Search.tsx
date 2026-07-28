@@ -74,6 +74,7 @@ export function Search() {
   const [active, setActive] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
   const results = useMemo(() => {
@@ -119,11 +120,48 @@ export function Search() {
 
   useEffect(() => {
     if (!open) return
+
+    // Remember where focus came from so it can be given back. Without this a
+    // keyboard user who opens and closes the dialog is returned to the top of
+    // the document.
+    const opener = document.activeElement as HTMLElement | null
     inputRef.current?.focus()
+
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+
+    // Trap Tab inside the dialog. Previously it walked straight out into the
+    // page behind, leaving focus on controls the overlay was covering.
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        // Escape was handled only on the input, so it did nothing once focus
+        // moved to a result.
+        e.preventDefault()
+        setOpen(false)
+        setQ('')
+        return
+      }
+      if (e.key !== 'Tab' || !dialogRef.current) return
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      )
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onTab, true)
     return () => {
       document.body.style.overflow = prev
+      document.removeEventListener('keydown', onTab, true)
+      opener?.focus?.()
     }
   }, [open])
 
@@ -176,6 +214,7 @@ export function Search() {
           />
 
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label="Search nband"

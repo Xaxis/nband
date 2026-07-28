@@ -41,6 +41,12 @@ class ChannelConfig:
     fov_deg: float | None = None
     #: Driver-specific wiring: i2c address, device path, gain, and so on.
     options: dict[str, Any] = field(default_factory=dict)
+    #: Measured constants for this specific unit: hard-iron offsets, learned
+    #: clutter bins, photometric zero points. Distinct from `options`, which is
+    #: how the sensor is wired; this is what it reads when pointed at nothing.
+    #: Two drivers referenced this field before it existed and raised
+    #: AttributeError on open() for every real node.
+    calibration: dict[str, Any] = field(default_factory=dict)
     #: Trigger threshold in units of the running noise sigma. None disables
     #: triggering for this channel, which is mandatory for context bands.
     trigger_sigma: float | None = None
@@ -187,6 +193,7 @@ def load(path: str | Path) -> NodeConfig:
             elevation_deg=c.get("elevation_deg"),
             fov_deg=c.get("fov_deg"),
             options=dict(c.get("options", {})),
+            calibration=dict(c.get("calibration", {})),
             trigger_sigma=c.get("trigger_sigma"),
             enabled=bool(c.get("enabled", True)),
         )

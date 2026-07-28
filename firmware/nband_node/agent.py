@@ -19,6 +19,8 @@ import argparse
 import json
 import logging
 import os
+import subprocess
+import shutil
 import signal
 import sys
 import time
@@ -42,6 +44,29 @@ from .core import (
 from .schema_generated import PLATFORM_VERSION, SCHEMA_VERSION, ClockQuality
 
 log = logging.getLogger("nband")
+
+
+def sd_notify(message: str) -> None:
+    """Send a readiness or watchdog ping to systemd, if it is listening.
+
+    The unit file declares Type=notify and WatchdogSec=300. Without these
+    messages systemd concludes the agent never started, and then that it has
+    hung, and SIGABRTs a perfectly healthy node every five minutes. No
+    dependency: it is a datagram to the socket in NOTIFY_SOCKET.
+    """
+    addr = os.environ.get("NOTIFY_SOCKET")
+    if not addr:
+        return
+    try:
+        import socket
+
+        # A leading '@' denotes the abstract namespace.
+        path = "\0" + addr[1:] if addr.startswith("@") else addr
+        with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:
+            sock.connect(path)
+            sock.sendall(message.encode())
+    except OSError as exc:
+        log.debug("sd_notify failed: %s", exc)
 
 
 class GridError(RuntimeError):
@@ -138,18 +163,47 @@ class Spool:
         log.warning("spool over %d bytes: dropped %d oldest telemetry records", self.max_bytes, len(lines) - len(keep))
 
     def drain(self, path: Path, limit: int) -> list[dict]:
+        """Read up to `limit` records, skipping any line that will not parse.
+
+        A node loses power mid-write eventually, leaving a truncated final line.
+        Letting json.loads raise here wedged the agent permanently: every flush
+        hit the same bad line and no record after it could ever be delivered.
+        """
         if not path.exists():
             return []
+        out: list[dict] = []
         with path.open(encoding="utf-8") as fh:
-            return [json.loads(line) for _, line in zip(range(limit), fh) if line.strip()]
+            for line in fh:
+                if len(out) >= limit:
+                    break
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    out.append(json.loads(line))
+                except json.JSONDecodeError:
+                    log.warning("skipping unparseable spool line in %s", path.name)
+                    out.append({"__unparseable__": True})
+        return out
 
     def commit(self, path: Path, count: int) -> None:
-        """Remove the first `count` records after the grid has acknowledged them."""
+        """Remove the first `count` records after the grid has acknowledged them.
+
+        Written to a temporary file and renamed. The previous version truncated
+        and rewrote in place, so losing power mid-write destroyed the entire
+        remaining spool rather than a single record. rename() within a directory
+        is atomic on POSIX, so a crash leaves either the old file or the new one.
+        """
         if not path.exists() or count <= 0:
             return
         lines = path.read_text(encoding="utf-8").splitlines()
         rest = lines[count:]
-        path.write_text("\n".join(rest) + ("\n" if rest else ""), encoding="utf-8")
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        with tmp.open("w", encoding="utf-8") as fh:
+            fh.write("\n".join(rest) + ("\n" if rest else ""))
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp, path)
 
 
 # ---------------------------------------------------------------------------
@@ -266,10 +320,19 @@ class GridClient:
 class Agent:
     def __init__(self, cfg: configmod.NodeConfig, spool_dir: Path) -> None:
         self.cfg = cfg
-        self.clock = Clock(
-            ClockQuality.FREERUN if cfg.simulate else ClockQuality.GNSS_PPS,
-            offset_ns=0 if cfg.simulate else 240,
-        )
+        # Always start undisciplined. A node that has not yet graded its own
+        # clock must not claim discipline, and this constructor previously
+        # asserted GNSS_PPS with an invented 240 ns offset for every real run,
+        # which made the single strongest gate on the classification ladder a
+        # constant in production. The tests exercised Clock directly and passed
+        # while the agent never called it.
+        self.clock = Clock(ClockQuality.FREERUN, offset_ns=0)
+        self._chronyc = None if cfg.simulate else shutil.which("chronyc")
+        if not cfg.simulate and self._chronyc is None:
+            log.warning(
+                "chronyc not found: clock cannot be graded and every sample will be "
+                "marked degraded. Install chrony (build guide, step 3)."
+            )
         self.identity = Identity(cfg.grid.key_path)
         self.spool = Spool(spool_dir, cfg.grid.max_spool_bytes)
         self.client = GridClient(cfg.grid, self.identity)
@@ -388,14 +451,47 @@ class Agent:
 
     def _flush(self) -> None:
         tel = self.spool.drain(self.spool.telemetry, 2000)
-        if tel and self.client.send_telemetry(tel):
-            self.spool.commit(self.spool.telemetry, len(tel))
+        if tel:
+            # Unparseable lines still consume their slot on commit, so a corrupt
+            # record is dropped rather than blocking everything behind it.
+            sendable = [r for r in tel if "__unparseable__" not in r]
+            if not sendable or self.client.send_telemetry(sendable):
+                self.spool.commit(self.spool.telemetry, len(tel))
 
         det = self.spool.drain(self.spool.detections, 20)
-        if det and self.client.send_detections(det):
-            self.spool.commit(self.spool.detections, len(det))
+        if det:
+            sendable = [r for r in det if "__unparseable__" not in r]
+            if not sendable or self.client.send_detections(sendable):
+                self.spool.commit(self.spool.detections, len(det))
 
         self.spool.enforce_ceiling()
+
+    def _grade_clock(self) -> None:
+        """Ask chrony how well disciplined we actually are.
+
+        Read back rather than assumed. Without this the node reports whatever
+        it was constructed with, which is how a free-running clock came to be
+        published as PPS-disciplined and fed into cross-node geometry.
+        """
+        if self._chronyc is None:
+            return
+        try:
+            out = subprocess.run(
+                [self._chronyc, "tracking"], capture_output=True, text=True, timeout=4
+            ).stdout
+        except (subprocess.SubprocessError, OSError) as exc:
+            # Unreadable is not the same as fine. Degrade rather than keep the
+            # last good grade, or a node whose GNSS dies keeps its old claim.
+            log.warning("could not read chrony tracking (%s); clock marked free-running", exc)
+            self.clock = Clock(ClockQuality.FREERUN, offset_ns=0)
+            return
+        before = self.clock.quality
+        self.clock.update_from_chrony(out)
+        if self.clock.quality is not before:
+            log.info(
+                "clock quality %s -> %s (offset %d ns)",
+                before.value, self.clock.quality.value, self.clock.offset_ns,
+            )
 
     def _heartbeat(self) -> None:
         self.client.heartbeat(
@@ -417,6 +513,7 @@ class Agent:
         signal.signal(signal.SIGTERM, self.stop)
 
         self.open_all()
+        sd_notify("READY=1")
         log.info(
             "nband node '%s' (%s) up: %d channels across %d bands, clock=%s",
             self.cfg.node_name,
@@ -429,6 +526,8 @@ class Agent:
         by_id = {c.channel_id: c for c in self.cfg.channels}
         deadline = time.monotonic() + duration_s if duration_s else None
         last_flush = last_beat = time.monotonic()
+        last_clock = last_ping = 0.0
+        self._grade_clock()
 
         try:
             while self._running:
@@ -456,12 +555,22 @@ class Agent:
                 if now - last_flush >= self.cfg.grid.upload_interval_s:
                     self._flush()
                     last_flush = now
+                # Re-grade before each heartbeat so the status the grid records
+                # reflects the clock as it is now, not as it was at startup.
+                if now - last_clock >= 30:
+                    self._grade_clock()
+                    last_clock = now
                 if now - last_beat >= 60:
                     self._heartbeat()
                     last_beat = now
+                # Well inside WatchdogSec so a slow upload cannot trip it.
+                if now - last_ping >= 30:
+                    sd_notify("WATCHDOG=1")
+                    last_ping = now
 
                 time.sleep(0.002)
         finally:
+            sd_notify("STOPPING=1")
             self._flush()
             self.close_all()
             log.info("nband node stopped")

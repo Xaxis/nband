@@ -262,6 +262,7 @@ export function TelemetryView({
   const [showTable, setShowTable] = useState(false)
   const [data, setData] = useState<{ series: Series[]; events: EventMarker[] } | null>(null)
   const [loading, setLoading] = useState(true)
+  const [feedError, setFeedError] = useState<string | null>(null)
 
   // `now` is resolved on the client only. Deriving it during render would make
   // the server and client disagree about what "now" is.
@@ -289,14 +290,27 @@ export function TelemetryView({
       to: String(Math.round(window.to)),
     })
     fetch(`/api/telemetry?${params}`)
-      .then((r) => r.json())
-      .then((d) => {
-        if (!cancelled) {
-          setData(d)
-          setLoading(false)
+      .then(async (r) => {
+        if (!r.ok) {
+          const body = await r.json().catch(() => ({}))
+          throw new Error(body.error ?? `feed returned ${r.status}`)
         }
+        return r.json()
       })
-      .catch(() => !cancelled && setLoading(false))
+      .then((d) => {
+        if (cancelled) return
+        setData(d)
+        setFeedError(null)
+        setLoading(false)
+      })
+      .catch((err) => {
+        if (cancelled) return
+        // A failed request used to render as "No data in this window", which
+        // says the sky was quiet when the truth is that we could not look.
+        setFeedError(err instanceof Error ? err.message : 'could not reach the feed')
+        setData(null)
+        setLoading(false)
+      })
     return () => {
       cancelled = true
     }
@@ -495,7 +509,15 @@ export function TelemetryView({
               loading window…
             </div>
           )}
-          {!loading && series.length === 0 && (
+          {!loading && feedError && (
+            <div className="p-8 text-center">
+              <p className="text-[13.5px] text-[#d03b3b]">Could not load telemetry.</p>
+              <p className="num mt-1 text-[11.5px] text-[var(--ink-3)]">
+                {feedError}. This is a failure to read the feed, not a quiet sky.
+              </p>
+            </div>
+          )}
+          {!loading && !feedError && series.length === 0 && (
             <div className="p-8 text-center">
               <p className="text-[13.5px] text-[var(--ink-2)]">No data in this window.</p>
               <p className="num mt-1 text-[11.5px] text-[var(--ink-3)]">

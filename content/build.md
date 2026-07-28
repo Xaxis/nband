@@ -61,12 +61,12 @@ Expected: at least `/dev/i2c-1`, `/dev/spidev0.0`, and `/dev/ttyAMA0`. If `/dev/
 
 This is the step that determines whether your node is a member of an array or a lone camera. Do not skip it.
 
-Wire the GNSS receiver: `VCC` to 3.3 V, `GND` to ground, `TX` to the Pi's `RX` (GPIO15), `RX` to the Pi's `TX` (GPIO14), and the `PPS` output to **GPIO18**. Take the receiver outside or put the antenna against a window. A cold start with a clear sky view takes 30 to 90 seconds; indoors under a roof it may never lock at all, and that is the single most common cause of "PPS is not working".
+Wire the GNSS receiver: `VCC` to 3.3 V, `GND` to ground, `TX` to the Pi's `RX` (GPIO15), `RX` to the Pi's `TX` (GPIO14), and the `PPS` output to **GPIO4, physical pin 7**. Take the receiver outside or put the antenna against a window. A cold start with a clear sky view takes 30 to 90 seconds; indoors under a roof it may never lock at all, and that is the single most common cause of "PPS is not working".
 
 Tell the kernel the PPS pin exists by adding this line to `/boot/firmware/config.txt`, then reboot:
 
 ```
-dtoverlay=pps-gpio,gpiopin=18
+dtoverlay=pps-gpio,gpiopin=4
 ```
 
 **Verify, part one.** The kernel sees pulses:
@@ -75,7 +75,7 @@ dtoverlay=pps-gpio,gpiopin=18
 sudo ppstest /dev/pps0
 ```
 
-Expected: a line roughly once per second, with the `sequence` number incrementing by exactly 1 each time. If it prints `timed out`, the receiver has no satellite fix (check the receiver's own lock LED) or GPIO18 is not connected. If sequence numbers jump by more than 1, you have a marginal antenna position.
+Expected: a line roughly once per second, with the `sequence` number incrementing by exactly 1 each time. If it prints `timed out`, the receiver has no satellite fix (check the receiver's own lock LED) or GPIO4 (pin 7) is not connected. If sequence numbers jump by more than 1, you have a marginal antenna position.
 
 Now point chrony at it. Add to `/etc/chrony/chrony.conf`:
 

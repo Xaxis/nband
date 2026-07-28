@@ -2,8 +2,30 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Container } from './ui'
 import { getDoc, listDocs } from '../lib/content'
+import { NAV_FLAT } from '../lib/nav'
 import { pageMetadata } from '../lib/metadata'
 import { PLATFORM_VERSION } from '../lib/schema/generated'
+
+/**
+ * Resolve a document slug to the route it is actually served at.
+ *
+ * This list assumed `/${slug}`, which was right for build and software and
+ * wrong for schema and api once those moved under /reference. Every
+ * documentation page therefore carried two links to 404s. The link checker did
+ * not catch it because its template-literal pattern deliberately skipped
+ * strings containing an interpolation, which is precisely the form the bug
+ * took. Resolving through the manifest means an unrouted document is a build
+ * error rather than a dead link.
+ */
+function docHref(slug: string): string {
+  const match = NAV_FLAT.find((i) => i.href === `/${slug}` || i.href.endsWith(`/${slug}`))
+  if (!match) {
+    throw new Error(
+      `content/${slug}.md has no route in lib/nav.ts. Add one, or the page will link to a 404.`,
+    )
+  }
+  return match.href
+}
 
 export function docMetadata(slug: string, path?: string) {
   const doc = getDoc(slug)
@@ -75,7 +97,7 @@ export function DocPage({ slug }: { slug: string }) {
                 {all.map((d) => (
                   <li key={d.slug}>
                     <Link
-                      href={`/${d.slug}`}
+                      href={docHref(d.slug)}
                       className={`block text-[12.5px] leading-snug transition-colors hover:text-[var(--ink)] ${
                         d.slug === slug ? 'text-[var(--ink)]' : 'text-[var(--ink-3)]'
                       }`}

@@ -131,7 +131,7 @@ export default function HardwarePage() {
       <Section
         eyebrow="Wiring"
         title="Where every wire goes"
-        lede="Physical pin numbers, because that is what you count on the board. Pin 12 carries the pulse-per-second signal and is the one connection that must be exactly right."
+        lede="Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal and is the one connection that must be exactly right."
       >
         <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start">
           <PinoutDiagram tier="t2" />

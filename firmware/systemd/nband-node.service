@@ -8,7 +8,8 @@ Wants=network-online.target
 # should still collect data and mark it degraded, not refuse to start.
 
 [Service]
-Type=simple
+Type=notify
+NotifyAccess=main
 User=nband
 Group=nband
 ExecStart=/opt/nband/venv/bin/python -m nband_node.agent \

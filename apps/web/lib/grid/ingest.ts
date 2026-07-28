@@ -174,10 +174,24 @@ export const nanosSchema = z
     return BigInt(v)
   })
 
-/** Split a nanosecond instant into the columns the archive stores. */
+/**
+ * Split a nanosecond instant into the two columns the archive stores.
+ *
+ * timestamptz holds MICROseconds, and t_ns_offset holds the remaining 0-999
+ * nanoseconds. An earlier version built the timestamp with `new Date()`, whose
+ * resolution is milliseconds, so every ingested sample silently lost up to 999
+ * microseconds while the schema documentation claimed a lossless round trip.
+ * The microsecond field is now written explicitly into the ISO string.
+ */
 export function splitNanos(ns: bigint): { iso: string; offset: number } {
-  const ms = ns / 1_000_000n
-  return { iso: new Date(Number(ms)).toISOString(), offset: Number(ns % 1000n) }
+  const totalUs = ns / 1000n
+  const ms = totalUs / 1000n
+  const usRemainder = Number(totalUs % 1000n)
+  const nsRemainder = Number(ns % 1000n)
+  // Date gives millisecond precision; append the microsecond digits.
+  const base = new Date(Number(ms)).toISOString() // ...THH:MM:SS.mmmZ
+  const iso = `${base.slice(0, -1)}${String(usRemainder).padStart(3, '0')}Z`
+  return { iso, offset: nsRemainder }
 }
 
 export const sampleSchema = z.object({
