@@ -8,11 +8,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'NBAND — an open multi-spectral sensing platform',
-    template: '%s — NBAND',
+    default: 'nband — instrument-grade evidence for unexplained aerial phenomena',
+    template: '%s — nband',
   },
   description:
-    'NBAND is an open, buildable sensor node that watches the sky across fourteen bands at once, timestamps everything to a common clock, and publishes what it records. Hardware, firmware, grid, and discriminator, versioned together.',
+    'Thousands of unexplained sightings a year, and almost no usable evidence. nband is an open sensor node you can build that watches fourteen bands at once, timestamps everything to GPS, rules out every ordinary explanation it can, and publishes the rest.',
   applicationName: 'NBAND',
   openGraph: {
     type: 'website',
@@ -21,17 +21,17 @@ export const metadata: Metadata = {
     // explicit template every page shared the site-wide one. Templates here
     // mirror the document title, so a shared link names the page it points at.
     title: {
-      default: 'nband — an open multi-spectral sensing platform',
+      default: 'nband — instrument-grade evidence for unexplained aerial phenomena',
       template: '%s — nband',
     },
     description:
-      'Fourteen bands, one clock, an open archive. Build a node, join the grid, read the data.',
+      'Fourteen bands, one clock, an open archive. Build a node, rule out the ordinary, publish what is left.',
     url: SITE_URL,
   },
   twitter: {
     card: 'summary_large_image',
     title: {
-      default: 'nband — an open multi-spectral sensing platform',
+      default: 'nband — instrument-grade evidence for unexplained aerial phenomena',
       template: '%s — nband',
     },
   },

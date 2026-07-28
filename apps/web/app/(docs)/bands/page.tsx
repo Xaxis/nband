@@ -21,7 +21,7 @@ import { SPECTRAL, bandExtent } from '../../../lib/spectrum'
 export const metadata = pageMetadata({
   title: 'The fourteen bands',
   description:
-    'What each band physically detects, how far it reaches, what weather kills it, and what it costs to open. With the full band-versus-phenomenon detection matrix.',
+    'What each band physically detects, how far it reaches, what weather kills it, and what it costs. With the full matrix of which bands can see which phenomena.',
   path: '/bands',
 })
 
@@ -143,9 +143,11 @@ export default function BandsPage() {
             Fourteen bands, and what each one is bad at.
           </h1>
           <p className="mt-5 max-w-[64ch] text-[16px] leading-relaxed text-[var(--ink-2)]">
-            A band is defined by physics, not by which part you bought. Two builders using different
-            thermal cameras contribute to the same band; the discriminator reads what each sensor
-            can actually resolve rather than assuming they are equivalent.
+            An object that shows up in one band is a story. An object that shows up in four
+            different physical channels at the same instant is a measurement. This page is what
+            each of those channels can and cannot do, because the limits matter far more than the
+            capabilities: almost every false alarm in a system like this comes from someone
+            forgetting one.
           </p>
           <div className="mt-10">
             <SpectrumBar />

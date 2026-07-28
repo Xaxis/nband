@@ -89,9 +89,9 @@ export default function HardwarePage() {
           </h1>
           <p className="mt-5 max-w-[64ch] text-[16px] leading-relaxed text-[var(--ink-2)]">
             Every price below was read off a named vendor page on {PRICES_AS_OF} and links back to
-            it. Nothing here is estimated. The tiers are a suggestion about sequence, not a
-            product line: the grid accepts data from any combination of these parts, and it
-            accepts substitutes you register yourself.
+            it. Nothing is estimated. The tiers are a suggestion about sequence rather than a
+            product line: the grid accepts any combination of these parts, and any substitute you
+            register. The cheapest useful node costs less than a phone.
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">

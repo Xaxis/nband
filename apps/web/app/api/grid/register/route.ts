@@ -99,6 +99,7 @@ export async function POST(request: Request) {
         horizon_mask: reg.site.horizon_mask,
         firmware_version: reg.firmware_version ?? null,
         schema_version: reg.schema_version ?? SCHEMA_VERSION,
+        is_simulated: reg.is_simulated,
       },
       { onConflict: 'slug' },
     )
@@ -134,6 +135,9 @@ export async function POST(request: Request) {
     channels: reg.channels.length,
     published_position: shown,
     location_precision_m: reg.site.location_precision_m,
-    note: 'Published position is fuzzed to the precision you declared. Your exact coordinates are not stored.',
+    is_simulated: reg.is_simulated,
+    note: reg.is_simulated
+      ? 'Enrolled as a SIMULATED node. Its data is excluded from the public feed and can never reach a verdict.'
+      : 'Published position is fuzzed to the precision you declared. Your exact coordinates are not stored.',
   })
 }

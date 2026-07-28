@@ -244,6 +244,8 @@ export const registerSchema = z.object({
   enrollment_secret: z.string().nullable().optional(),
   firmware_version: z.string().max(32).optional(),
   schema_version: z.string().max(32).optional(),
+  // Declared by the agent when running with --simulate.
+  is_simulated: z.boolean().default(false),
   site: z.object({
     lat: z.number().min(-90).max(90),
     lon: z.number().min(-180).max(180),

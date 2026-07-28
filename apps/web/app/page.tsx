@@ -20,35 +20,41 @@ export default function HomePage() {
       {/* The scene underlays this whole block; the headline composes on top. */}
       <HeroScene>
         <Container className="relative min-h-[560px] py-16 sm:min-h-[640px] sm:py-24">
-          <p className="eyebrow">Open multi-spectral sensing · v0.1.0</p>
+          <p className="eyebrow">Open instrument for anomalous aerial phenomena · v0.1.0</p>
 
-          <h1 className="mt-4 max-w-[19ch] text-[38px] font-semibold leading-[1.05] tracking-[-0.03em] text-[var(--ink)] sm:text-[58px]">
-            Most of the sky is invisible to you.
+          <h1 className="mt-4 max-w-[17ch] text-[38px] font-semibold leading-[1.04] tracking-[-0.03em] text-[var(--ink)] sm:text-[60px]">
+            Unexplained should not mean unmeasured.
           </h1>
 
-          <p className="mt-5 max-w-[58ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
-            Your eyes cover one narrow band out of fourteen. NBAND is a sensor node you can
-            actually build that watches the rest of them at the same time, stamps every reading
-            against a satellite-disciplined clock, and publishes what it records so that anyone can
-            check the work.
+          <p className="mt-5 max-w-[60ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
+            Thousands of people report something in the sky every year. Almost none of it produces
+            a record worth arguing about: one shaky camera, no clock, no second angle, no way to
+            rule out a satellite. The mystery is real. The evidence is terrible.
+          </p>
+
+          <p className="mt-4 max-w-[60ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
+            <span className="text-[var(--ink)]">nband is a fix for the evidence.</span> A sensor
+            node you can build for the price of a used laptop, watching fourteen bands at once,
+            timestamped to GPS within a few hundred nanoseconds, publishing everything it records
+            to an open archive. Most of what it catches will be aircraft. That is the point: you
+            cannot say a thing is unexplained until you have properly ruled out the explanations.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button href="/build">Build a node</Button>
-            <Button href="/telemetry" variant="ghost">
-              See live data
-            </Button>
             <Button href="/discriminator" variant="ghost">
-              How it decides
+              See how it rules things out
+            </Button>
+            <Button href="/bands" variant="ghost">
+              What it can actually see
             </Button>
           </div>
 
           <p className="mt-10 max-w-[52ch] text-[12.5px] leading-relaxed text-[var(--ink-3)]">
-            Behind this text: one node and eleven detection shells at their real ranges from the
-            band schema, log-scaled because the channels span thirty metres to three hundred
-            kilometres. A band lights as the object enters its shell. Two lit at once is a
-            coincidence, which is the only thing that promotes a buffered window to permanent
-            storage.
+            Behind this text: one node, eleven detection shells at their real ranges, and something
+            crossing them. A band lights as the object enters its range. Two lit at the same
+            instant is a coincidence, and a coincidence is the difference between a story and a
+            measurement.
           </p>
         </Container>
       </HeroScene>
@@ -66,26 +72,26 @@ export default function HomePage() {
           <div className="grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
             <Stat
               value="14"
-              label="Bands sampled at once"
-              detail="Gamma through radio, plus acoustic and seismic"
+              label="Bands watching simultaneously"
+              detail="Gamma through radio, plus sound and ground motion"
               accent="#4ea9ff"
             />
             <Stat
               value="±500 ns"
-              label="Clock discipline"
-              detail="GNSS pulse-per-second, not network time"
+              label="Timing accuracy"
+              detail="Two nodes this precise triangulate a real altitude"
               accent="#199e70"
             />
             <Stat
               value={`$${tierCost('t1').toFixed(0)}`}
-              label="Entry build cost"
-              detail="Real July 2026 prices, sourced per part"
+              label="To build the entry node"
+              detail="Every price sourced and dated, nothing estimated"
               accent="#c98500"
             />
             <Stat
               value="0"
-              label="Things it claims to identify"
-              detail="It reports what it could not explain, nothing more"
+              label="Things it will claim to identify"
+              detail="It reports what it could not explain. Never what it was."
               accent="#d55181"
             />
           </div>
@@ -94,21 +100,24 @@ export default function HomePage() {
 
       {/* ------------------------------------------------------ Why bands */}
       <Section
-        eyebrow="The idea"
-        title="One sensor can be fooled. Fourteen disagreeing is information."
+        eyebrow="Why every sighting falls apart"
+        title="A camera alone can never settle anything"
         lede={
           <>
             <p>
-              A bright dot on a camera is almost nothing on its own. It could be a satellite, an
-              aircraft, a bug lit by a porch light, or a dead pixel. The picture alone cannot tell
-              you, and no amount of arguing about the picture will settle it.
+              Every famous piece of UAP footage has the same flaw. A bright shape on one sensor,
+              filmed at unknown range, with no independent measurement of anything. Is it enormous
+              and distant or small and close? Is it hot? Is it transmitting? Was it silent? Nobody
+              can say, so the argument never ends, and it never ends because the recording never
+              contained the answer in the first place.
             </p>
             <p className="mt-3">
-              What settles it is asking the other thirteen bands what they saw at the same
-              instant. Something genuinely hot shows up in the thermal band. Something with an
-              engine makes noise the microphones hear a few seconds later. Something transmitting
-              lights up the radio receiver. Something close and metallic bends the magnetometer.
-              A dead pixel does none of that, and neither does a satellite.
+              The way out is asking thirteen other bands what they saw at the same instant.
+              Something with an engine is hot in the thermal band and audible seconds later. A
+              satellite is exactly where the orbital catalogue says it will be. A transmitting
+              drone shows up on the radio. An insect near the lens shows up nowhere else at all.
+              You do not need to guess when four independent physical channels disagree with each
+              other.
             </p>
           </>
         }
@@ -117,18 +126,18 @@ export default function HomePage() {
           {[
             {
               n: '01',
-              h: 'Everything is stamped to the same clock',
+              h: 'Everything shares one clock, to the nanosecond',
               p: `Every node disciplines its clock against GNSS satellites with a hardware pulse-per-second signal, holding a few hundred nanoseconds. That is what makes "at the same instant" a measurement instead of a figure of speech, and it is why two nodes ${THRESHOLDS.maxNodeSeparationKmForGeometry} km apart can triangulate a real altitude rather than guess at one.`,
             },
             {
               n: '02',
-              h: 'Agreement across bands is the trigger',
+              h: 'Nothing is kept until two bands agree',
               p: `A single channel crossing a threshold is noise until something else agrees with it. When two bands trigger inside ${THRESHOLDS.coincidenceWindowMs} milliseconds of each other, the node promotes the whole buffered window to permanent storage, including the ${THRESHOLDS.ringBufferPreRollS} seconds that happened before the trigger fired.`,
             },
             {
               n: '03',
-              h: 'Known things are subtracted first',
-              p: 'Before anything is called interesting, the discriminator checks it against aircraft transponders, satellite orbits, lightning networks, the site’s own radio interference fingerprint, weather, and space weather. Most events are explained and closed. That is the system working.',
+              h: 'Everything ordinary is subtracted first',
+              p: 'Before anything is called interesting it is checked against aircraft transponders, satellite orbits, lightning networks, the site’s own radio interference, weather, and space weather. The overwhelming majority of events close as explained. A system that frequently finds mysteries has a calibration problem, not a discovery.',
             },
           ].map((c) => (
             <div key={c.n} className="card p-5">
@@ -146,8 +155,8 @@ export default function HomePage() {
       <Section
         className="border-y border-[var(--line)] bg-[var(--surface-0)]"
         eyebrow="What it sees"
-        title="Each band answers a different question"
-        lede="These are not fourteen versions of the same picture. They respond to different physics, they fail in different weather, and they are wrong about different things. That is exactly why they are worth having together."
+        title="Fourteen ways of being wrong about the same object"
+        lede="These are not fourteen versions of one picture. Each responds to different physics, fails in different weather, and is fooled by different things. An object that survives all of them at once is genuinely difficult to explain, and that is the only kind of claim worth making."
       >
         <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {DETECTION_BANDS.slice(0, 9).map((b) => (
@@ -175,9 +184,9 @@ export default function HomePage() {
 
       {/* -------------------------------------------------------- Discriminator */}
       <Section
-        eyebrow="The discriminator"
-        title="The top of the ladder is “unresolved”, not “alien”"
-        lede="Every event gets scored against a fixed set of hypotheses and sorted onto a five-rung ladder. There is deliberately no rung for artificial or non-human. The instrument can establish that something was not explained by any catalogue it checked. It cannot establish what that something was, and the schema refuses to encode a claim the hardware cannot support."
+        eyebrow="The honest part"
+        title="The top of the ladder is “unresolved”, and it stops there"
+        lede="Every event is scored against a fixed set of hypotheses and sorted onto five rungs. There is deliberately no rung for artificial, non-human, or craft. This instrument can establish that nothing it knows about explains what it saw. It cannot establish what did, and the database has no column capable of storing that claim. If you want a project that will tell you it found a spaceship, this is the wrong one."
       >
         <div className="mt-9 space-y-2.5">
           {CLASSIFICATION_ORDER.map((id) => {
@@ -261,7 +270,7 @@ export default function HomePage() {
       {/* ------------------------------------------------------------- Honesty */}
       <Section
         eyebrow="Before you build one"
-        title="What this will not do for you"
+        title="Four things you should hear now rather than later"
       >
         <div className="mt-7 grid gap-4 md:grid-cols-2">
           {[
@@ -278,8 +287,8 @@ export default function HomePage() {
               p: 'Glass blocks ultraviolet and is opaque in the thermal band. A node indoors is a node with four dead channels. It needs sky, power, a horizon survey, and somewhere the magnetometer is not sitting next to a refrigerator.',
             },
             {
-              h: 'A null result is the likely outcome, and it counts',
-              p: 'Five hundred hours of coverage that turns up nothing unexplained is a real measurement: it puts a bound on how often anything unusual crosses that patch of sky. The archive is built to make that bound computable rather than to make headlines.',
+              h: 'You will probably find nothing, and that counts',
+              p: 'Five hundred hours of coverage turning up nothing unexplained is a real result. It puts a number on how often anything unusual crosses that patch of sky, which is something nobody can currently state. The archive is built to make that number computable rather than to make headlines.',
             },
           ].map((c) => (
             <div key={c.h} className="card p-5">
@@ -295,12 +304,13 @@ export default function HomePage() {
         <Container className="py-16 sm:py-20">
           <div className="max-w-[56ch]">
             <h2 className="text-[26px] font-semibold leading-tight tracking-[-0.02em] text-[var(--ink)] sm:text-[32px]">
-              The build guide starts with one camera and a clock.
+              It starts with one camera and a clock.
             </h2>
             <p className="mt-3 text-[15.5px] leading-relaxed text-[var(--ink-2)]">
-              Every step ends in something you can verify before you move on: a command that prints
-              an expected value, a capture you can look at, a timing offset you can read. If a step
-              does not verify, the guide tells you what usually causes that.
+              Ten steps, each ending in something you can check before spending money on the next:
+              a command that prints an expected value, an image you can look at, a timing offset
+              you can read. If a step does not verify, the guide names what usually causes it. You
+              can stop after step five and still be contributing real data to the grid.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button href="/build">Start the build guide</Button>

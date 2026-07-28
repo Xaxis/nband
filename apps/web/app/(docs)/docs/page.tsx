@@ -7,7 +7,7 @@ import { PLATFORM_VERSION, tierCost, tierPower } from '../../../lib/schema/gener
 export const metadata = pageMetadata({
   title: 'Documentation',
   description:
-    'How the pieces of nband fit together, and the shortest path through them depending on what you are trying to do.',
+    'How the pieces fit together, and the shortest path through them depending on whether you are deciding, building, or reading the archive.',
   path: '/docs',
 })
 
@@ -48,13 +48,15 @@ export default function DocsIndex() {
         <Container className="py-12">
           <p className="eyebrow">Documentation · v{PLATFORM_VERSION}</p>
           <h1 className="mt-2.5 max-w-[24ch] text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--ink)] sm:text-[40px]">
-            Everything here is versioned with the firmware.
+            Building an instrument that can be argued with.
           </h1>
           <p className="mt-4 max-w-[66ch] text-[15.5px] leading-relaxed text-[var(--ink-2)]">
-            Hardware, firmware, database, analysis, and these pages live in one repository on one
-            version. Each document declares the firmware version it was written against, and a
-            drift check fails the build when they disagree. Documentation that drifts from the
-            hardware is worse than none, because it is trusted.
+            The reason unexplained sightings stay unexplained is almost never that the object was
+            exotic. It is that nobody measured it properly. Everything documented here exists to
+            change that: hardware, firmware, database, analysis, and these pages in one repository
+            on one version, with a drift check that fails the build when any of them disagree.
+            Documentation that has quietly stopped matching the hardware is worse than none,
+            because it is trusted.
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">

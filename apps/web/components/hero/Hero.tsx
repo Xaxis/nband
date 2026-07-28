@@ -93,7 +93,7 @@ export function HeroScene({ children }: { children: React.ReactNode }) {
       <button
         type="button"
         onClick={toggle}
-        className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-md border border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_82%,transparent)] px-2.5 py-1.5 text-[12px] text-[var(--ink-2)] backdrop-blur transition-colors hover:border-[var(--line-strong)] hover:text-[var(--ink)]"
+        className="absolute right-3 top-3 z-20 flex items-center gap-1.5 rounded-md border border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_82%,transparent)] px-2.5 py-1.5 text-[12px] text-[var(--ink-2)] backdrop-blur transition-colors hover:border-[var(--line-strong)] hover:text-[var(--ink)]"
         aria-label={expanded ? 'Exit expanded view' : 'Expand the sensor volume'}
       >
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">

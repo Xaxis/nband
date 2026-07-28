@@ -315,7 +315,7 @@ export default function SkyScene({ expanded = false }: { expanded?: boolean }) {
       <div ref={hostRef} className="h-full w-full" aria-hidden="true" />
 
       {/* The scene is decorative to a screen reader; the readout is not. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-end gap-2 p-3 pr-24">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-end gap-2 p-3">
         <div className="flex flex-wrap gap-1.5">
           {active.length === 0 ? (
             <span className="num rounded border border-[var(--line)] bg-[color-mix(in_oklab,var(--surface-1)_80%,transparent)] px-2 py-1 text-[11px] text-[var(--ink-3)]">

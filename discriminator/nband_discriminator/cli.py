@@ -211,6 +211,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     counts: dict[str, int] = {}
+    skipped_simulated = 0
     for ev in events:
         links = grid.get(f"/event_detections?event_id=eq.{ev['id']}&select=detection_id")
         det_ids = [l["detection_id"] for l in links]
@@ -224,9 +225,16 @@ def main(argv: list[str] | None = None) -> int:
         if not detections:
             continue
         nodes = grid.get(
-            f"/nodes?id=eq.{detections[0]['node_id']}&select=lat,lon,elevation_m"
+            f"/nodes?id=eq.{detections[0]['node_id']}"
+            "&select=lat,lon,elevation_m,is_simulated,slug"
         )
         node = nodes[0] if nodes else {}
+        # Synthetic data is useful for exercising the pipeline and worthless as
+        # evidence. Scoring it would put verdicts in the archive that look
+        # exactly like verdicts about the sky.
+        if node.get("is_simulated"):
+            skipped_simulated += 1
+            continue
 
         verdict = engine.evaluate(build_observation(ev, detections, node))
         counts[verdict.classification.value] = counts.get(verdict.classification.value, 0) + 1
@@ -238,6 +246,8 @@ def main(argv: list[str] | None = None) -> int:
         if not args.dry_run:
             write_verdict(grid, ev["id"], verdict)
 
+    if skipped_simulated:
+        print(f"\nSkipped {skipped_simulated} event(s) from simulated nodes.")
     print(f"\nScored {sum(counts.values())} event(s) with discriminator {DISCRIMINATOR_VERSION}:")
     for k in sorted(counts, key=lambda k: -counts[k]):
         print(f"  {counts[k]:>4}  {k}")

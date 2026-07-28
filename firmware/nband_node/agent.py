@@ -206,6 +206,10 @@ class GridClient:
                 "enrollment_secret": cfg.grid.enrollment_secret,
                 "firmware_version": PLATFORM_VERSION,
                 "schema_version": SCHEMA_VERSION,
+                # The node knows whether it is inventing its data, so it says
+                # so rather than leaving the grid to guess. Simulated nodes are
+                # excluded from the public feed and never reach a verdict.
+                "is_simulated": cfg.simulate,
                 "site": {
                     "lat": cfg.site.latitude,
                     "lon": cfg.site.longitude,
