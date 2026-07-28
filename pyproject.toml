@@ -19,7 +19,13 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"**/tests/*" = ["E402"]  # tests adjust sys.path before importing the package
+# These genuinely must import after code runs: each inserts the package
+# directory on sys.path first, because the suites are runnable directly
+# (`python3 firmware/tests/test_core.py`) as well as under pytest, and the
+# packages are not installed in the test environment.
+"firmware/tests/**" = ["E402"]
+"discriminator/tests/**" = ["E402"]
+"tools/gen-fixtures.py" = ["E402"]
 
 [tool.ruff.format]
 quote-style = "double"

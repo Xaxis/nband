@@ -15,7 +15,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "discriminator"), str(ROOT / "firmware")]
 
-from nband_discriminator.catalogs import (  # noqa: E402
+from nband_discriminator.catalogs import (
     AdsbCatalog,
     LightningCatalog,
     Observation,
@@ -23,7 +23,7 @@ from nband_discriminator.catalogs import (  # noqa: E402
     TleCatalog,
     WeatherCatalog,
 )
-from nband_discriminator.engine import Discriminator  # noqa: E402
+from nband_discriminator.engine import Discriminator
 
 NS = 1_000_000_000
 BEARING = dict(azimuth_deg=180.0, elev_angle_deg=40.0)

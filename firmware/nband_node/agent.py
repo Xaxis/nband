@@ -16,14 +16,15 @@ node actually came from it.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import logging
 import os
 import queue
 import secrets
-import subprocess
 import shutil
 import signal
+import subprocess
 import sys
 import threading
 import time
@@ -36,9 +37,9 @@ from pathlib import Path
 from . import config as configmod
 from . import sensors
 from .core import (
+    ChannelTrigger,
     Clock,
     CoincidenceDetector,
-    ChannelTrigger,
     Detection,
     NoiseFloor,
     RingBuffer,
@@ -358,8 +359,8 @@ class ChannelWorker(threading.Thread):
     def __init__(
         self,
         channel: configmod.ChannelConfig,
-        driver: "sensors.Driver",
-        out: "queue.Queue[Sample]",
+        driver: sensors.Driver,
+        out: queue.Queue[Sample],
         clock: Clock,
         stop: threading.Event,
     ) -> None:
@@ -389,7 +390,7 @@ class ChannelWorker(threading.Thread):
             next_read = now + interval
             try:
                 sample = self.driver.read(self.clock.now_ns())
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 self.failures += 1
                 log.error("channel %s read failed: %s", self.channel.channel_id, exc)
                 # Back off so a hard-failing driver cannot spin the CPU.
@@ -443,7 +444,7 @@ class Agent:
         # Bounded rather than unbounded because an unbounded queue turns a slow
         # consumer into unbounded memory growth, which is exactly the failure
         # the 2 GB budget exists to avoid.
-        self._samples: "queue.Queue[Sample]" = queue.Queue(maxsize=4096)
+        self._samples: queue.Queue[Sample] = queue.Queue(maxsize=4096)
 
         for ch in cfg.channels:
             if not ch.enabled:
@@ -462,7 +463,7 @@ class Agent:
         for cid, drv in list(self.drivers.items()):
             try:
                 drv.open()
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 log.error("channel %s failed to open, disabling: %s", cid, exc)
                 del self.drivers[cid]
         if not self.drivers:
@@ -470,10 +471,10 @@ class Agent:
 
     def close_all(self) -> None:
         for drv in self.drivers.values():
-            try:
+            # Shutdown must not be derailed by one uncooperative driver: the
+            # spool still has to be flushed after this.
+            with contextlib.suppress(Exception):
                 drv.close()
-            except Exception:  # noqa: BLE001, S110
-                pass
 
     def _record(self, s: Sample) -> None:
         self.buffers[s.channel_id].append(s)

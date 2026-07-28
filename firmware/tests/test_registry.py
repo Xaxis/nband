@@ -19,9 +19,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "firmware"))
 
-from nband_node import config as configmod  # noqa: E402
-from nband_node import sensors  # noqa: E402
-from nband_node.schema_generated import Band  # noqa: E402
+from nband_node import config as configmod
+from nband_node import sensors
+from nband_node.schema_generated import Band
 
 HARDWARE = json.loads((ROOT / "schema" / "hardware.json").read_text())
 
@@ -116,7 +116,7 @@ def _run():
         except AssertionError as exc:
             failed += 1
             print(f"  FAIL  {name}  {exc}")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             failed += 1
             print(f"  ERROR {name}  {type(exc).__name__}: {exc}")
     print(f"\n{len(tests) - failed}/{len(tests)} passed")

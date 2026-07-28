@@ -22,11 +22,12 @@ permanent storage.
 
 from __future__ import annotations
 
+import contextlib
 import math
 import time
 from collections import deque
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
-from typing import Iterable, Iterator
 
 from .schema_generated import THRESHOLDS, Band, ClockQuality, TriggerReason
 
@@ -187,7 +188,7 @@ class NoiseFloor:
     channel instead of averaging over it.
     """
 
-    __slots__ = ("_n", "_mean", "_var", "_warmup", "_alpha")
+    __slots__ = ("_alpha", "_mean", "_n", "_var", "_warmup")
 
     def __init__(self, warmup: int = 64, halflife_samples: float = 3600.0) -> None:
         self._n = 0
@@ -347,10 +348,10 @@ class CoincidenceDetector:
         if abs(trigger.z_score) >= self._solo_sigma:
             # Consume it. Leaving it pending let the same crossing appear again
             # inside a later coincidence.
-            try:
+            # It may already have aged out of the window between arriving and
+            # being published, which is not an error.
+            with contextlib.suppress(ValueError):
                 self._pending.remove(trigger)
-            except ValueError:
-                pass
             return Detection(
                 t_start_ns=trigger.t_ns,
                 t_end_ns=trigger.t_ns,

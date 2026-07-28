@@ -20,9 +20,9 @@ help: ## List available targets
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
 	  | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[1m%-20s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install JS and Python dependencies
+install: ## Install JS and Python dependencies, pinned to match CI
 	yarn install
-	$(PY) -m pip install --quiet cryptography
+	$(PY) -m pip install --quiet -r requirements-dev.txt
 
 codegen: ## Regenerate bindings and the search index from schema/
 	node tools/codegen.mjs
@@ -56,8 +56,11 @@ test: test-firmware test-discriminator ## All Python tests
 lint: ## Type-check and lint everything
 	@yarn workspace @nband/web type-check
 	@yarn workspace @nband/web lint
-	@command -v ruff >/dev/null 2>&1 && ruff check firmware discriminator tools || \
-	  echo "  ruff not installed, skipping Python lint (pip install ruff)"
+	@command -v ruff >/dev/null 2>&1 || { \
+	  echo "  ruff is not installed, so this check would silently pass locally"; \
+	  echo "  and fail in CI. Run: make install"; exit 1; }
+	@ruff check firmware discriminator tools
+	@ruff format --check firmware discriminator tools
 
 format: ## Format Python and web sources in place
 	@command -v ruff >/dev/null 2>&1 && ruff format firmware discriminator tools || true

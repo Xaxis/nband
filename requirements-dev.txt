@@ -1,0 +1,9 @@
+# Pinned developer toolchain.
+#
+# The Makefile made local and CI run the same commands, which is necessary but
+# not sufficient: CI installed whatever `pip install ruff` resolved to that day,
+# so a newer ruff failed the build on rules the author's older one did not have.
+# Same commands, different tools, different answers. Pin both.
+
+ruff==0.15.12
+cryptography>=42

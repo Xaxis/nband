@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from nband_node.core import (  # noqa: E402
+from nband_node.core import (
     Q_CLOCK_DEGRADED,
     ChannelTrigger,
     Clock,
@@ -24,7 +24,7 @@ from nband_node.core import (  # noqa: E402
     RingBuffer,
     Sample,
 )
-from nband_node.schema_generated import Band, ClockQuality, TriggerReason  # noqa: E402
+from nband_node.schema_generated import Band, ClockQuality, TriggerReason
 
 MS = 1_000_000
 
@@ -252,7 +252,7 @@ def _run():
         except AssertionError as exc:
             failed += 1
             print(f"  FAIL  {name}  {exc}")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             failed += 1
             print(f"  ERROR {name}  {type(exc).__name__}: {exc}")
     print(f"\n{len(tests) - failed}/{len(tests)} passed")

@@ -21,10 +21,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from nband_node.agent import ChannelWorker  # noqa: E402
-from nband_node.config import ChannelConfig  # noqa: E402
-from nband_node.core import Clock, Sample  # noqa: E402
-from nband_node.schema_generated import Band, ClockQuality  # noqa: E402
+from nband_node.agent import ChannelWorker
+from nband_node.config import ChannelConfig
+from nband_node.core import Clock, Sample
+from nband_node.schema_generated import Band, ClockQuality
 
 
 class _Driver:
@@ -47,9 +47,7 @@ class _Driver:
 
 
 def _channel(cid: str, band: Band, rate: float) -> ChannelConfig:
-    return ChannelConfig(
-        channel_id=cid, band=band, driver="test", unit="x", sample_rate_hz=rate
-    )
+    return ChannelConfig(channel_id=cid, band=band, driver="test", unit="x", sample_rate_hz=rate)
 
 
 def _run(workers: list[ChannelWorker], halt: threading.Event, seconds: float):
@@ -157,7 +155,7 @@ def _run_all():
         except AssertionError as exc:
             failed += 1
             print(f"  FAIL  {name}  {exc}")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             failed += 1
             print(f"  ERROR {name}  {type(exc).__name__}: {exc}")
     print(f"\n{len(tests) - failed}/{len(tests)} passed")

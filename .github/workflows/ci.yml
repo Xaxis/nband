@@ -42,7 +42,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install --quiet cryptography ruff
+      # Pinned: an unpinned ruff meant CI resolved a newer version than the
+      # author's and failed on rules their local run had never seen.
+      - run: pip install --quiet -r requirements-dev.txt
       - run: make test
       - name: lint
         run: ruff check firmware discriminator tools

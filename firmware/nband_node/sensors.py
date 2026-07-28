@@ -17,8 +17,8 @@ from __future__ import annotations
 import math
 import time
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 from .config import ChannelConfig
 from .core import Q_CALIBRATION_STALE, Q_CLOCK_DEGRADED, Q_SATURATED, Q_SELF_EMISSION, Sample
@@ -78,7 +78,7 @@ class Driver(ABC):
         try:
             self.open()
             s = self.read(time.time_ns())
-        except Exception as exc:  # noqa: BLE001 - surfaced to the operator
+        except Exception as exc:
             return False, f"{type(exc).__name__}: {exc}"
         finally:
             self.close()
@@ -191,8 +191,8 @@ class Bme68xDriver(Driver):
     band = Band.ENV
 
     def open(self) -> None:
-        import board  # type: ignore[import-not-found]
         import adafruit_bme680  # type: ignore[import-not-found]
+        import board  # type: ignore[import-not-found]
 
         i2c = board.I2C()
         addr = int(self.channel.options.get("address", 0x77))
@@ -222,8 +222,8 @@ class Mlx90640Driver(Driver):
     band = Band.LWIR
 
     def open(self) -> None:
-        import board  # type: ignore[import-not-found]
         import adafruit_mlx90640  # type: ignore[import-not-found]
+        import board  # type: ignore[import-not-found]
 
         i2c = board.I2C()
         self._dev = adafruit_mlx90640.MLX90640(i2c)
@@ -701,8 +701,8 @@ class Bno08xDriver(Driver):
     band = Band.NAV
 
     def open(self) -> None:
-        import board  # type: ignore[import-not-found]
         import adafruit_bno08x  # type: ignore[import-not-found]
+        import board  # type: ignore[import-not-found]
         from adafruit_bno08x.i2c import BNO08X_I2C  # type: ignore[import-not-found]
 
         self._dev = BNO08X_I2C(board.I2C())
