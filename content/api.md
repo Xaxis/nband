@@ -95,6 +95,14 @@ A node whose clock has fallen below GNSS discipline is marked `degraded` even wh
 
 Everything else is reachable through Supabase's PostgREST surface using the public anon key, which is read-only by row-level-security policy. The tables are documented under the data schema.
 
+One exception is worth knowing before it surprises you. `select=*` against `nodes` returns a 403, and you must name the columns you want:
+
+```
+GET /rest/v1/nodes?select=slug,display_name,tier,status,lat,lon
+```
+
+The anonymous role holds column-level grants on that table rather than a table-level one, so that `pubkey` can be withheld. A node's public key is how it authenticates, it was never needed by any reader, and while it was readable it could be used to reconstruct the offset that obscures an operator's position. Every other column is public and every other table accepts `select=*` normally. New columns added to `nodes` are private until explicitly published, which is deliberate: the failure mode is a visible 403 rather than a silent disclosure.
+
 ## Rate limits and etiquette
 
 There are no hard limits yet. The batch ceilings above are the practical ones. A node uploading every 30 seconds with a few thousand samples per batch is the design case.

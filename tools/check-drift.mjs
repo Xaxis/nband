@@ -240,6 +240,46 @@ check('off-grid power sizing matches the tier load', () => {
   return 'panel and battery cover the summed draw of every tier that ships them'
 })
 
+check('USB peripherals fit the host, or ship a powered hub', () => {
+  // Tier 3 listed five bus-powered peripherals drawing 2.46 A across four ports
+  // on a board that budgets 1.6 A for all of them. The failure mode is not a
+  // clean refusal — the host brown-outs peripherals under load, so channels
+  // drop out intermittently, which reads as flaky hardware rather than as a
+  // power budget nobody added up.
+  const HOST_USB_A = 1.6 // Raspberry Pi 5, total across all ports, with a 5 A supply
+  const HOST_USB_PORTS = 4
+  const errors = []
+
+  for (const tier of spec.enums.tier.values) {
+    const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id))
+    const usb = parts.filter((p) => p.interface === 'usb' && p.category !== 'power')
+    if (usb.length === 0) continue
+
+    const hub = parts.find((p) => p.category === 'power' && p.keySpecs?.ports)
+    const amps = usb.reduce((s, p) => s + (p.electrical?.activeW ?? 0) / 5, 0)
+
+    if (amps > HOST_USB_A && !hub) {
+      errors.push(
+        `${tier.id}: ${usb.length} bus-powered peripherals draw ${amps.toFixed(2)} A but the ` +
+          `host budgets ${HOST_USB_A} A, and no powered hub is in the parts list`,
+      )
+    }
+    if (usb.length > HOST_USB_PORTS && !hub) {
+      errors.push(
+        `${tier.id}: ${usb.length} USB devices for ${HOST_USB_PORTS} ports and no hub`,
+      )
+    }
+    if (hub && amps > HOST_USB_A + Number(hub.keySpecs.supplyA ?? 0)) {
+      errors.push(
+        `${tier.id}: ${amps.toFixed(2)} A exceeds host plus hub supply`,
+      )
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return 'every tier can actually power the USB devices it ships'
+})
+
 check('power figures in prose match the summed parts list', () => {
   // The solar-kit notes quoted 14.4 W and 22.2 W while the registry summed to
   // 12.8 W and 24.1 W, and the hardware page printed the prose figure directly

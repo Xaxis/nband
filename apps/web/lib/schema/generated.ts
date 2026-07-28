@@ -2250,13 +2250,48 @@ export const PARTS: readonly Part[] = [
       "batteryWh": 3840,
       "autonomyDays": 3
     },
-    "notes": "Tier 3 draws 24.1 W continuous, 578 Wh per day, which is 88 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. An earlier revision shipped a 180 W array and 270 Ah bank here, which met the project's own sizing rule only because the drift check quietly allowed a ten percent shortfall; at 92 percent of the required panel it would have run a deficit through any overcast week. The allowance has been removed and the kit resized to clear the rule outright. Assumptions: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy.",
+    "notes": "Tier 3 draws 24.6 W continuous, 590 Wh per day, which is 92 percent more than tier 2. The short-wave infrared imager and the wideband receiver account for most of the difference. An earlier revision shipped a 180 W array and 270 Ah bank here, which met the project's own sizing rule only because the drift check quietly allowed a ten percent shortfall; at 92 percent of the required panel it would have run a deficit through any overcast week. The allowance has been removed and the kit resized to clear the rule outright. Assumptions: four peak-sun-hours, 35 percent margin, LiFePO4 at 50 percent usable depth of discharge, three days of autonomy.",
     "electrical": {
       "idleW": 0,
       "activeW": 0,
       "rail": "none",
       "pins": []
     }
+  },
+  {
+    "id": "usb-hub-powered",
+    "category": "power",
+    "band": null,
+    "vendor": "generic",
+    "model": "4-port USB 3.0 hub with 5 V 4 A external supply",
+    "status": "reference",
+    "tiers": [
+      "t3"
+    ],
+    "priceUsd": 38,
+    "priceAsOf": "2026-07-27",
+    "sourceUrl": "https://www.amazon.com/s?k=powered+usb+3.0+hub+4+port+external+power",
+    "interface": "usb",
+    "driver": null,
+    "keySpecs": {
+      "ports": 4,
+      "supplyA": 4,
+      "perPortA": 0.9
+    },
+    "alternatives": [],
+    "candidateAlternatives": [],
+    "electrical": {
+      "idleW": 0.5,
+      "activeW": 0.5,
+      "rail": "12V",
+      "pins": [
+        {
+          "signal": "USB",
+          "pin": "USB-A"
+        }
+      ]
+    },
+    "notes": "Not optional on tier 3, and its absence was a real defect in an earlier bill of materials. That tier lists five bus-powered peripherals drawing 12.3 W between them, which is 2.46 A at 5 V, against a Raspberry Pi 5 that budgets 1.6 A across all USB ports even with a 5 A supply, and has four ports for five devices. Plugged in directly, the short-wave infrared imager and the millimetre-wave radar alone exceed the budget, and the failure mode is not a clean refusal: the Pi brown-outs peripherals under load, so channels drop out intermittently under exactly the conditions that matter. Put the two highest-draw devices on the hub at minimum."
   }
 ] as unknown as readonly Part[]
 export const PRICES_AS_OF = '2026-07-27' as const
