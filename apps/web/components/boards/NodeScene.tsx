@@ -37,6 +37,7 @@ interface Body {
   colour?: string
   cylinder?: boolean
   boardOnly?: boolean
+  shell?: boolean
   size: [number, number, number]
   pos: [number, number, number]
   sourced: boolean
@@ -172,6 +173,9 @@ export default function NodeScene({
 
     for (const b of visible) {
       if (b.glb) continue // loaded separately below
+      // A part drawn as its own detail geometry does not also get drawn as the
+      // block that used to stand in for it.
+      if (b.shell) continue
       const [w, h, d] = b.size
       // Standoffs are round. Drawing them as cubes made the one thing
       // physically holding the stack together look like more scattered debris.

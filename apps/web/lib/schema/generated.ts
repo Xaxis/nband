@@ -1326,80 +1326,90 @@ export const PARTS: readonly Part[] = [
         {
           "id": "gpio",
           "label": "40-pin GPIO header",
-          "x": 3.5,
-          "y": 49,
-          "w": 51,
+          "x": 2.2,
+          "y": 48.7,
+          "w": 52.4,
           "d": 5.1,
           "h": 8.5,
-          "colour": "#22252b"
+          "colour": "#1c1f24"
         },
         {
-          "id": "usb3a",
-          "label": "USB 3.0",
-          "x": 68,
-          "y": 30,
-          "w": 17,
-          "d": 15.5,
+          "id": "eth",
+          "label": "Gigabit Ethernet",
+          "x": 70.5,
+          "y": 1.5,
+          "w": 14.5,
+          "d": 16,
+          "h": 13.5,
+          "colour": "#43484f"
+        },
+        {
+          "id": "usb3",
+          "label": "USB 3.0 x2",
+          "x": 70.5,
+          "y": 20,
+          "w": 14.5,
+          "d": 17.5,
           "h": 16.4,
           "colour": "#2f4f8f"
         },
         {
-          "id": "usb2a",
-          "label": "USB 2.0",
-          "x": 68,
-          "y": 10,
-          "w": 17,
-          "d": 15.5,
+          "id": "usb2",
+          "label": "USB 2.0 x2",
+          "x": 70.5,
+          "y": 38.5,
+          "w": 14.5,
+          "d": 17.5,
           "h": 16.4,
-          "colour": "#2b2f36"
-        },
-        {
-          "id": "eth",
-          "label": "Ethernet",
-          "x": 68,
-          "y": 45,
-          "w": 17,
-          "d": 16,
-          "h": 13.5,
-          "colour": "#3a3f47"
+          "colour": "#26292f"
         },
         {
           "id": "usbc",
           "label": "USB-C power",
-          "x": 3,
-          "y": 24,
+          "x": 8.5,
+          "y": -0.6,
           "w": 9,
-          "d": 3.2,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "d": 3.4,
+          "h": 3.3,
+          "colour": "#9aa0a8"
         },
         {
           "id": "hdmi0",
           "label": "micro-HDMI 0",
-          "x": 3,
-          "y": 14,
-          "w": 7.5,
-          "d": 3,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "x": 22.5,
+          "y": -0.6,
+          "w": 7.2,
+          "d": 3.2,
+          "h": 3.3,
+          "colour": "#9aa0a8"
         },
         {
           "id": "hdmi1",
           "label": "micro-HDMI 1",
-          "x": 3,
-          "y": 4,
-          "w": 7.5,
-          "d": 3,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "x": 36.5,
+          "y": -0.6,
+          "w": 7.2,
+          "d": 3.2,
+          "h": 3.3,
+          "colour": "#9aa0a8"
+        },
+        {
+          "id": "sd",
+          "label": "microSD",
+          "x": 22,
+          "y": -1.2,
+          "w": 12,
+          "d": 1.6,
+          "h": 1.6,
+          "colour": "#6b7078"
         },
         {
           "id": "csi0",
           "label": "CSI/DSI 0",
-          "x": 30,
-          "y": 1.5,
-          "w": 22,
-          "d": 2.5,
+          "x": 45,
+          "y": 2,
+          "w": 2.6,
+          "d": 21,
           "h": 3,
           "colour": "#c8b48a"
         },
@@ -1407,41 +1417,71 @@ export const PARTS: readonly Part[] = [
           "id": "csi1",
           "label": "CSI/DSI 1",
           "x": 56,
-          "y": 1.5,
-          "w": 22,
-          "d": 2.5,
+          "y": 2,
+          "w": 2.6,
+          "d": 21,
           "h": 3,
           "colour": "#c8b48a"
         },
         {
           "id": "soc",
           "label": "BCM2712 SoC",
-          "x": 33,
+          "x": 30.5,
           "y": 22,
           "w": 15,
           "d": 15,
-          "h": 2.2,
-          "colour": "#4a4f58"
+          "h": 2.4,
+          "colour": "#53585f"
+        },
+        {
+          "id": "rp1",
+          "label": "RP1 southbridge",
+          "x": 50,
+          "y": 30,
+          "w": 10,
+          "d": 10,
+          "h": 1.7,
+          "colour": "#4a4f56"
         },
         {
           "id": "ram",
           "label": "LPDDR4X",
-          "x": 33,
-          "y": 40,
-          "w": 12,
-          "d": 9,
+          "x": 30,
+          "y": 40.5,
+          "w": 12.5,
+          "d": 9.5,
           "h": 1.4,
-          "colour": "#3c4148"
+          "colour": "#3f444b"
         },
         {
           "id": "pmic",
-          "label": "RP1 southbridge",
-          "x": 52,
-          "y": 22,
-          "w": 10,
-          "d": 10,
-          "h": 1.6,
-          "colour": "#4a4f58"
+          "label": "PMIC",
+          "x": 58,
+          "y": 16,
+          "w": 6,
+          "d": 6,
+          "h": 1.2,
+          "colour": "#4a4f56"
+        },
+        {
+          "id": "pcie",
+          "label": "PCIe FFC",
+          "x": 62,
+          "y": 44,
+          "w": 3,
+          "d": 12,
+          "h": 2.6,
+          "colour": "#b9a97f"
+        },
+        {
+          "id": "fan",
+          "label": "Fan header",
+          "x": 64,
+          "y": 52,
+          "w": 4.5,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#d8d0b0"
         }
       ],
       "featureNote": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
@@ -1489,80 +1529,90 @@ export const PARTS: readonly Part[] = [
         {
           "id": "gpio",
           "label": "40-pin GPIO header",
-          "x": 3.5,
-          "y": 49,
-          "w": 51,
+          "x": 2.2,
+          "y": 48.7,
+          "w": 52.4,
           "d": 5.1,
           "h": 8.5,
-          "colour": "#22252b"
+          "colour": "#1c1f24"
         },
         {
-          "id": "usb3a",
-          "label": "USB 3.0",
-          "x": 68,
-          "y": 30,
-          "w": 17,
-          "d": 15.5,
+          "id": "eth",
+          "label": "Gigabit Ethernet",
+          "x": 70.5,
+          "y": 1.5,
+          "w": 14.5,
+          "d": 16,
+          "h": 13.5,
+          "colour": "#43484f"
+        },
+        {
+          "id": "usb3",
+          "label": "USB 3.0 x2",
+          "x": 70.5,
+          "y": 20,
+          "w": 14.5,
+          "d": 17.5,
           "h": 16.4,
           "colour": "#2f4f8f"
         },
         {
-          "id": "usb2a",
-          "label": "USB 2.0",
-          "x": 68,
-          "y": 10,
-          "w": 17,
-          "d": 15.5,
+          "id": "usb2",
+          "label": "USB 2.0 x2",
+          "x": 70.5,
+          "y": 38.5,
+          "w": 14.5,
+          "d": 17.5,
           "h": 16.4,
-          "colour": "#2b2f36"
-        },
-        {
-          "id": "eth",
-          "label": "Ethernet",
-          "x": 68,
-          "y": 45,
-          "w": 17,
-          "d": 16,
-          "h": 13.5,
-          "colour": "#3a3f47"
+          "colour": "#26292f"
         },
         {
           "id": "usbc",
           "label": "USB-C power",
-          "x": 3,
-          "y": 24,
+          "x": 8.5,
+          "y": -0.6,
           "w": 9,
-          "d": 3.2,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "d": 3.4,
+          "h": 3.3,
+          "colour": "#9aa0a8"
         },
         {
           "id": "hdmi0",
           "label": "micro-HDMI 0",
-          "x": 3,
-          "y": 14,
-          "w": 7.5,
-          "d": 3,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "x": 22.5,
+          "y": -0.6,
+          "w": 7.2,
+          "d": 3.2,
+          "h": 3.3,
+          "colour": "#9aa0a8"
         },
         {
           "id": "hdmi1",
           "label": "micro-HDMI 1",
-          "x": 3,
-          "y": 4,
-          "w": 7.5,
-          "d": 3,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "x": 36.5,
+          "y": -0.6,
+          "w": 7.2,
+          "d": 3.2,
+          "h": 3.3,
+          "colour": "#9aa0a8"
+        },
+        {
+          "id": "sd",
+          "label": "microSD",
+          "x": 22,
+          "y": -1.2,
+          "w": 12,
+          "d": 1.6,
+          "h": 1.6,
+          "colour": "#6b7078"
         },
         {
           "id": "csi0",
           "label": "CSI/DSI 0",
-          "x": 30,
-          "y": 1.5,
-          "w": 22,
-          "d": 2.5,
+          "x": 45,
+          "y": 2,
+          "w": 2.6,
+          "d": 21,
           "h": 3,
           "colour": "#c8b48a"
         },
@@ -1570,41 +1620,71 @@ export const PARTS: readonly Part[] = [
           "id": "csi1",
           "label": "CSI/DSI 1",
           "x": 56,
-          "y": 1.5,
-          "w": 22,
-          "d": 2.5,
+          "y": 2,
+          "w": 2.6,
+          "d": 21,
           "h": 3,
           "colour": "#c8b48a"
         },
         {
           "id": "soc",
           "label": "BCM2712 SoC",
-          "x": 33,
+          "x": 30.5,
           "y": 22,
           "w": 15,
           "d": 15,
-          "h": 2.2,
-          "colour": "#4a4f58"
+          "h": 2.4,
+          "colour": "#53585f"
+        },
+        {
+          "id": "rp1",
+          "label": "RP1 southbridge",
+          "x": 50,
+          "y": 30,
+          "w": 10,
+          "d": 10,
+          "h": 1.7,
+          "colour": "#4a4f56"
         },
         {
           "id": "ram",
           "label": "LPDDR4X",
-          "x": 33,
-          "y": 40,
-          "w": 12,
-          "d": 9,
+          "x": 30,
+          "y": 40.5,
+          "w": 12.5,
+          "d": 9.5,
           "h": 1.4,
-          "colour": "#3c4148"
+          "colour": "#3f444b"
         },
         {
           "id": "pmic",
-          "label": "RP1 southbridge",
-          "x": 52,
-          "y": 22,
-          "w": 10,
-          "d": 10,
-          "h": 1.6,
-          "colour": "#4a4f58"
+          "label": "PMIC",
+          "x": 58,
+          "y": 16,
+          "w": 6,
+          "d": 6,
+          "h": 1.2,
+          "colour": "#4a4f56"
+        },
+        {
+          "id": "pcie",
+          "label": "PCIe FFC",
+          "x": 62,
+          "y": 44,
+          "w": 3,
+          "d": 12,
+          "h": 2.6,
+          "colour": "#b9a97f"
+        },
+        {
+          "id": "fan",
+          "label": "Fan header",
+          "x": 64,
+          "y": 52,
+          "w": 4.5,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#d8d0b0"
         }
       ],
       "featureNote": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
@@ -1651,80 +1731,90 @@ export const PARTS: readonly Part[] = [
         {
           "id": "gpio",
           "label": "40-pin GPIO header",
-          "x": 3.5,
-          "y": 49,
-          "w": 51,
+          "x": 2.2,
+          "y": 48.7,
+          "w": 52.4,
           "d": 5.1,
           "h": 8.5,
-          "colour": "#22252b"
+          "colour": "#1c1f24"
         },
         {
-          "id": "usb3a",
-          "label": "USB 3.0",
-          "x": 68,
-          "y": 30,
-          "w": 17,
-          "d": 15.5,
+          "id": "eth",
+          "label": "Gigabit Ethernet",
+          "x": 70.5,
+          "y": 1.5,
+          "w": 14.5,
+          "d": 16,
+          "h": 13.5,
+          "colour": "#43484f"
+        },
+        {
+          "id": "usb3",
+          "label": "USB 3.0 x2",
+          "x": 70.5,
+          "y": 20,
+          "w": 14.5,
+          "d": 17.5,
           "h": 16.4,
           "colour": "#2f4f8f"
         },
         {
-          "id": "usb2a",
-          "label": "USB 2.0",
-          "x": 68,
-          "y": 10,
-          "w": 17,
-          "d": 15.5,
+          "id": "usb2",
+          "label": "USB 2.0 x2",
+          "x": 70.5,
+          "y": 38.5,
+          "w": 14.5,
+          "d": 17.5,
           "h": 16.4,
-          "colour": "#2b2f36"
-        },
-        {
-          "id": "eth",
-          "label": "Ethernet",
-          "x": 68,
-          "y": 45,
-          "w": 17,
-          "d": 16,
-          "h": 13.5,
-          "colour": "#3a3f47"
+          "colour": "#26292f"
         },
         {
           "id": "usbc",
           "label": "USB-C power",
-          "x": 3,
-          "y": 24,
+          "x": 8.5,
+          "y": -0.6,
           "w": 9,
-          "d": 3.2,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "d": 3.4,
+          "h": 3.3,
+          "colour": "#9aa0a8"
         },
         {
           "id": "hdmi0",
           "label": "micro-HDMI 0",
-          "x": 3,
-          "y": 14,
-          "w": 7.5,
-          "d": 3,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "x": 22.5,
+          "y": -0.6,
+          "w": 7.2,
+          "d": 3.2,
+          "h": 3.3,
+          "colour": "#9aa0a8"
         },
         {
           "id": "hdmi1",
           "label": "micro-HDMI 1",
-          "x": 3,
-          "y": 4,
-          "w": 7.5,
-          "d": 3,
-          "h": 3.2,
-          "colour": "#8a8f98"
+          "x": 36.5,
+          "y": -0.6,
+          "w": 7.2,
+          "d": 3.2,
+          "h": 3.3,
+          "colour": "#9aa0a8"
+        },
+        {
+          "id": "sd",
+          "label": "microSD",
+          "x": 22,
+          "y": -1.2,
+          "w": 12,
+          "d": 1.6,
+          "h": 1.6,
+          "colour": "#6b7078"
         },
         {
           "id": "csi0",
           "label": "CSI/DSI 0",
-          "x": 30,
-          "y": 1.5,
-          "w": 22,
-          "d": 2.5,
+          "x": 45,
+          "y": 2,
+          "w": 2.6,
+          "d": 21,
           "h": 3,
           "colour": "#c8b48a"
         },
@@ -1732,41 +1822,71 @@ export const PARTS: readonly Part[] = [
           "id": "csi1",
           "label": "CSI/DSI 1",
           "x": 56,
-          "y": 1.5,
-          "w": 22,
-          "d": 2.5,
+          "y": 2,
+          "w": 2.6,
+          "d": 21,
           "h": 3,
           "colour": "#c8b48a"
         },
         {
           "id": "soc",
           "label": "BCM2712 SoC",
-          "x": 33,
+          "x": 30.5,
           "y": 22,
           "w": 15,
           "d": 15,
-          "h": 2.2,
-          "colour": "#4a4f58"
+          "h": 2.4,
+          "colour": "#53585f"
+        },
+        {
+          "id": "rp1",
+          "label": "RP1 southbridge",
+          "x": 50,
+          "y": 30,
+          "w": 10,
+          "d": 10,
+          "h": 1.7,
+          "colour": "#4a4f56"
         },
         {
           "id": "ram",
           "label": "LPDDR4X",
-          "x": 33,
-          "y": 40,
-          "w": 12,
-          "d": 9,
+          "x": 30,
+          "y": 40.5,
+          "w": 12.5,
+          "d": 9.5,
           "h": 1.4,
-          "colour": "#3c4148"
+          "colour": "#3f444b"
         },
         {
           "id": "pmic",
-          "label": "RP1 southbridge",
-          "x": 52,
-          "y": 22,
-          "w": 10,
-          "d": 10,
-          "h": 1.6,
-          "colour": "#4a4f58"
+          "label": "PMIC",
+          "x": 58,
+          "y": 16,
+          "w": 6,
+          "d": 6,
+          "h": 1.2,
+          "colour": "#4a4f56"
+        },
+        {
+          "id": "pcie",
+          "label": "PCIe FFC",
+          "x": 62,
+          "y": 44,
+          "w": 3,
+          "d": 12,
+          "h": 2.6,
+          "colour": "#b9a97f"
+        },
+        {
+          "id": "fan",
+          "label": "Fan header",
+          "x": 64,
+          "y": 52,
+          "w": 4.5,
+          "d": 2.5,
+          "h": 3,
+          "colour": "#d8d0b0"
         }
       ],
       "featureNote": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
@@ -1886,7 +2006,32 @@ export const PARTS: readonly Part[] = [
       "mount": "csi",
       "dimensionsSourced": false,
       "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-      "plugsInto": "csi0"
+      "plugsInto": "csi0",
+      "detail": [
+        {
+          "id": "body",
+          "label": "HQ camera board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 10,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "lens",
+          "label": "6 mm CS lens",
+          "cx": 0.5,
+          "cy": 0.5,
+          "w": 30,
+          "d": 30,
+          "h": 36,
+          "colour": "#232629",
+          "base": 10,
+          "round": true
+        }
+      ]
     }
   },
   {
@@ -1934,7 +2079,32 @@ export const PARTS: readonly Part[] = [
       "mount": "csi",
       "dimensionsSourced": false,
       "note": "As above, with the bandpass filter fitted.",
-      "plugsInto": "csi1"
+      "plugsInto": "csi1",
+      "detail": [
+        {
+          "id": "body",
+          "label": "NoIR camera board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 10,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "lens",
+          "label": "6 mm CS lens + 850 nm bandpass",
+          "cx": 0.5,
+          "cy": 0.5,
+          "w": 30,
+          "d": 30,
+          "h": 36,
+          "colour": "#232629",
+          "base": 10,
+          "round": true
+        }
+      ]
     }
   },
   {
@@ -1984,7 +2154,43 @@ export const PARTS: readonly Part[] = [
       "mount": "usb",
       "dimensionsSourced": false,
       "note": "Approximate dongle body, excluding the antenna.",
-      "plugsInto": "usb3a"
+      "plugsInto": "usb3a",
+      "detail": [
+        {
+          "id": "body",
+          "label": "RTL-SDR body",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 13,
+          "colour": "#5a5f66",
+          "fill": true
+        },
+        {
+          "id": "plug",
+          "label": "USB-A plug",
+          "cx": 0.06,
+          "cy": 0.5,
+          "w": 14,
+          "d": 12,
+          "h": 5,
+          "colour": "#9aa0a8",
+          "base": 3
+        },
+        {
+          "id": "sma",
+          "label": "SMA antenna",
+          "cx": 0.97,
+          "cy": 0.5,
+          "w": 7,
+          "d": 7,
+          "h": 8,
+          "colour": "#c9a961",
+          "base": 3,
+          "round": true
+        }
+      ]
     }
   },
   {
@@ -2046,7 +2252,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 5,
       "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+      "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "BME688 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "BME688",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 3.2,
+          "d": 3.2,
+          "h": 1.1,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   },
   {
@@ -2107,7 +2349,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 5,
       "mount": "carrier",
       "dimensionsSourced": false,
-      "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+      "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "BNO085 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "BNO085",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 5.2,
+          "d": 3.8,
+          "h": 1.1,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   },
   {
@@ -2219,7 +2497,32 @@ export const PARTS: readonly Part[] = [
       "heightMm": 9,
       "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Points at the sky through a germanium window. Mounted at the enclosure wall."
+      "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "MLX90640 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "lens",
+          "label": "thermal lens",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 9,
+          "d": 9,
+          "h": 6.5,
+          "colour": "#8a8f98",
+          "base": 1.2,
+          "round": true
+        }
+      ]
     }
   },
   {
@@ -2279,7 +2582,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 5,
       "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+      "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "AS7331 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "AS7331",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 3,
+          "d": 3,
+          "h": 0.9,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   },
   {
@@ -2342,7 +2681,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 6,
       "mount": "carrier",
       "dimensionsSourced": false,
-      "note": "Approximate module footprint."
+      "note": "Approximate module footprint.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "LD2450 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "LD2450",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 14,
+          "d": 10,
+          "h": 1.6,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   },
   {
@@ -2459,7 +2834,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 5,
       "mount": "external",
       "dimensionsSourced": false,
-      "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+      "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "RM3100 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "RM3100",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 6,
+          "d": 6,
+          "h": 2.4,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   },
   {
@@ -2525,7 +2936,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 4,
       "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+      "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "ICS-43434 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "ICS-43434",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 3.5,
+          "d": 2.6,
+          "h": 1,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   },
   {
@@ -2664,7 +3111,33 @@ export const PARTS: readonly Part[] = [
       "heightMm": 35,
       "mount": "external",
       "dimensionsSourced": false,
-      "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled."
+      "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled.",
+      "detail": [
+        {
+          "id": "body",
+          "label": "geophone can",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 33,
+          "colour": "#4a4f56",
+          "fill": true,
+          "round": true
+        },
+        {
+          "id": "spike",
+          "label": "ground spike",
+          "cx": 0.5,
+          "cy": 0.5,
+          "w": 6,
+          "d": 6,
+          "h": 10,
+          "colour": "#6b7078",
+          "base": -10,
+          "round": true
+        }
+      ]
     }
   },
   {
@@ -2721,7 +3194,32 @@ export const PARTS: readonly Part[] = [
       "heightMm": 12,
       "mount": "external",
       "dimensionsSourced": false,
-      "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate."
+      "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "beacon board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "led",
+          "label": "850 nm emitter",
+          "cx": 0.5,
+          "cy": 0.5,
+          "w": 6,
+          "d": 6,
+          "h": 4.5,
+          "colour": "#5a1f1f",
+          "base": 1.2,
+          "round": true
+        }
+      ]
     }
   },
   {
@@ -2876,7 +3374,31 @@ export const PARTS: readonly Part[] = [
       "mount": "usb",
       "dimensionsSourced": false,
       "note": "Approximate 4-port hub body.",
-      "plugsInto": "usb3a"
+      "plugsInto": "usb3a",
+      "detail": [
+        {
+          "id": "body",
+          "label": "hub body",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 18,
+          "colour": "#2a2d33",
+          "fill": true
+        },
+        {
+          "id": "ports",
+          "label": "4 x USB-A",
+          "cx": 0.5,
+          "cy": 0.92,
+          "w": 56,
+          "d": 4,
+          "h": 11,
+          "colour": "#2f4f8f",
+          "base": 3
+        }
+      ]
     }
   },
   {
@@ -2943,7 +3465,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 12,
       "mount": "carrier",
       "dimensionsSourced": false,
-      "note": "Board-mounted alongside the carrier."
+      "note": "Board-mounted alongside the carrier.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "ADS1256 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "ADS1256",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 11,
+          "d": 11,
+          "h": 1.5,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   },
   {
@@ -3002,7 +3560,43 @@ export const PARTS: readonly Part[] = [
       "heightMm": 5,
       "mount": "enclosure-wall",
       "dimensionsSourced": false,
-      "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+      "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+      "detail": [
+        {
+          "id": "pcb",
+          "label": "INA226 board",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 1.2,
+          "colour": "#1f5f3a",
+          "fill": true
+        },
+        {
+          "id": "pkg",
+          "label": "INA226",
+          "cx": 0.5,
+          "cy": 0.55,
+          "w": 3,
+          "d": 3,
+          "h": 1,
+          "colour": "#2a2d33",
+          "base": 1.2
+        },
+        {
+          "id": "hdr",
+          "label": "header",
+          "cx": 0.5,
+          "cy": 0.12,
+          "w": null,
+          "wFrac": 0.7,
+          "d": 2.4,
+          "h": 3,
+          "colour": "#1c1f24",
+          "base": 1.2
+        }
+      ]
     }
   }
 ] as unknown as readonly Part[]

@@ -57,6 +57,50 @@ function assemblyFor(tier) {
   const by = (mount) => parts.filter((p) => p.mechanical.mount === mount)
   const bodies = []
 
+  /**
+   * Break a part into its own geometry where the registry describes it.
+   *
+   * A featureless block is a claim that a part is a featureless block, and
+   * almost none of them are. A breakout is a small green board with a package
+   * and a header on it; an HQ camera is a square body with a 36 mm lens barrel
+   * standing off it, which is most of its volume and all of its silhouette; a
+   * dongle has a USB plug at one end and an SMA connector at the other. Drawn
+   * as boxes they are indistinguishable, and a model where every part looks the
+   * same conveys nothing about which part is which.
+   *
+   * Coordinates are fractional across the parent so one description works
+   * whatever the part's actual size is.
+   */
+  const detailBodies = (part, base) => {
+    const spec = part.mechanical.detail
+    if (!spec) return []
+    const [pw, ph, pd] = base.size
+    const [px, py, pz] = base.pos
+    return spec.map((f) => {
+      const w = f.fill ? pw : (f.wFrac ? pw * f.wFrac : f.w)
+      const d = f.fill ? pd : (f.d ?? f.w)
+      const h = f.h
+      const cx = f.fill ? 0.5 : (f.cx ?? 0.5)
+      const cz = f.fill ? 0.5 : (f.cy ?? 0.5)
+      return {
+        id: `${part.id}-${f.id}`,
+        label: f.label,
+        parent: part.id,
+        mount: 'detail',
+        size: [w, h, d],
+        pos: [
+          px - pw / 2 + cx * pw,
+          py - ph / 2 + (f.base ?? 0) + h / 2,
+          pz - pd / 2 + cz * pd,
+        ],
+        colour: f.colour,
+        cylinder: f.round === true,
+        sourced: false,
+        note: part.mechanical.note,
+      }
+    })
+  }
+
   const push = (part, x, y, z, extra = {}) => {
     const m = part.mechanical
     const { heightOverride, ...rest } = extra
@@ -73,6 +117,13 @@ function assemblyFor(tier) {
       interface: part.interface ?? null,
       ...rest,
     })
+    // A part described in detail is drawn as its parts; the block that carried
+    // it becomes invisible so it does not sit inside its own geometry.
+    const self = bodies[bodies.length - 1]
+    if (m.detail) {
+      self.shell = true
+      bodies.push(...detailBodies(part, self))
+    }
   }
 
   // 1. The host, centred at the origin. Drawn as the bare board with its
@@ -253,11 +304,23 @@ function assemblyFor(tier) {
     if (!plug) continue
     const target = featureAt(plug)
     if (!target) continue
+    // From the face of each body that points at the other, not from the two
+    // centres. A cable drawn centre to centre passes through both parts it
+    // connects, which is the one thing a cable never does.
+    const surface = (body, toward) => {
+      const [bx, by, bz] = body.pos
+      const [w, h, d] = body.size
+      const dx = toward[0] - bx
+      const dz = toward[2] - bz
+      return Math.abs(dx) > Math.abs(dz)
+        ? [bx + Math.sign(dx) * (w / 2), by, bz]
+        : [bx, by, bz + Math.sign(dz) * (d / 2)]
+    }
     cables.push({
       id: `cable-${b.id}`,
       label: `${b.label} to ${target.label}`,
-      from: [b.pos[0], b.pos[1], b.pos[2]],
-      to: [target.pos[0], target.pos[1], target.pos[2]],
+      from: surface(b, target.pos),
+      to: surface(target, b.pos),
       kind: part.interface === 'csi' || plug.startsWith('csi') ? 'ribbon' : 'cable',
     })
   }
@@ -265,11 +328,20 @@ function assemblyFor(tier) {
   const carrierBody = bodies.find((b) => b.glb)
   for (const b of bodies) {
     if (!['enclosure-wall', 'external'].includes(b.mount) || !carrierBody) continue
+    const dx = carrierBody.pos[0] - b.pos[0]
+    const dz = carrierBody.pos[2] - b.pos[2]
     cables.push({
       id: `cable-${b.id}`,
       label: `${b.label} to the carrier`,
-      from: [b.pos[0], b.pos[1], b.pos[2]],
-      to: [carrierBody.pos[0], carrierBody.pos[1], carrierBody.pos[2]],
+      from:
+        Math.abs(dx) > Math.abs(dz)
+          ? [b.pos[0] + Math.sign(dx) * (b.size[0] / 2), b.pos[1], b.pos[2]]
+          : [b.pos[0], b.pos[1], b.pos[2] + Math.sign(dz) * (b.size[2] / 2)],
+      to: [
+        carrierBody.pos[0] + Math.sign(-dx) * (carrierBody.size[0] / 2) * 0.8,
+        carrierBody.pos[1],
+        carrierBody.pos[2] + Math.sign(-dz) * (carrierBody.size[2] / 2) * 0.8,
+      ],
       kind: 'cable',
     })
   }

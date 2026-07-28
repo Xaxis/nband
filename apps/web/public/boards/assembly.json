@@ -84,7 +84,68 @@
           ],
           "sourced": false,
           "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "imu-bno085-pcb",
+          "label": "BNO085 board",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -29.5,
+            52.8,
+            -16
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+        },
+        {
+          "id": "imu-bno085-pkg",
+          "label": "BNO085",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            5.2,
+            1.1,
+            3.8
+          ],
+          "pos": [
+            -29.5,
+            53.949999999999996,
+            -15.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+        },
+        {
+          "id": "imu-bno085-hdr",
+          "label": "header",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -29.5,
+            54.9,
+            -22.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
         },
         {
           "id": "sdr-rtl-v3",
@@ -104,7 +165,68 @@
           ],
           "sourced": false,
           "note": "Approximate dongle body, excluding the antenna.",
-          "interface": "usb"
+          "interface": "usb",
+          "shell": true
+        },
+        {
+          "id": "sdr-rtl-v3-body",
+          "label": "RTL-SDR body",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            80,
+            13,
+            27
+          ],
+          "pos": [
+            112,
+            6.5,
+            -30
+          ],
+          "colour": "#5a5f66",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
+        },
+        {
+          "id": "sdr-rtl-v3-plug",
+          "label": "USB-A plug",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            14,
+            5,
+            12
+          ],
+          "pos": [
+            76.8,
+            5.5,
+            -30
+          ],
+          "colour": "#9aa0a8",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
+        },
+        {
+          "id": "sdr-rtl-v3-sma",
+          "label": "SMA antenna",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            7,
+            8,
+            7
+          ],
+          "pos": [
+            149.6,
+            7,
+            -30
+          ],
+          "colour": "#c9a961",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
         },
         {
           "id": "cam-hq-imx477",
@@ -124,7 +246,48 @@
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "interface": "csi"
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-hq-imx477-body",
+          "label": "HQ camera board",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -79,
+            5,
+            55
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+        },
+        {
+          "id": "cam-hq-imx477-lens",
+          "label": "6 mm CS lens",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -79,
+            28,
+            55
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
         },
         {
           "id": "cam-noir-imx477",
@@ -144,7 +307,48 @@
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
-          "interface": "csi"
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-noir-imx477-body",
+          "label": "NoIR camera board",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -133,
+            5,
+            55
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted."
+        },
+        {
+          "id": "cam-noir-imx477-lens",
+          "label": "6 mm CS lens + 850 nm bandpass",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -133,
+            28,
+            55
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted."
         },
         {
           "id": "env-bme688",
@@ -164,7 +368,68 @@
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "env-bme688-pcb",
+          "label": "BME688 board",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -47.5,
+            38.1,
+            -70
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+        },
+        {
+          "id": "env-bme688-pkg",
+          "label": "BME688",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            3.2,
+            1.1,
+            3.2
+          ],
+          "pos": [
+            -47.5,
+            39.25,
+            -69.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+        },
+        {
+          "id": "env-bme688-hdr",
+          "label": "header",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -47.5,
+            40.2,
+            -76.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
         },
         {
           "id": "lwir-mlx90640",
@@ -184,7 +449,48 @@
           ],
           "sourced": false,
           "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "lwir-mlx90640-pcb",
+          "label": "MLX90640 board",
+          "parent": "lwir-mlx90640",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            25
+          ],
+          "pos": [
+            -12.5,
+            36.1,
+            -70
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Points at the sky through a germanium window. Mounted at the enclosure wall."
+        },
+        {
+          "id": "lwir-mlx90640-lens",
+          "label": "thermal lens",
+          "parent": "lwir-mlx90640",
+          "mount": "detail",
+          "size": [
+            9,
+            6.5,
+            9
+          ],
+          "pos": [
+            -12.5,
+            39.95,
+            -68.75
+          ],
+          "colour": "#8a8f98",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Points at the sky through a germanium window. Mounted at the enclosure wall."
         },
         {
           "id": "standoff-gnss-lc29h--29--24.5",
@@ -336,73 +642,73 @@
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            51,
+            52.4,
             8.5,
             5.1
           ],
           "pos": [
-            -13.5,
+            -14.100000000000001,
             5.85,
-            23.549999999999997
+            23.25
           ],
-          "colour": "#22252b",
+          "colour": "#1c1f24",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
-          "id": "pi5-2gb-usb3a",
-          "label": "USB 3.0",
+          "id": "pi5-2gb-eth",
+          "label": "Gigabit Ethernet",
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            17,
-            16.4,
-            15.5
+            14.5,
+            13.5,
+            16
           ],
           "pos": [
-            34,
+            35.25,
+            8.35,
+            -18.5
+          ],
+          "colour": "#43484f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-usb3",
+          "label": "USB 3.0 x2",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            14.5,
+            16.4,
+            17.5
+          ],
+          "pos": [
+            35.25,
             9.799999999999999,
-            9.75
+            0.75
           ],
           "colour": "#2f4f8f",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
-          "id": "pi5-2gb-usb2a",
-          "label": "USB 2.0",
+          "id": "pi5-2gb-usb2",
+          "label": "USB 2.0 x2",
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            17,
+            14.5,
             16.4,
-            15.5
+            17.5
           ],
           "pos": [
-            34,
+            35.25,
             9.799999999999999,
-            -10.25
+            19.25
           ],
-          "colour": "#2b2f36",
-          "sourced": false,
-          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
-        },
-        {
-          "id": "pi5-2gb-eth",
-          "label": "Ethernet",
-          "parent": "pi5-2gb",
-          "mount": "feature",
-          "size": [
-            17,
-            13.5,
-            16
-          ],
-          "pos": [
-            34,
-            8.35,
-            25
-          ],
-          "colour": "#3a3f47",
+          "colour": "#26292f",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -413,15 +719,15 @@
           "mount": "feature",
           "size": [
             9,
-            3.2,
-            3.2
+            3.3,
+            3.4
           ],
           "pos": [
-            -35,
-            3.2,
-            -2.3999999999999986
+            -29.5,
+            3.25,
+            -26.9
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -431,16 +737,16 @@
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            7.5,
-            3.2,
-            3
+            7.2,
+            3.3,
+            3.2
           ],
           "pos": [
-            -35.75,
-            3.2,
-            -12.5
+            -16.4,
+            3.25,
+            -27
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -450,16 +756,35 @@
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            7.5,
-            3.2,
-            3
+            7.2,
+            3.3,
+            3.2
           ],
           "pos": [
-            -35.75,
-            3.2,
-            -22.5
+            -2.3999999999999986,
+            3.25,
+            -27
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-sd",
+          "label": "microSD",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            12,
+            1.6,
+            1.6
+          ],
+          "pos": [
+            -14.5,
+            2.4000000000000004,
+            -28.4
+          ],
+          "colour": "#6b7078",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -469,14 +794,14 @@
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            22,
+            2.6,
             3,
-            2.5
+            21
           ],
           "pos": [
-            -1.5,
+            3.799999999999997,
             3.1,
-            -25.25
+            -15.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -488,14 +813,14 @@
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            22,
+            2.6,
             3,
-            2.5
+            21
           ],
           "pos": [
-            24.5,
+            14.799999999999997,
             3.1,
-            -25.25
+            -15.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -508,15 +833,34 @@
           "mount": "feature",
           "size": [
             15,
-            2.2,
+            2.4,
             15
           ],
           "pos": [
-            -2,
-            2.7,
+            -4.5,
+            2.8,
             1.5
           ],
-          "colour": "#4a4f58",
+          "colour": "#53585f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-rp1",
+          "label": "RP1 southbridge",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            10,
+            1.7,
+            10
+          ],
+          "pos": [
+            12.5,
+            2.45,
+            7
+          ],
+          "colour": "#4a4f56",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -526,67 +870,90 @@
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            12,
+            12.5,
             1.4,
-            9
+            9.5
           ],
           "pos": [
-            -3.5,
+            -6.25,
             2.3,
-            16.5
+            17.25
           ],
-          "colour": "#3c4148",
+          "colour": "#3f444b",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
           "id": "pi5-2gb-pmic",
-          "label": "RP1 southbridge",
+          "label": "PMIC",
           "parent": "pi5-2gb",
           "mount": "feature",
           "size": [
-            10,
-            1.6,
-            10
+            6,
+            1.2,
+            6
           ],
           "pos": [
-            14.5,
-            2.4000000000000004,
-            -1
+            18.5,
+            2.2,
+            -9
           ],
-          "colour": "#4a4f58",
+          "colour": "#4a4f56",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-pcie",
+          "label": "PCIe FFC",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            3,
+            2.6,
+            12
+          ],
+          "pos": [
+            21,
+            2.9000000000000004,
+            22
+          ],
+          "colour": "#b9a97f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-2gb-fan",
+          "label": "Fan header",
+          "parent": "pi5-2gb",
+          "mount": "feature",
+          "size": [
+            4.5,
+            3,
+            2.5
+          ],
+          "pos": [
+            23.75,
+            3.1,
+            25.25
+          ],
+          "colour": "#d8d0b0",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         }
       ],
       "cables": [
         {
-          "id": "cable-sdr-rtl-v3",
-          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0",
-          "from": [
-            112,
-            7.5,
-            -30
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            9.75
-          ],
-          "kind": "cable"
-        },
-        {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -79,
+            -60,
             24,
             55
           ],
           "to": [
-            -1.5,
+            2.4999999999999973,
             3.1,
-            -25.25
+            -15.5
           ],
           "kind": "ribbon"
         },
@@ -594,14 +961,14 @@
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -133,
+            -114,
             24,
             55
           ],
           "to": [
-            24.5,
+            13.499999999999996,
             3.1,
-            -25.25
+            -15.5
           ],
           "kind": "ribbon"
         },
@@ -611,12 +978,12 @@
           "from": [
             -47.5,
             40,
-            -70
+            -61
           ],
           "to": [
-            0,
+            -36,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -626,20 +993,20 @@
           "from": [
             -12.5,
             40,
-            -70
+            -57.5
           ],
           "to": [
-            0,
+            -36,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         }
       ],
       "counts": {
-        "total": 29,
+        "total": 48,
         "sourced": 11,
-        "approximate": 18,
+        "approximate": 37,
         "onCarrier": 1,
         "onWall": 2,
         "usb": 1,
@@ -727,7 +1094,68 @@
           ],
           "sourced": false,
           "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "imu-bno085-pcb",
+          "label": "BNO085 board",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -42,
+            52.8,
+            -16
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+        },
+        {
+          "id": "imu-bno085-pkg",
+          "label": "BNO085",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            5.2,
+            1.1,
+            3.8
+          ],
+          "pos": [
+            -42,
+            53.949999999999996,
+            -15.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+        },
+        {
+          "id": "imu-bno085-hdr",
+          "label": "header",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -42,
+            54.9,
+            -22.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
         },
         {
           "id": "radar-ld2450",
@@ -747,7 +1175,68 @@
           ],
           "sourced": false,
           "note": "Approximate module footprint.",
-          "interface": "uart"
+          "interface": "uart",
+          "shell": true
+        },
+        {
+          "id": "radar-ld2450-pcb",
+          "label": "LD2450 board",
+          "parent": "radar-ld2450",
+          "mount": "detail",
+          "size": [
+            35,
+            1.2,
+            25
+          ],
+          "pos": [
+            -9,
+            52.8,
+            -12.5
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate module footprint."
+        },
+        {
+          "id": "radar-ld2450-pkg",
+          "label": "LD2450",
+          "parent": "radar-ld2450",
+          "mount": "detail",
+          "size": [
+            14,
+            1.6,
+            10
+          ],
+          "pos": [
+            -9,
+            54.199999999999996,
+            -11.249999999999998
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate module footprint."
+        },
+        {
+          "id": "radar-ld2450-hdr",
+          "label": "header",
+          "parent": "radar-ld2450",
+          "mount": "detail",
+          "size": [
+            24.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -9,
+            54.9,
+            -22
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate module footprint."
         },
         {
           "id": "sdr-rtl-v3",
@@ -767,7 +1256,68 @@
           ],
           "sourced": false,
           "note": "Approximate dongle body, excluding the antenna.",
-          "interface": "usb"
+          "interface": "usb",
+          "shell": true
+        },
+        {
+          "id": "sdr-rtl-v3-body",
+          "label": "RTL-SDR body",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            80,
+            13,
+            27
+          ],
+          "pos": [
+            112,
+            6.5,
+            -30
+          ],
+          "colour": "#5a5f66",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
+        },
+        {
+          "id": "sdr-rtl-v3-plug",
+          "label": "USB-A plug",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            14,
+            5,
+            12
+          ],
+          "pos": [
+            76.8,
+            5.5,
+            -30
+          ],
+          "colour": "#9aa0a8",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
+        },
+        {
+          "id": "sdr-rtl-v3-sma",
+          "label": "SMA antenna",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            7,
+            8,
+            7
+          ],
+          "pos": [
+            149.6,
+            7,
+            -30
+          ],
+          "colour": "#c9a961",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
         },
         {
           "id": "lwir-lepton35",
@@ -807,7 +1357,48 @@
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "interface": "csi"
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-hq-imx477-body",
+          "label": "HQ camera board",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -79,
+            5,
+            55
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+        },
+        {
+          "id": "cam-hq-imx477-lens",
+          "label": "6 mm CS lens",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -79,
+            28,
+            55
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
         },
         {
           "id": "cam-noir-imx477",
@@ -827,7 +1418,48 @@
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
-          "interface": "csi"
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-noir-imx477-body",
+          "label": "NoIR camera board",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -133,
+            5,
+            55
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted."
+        },
+        {
+          "id": "cam-noir-imx477-lens",
+          "label": "6 mm CS lens + 850 nm bandpass",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -133,
+            28,
+            55
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted."
         },
         {
           "id": "env-bme688",
@@ -847,7 +1479,68 @@
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "env-bme688-pcb",
+          "label": "BME688 board",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -47.5,
+            28.1,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+        },
+        {
+          "id": "env-bme688-pkg",
+          "label": "BME688",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            3.2,
+            1.1,
+            3.2
+          ],
+          "pos": [
+            -47.5,
+            29.25,
+            -153.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+        },
+        {
+          "id": "env-bme688-hdr",
+          "label": "header",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -47.5,
+            30.2,
+            -160.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
         },
         {
           "id": "uv-as7331",
@@ -867,7 +1560,68 @@
           ],
           "sourced": false,
           "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "uv-as7331-pcb",
+          "label": "AS7331 board",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -12.5,
+            28.1,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+        },
+        {
+          "id": "uv-as7331-pkg",
+          "label": "AS7331",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            3,
+            0.9,
+            3
+          ],
+          "pos": [
+            -12.5,
+            29.15,
+            -153.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+        },
+        {
+          "id": "uv-as7331-hdr",
+          "label": "header",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -12.5,
+            30.2,
+            -160.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
         },
         {
           "id": "mic-ics43434",
@@ -887,7 +1641,68 @@
           ],
           "sourced": false,
           "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
-          "interface": "i2s"
+          "interface": "i2s",
+          "shell": true
+        },
+        {
+          "id": "mic-ics43434-pcb",
+          "label": "ICS-43434 board",
+          "parent": "mic-ics43434",
+          "mount": "detail",
+          "size": [
+            20,
+            1.2,
+            15
+          ],
+          "pos": [
+            20,
+            28.6,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+        },
+        {
+          "id": "mic-ics43434-pkg",
+          "label": "ICS-43434",
+          "parent": "mic-ics43434",
+          "mount": "detail",
+          "size": [
+            3.5,
+            1,
+            2.6
+          ],
+          "pos": [
+            20,
+            29.7,
+            -153.25
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+        },
+        {
+          "id": "mic-ics43434-hdr",
+          "label": "header",
+          "parent": "mic-ics43434",
+          "mount": "detail",
+          "size": [
+            14,
+            3,
+            2.4
+          ],
+          "pos": [
+            20,
+            30.7,
+            -159.7
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
         },
         {
           "id": "pwr-ina226",
@@ -907,7 +1722,68 @@
           ],
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "pwr-ina226-pcb",
+          "label": "INA226 board",
+          "parent": "pwr-ina226",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            52.5,
+            28.1,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+        },
+        {
+          "id": "pwr-ina226-pkg",
+          "label": "INA226",
+          "parent": "pwr-ina226",
+          "mount": "detail",
+          "size": [
+            3,
+            1,
+            3
+          ],
+          "pos": [
+            52.5,
+            29.2,
+            -153.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+        },
+        {
+          "id": "pwr-ina226-hdr",
+          "label": "header",
+          "parent": "pwr-ina226",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            52.5,
+            30.2,
+            -160.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
         },
         {
           "id": "mag-rm3100",
@@ -928,7 +1804,68 @@
           "sourced": false,
           "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
           "interface": "spi",
-          "remote": true
+          "remote": true,
+          "shell": true
+        },
+        {
+          "id": "mag-rm3100-pcb",
+          "label": "RM3100 board",
+          "parent": "mag-rm3100",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            25
+          ],
+          "pos": [
+            -272.5,
+            0.6,
+            190
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+        },
+        {
+          "id": "mag-rm3100-pkg",
+          "label": "RM3100",
+          "parent": "mag-rm3100",
+          "mount": "detail",
+          "size": [
+            6,
+            2.4,
+            6
+          ],
+          "pos": [
+            -272.5,
+            2.4,
+            191.25
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+        },
+        {
+          "id": "mag-rm3100-hdr",
+          "label": "header",
+          "parent": "mag-rm3100",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -272.5,
+            2.7,
+            180.5
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
         },
         {
           "id": "power-solar-150w",
@@ -1101,73 +2038,73 @@
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            51,
+            52.4,
             8.5,
             5.1
           ],
           "pos": [
-            -13.5,
+            -14.100000000000001,
             5.85,
-            23.549999999999997
+            23.25
           ],
-          "colour": "#22252b",
+          "colour": "#1c1f24",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
-          "id": "pi5-4gb-usb3a",
-          "label": "USB 3.0",
+          "id": "pi5-4gb-eth",
+          "label": "Gigabit Ethernet",
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            17,
-            16.4,
-            15.5
+            14.5,
+            13.5,
+            16
           ],
           "pos": [
-            34,
+            35.25,
+            8.35,
+            -18.5
+          ],
+          "colour": "#43484f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-usb3",
+          "label": "USB 3.0 x2",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            14.5,
+            16.4,
+            17.5
+          ],
+          "pos": [
+            35.25,
             9.799999999999999,
-            9.75
+            0.75
           ],
           "colour": "#2f4f8f",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
-          "id": "pi5-4gb-usb2a",
-          "label": "USB 2.0",
+          "id": "pi5-4gb-usb2",
+          "label": "USB 2.0 x2",
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            17,
+            14.5,
             16.4,
-            15.5
+            17.5
           ],
           "pos": [
-            34,
+            35.25,
             9.799999999999999,
-            -10.25
+            19.25
           ],
-          "colour": "#2b2f36",
-          "sourced": false,
-          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
-        },
-        {
-          "id": "pi5-4gb-eth",
-          "label": "Ethernet",
-          "parent": "pi5-4gb",
-          "mount": "feature",
-          "size": [
-            17,
-            13.5,
-            16
-          ],
-          "pos": [
-            34,
-            8.35,
-            25
-          ],
-          "colour": "#3a3f47",
+          "colour": "#26292f",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -1178,15 +2115,15 @@
           "mount": "feature",
           "size": [
             9,
-            3.2,
-            3.2
+            3.3,
+            3.4
           ],
           "pos": [
-            -35,
-            3.2,
-            -2.3999999999999986
+            -29.5,
+            3.25,
+            -26.9
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -1196,16 +2133,16 @@
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            7.5,
-            3.2,
-            3
+            7.2,
+            3.3,
+            3.2
           ],
           "pos": [
-            -35.75,
-            3.2,
-            -12.5
+            -16.4,
+            3.25,
+            -27
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -1215,16 +2152,35 @@
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            7.5,
-            3.2,
-            3
+            7.2,
+            3.3,
+            3.2
           ],
           "pos": [
-            -35.75,
-            3.2,
-            -22.5
+            -2.3999999999999986,
+            3.25,
+            -27
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-sd",
+          "label": "microSD",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            12,
+            1.6,
+            1.6
+          ],
+          "pos": [
+            -14.5,
+            2.4000000000000004,
+            -28.4
+          ],
+          "colour": "#6b7078",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -1234,14 +2190,14 @@
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            22,
+            2.6,
             3,
-            2.5
+            21
           ],
           "pos": [
-            -1.5,
+            3.799999999999997,
             3.1,
-            -25.25
+            -15.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -1253,14 +2209,14 @@
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            22,
+            2.6,
             3,
-            2.5
+            21
           ],
           "pos": [
-            24.5,
+            14.799999999999997,
             3.1,
-            -25.25
+            -15.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -1273,15 +2229,34 @@
           "mount": "feature",
           "size": [
             15,
-            2.2,
+            2.4,
             15
           ],
           "pos": [
-            -2,
-            2.7,
+            -4.5,
+            2.8,
             1.5
           ],
-          "colour": "#4a4f58",
+          "colour": "#53585f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-rp1",
+          "label": "RP1 southbridge",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            10,
+            1.7,
+            10
+          ],
+          "pos": [
+            12.5,
+            2.45,
+            7
+          ],
+          "colour": "#4a4f56",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -1291,35 +2266,73 @@
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            12,
+            12.5,
             1.4,
-            9
+            9.5
           ],
           "pos": [
-            -3.5,
+            -6.25,
             2.3,
-            16.5
+            17.25
           ],
-          "colour": "#3c4148",
+          "colour": "#3f444b",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
           "id": "pi5-4gb-pmic",
-          "label": "RP1 southbridge",
+          "label": "PMIC",
           "parent": "pi5-4gb",
           "mount": "feature",
           "size": [
-            10,
-            1.6,
-            10
+            6,
+            1.2,
+            6
           ],
           "pos": [
-            14.5,
-            2.4000000000000004,
-            -1
+            18.5,
+            2.2,
+            -9
           ],
-          "colour": "#4a4f58",
+          "colour": "#4a4f56",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-pcie",
+          "label": "PCIe FFC",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            3,
+            2.6,
+            12
+          ],
+          "pos": [
+            21,
+            2.9000000000000004,
+            22
+          ],
+          "colour": "#b9a97f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-4gb-fan",
+          "label": "Fan header",
+          "parent": "pi5-4gb",
+          "mount": "feature",
+          "size": [
+            4.5,
+            3,
+            2.5
+          ],
+          "pos": [
+            23.75,
+            3.1,
+            25.25
+          ],
+          "colour": "#d8d0b0",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -1344,47 +2357,17 @@
       ],
       "cables": [
         {
-          "id": "cable-sdr-rtl-v3",
-          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0",
-          "from": [
-            112,
-            7.5,
-            -30
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            9.75
-          ],
-          "kind": "cable"
-        },
-        {
-          "id": "cable-lwir-lepton35",
-          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to USB 3.0",
-          "from": [
-            181,
-            6,
-            -30
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            9.75
-          ],
-          "kind": "cable"
-        },
-        {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -79,
+            -60,
             24,
             55
           ],
           "to": [
-            -1.5,
+            2.4999999999999973,
             3.1,
-            -25.25
+            -15.5
           ],
           "kind": "ribbon"
         },
@@ -1392,14 +2375,14 @@
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -133,
+            -114,
             24,
             55
           ],
           "to": [
-            24.5,
+            13.499999999999996,
             3.1,
-            -25.25
+            -15.5
           ],
           "kind": "ribbon"
         },
@@ -1409,12 +2392,12 @@
           "from": [
             -47.5,
             30,
-            -154
+            -145
           ],
           "to": [
-            0,
+            -46,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -1424,12 +2407,12 @@
           "from": [
             -12.5,
             30,
-            -154
+            -145
           ],
           "to": [
-            0,
+            -46,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -1439,12 +2422,12 @@
           "from": [
             20,
             30,
-            -154
+            -146.5
           ],
           "to": [
-            0,
+            46,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -1454,12 +2437,12 @@
           "from": [
             52.5,
             30,
-            -154
+            -145
           ],
           "to": [
-            0,
+            46,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -1467,14 +2450,14 @@
           "id": "cable-mag-rm3100",
           "label": "PNI Sensor RM3100 3-axis geomagnetic sensor to the carrier",
           "from": [
-            -272.5,
+            -260,
             2.5,
             190
           ],
           "to": [
-            0,
+            -46,
             51.4,
-            0
+            22.400000000000002
           ],
           "kind": "cable"
         },
@@ -1482,22 +2465,22 @@
           "id": "cable-power-solar-150w",
           "label": "generic 120 W panel + 30 A MPPT + 180 Ah LiFePO4 to the carrier",
           "from": [
-            -1085,
+            -345,
             17.5,
             190
           ],
           "to": [
-            0,
+            -46,
             51.4,
-            0
+            22.400000000000002
           ],
           "kind": "cable"
         }
       ],
       "counts": {
-        "total": 36,
+        "total": 68,
         "sourced": 12,
-        "approximate": 24,
+        "approximate": 56,
         "onCarrier": 2,
         "onWall": 4,
         "usb": 2,
@@ -1585,7 +2568,68 @@
           ],
           "sourced": false,
           "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "imu-bno085-pcb",
+          "label": "BNO085 board",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -54.5,
+            52.8,
+            -16
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+        },
+        {
+          "id": "imu-bno085-pkg",
+          "label": "BNO085",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            5.2,
+            1.1,
+            3.8
+          ],
+          "pos": [
+            -54.5,
+            53.949999999999996,
+            -15.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+        },
+        {
+          "id": "imu-bno085-hdr",
+          "label": "header",
+          "parent": "imu-bno085",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -54.5,
+            54.9,
+            -22.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
         },
         {
           "id": "adc-ads1256",
@@ -1605,7 +2649,68 @@
           ],
           "sourced": false,
           "note": "Board-mounted alongside the carrier.",
-          "interface": "spi"
+          "interface": "spi",
+          "shell": true
+        },
+        {
+          "id": "adc-ads1256-pcb",
+          "label": "ADS1256 board",
+          "parent": "adc-ads1256",
+          "mount": "detail",
+          "size": [
+            55,
+            1.2,
+            35
+          ],
+          "pos": [
+            -11.5,
+            52.8,
+            -7.5
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Board-mounted alongside the carrier."
+        },
+        {
+          "id": "adc-ads1256-pkg",
+          "label": "ADS1256",
+          "parent": "adc-ads1256",
+          "mount": "detail",
+          "size": [
+            11,
+            1.5,
+            11
+          ],
+          "pos": [
+            -11.5,
+            54.15,
+            -5.75
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Board-mounted alongside the carrier."
+        },
+        {
+          "id": "adc-ads1256-hdr",
+          "label": "header",
+          "parent": "adc-ads1256",
+          "mount": "detail",
+          "size": [
+            38.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -11.5,
+            54.9,
+            -20.8
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Board-mounted alongside the carrier."
         },
         {
           "id": "sdr-rtl-v3",
@@ -1625,7 +2730,68 @@
           ],
           "sourced": false,
           "note": "Approximate dongle body, excluding the antenna.",
-          "interface": "usb"
+          "interface": "usb",
+          "shell": true
+        },
+        {
+          "id": "sdr-rtl-v3-body",
+          "label": "RTL-SDR body",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            80,
+            13,
+            27
+          ],
+          "pos": [
+            112,
+            6.5,
+            -30
+          ],
+          "colour": "#5a5f66",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
+        },
+        {
+          "id": "sdr-rtl-v3-plug",
+          "label": "USB-A plug",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            14,
+            5,
+            12
+          ],
+          "pos": [
+            76.8,
+            5.5,
+            -30
+          ],
+          "colour": "#9aa0a8",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
+        },
+        {
+          "id": "sdr-rtl-v3-sma",
+          "label": "SMA antenna",
+          "parent": "sdr-rtl-v3",
+          "mount": "detail",
+          "size": [
+            7,
+            8,
+            7
+          ],
+          "pos": [
+            149.6,
+            7,
+            -30
+          ],
+          "colour": "#c9a961",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Approximate dongle body, excluding the antenna."
         },
         {
           "id": "lwir-lepton35",
@@ -1725,7 +2891,48 @@
           ],
           "sourced": false,
           "note": "Approximate 4-port hub body.",
-          "interface": "usb"
+          "interface": "usb",
+          "shell": true
+        },
+        {
+          "id": "usb-hub-powered-body",
+          "label": "hub body",
+          "parent": "usb-hub-powered",
+          "mount": "detail",
+          "size": [
+            100,
+            18,
+            42
+          ],
+          "pos": [
+            196,
+            9,
+            83
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate 4-port hub body."
+        },
+        {
+          "id": "usb-hub-powered-ports",
+          "label": "4 x USB-A",
+          "parent": "usb-hub-powered",
+          "mount": "detail",
+          "size": [
+            56,
+            11,
+            4
+          ],
+          "pos": [
+            196,
+            8.5,
+            100.64
+          ],
+          "colour": "#2f4f8f",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate 4-port hub body."
         },
         {
           "id": "cam-hq-imx477",
@@ -1745,7 +2952,48 @@
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "interface": "csi"
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-hq-imx477-body",
+          "label": "HQ camera board",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -79,
+            5,
+            55
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+        },
+        {
+          "id": "cam-hq-imx477-lens",
+          "label": "6 mm CS lens",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -79,
+            28,
+            55
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
         },
         {
           "id": "cam-noir-imx477",
@@ -1765,7 +3013,48 @@
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
-          "interface": "csi"
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-noir-imx477-body",
+          "label": "NoIR camera board",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -133,
+            5,
+            55
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted."
+        },
+        {
+          "id": "cam-noir-imx477-lens",
+          "label": "6 mm CS lens + 850 nm bandpass",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -133,
+            28,
+            55
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted."
         },
         {
           "id": "env-bme688",
@@ -1785,7 +3074,68 @@
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "env-bme688-pcb",
+          "label": "BME688 board",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -47.5,
+            28.1,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+        },
+        {
+          "id": "env-bme688-pkg",
+          "label": "BME688",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            3.2,
+            1.1,
+            3.2
+          ],
+          "pos": [
+            -47.5,
+            29.25,
+            -153.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+        },
+        {
+          "id": "env-bme688-hdr",
+          "label": "header",
+          "parent": "env-bme688",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -47.5,
+            30.2,
+            -160.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
         },
         {
           "id": "uv-as7331",
@@ -1805,7 +3155,68 @@
           ],
           "sourced": false,
           "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "uv-as7331-pcb",
+          "label": "AS7331 board",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -12.5,
+            28.1,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+        },
+        {
+          "id": "uv-as7331-pkg",
+          "label": "AS7331",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            3,
+            0.9,
+            3
+          ],
+          "pos": [
+            -12.5,
+            29.15,
+            -153.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+        },
+        {
+          "id": "uv-as7331-hdr",
+          "label": "header",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -12.5,
+            30.2,
+            -160.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
         },
         {
           "id": "mic-ics43434",
@@ -1825,7 +3236,68 @@
           ],
           "sourced": false,
           "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
-          "interface": "i2s"
+          "interface": "i2s",
+          "shell": true
+        },
+        {
+          "id": "mic-ics43434-pcb",
+          "label": "ICS-43434 board",
+          "parent": "mic-ics43434",
+          "mount": "detail",
+          "size": [
+            20,
+            1.2,
+            15
+          ],
+          "pos": [
+            20,
+            28.6,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+        },
+        {
+          "id": "mic-ics43434-pkg",
+          "label": "ICS-43434",
+          "parent": "mic-ics43434",
+          "mount": "detail",
+          "size": [
+            3.5,
+            1,
+            2.6
+          ],
+          "pos": [
+            20,
+            29.7,
+            -153.25
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+        },
+        {
+          "id": "mic-ics43434-hdr",
+          "label": "header",
+          "parent": "mic-ics43434",
+          "mount": "detail",
+          "size": [
+            14,
+            3,
+            2.4
+          ],
+          "pos": [
+            20,
+            30.7,
+            -159.7
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
         },
         {
           "id": "pwr-ina226",
@@ -1845,7 +3317,68 @@
           ],
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
-          "interface": "i2c"
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "pwr-ina226-pcb",
+          "label": "INA226 board",
+          "parent": "pwr-ina226",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            52.5,
+            28.1,
+            -154
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+        },
+        {
+          "id": "pwr-ina226-pkg",
+          "label": "INA226",
+          "parent": "pwr-ina226",
+          "mount": "detail",
+          "size": [
+            3,
+            1,
+            3
+          ],
+          "pos": [
+            52.5,
+            29.2,
+            -153.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+        },
+        {
+          "id": "pwr-ina226-hdr",
+          "label": "header",
+          "parent": "pwr-ina226",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            52.5,
+            30.2,
+            -160.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
         },
         {
           "id": "mag-rm3100",
@@ -1866,7 +3399,68 @@
           "sourced": false,
           "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
           "interface": "spi",
-          "remote": true
+          "remote": true,
+          "shell": true
+        },
+        {
+          "id": "mag-rm3100-pcb",
+          "label": "RM3100 board",
+          "parent": "mag-rm3100",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            25
+          ],
+          "pos": [
+            -272.5,
+            0.6,
+            190
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+        },
+        {
+          "id": "mag-rm3100-pkg",
+          "label": "RM3100",
+          "parent": "mag-rm3100",
+          "mount": "detail",
+          "size": [
+            6,
+            2.4,
+            6
+          ],
+          "pos": [
+            -272.5,
+            2.4,
+            191.25
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+        },
+        {
+          "id": "mag-rm3100-hdr",
+          "label": "header",
+          "parent": "mag-rm3100",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -272.5,
+            2.7,
+            180.5
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
         },
         {
           "id": "seis-sm24",
@@ -1887,7 +3481,48 @@
           "sourced": false,
           "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled.",
           "interface": "analog",
-          "remote": true
+          "remote": true,
+          "shell": true
+        },
+        {
+          "id": "seis-sm24-body",
+          "label": "geophone can",
+          "parent": "seis-sm24",
+          "mount": "detail",
+          "size": [
+            32,
+            33,
+            32
+          ],
+          "pos": [
+            -361,
+            16.5,
+            190
+          ],
+          "colour": "#4a4f56",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled."
+        },
+        {
+          "id": "seis-sm24-spike",
+          "label": "ground spike",
+          "parent": "seis-sm24",
+          "mount": "detail",
+          "size": [
+            6,
+            10,
+            6
+          ],
+          "pos": [
+            -361,
+            -5,
+            190
+          ],
+          "colour": "#6b7078",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled."
         },
         {
           "id": "sem-ir-beacon",
@@ -1908,7 +3543,48 @@
           "sourced": false,
           "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate.",
           "interface": "gpio+pwm",
-          "remote": true
+          "remote": true,
+          "shell": true
+        },
+        {
+          "id": "sem-ir-beacon-pcb",
+          "label": "beacon board",
+          "parent": "sem-ir-beacon",
+          "mount": "detail",
+          "size": [
+            30,
+            1.2,
+            20
+          ],
+          "pos": [
+            -452,
+            0.6,
+            190
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate."
+        },
+        {
+          "id": "sem-ir-beacon-led",
+          "label": "850 nm emitter",
+          "parent": "sem-ir-beacon",
+          "mount": "detail",
+          "size": [
+            6,
+            4.5,
+            6
+          ],
+          "pos": [
+            -452,
+            3.45,
+            190
+          ],
+          "colour": "#5a1f1f",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate."
         },
         {
           "id": "power-solar-200w",
@@ -2081,73 +3757,73 @@
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            51,
+            52.4,
             8.5,
             5.1
           ],
           "pos": [
-            -13.5,
+            -14.100000000000001,
             5.85,
-            23.549999999999997
+            23.25
           ],
-          "colour": "#22252b",
+          "colour": "#1c1f24",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
-          "id": "pi5-8gb-usb3a",
-          "label": "USB 3.0",
+          "id": "pi5-8gb-eth",
+          "label": "Gigabit Ethernet",
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            17,
-            16.4,
-            15.5
+            14.5,
+            13.5,
+            16
           ],
           "pos": [
-            34,
+            35.25,
+            8.35,
+            -18.5
+          ],
+          "colour": "#43484f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-usb3",
+          "label": "USB 3.0 x2",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            14.5,
+            16.4,
+            17.5
+          ],
+          "pos": [
+            35.25,
             9.799999999999999,
-            9.75
+            0.75
           ],
           "colour": "#2f4f8f",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
-          "id": "pi5-8gb-usb2a",
-          "label": "USB 2.0",
+          "id": "pi5-8gb-usb2",
+          "label": "USB 2.0 x2",
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            17,
+            14.5,
             16.4,
-            15.5
+            17.5
           ],
           "pos": [
-            34,
+            35.25,
             9.799999999999999,
-            -10.25
+            19.25
           ],
-          "colour": "#2b2f36",
-          "sourced": false,
-          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
-        },
-        {
-          "id": "pi5-8gb-eth",
-          "label": "Ethernet",
-          "parent": "pi5-8gb",
-          "mount": "feature",
-          "size": [
-            17,
-            13.5,
-            16
-          ],
-          "pos": [
-            34,
-            8.35,
-            25
-          ],
-          "colour": "#3a3f47",
+          "colour": "#26292f",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -2158,15 +3834,15 @@
           "mount": "feature",
           "size": [
             9,
-            3.2,
-            3.2
+            3.3,
+            3.4
           ],
           "pos": [
-            -35,
-            3.2,
-            -2.3999999999999986
+            -29.5,
+            3.25,
+            -26.9
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -2176,16 +3852,16 @@
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            7.5,
-            3.2,
-            3
+            7.2,
+            3.3,
+            3.2
           ],
           "pos": [
-            -35.75,
-            3.2,
-            -12.5
+            -16.4,
+            3.25,
+            -27
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -2195,16 +3871,35 @@
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            7.5,
-            3.2,
-            3
+            7.2,
+            3.3,
+            3.2
           ],
           "pos": [
-            -35.75,
-            3.2,
-            -22.5
+            -2.3999999999999986,
+            3.25,
+            -27
           ],
-          "colour": "#8a8f98",
+          "colour": "#9aa0a8",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-sd",
+          "label": "microSD",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            12,
+            1.6,
+            1.6
+          ],
+          "pos": [
+            -14.5,
+            2.4000000000000004,
+            -28.4
+          ],
+          "colour": "#6b7078",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -2214,14 +3909,14 @@
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            22,
+            2.6,
             3,
-            2.5
+            21
           ],
           "pos": [
-            -1.5,
+            3.799999999999997,
             3.1,
-            -25.25
+            -15.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -2233,14 +3928,14 @@
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            22,
+            2.6,
             3,
-            2.5
+            21
           ],
           "pos": [
-            24.5,
+            14.799999999999997,
             3.1,
-            -25.25
+            -15.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -2253,15 +3948,34 @@
           "mount": "feature",
           "size": [
             15,
-            2.2,
+            2.4,
             15
           ],
           "pos": [
-            -2,
-            2.7,
+            -4.5,
+            2.8,
             1.5
           ],
-          "colour": "#4a4f58",
+          "colour": "#53585f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-rp1",
+          "label": "RP1 southbridge",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            10,
+            1.7,
+            10
+          ],
+          "pos": [
+            12.5,
+            2.45,
+            7
+          ],
+          "colour": "#4a4f56",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -2271,35 +3985,73 @@
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            12,
+            12.5,
             1.4,
-            9
+            9.5
           ],
           "pos": [
-            -3.5,
+            -6.25,
             2.3,
-            16.5
+            17.25
           ],
-          "colour": "#3c4148",
+          "colour": "#3f444b",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
         {
           "id": "pi5-8gb-pmic",
-          "label": "RP1 southbridge",
+          "label": "PMIC",
           "parent": "pi5-8gb",
           "mount": "feature",
           "size": [
-            10,
-            1.6,
-            10
+            6,
+            1.2,
+            6
           ],
           "pos": [
-            14.5,
-            2.4000000000000004,
-            -1
+            18.5,
+            2.2,
+            -9
           ],
-          "colour": "#4a4f58",
+          "colour": "#4a4f56",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-pcie",
+          "label": "PCIe FFC",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            3,
+            2.6,
+            12
+          ],
+          "pos": [
+            21,
+            2.9000000000000004,
+            22
+          ],
+          "colour": "#b9a97f",
+          "sourced": false,
+          "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
+        },
+        {
+          "id": "pi5-8gb-fan",
+          "label": "Fan header",
+          "parent": "pi5-8gb",
+          "mount": "feature",
+          "size": [
+            4.5,
+            3,
+            2.5
+          ],
+          "pos": [
+            23.75,
+            3.1,
+            25.25
+          ],
+          "colour": "#d8d0b0",
           "sourced": false,
           "note": "Connector and chip positions approximated from the published Raspberry Pi 5 mechanical drawing. Accurate enough to recognise the board and to land a cable on the correct port, which is what the model is for; not a substitute for the drawing itself."
         },
@@ -2324,107 +4076,17 @@
       ],
       "cables": [
         {
-          "id": "cable-sdr-rtl-v3",
-          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0",
-          "from": [
-            112,
-            7.5,
-            -30
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            9.75
-          ],
-          "kind": "cable"
-        },
-        {
-          "id": "cable-lwir-lepton35",
-          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to USB 3.0",
-          "from": [
-            181,
-            6,
-            -30
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            9.75
-          ],
-          "kind": "cable"
-        },
-        {
-          "id": "cable-radar-iwr6843",
-          "label": "Texas Instruments IWR6843ISK 60 GHz mmWave to USB 2.0",
-          "from": [
-            99.5,
-            8,
-            14
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            -10.25
-          ],
-          "kind": "cable"
-        },
-        {
-          "id": "cable-gamma-csi-sipm",
-          "label": "OpenGammaDetector CsI(Tl) + SiPM open gamma spectrometer to USB 2.0",
-          "from": [
-            176,
-            11,
-            14
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            -10.25
-          ],
-          "kind": "cable"
-        },
-        {
-          "id": "cable-swir-ingaas640",
-          "label": "various InGaAs 640x512 SWIR module to USB 3.0",
-          "from": [
-            102,
-            37.5,
-            83
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            9.75
-          ],
-          "kind": "cable"
-        },
-        {
-          "id": "cable-usb-hub-powered",
-          "label": "generic 4-port USB 3.0 hub with 5 V 4 A external supply to USB 3.0",
-          "from": [
-            196,
-            11,
-            83
-          ],
-          "to": [
-            34,
-            9.799999999999999,
-            9.75
-          ],
-          "kind": "cable"
-        },
-        {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -79,
+            -60,
             24,
             55
           ],
           "to": [
-            -1.5,
+            2.4999999999999973,
             3.1,
-            -25.25
+            -15.5
           ],
           "kind": "ribbon"
         },
@@ -2432,14 +4094,14 @@
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -133,
+            -114,
             24,
             55
           ],
           "to": [
-            24.5,
+            13.499999999999996,
             3.1,
-            -25.25
+            -15.5
           ],
           "kind": "ribbon"
         },
@@ -2449,12 +4111,12 @@
           "from": [
             -47.5,
             30,
-            -154
+            -145
           ],
           "to": [
-            0,
+            -56,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -2464,12 +4126,12 @@
           "from": [
             -12.5,
             30,
-            -154
+            -145
           ],
           "to": [
-            0,
+            -56,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -2479,12 +4141,12 @@
           "from": [
             20,
             30,
-            -154
+            -146.5
           ],
           "to": [
-            0,
+            56,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -2494,12 +4156,12 @@
           "from": [
             52.5,
             30,
-            -154
+            -145
           ],
           "to": [
-            0,
+            56,
             51.4,
-            0
+            -22.400000000000002
           ],
           "kind": "cable"
         },
@@ -2507,14 +4169,14 @@
           "id": "cable-mag-rm3100",
           "label": "PNI Sensor RM3100 3-axis geomagnetic sensor to the carrier",
           "from": [
-            -272.5,
+            -260,
             2.5,
             190
           ],
           "to": [
-            0,
+            -56,
             51.4,
-            0
+            22.400000000000002
           ],
           "kind": "cable"
         },
@@ -2522,14 +4184,14 @@
           "id": "cable-seis-sm24",
           "label": "ION / Sercel SM-24 geophone element to the carrier",
           "from": [
-            -361,
+            -345,
             17.5,
             190
           ],
           "to": [
-            0,
+            -56,
             51.4,
-            0
+            22.400000000000002
           ],
           "kind": "cable"
         },
@@ -2537,14 +4199,14 @@
           "id": "cable-sem-ir-beacon",
           "label": "generic 850 nm pulsed IR beacon, 5 W peak to the carrier",
           "from": [
-            -452,
+            -437,
             6,
             190
           ],
           "to": [
-            0,
+            -56,
             51.4,
-            0
+            22.400000000000002
           ],
           "kind": "cable"
         },
@@ -2552,22 +4214,22 @@
           "id": "cable-power-solar-200w",
           "label": "generic 220 W array + 40 A MPPT + 300 Ah LiFePO4 to the carrier",
           "from": [
-            -1337,
+            -527,
             17.5,
             190
           ],
           "to": [
-            0,
+            -56,
             51.4,
-            0
+            22.400000000000002
           ],
           "kind": "cable"
         }
       ],
       "counts": {
-        "total": 42,
+        "total": 80,
         "sourced": 12,
-        "approximate": 30,
+        "approximate": 68,
         "onCarrier": 2,
         "onWall": 4,
         "usb": 6,
