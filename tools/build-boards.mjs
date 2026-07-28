@@ -35,7 +35,61 @@ if (!existsSync(cli)) {
 mkdirSync(BUILD, { recursive: true })
 mkdirSync(PUBLIC, { recursive: true })
 
-const manifest = JSON.parse(readFileSync(join(BOARDS, 'manifest.json'), 'utf8'))
+let manifest = JSON.parse(readFileSync(join(BOARDS, 'manifest.json'), 'utf8'))
+
+/**
+ * Widen a board until its copper clearance measures clean.
+ *
+ * Board size was picked by hand and it did not converge: widening tier 2 to
+ * clear a 0.103 mm violation pushed tier 3 back under the limit, and every
+ * density constant tried was right for one tier and wrong for another. Routing
+ * density is not a function of component count alone, so rather than keep
+ * guessing at a formula the build widens, re-routes and re-measures.
+ *
+ * 0.127 mm edge to edge is the standard minimum the cheap fabricators quote.
+ * Below it nobody will build the board, so it is worth several minutes of
+ * router time to land above it.
+ */
+const HARD_MM = 0.127
+
+function worstClearance(circuit) {
+  const byTrace = Object.fromEntries(
+    circuit.filter((e) => e.type === 'source_trace').map((e) => [e.source_trace_id, e]),
+  )
+  const segs = []
+  for (const t of circuit.filter((e) => e.type === 'pcb_trace')) {
+    const net = byTrace[t.source_trace_id]?.subcircuit_connectivity_map_key ?? t.source_trace_id
+    const pts = (t.route ?? []).filter((r) => r.route_type === 'wire')
+    for (let i = 0; i + 1 < pts.length; i++) {
+      if (pts[i].layer !== pts[i + 1].layer) continue
+      segs.push({ net, layer: pts[i].layer, a: pts[i], b: pts[i + 1], w: pts[i].width ?? 0.15 })
+    }
+  }
+  const dist = (p1, p2, p3, p4) => {
+    const ptSeg = (p, q, r) => {
+      const dx = r.x - q.x
+      const dy = r.y - q.y
+      const L = dx * dx + dy * dy
+      if (L === 0) return Math.hypot(p.x - q.x, p.y - q.y)
+      const t = Math.max(0, Math.min(1, ((p.x - q.x) * dx + (p.y - q.y) * dy) / L))
+      return Math.hypot(p.x - (q.x + t * dx), p.y - (q.y + t * dy))
+    }
+    const ccw = (m, n, o) => (o.y - m.y) * (n.x - m.x) > (n.y - m.y) * (o.x - m.x)
+    if (ccw(p1, p3, p4) !== ccw(p2, p3, p4) && ccw(p1, p2, p3) !== ccw(p1, p2, p4)) return 0
+    return Math.min(ptSeg(p1, p3, p4), ptSeg(p2, p3, p4), ptSeg(p3, p1, p2), ptSeg(p4, p1, p2))
+  }
+  let worst = Infinity
+  for (let i = 0; i < segs.length; i++) {
+    for (let j = i + 1; j < segs.length; j++) {
+      const x = segs[i]
+      const y = segs[j]
+      if (x.net === y.net || x.layer !== y.layer) continue
+      const edge = dist(x.a, x.b, y.a, y.b) - x.w / 2 - y.w / 2
+      if (edge < worst) worst = edge
+    }
+  }
+  return worst
+}
 
 // The CLI resolves output paths relative to the input file's directory, so
 // everything runs from the boards directory with relative paths on both sides.
@@ -47,6 +101,41 @@ const exportBoard = (tier, format, out) =>
     cwd: BOARDS,
     stdio: 'pipe',
   })
+
+// Widen whatever does not clear the fab minimum, then regenerate everything so
+// the checked-in sources match what was measured.
+const extra = {}
+for (let round = 0; round < 6; round++) {
+  const tight = []
+  for (const b of manifest.boards) {
+    try {
+      exportBoard(b.tier, 'circuit-json', `.build/${b.tier}-probe.json`)
+      const circuit = JSON.parse(readFileSync(join(BOARDS, `.build/${b.tier}-probe.json`), 'utf8'))
+      const worst = worstClearance(circuit)
+      if (Number.isFinite(worst) && worst < HARD_MM) {
+        extra[b.tier] = (extra[b.tier] ?? 0) + 15
+        tight.push(`${b.tier} ${worst.toFixed(3)} mm`)
+      }
+    } catch {
+      /* a board that will not export is reported by the check, not here */
+    }
+  }
+  if (tight.length === 0) break
+  console.log(`  widening: ${tight.join(', ')} (round ${round + 1})`)
+  const env = { ...process.env }
+  for (const [t, mm] of Object.entries(extra)) env[`NBAND_BOARD_EXTRA_${t.toUpperCase()}`] = String(mm)
+  execFileSync('node', [join(root, 'tools/gen-boards.mjs')], { stdio: 'pipe', env })
+  manifest = JSON.parse(readFileSync(join(BOARDS, 'manifest.json'), 'utf8'))
+}
+if (Object.keys(extra).length) {
+  // The widened sources have to be what is checked in, or the next run of
+  // gen-boards silently reverts them.
+  writeFileSync(
+    join(BOARDS, 'width-overrides.json'),
+    JSON.stringify(extra, null, 2) + '\n',
+  )
+  console.log(`  width overrides: ${JSON.stringify(extra)}`)
+}
 
 const built = []
 for (const b of manifest.boards) {

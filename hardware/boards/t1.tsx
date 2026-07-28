@@ -17,7 +17,7 @@
 
 export default () => (
   <board
-    width="65mm"
+    width="105mm"
     height="56mm"
     /* Four layers. Two could not route tier 3's 37 nets, and a carrier with
        this many buses crossing wants an inner ground plane anyway. */
@@ -106,6 +106,23 @@ export default () => (
     {/* bulk reservoir on V33 */}
     <capacitor name="C5" capacitance="10uF" footprint="0805"
       pcbX={-19.00} pcbY={-11.5} schX={-4} schY={-15} />
+    {/* TVS clamp on SDA, which leaves the enclosure toward
+        env-bme688. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D1" footprint="sot23" pcbX={-49.00} pcbY={-7.5}
+      schX={0} schY={1.6} />
+    {/* TVS clamp on SCL, which leaves the enclosure toward
+        env-bme688. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D2" footprint="sot23" pcbX={-43.50} pcbY={-7.5}
+      schX={0} schY={1.6} />
+    {/* V33 supply: resettable fuse and reverse-polarity diode. An
+        off-grid node is wired by whoever installed it, in the field,
+        often in the dark, and battery leads get reversed. */}
+    <fuse name="F1" currentRating="2A" footprint="1206"
+      pcbX={-38.00} pcbY={-7.5} schX={-6} schY={-9} />
+    <diode name="D3" footprint="sod123"
+      pcbX={-33.00} pcbY={-7.5} schX={-4} schY={-9} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J4 > .SDA" to="net.SDA" />
@@ -136,6 +153,12 @@ export default () => (
     <trace from=".C4 > .pin2" to="net.GND" />
     <trace from=".C5 > .pin1" to="net.V33" />
     <trace from=".C5 > .pin2" to="net.GND" />
+    <trace from=".D1 > .pin1" to="net.GND" />
+    <trace from=".D1 > .pin2" to="net.SDA" />
+    <trace from=".D2 > .pin1" to="net.GND" />
+    <trace from=".D2 > .pin2" to="net.SCL" />
+    <trace from=".F1 > .pin1" to="net.V33" />
+    <trace from=".D3 > .pin1" to="net.GND" />
     <trace from=".J5 > .TXD__RXD" to=".J1 > .P10" />
     <trace from=".J5 > .RXD__TXD" to=".J1 > .P8" />
     <trace from=".J5 > .PPS" to=".J1 > .P7" />

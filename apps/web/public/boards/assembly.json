@@ -33,7 +33,7 @@
           "mount": "hat",
           "glb": "/boards/t1-board.glb",
           "size": [
-            65,
+            105,
             1.6,
             56
           ],
@@ -43,7 +43,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. 65 x 56 mm, mounting on the HAT hole pattern."
+          "note": "Generated from the hardware registry. 105 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "imu-bno085",
@@ -57,7 +57,7 @@
             18
           ],
           "pos": [
-            -17,
+            -37,
             30.7,
             -16
           ],
@@ -206,7 +206,7 @@
           "mount": "hat",
           "glb": "/boards/t2-board.glb",
           "size": [
-            85,
+            145,
             1.6,
             56
           ],
@@ -216,7 +216,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. 85 x 56 mm, mounting on the HAT hole pattern."
+          "note": "Generated from the hardware registry. 145 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "imu-bno085",
@@ -230,7 +230,7 @@
             18
           ],
           "pos": [
-            -27,
+            -57,
             30.7,
             -16
           ],
@@ -250,7 +250,7 @@
             25
           ],
           "pos": [
-            6,
+            -24,
             31.2,
             -12.5
           ],
@@ -519,7 +519,7 @@
           "mount": "hat",
           "glb": "/boards/t3-board.glb",
           "size": [
-            105,
+            140,
             1.6,
             56
           ],
@@ -529,7 +529,7 @@
             0
           ],
           "sourced": true,
-          "note": "Generated from the hardware registry. 105 x 56 mm, mounting on the HAT hole pattern."
+          "note": "Generated from the hardware registry. 140 x 56 mm, mounting on the HAT hole pattern."
         },
         {
           "id": "imu-bno085",
@@ -543,7 +543,7 @@
             18
           ],
           "pos": [
-            -37,
+            -54.5,
             30.7,
             -16
           ],
@@ -563,7 +563,7 @@
             35
           ],
           "pos": [
-            6,
+            -11.5,
             34.2,
             -7.5
           ],

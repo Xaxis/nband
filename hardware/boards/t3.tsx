@@ -22,8 +22,8 @@
 
 export default () => (
   <board
-    width="105mm"
-    height="70mm"
+    width="140mm"
+    height="76mm"
     /* Four layers. Two could not route tier 3's 37 nets, and a carrier with
        this many buses crossing wants an inner ground plane anyway. */
     layers={4}
@@ -185,6 +185,70 @@ export default () => (
       pcbX={-6.00} pcbY={-11.5} schX={2} schY={-7} />
     <resistor name="R2" resistance="10k" footprint="0402"
       pcbX={-2.00} pcbY={-11.5} schX={4} schY={-7} />
+    {/* TVS clamp on SDA, which leaves the enclosure toward
+        env-bme688. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D1" footprint="sot23" pcbX={-66.50} pcbY={-7.5}
+      schX={0} schY={1.6} />
+    {/* TVS clamp on SCL, which leaves the enclosure toward
+        env-bme688. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D2" footprint="sot23" pcbX={-61.00} pcbY={-7.5}
+      schX={0} schY={1.6} />
+    {/* TVS clamp on MOSI, which leaves the enclosure toward
+        mag-rm3100. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D3" footprint="sot23" pcbX={-55.50} pcbY={-7.5}
+      schX={14} schY={1.6} />
+    {/* TVS clamp on MISO, which leaves the enclosure toward
+        mag-rm3100. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D4" footprint="sot23" pcbX={-50.00} pcbY={-7.5}
+      schX={14} schY={1.6} />
+    {/* TVS clamp on SCLK, which leaves the enclosure toward
+        mag-rm3100. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D5" footprint="sot23" pcbX={-44.50} pcbY={-7.5}
+      schX={14} schY={1.6} />
+    {/* TVS clamp on CS, which leaves the enclosure toward
+        mag-rm3100. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D6" footprint="sot23" pcbX={-39.00} pcbY={-7.5}
+      schX={14} schY={1.6} />
+    {/* TVS clamp on GATE, which leaves the enclosure toward
+        sem-ir-beacon. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D7" footprint="sot23" pcbX={-33.50} pcbY={-7.5}
+      schX={7} schY={-6.4} />
+    {/* TVS clamp on BCLK, which leaves the enclosure toward
+        mic-ics43434. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D8" footprint="sot23" pcbX={-28.00} pcbY={-7.5}
+      schX={14} schY={-6.4} />
+    {/* TVS clamp on LRCL, which leaves the enclosure toward
+        mic-ics43434. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D9" footprint="sot23" pcbX={-22.50} pcbY={-7.5}
+      schX={14} schY={-6.4} />
+    {/* TVS clamp on DOUT, which leaves the enclosure toward
+        mic-ics43434. That cable is an antenna on a mast, and its far
+        end is outside every protection the box provides. */}
+    <diode name="D10" footprint="sot23" pcbX={-17.00} pcbY={-7.5}
+      schX={14} schY={-6.4} />
+    {/* V33 supply: resettable fuse and reverse-polarity diode. An
+        off-grid node is wired by whoever installed it, in the field,
+        often in the dark, and battery leads get reversed. */}
+    <fuse name="F1" currentRating="2A" footprint="1206"
+      pcbX={-11.50} pcbY={-7.5} schX={-6} schY={-9} />
+    <diode name="D11" footprint="sod123"
+      pcbX={-6.50} pcbY={-7.5} schX={-4} schY={-9} />
+    {/* V5 supply: resettable fuse and reverse-polarity diode. An
+        off-grid node is wired by whoever installed it, in the field,
+        often in the dark, and battery leads get reversed. */}
+    <fuse name="F2" currentRating="2A" footprint="1206"
+      pcbX={-0.50} pcbY={-7.5} schX={-6} schY={-11} />
+    <diode name="D12" footprint="sod123"
+      pcbX={4.50} pcbY={-7.5} schX={-4} schY={-11} />
     <trace from=".J2 > .SDA" to="net.SDA" />
     <trace from=".J3 > .SDA" to="net.SDA" />
     <trace from=".J5 > .SDA" to="net.SDA" />
@@ -257,6 +321,30 @@ export default () => (
     <trace from=".R1 > .pin2" to=".J9 > .GATE" />
     <trace from=".R2 > .pin1" to=".J9 > .GATE" />
     <trace from=".R2 > .pin2" to="net.GND" />
+    <trace from=".D1 > .pin1" to="net.GND" />
+    <trace from=".D1 > .pin2" to="net.SDA" />
+    <trace from=".D2 > .pin1" to="net.GND" />
+    <trace from=".D2 > .pin2" to="net.SCL" />
+    <trace from=".D3 > .pin1" to="net.GND" />
+    <trace from=".D3 > .pin2" to="net.MOSI" />
+    <trace from=".D4 > .pin1" to="net.GND" />
+    <trace from=".D4 > .pin2" to="net.MISO" />
+    <trace from=".D5 > .pin1" to="net.GND" />
+    <trace from=".D5 > .pin2" to="net.SCLK" />
+    <trace from=".D6 > .pin1" to="net.GND" />
+    <trace from=".D6 > .pin2" to=".J4 > .CS" />
+    <trace from=".D7 > .pin1" to="net.GND" />
+    <trace from=".D7 > .pin2" to=".J9 > .GATE" />
+    <trace from=".D8 > .pin1" to="net.GND" />
+    <trace from=".D8 > .pin2" to=".J10 > .BCLK" />
+    <trace from=".D9 > .pin1" to="net.GND" />
+    <trace from=".D9 > .pin2" to=".J10 > .LRCL" />
+    <trace from=".D10 > .pin1" to="net.GND" />
+    <trace from=".D10 > .pin2" to=".J10 > .DOUT" />
+    <trace from=".F1 > .pin1" to="net.V33" />
+    <trace from=".D11 > .pin1" to="net.GND" />
+    <trace from=".F2 > .pin1" to="net.V5" />
+    <trace from=".D12 > .pin1" to="net.GND" />
     <trace from=".J4 > .CS" to=".J1 > .P24" />
     <trace from=".J6 > .TXD__RXD" to=".J1 > .P10" />
     <trace from=".J6 > .RXD__TXD" to=".J1 > .P8" />

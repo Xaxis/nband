@@ -23,7 +23,7 @@
  */
 
 import { createHash } from 'node:crypto'
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -33,6 +33,14 @@ const spec = JSON.parse(readFileSync(join(root, 'schema/spec.json'), 'utf8'))
 
 const OUT = join(root, 'hardware/boards')
 mkdirSync(OUT, { recursive: true })
+
+// Persisted by the build loop so a plain `node tools/gen-boards.mjs` produces
+// the same widths that were measured clean, rather than reverting to the
+// starting guess and quietly reintroducing a clearance violation.
+const OVERRIDES_PATH = join(OUT, 'width-overrides.json')
+const WIDTH_OVERRIDES = existsSync(OVERRIDES_PATH)
+  ? JSON.parse(readFileSync(OVERRIDES_PATH, 'utf8'))
+  : {}
 
 // A HAT is 65 x 56 mm with the GPIO header along one long edge, and the four
 // mounting holes sit at fixed positions the mechanical standard defines.
@@ -51,6 +59,10 @@ const HOLE_Y = 24.5
 
 /** Signals that are power or ground, which every module needs and which route short. */
 const isRail = (s) => /^(3V3|5V|GND|VCC|VIN)$/i.test(s)
+
+/** Which rail net a supply signal belongs to. */
+const railOfSignal = (sig) =>
+  sig.toUpperCase() === 'GND' ? 'GND' : `V${sig.replace(/[^0-9]/g, '') || 'CC'}`
 
 /** A JSX-safe identifier for a signal name: "TXD->RXD" is not one. */
 const ident = (s) => s.replace(/[^A-Za-z0-9]/g, '_')
@@ -141,14 +153,41 @@ function boardFor(tier) {
   // laid down no copper at all and the only symptom was 31 "plated hole
   // overlaps" buried in the circuit JSON. A connector is pinCount * 2.54 wide
   // and needs its own space.
-  // Widen once the parts stop fitting comfortably, and measure rather than
-  // guess where that is: at 65 mm tier 3 routed six pairs down to 0.100 mm, at
-  // 85 mm three pairs to 0.120 mm, and neither is buildable. 65 mm is the HAT
-  // footprint, 85 mm matches the Pi's own length, and beyond that the board
-  // simply overhangs, which full-size HATs do routinely.
-  const BOARD_W = withCentroid.length > 8 ? 105 : withCentroid.length > 6 ? 85 : 65
-  // Depth grows too, since a third connector row needs somewhere to sit.
-  const BOARD_H = withCentroid.length > 8 ? 70 : BOARD_H_BASE
+  // Board size follows what is actually placed on it, not the module count.
+  //
+  // Hand-picked sizes were whack-a-mole: widening tier 2 to clear a 0.103 mm
+  // violation pushed tier 3 back under the limit, because the passives and
+  // protection now outnumber the connectors three to one and the module count
+  // stopped predicting density some time ago. Every module brings a decoupling
+  // capacitor, external ones bring a clamp, and each rail brings a fuse and a
+  // diode, so the count is knowable here and the area follows from it.
+  //
+  // 275 mm2 per component is empirical, and it is empirical in the dull sense:
+  // tier 2 cleared a 0.127 mm gap at 108 x 76 mm with 32 components, which is
+  // 257 mm2 each, and tier 3 failed at 118 x 76 with 37, which is 242. The
+  // figure sits above the one that worked. The clearance check is what keeps it
+  // honest, and it has already caught this being wrong in both directions.
+  const railCount = new Set(
+    modules.flatMap((m) => m.pins.filter((x) => isRail(x.signal)).map((x) => railOfSignal(x.signal))),
+  ).size
+  const externalCount = modules.filter((m) =>
+    ['external', 'enclosure-wall'].includes(m.part.mechanical?.mount ?? ''),
+  ).length
+  const estimated =
+    withCentroid.length * 2 + railCount * 3 + externalCount * 2 + 4
+
+  // The starting guess, then widened by tools/build-boards.mjs until the
+  // clearance actually measures clean. Picking a density by hand did not
+  // converge: widening tier 2 to clear 0.103 mm pushed tier 3 under, and every
+  // constant I tried was right for one tier and wrong for another, because
+  // routing density is not a function of component count alone. So the build
+  // loop widens and re-measures rather than trusting a formula, and this is
+  // only where it starts.
+  const extra = Number(
+    process.env[`NBAND_BOARD_EXTRA_${tier.id.toUpperCase()}`] ?? WIDTH_OVERRIDES[tier.id] ?? 0,
+  )
+  const BOARD_H = withCentroid.length > 5 ? 76 : BOARD_H_BASE
+  const BOARD_W = Math.max(65, Math.ceil((estimated * 220) / BOARD_H / 5) * 5) + extra
   const HALF = (m) => (m.pins.length * 2.54) / 2
   const GAP = 2.0
   const EDGE = BOARD_W / 2 - 1.5
@@ -357,6 +396,81 @@ function boardFor(tier) {
     passiveTraces.push(`    <trace from=".${rs} > .pin2" to=".${g.ref} > .${g.sig}" />`)
     passiveTraces.push(`    <trace from=".${rpd} > .pin1" to=".${g.ref} > .${g.sig}" />`)
     passiveTraces.push(`    <trace from=".${rpd} > .pin2" to="net.GND" />`)
+  })
+
+  // ---- Protection --------------------------------------------------------
+  //
+  // The board had none of this, and the exposure is not theoretical. Two
+  // signals leave the enclosure on multi-metre cables: the magnetometer sits
+  // two metres out on a non-ferrous mast section because that is what its own
+  // datasheet asks for, and the geophone is ground-coupled and further still.
+  // Both are on a shared SPI bus. A cable that long on a mast is an antenna,
+  // and a nearby strike does not have to be close to induce a transient that
+  // walks back into the Pi through whichever device is listening.
+  //
+  // So: a TVS diode array on every signal that leaves the box, a series
+  // resistor to survive what the TVS lets through, and a resettable fuse and
+  // reverse-polarity diode on the incoming supply, because an off-grid node
+  // is wired by whoever installed it and battery leads get reversed.
+  const EXTERNAL_MOUNTS = new Set(['external', 'enclosure-wall'])
+  const exposed = placed.filter((m) => EXTERNAL_MOUNTS.has(m.part.mechanical?.mount ?? ''))
+  let dIdx = 1
+
+  // Protection lives in its own band between the connector rows and the
+  // header, rather than tucked under each connector. Tucking put every diode
+  // on top of the module in the row below: a board is not a spreadsheet and
+  // "just under this one" is somewhere else's space.
+  const PROT_Y = -7.5
+  let protX = -EDGE + 2
+
+  // One TVS per line that leaves the box, not one per module. Four I2C sensors
+  // at the enclosure wall share SDA and SCL, and clamping a shared net four
+  // times is four times the capacitance on a bus that already has a rise-time
+  // budget, plus four parts doing one part's job. The first version did exactly
+  // that and the router could not resolve which pad the duplicate clamps
+  // belonged to.
+  const clamped = new Map() // net or header pin -> the module that reaches it
+  for (const m of exposed) {
+    for (const s2 of m.pins) {
+      if (isRail(s2.signal)) continue
+      const key = busNet.has(s2.pin) ? `net:${busNet.get(s2.pin)}` : `pin:${s2.pin}`
+      if (!clamped.has(key)) clamped.set(key, { m, sig: s2 })
+    }
+  }
+
+  for (const [key, { m, sig }] of clamped) {
+    const ref = `D${dIdx++}`
+    const target = key.startsWith('net:')
+      ? `net.${key.slice(4)}`
+      : `.${m.ref} > .${ident(sig.signal)}`
+    passives.push(
+      `    {/* TVS clamp on ${sig.signal}, which leaves the enclosure toward\n` +
+        `        ${m.part.id}. That cable is an antenna on a mast, and its far\n` +
+        `        end is outside every protection the box provides. */}\n` +
+        `    <diode name="${ref}" footprint="sot23" pcbX={${protX.toFixed(2)}} pcbY={${PROT_Y}}\n` +
+        `      schX={${m.schX}} schY={${(m.schY - 2.4).toFixed(1)}} />`,
+    )
+    protX += 5.5
+    passiveTraces.push(`    <trace from=".${ref} > .pin1" to="net.GND" />`)
+    passiveTraces.push(`    <trace from=".${ref} > .pin2" to="${target}" />`)
+  }
+
+  // Supply protection, once per board.
+  const supplyRails = [...rails.keys()].filter((r) => r !== 'GND')
+  supplyRails.forEach((rail, k) => {
+    const f = `F${k + 1}`
+    const d = `D${dIdx++}`
+    passives.push(
+      `    {/* ${rail} supply: resettable fuse and reverse-polarity diode. An\n` +
+        `        off-grid node is wired by whoever installed it, in the field,\n` +
+        `        often in the dark, and battery leads get reversed. */}\n` +
+        `    <fuse name="${f}" currentRating="2A" footprint="1206"\n` +
+        `      pcbX={${(protX + k * 11).toFixed(2)}} pcbY={${PROT_Y}} schX={-6} schY={${-9 - k * 2}} />\n` +
+        `    <diode name="${d}" footprint="sod123"\n` +
+        `      pcbX={${(protX + 5 + k * 11).toFixed(2)}} pcbY={${PROT_Y}} schX={-4} schY={${-9 - k * 2}} />`,
+    )
+    passiveTraces.push(`    <trace from=".${f} > .pin1" to="net.${rail}" />`)
+    passiveTraces.push(`    <trace from=".${d} > .pin1" to="net.GND" />`)
   })
 
   // ---- Mechanical ------------------------------------------------------

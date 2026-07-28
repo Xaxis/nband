@@ -77,7 +77,12 @@ export function CarrierBoards() {
         bill of materials listing considerably more. Beyond the connectors, each board carries a
         100&nbsp;nF decoupling capacitor per module, a bulk reservoir per supply rail, a ground
         plane poured on an inner layer, a series resistor and pull-down on any gate driven from a
-        GPIO, and the four HAT mounting holes. The pull-down matters more than it looks: without
+        GPIO, a TVS clamp on every line that leaves the enclosure, a resettable fuse and a
+        reverse-polarity diode on each supply rail, and the four HAT mounting holes. The clamps
+        matter because two signals leave the box on multi-metre cables &mdash; the magnetometer
+        two metres out on a mast, the geophone further and in the ground &mdash; and a cable that
+        long is an antenna. The boards overhang the HAT footprint as a result; the mounting holes
+        stay on the standard pattern. The pull-down matters more than it looks: without
         it the infrared emitter&rsquo;s gate floats from power-on until the agent claims the pin,
         and a floating gate is not an off gate. Header pins are labelled
         by Raspberry Pi physical number rather than by the connector&rsquo;s own numbering, which
