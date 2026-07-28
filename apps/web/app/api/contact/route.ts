@@ -92,7 +92,7 @@ export async function POST(request: Request) {
       // Validated as an email by zod, so it cannot carry a newline and inject
       // additional headers. Stated because reply_to is attacker-controlled.
       reply_to: email,
-      subject: `[nband] ${SUBJECTS[subject]} — ${name}`,
+      subject: `[nband] ${SUBJECTS[subject]}, ${name}`,
       text: `From: ${name} <${email}>\nTopic: ${SUBJECTS[subject]}\n\n${message}`,
     }),
   })

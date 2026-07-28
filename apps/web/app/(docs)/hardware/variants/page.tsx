@@ -93,11 +93,11 @@ export default function VariantsPage() {
                     </td>
                     <td className="px-3 py-3">
                       {p.band ? <BandChip band={p.band} size="sm" /> : (
-                        <span className="num text-[11.5px] text-[var(--ink-3)]">—</span>
+                        <span className="num text-[11.5px] text-[var(--ink-3)]">, </span>
                       )}
                     </td>
                     <td className="num px-3 py-3 text-[12px] text-[var(--ink-2)]">
-                      {p.driver ?? '—'}
+                      {p.driver ?? ', '}
                     </td>
                     <td className="px-3 py-3">
                       <span className="flex items-center gap-1.5 text-[12.5px] text-[var(--ink-2)]">

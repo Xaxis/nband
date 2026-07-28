@@ -188,7 +188,7 @@ export default async function GridPage() {
                     </div>
                   </td>
                   <td className="num px-3 py-3 text-right text-[12.5px] text-[var(--ink-2)]">
-                    {n.uptimeS > 0 ? `${(n.uptimeS / 86400).toFixed(1)} d` : '—'}
+                    {n.uptimeS > 0 ? `${(n.uptimeS / 86400).toFixed(1)} d` : ', '}
                   </td>
                 </tr>
               ))}

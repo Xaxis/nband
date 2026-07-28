@@ -6,7 +6,7 @@
  * question, but it is not the one someone asks first. The first question is
  * what the thing actually looks like: how big is it, what stacks on what, does
  * it fit in the case, where does the camera point. None of that was anywhere on
- * the site, because tscircuit renders boards and a node is not a board — it is
+ * the site, because tscircuit renders boards and a node is not a board, it is
  * a Raspberry Pi, a carrier, a handful of breakouts, several USB peripherals on
  * cables, two cameras on ribbon, and a case.
  *
@@ -14,7 +14,7 @@
  * labelled, which the browser renders beside the real generated carrier PCB.
  *
  * On honesty, which matters more here than usual. Two of these dimensions are
- * standards — the Pi's 85 x 56 mm and the HAT's 65 x 56 mm — and the Pelican
+ * standards, the Pi's 85 x 56 mm and the HAT's 65 x 56 mm, and the Pelican
  * case is a published figure. Everything else is an approximation good enough
  * to show scale and stacking and nothing more. Each body carries whether its
  * dimensions were sourced, and the viewer says so plainly. A render that looks
@@ -114,8 +114,7 @@ function assemblyFor(tier) {
       pos: [x, y, z],
       sourced: m.dimensionsSourced === true,
       note: m.note,
-      interface: part.interface ?? null,
-      ...rest,
+      interface: part.interface ?? null, ...rest,
     })
     // A part described in detail is drawn as its parts; the block that carried
     // it becomes invisible so it does not sit inside its own geometry.
@@ -128,7 +127,7 @@ function assemblyFor(tier) {
 
   // 1. The host, centred at the origin. Drawn as the bare board with its
   //    connectors, chips and header on top, rather than as one solid block the
-  //    height of the Ethernet jack — which is what it was, and which is why the
+  //    height of the Ethernet jack, which is what it was, and which is why the
   //    model read as a pile of anonymous boxes. A Raspberry Pi is recognisable
   //    almost entirely by its connector layout.
   const host = by('host')[0]
@@ -242,12 +241,12 @@ function assemblyFor(tier) {
   // 7. Sensors that mount at the enclosure wall rather than on the board,
   //     because what they measure is outside it: ambient air, sky, sound.
   //     Drawing these on the carrier was not a layout bug so much as a claim
-  //     about the build that was not true — a BME688 bolted above the Pi reads
+  //     about the build that was not true, a BME688 bolted above the Pi reads
   //     the Pi's temperature, not the site's.
   //     Placed against the case's own inner face rather than floating above the
   //     node, which is where they actually go and which stops them reading as
   //     parts that came loose. The case is much larger than the node, so they
-  //     sit some distance from it — that separation is real and is most of why
+  //     sit some distance from it, that separation is real and is most of why
   //     the enclosure is the size it is.
   const shellPart = by('enclosure')[0]
   const wallZ = shellPart ? -shellPart.mechanical.depthMm / 2 + 12 : -70
@@ -415,7 +414,7 @@ writeFileSync(
 
 for (const a of assemblies) {
   console.log(
-    `  ${a.tier}: ${a.counts.total} bodies — ${a.counts.onCarrier} on the carrier, ` +
+    `  ${a.tier}: ${a.counts.total} bodies, ${a.counts.onCarrier} on the carrier, ` +
       `${a.counts.usb} USB, ${a.counts.csi} CSI (${a.counts.sourced} sourced, ${a.counts.approximate} approximate)`,
   )
 }

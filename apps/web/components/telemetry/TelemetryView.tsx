@@ -461,10 +461,10 @@ export function TelemetryView({
             { k: 'Tier', v: node.tier.toUpperCase() },
             {
               k: 'Clock',
-              v: node.clock === 'gnss_pps' ? `PPS ±${node.clockOffsetNs ?? '—'} ns` : node.clock,
+              v: node.clock === 'gnss_pps' ? `PPS ±${node.clockOffsetNs ?? ', '} ns` : node.clock,
             },
             { k: 'Bands', v: String(node.bands.length) },
-            { k: 'Power', v: node.powerW != null ? `${node.powerW.toFixed(1)} W` : '—' },
+            { k: 'Power', v: node.powerW != null ? `${node.powerW.toFixed(1)} W` : ', ' },
             { k: 'Firmware', v: node.firmwareVersion },
           ].map((s) => (
             <div key={s.k}>

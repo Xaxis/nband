@@ -22,11 +22,10 @@ export function pageMetadata({
 }): Metadata {
   // The site suffix comes from the openGraph.title template in the root
   // layout, so the bare title is passed here. Appending it as well produced
-  // "Data schema — nband — nband".
+  // "Data schema, nband, nband".
   return {
     title,
-    description,
-    ...(path ? { alternates: { canonical: path } } : {}),
+    description, ...(path ? { alternates: { canonical: path } } : {}),
     openGraph: { title, description, ...(path ? { url: path } : {}) },
     twitter: { title, description },
   }

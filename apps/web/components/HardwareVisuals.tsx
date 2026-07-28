@@ -169,7 +169,7 @@ export function PinoutDiagram({ tier }: { tier: Tier }) {
               {shared && <span className="text-[var(--ink-3)]"> +{uses.length - 1}</span>}
             </span>
           ) : (
-            <span className="text-[var(--ink-3)]">{power ?? '—'}</span>
+            <span className="text-[var(--ink-3)]">{power ?? ', '}</span>
           )}
         </span>
       </div>

@@ -2,7 +2,7 @@ import { OG_CONTENT_TYPE, OG_SIZE, ogImage } from '../lib/og'
 import { tierCost } from '../lib/schema/generated'
 
 export const runtime = 'nodejs'
-export const alt = 'nband — instrument-grade evidence for unexplained aerial phenomena'
+export const alt = 'nband, instrument-grade evidence for unexplained aerial phenomena'
 export const size = OG_SIZE
 export const contentType = OG_CONTENT_TYPE
 

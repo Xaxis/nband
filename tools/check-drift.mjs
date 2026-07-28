@@ -246,7 +246,7 @@ check('every declared driver is claimed by a wireable part', () => {
   // asserted the converse, so `ina226_monitor` sat on two solar kits that
   // declared interface "none" and no pins at all. The platform advertised a
   // current monitor that was in no bill of materials, had no price, and could
-  // not be wired to anything — while one of those kits' own notes called it
+  // not be wired to anything, while one of those kits' own notes called it
   // "not an accessory".
   const errors = []
   for (const part of hardware.parts) {
@@ -303,7 +303,7 @@ check('nothing drives the GPIO header above 3.3 volts', () => {
   //
   // Two parts in this registry run from a 5 V rail and also land signal pins on
   // the header. Both are fine, because their logic is 3.3 V even though their
-  // supply is not — but that was true by luck rather than by check, since the
+  // supply is not, but that was true by luck rather than by check, since the
   // registry had no field distinguishing supply voltage from logic voltage and
   // nothing could tell the safe case from the damaging one. A future part on a
   // 5 V rail with 5 V logic would have been drawn straight onto the header.
@@ -497,7 +497,7 @@ check('pulsed loads are sized by their peak, not their average', () => {
 check('every part in a tier has mechanical data', () => {
   // The whole-node view sizes each body from schema/hardware.json. A part with
   // no mechanical block is silently absent from the assembly, which reads as
-  // "this tier does not include one" rather than "nobody entered its size" —
+  // "this tier does not include one" rather than "nobody entered its size"
   // exactly the kind of quiet omission the project is built to refuse.
   const errors = []
   for (const tier of spec.enums.tier.values) {
@@ -528,7 +528,7 @@ check('every part in a tier has mechanical data', () => {
 check('USB peripherals fit the host, or ship a powered hub', () => {
   // Tier 3 listed five bus-powered peripherals drawing 2.46 A across four ports
   // on a board that budgets 1.6 A for all of them. The failure mode is not a
-  // clean refusal — the host brown-outs peripherals under load, so channels
+  // clean refusal, the host brown-outs peripherals under load, so channels
   // drop out intermittently, which reads as flaky hardware rather than as a
   // power budget nobody added up.
   const HOST_USB_A = 1.6 // Raspberry Pi 5, total across all ports, with a 5 A supply
@@ -616,7 +616,7 @@ check('no two parts in a tier claim the same pin', () => {
   // already had to move once for the same reason.
   // Most signals are shared by design: I2C and SPI are buses, I2S clocks fan
   // out, power and ground are rails, and USB names a port type rather than a
-  // pin. Only these are genuinely exclusive — two devices driving one of them
+  // pin. Only these are genuinely exclusive, two devices driving one of them
   // is a wiring fault, not a topology.
   const EXCLUSIVE = /^(CS\d*|NSS|INT\d*|IRQ|GATE|TX|RX|TXD|RXD|PPS|DRDY|EN|RESET)$/i
   const errors = []
@@ -749,7 +749,7 @@ check('the documented wire protocol matches the ingest code', () => {
 
 // ---------------------------------------------------------------------------
 
-console.log(`nband drift check — platform v${version}, schema v${spec.schemaVersion}\n`)
+console.log(`nband drift check, platform v${version}, schema v${spec.schemaVersion}\n`)
 for (const c of checks) {
   console.log(`  ${c.ok ? 'PASS' : 'FAIL'}  ${c.name}`)
   if (c.detail) {

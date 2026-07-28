@@ -54,19 +54,19 @@ const VIEWS: { id: View; label: string; blurb: string }[] = [
     id: 'node',
     label: 'Whole node',
     blurb:
-      'Everything in the tier, assembled, with each part where it physically has to go: board-mounted parts on the carrier, sensors that measure the outside at the enclosure wall, emitters and the magnetometer out on the mast, USB peripherals on cables. A massing model for scale and stacking, not CAD.',
+      'Every part in the tier, where it physically goes: board-mounted parts on the carrier, sensors that measure the outside at the enclosure wall, emitters and the magnetometer on the mast, USB peripherals on cables. A massing model for scale and stacking, not CAD.',
   },
   {
     id: 'schematic',
     label: 'Schematic',
     blurb:
-      'Generated from the netlist, so it is exactly as correct as the hardware registry. This is the wiring reference.',
+      'Derived from the netlist alone, so it is exactly as correct as the hardware registry. This is the wiring reference.',
   },
   {
     id: 'pcb',
     label: 'PCB layout',
     blurb:
-      'Four layers, ground poured on the bottom. Placement is machine-generated, so treat this as a reference layout rather than a finished board.',
+      'Four layers with ground poured on an inner one. Placement is machine-generated, so treat it as a reference layout rather than a finished board.',
   },
   {
     id: 'model',
@@ -81,7 +81,7 @@ const VIEWS: { id: View; label: string; blurb: string }[] = [
  *
  * Deep-linking is worth having for its own sake: "look at the tier 3 layout"
  * should be a link. The first attempt kept the selection in useState and merely
- * seeded it from the hash, which does not survive hydration — the server has no
+ * seeded it from the hash, which does not survive hydration, the server has no
  * location to read, so it renders the default, and the client's differing
  * initial state is discarded. A link to #boards-t3-model opened on tier 1.
  *

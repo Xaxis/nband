@@ -191,9 +191,7 @@ A malformed mask fails loudly at startup rather than silently defaulting to an u
 
 Nearly every breakout board ships with its own I2C pull-up resistors fitted, usually 10 k, and nearly every one of them has a jumper or a solder pad to remove them. Remove them on all but one.
 
-The Raspberry Pi fits 1.8 k pull-ups to 3V3 on GPIO2 and GPIO3 on the board itself, and those cannot be removed. That value is correct on its own. Four breakouts left as shipped bring the bus to about 1,047 ohms, which still works. What does not work is adding more: I2C needs at least (3.3 - 0.4) / 3 mA, about 967 ohms, to pull a valid low, and it is easy to go under that without noticing because the symptom is not a dead bus. It is a bus that works until a hot afternoon or a longer cable, and then produces read errors that look like a failing sensor.
-
-An earlier revision of the carrier board fitted an extra 4.7 k pair here for exactly the reason above and made it worse rather than better. It has been removed.
+The Raspberry Pi fits 1.8 k pull-ups to 3V3 on GPIO2 and GPIO3 on the board itself, and those cannot be removed. That value is correct on its own, which is why the carrier fits none of its own. Four breakouts left as shipped bring the bus to about 1,047 ohms, which still works. What does not work is adding more: I2C needs at least (3.3 - 0.4) / 3 mA, about 967 ohms, to pull a valid low, and it is easy to go under that without noticing because the symptom is not a dead bus. It is a bus that works until a hot afternoon or a longer cable, and then produces read errors that look like a failing sensor.
 
 ## Step 9: Enrol with the grid
 
@@ -209,7 +207,7 @@ Set your node's slug, position, and the enrolment secret in `~/node.toml`, then:
 ~/.nband-venv/bin/python -m nband_node.agent --config ~/node.toml --enroll
 ```
 
-**Verify.** The response contains a `node_id`, the channel count you expect, and a `published_position` that is **not** your exact coordinates. The published point sits somewhere inside a disc of the radius you declared — a random place inside it, not a fixed distance away — and the direction is derived from a secret the grid server holds, so it cannot be recomputed and subtracted by someone reading this page. Your home address does not appear on a public map.
+**Verify.** The response contains a `node_id`, the channel count you expect, and a `published_position` that is **not** your exact coordinates. The published point sits somewhere inside a disc of the radius you declared, a random place inside it, not a fixed distance away, and the direction is derived from a secret the grid server holds, so it cannot be recomputed and subtracted by someone reading this page. Your home address does not appear on a public map.
 
 Check the published point on a map before continuing. If it lands somewhere you would rather it did not, raise `location_precision_m` and re-enrol; the offset is recomputed from the new radius. If you are in a sparsely populated area, consider that a one-kilometre disc may still contain only a handful of buildings, and set the precision accordingly.
 
@@ -217,7 +215,7 @@ Your node key was generated on first run at the path in `[grid].key_path` and is
 
 ## Step 10: Run it for real
 
-Everything so far has run as you, out of your home directory, because that is the fastest way to find a miswired sensor. The service does not run that way. It runs as an unprivileged `nband` user with `ProtectHome=true`, which means it cannot read your home directory at all — not the venv, not the config, not the key. So installing it is a real step rather than a file copy:
+Everything so far has run as you, out of your home directory, because that is the fastest way to find a miswired sensor. The service does not run that way. It runs as an unprivileged `nband` user with `ProtectHome=true`, which means it cannot read your home directory at all, not the venv, not the config, not the key. So installing it is a real step rather than a file copy:
 
 ```bash
 sudo ~/nband/firmware/install.sh

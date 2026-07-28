@@ -58,7 +58,7 @@ function PartRow({ part }: { part: Part }) {
       </td>
       <td className="px-3 py-3">
         {part.band ? <BandChip band={part.band} size="sm" href={`/bands#${part.band}`} /> : (
-          <span className="num text-[11.5px] text-[var(--ink-3)]">—</span>
+          <span className="num text-[11.5px] text-[var(--ink-3)]">, </span>
         )}
       </td>
       <td className="num px-3 py-3 text-[12px] text-[var(--ink-3)]">{part.interface}</td>
@@ -91,7 +91,7 @@ function TierParts({ tier }: { tier: Tier }) {
       id={tier}
       className={`!pt-10 ${tier === 't2' ? 'border-y border-[var(--line)] bg-[var(--surface-0)]' : ''}`}
       eyebrow={`${meta.label} · ${parts.length} parts`}
-      title={`$${total.toFixed(0)} — ${meta.summary.split('.')[0]}`}
+      title={`$${total.toFixed(0)}, ${meta.summary.split('.')[0]}`}
       lede={meta.summary}
     >
       <div className="card scroll-x mt-7">
@@ -181,7 +181,7 @@ export default function HardwarePage() {
           {
             id: 'architecture',
             label: 'Architecture',
-            hint: 'What plugs into what, for the tier 2 reference node. Generated from the registry, so swapping a part moves the wiring with it instead of quietly invalidating a hand-drawn picture.',
+            hint: 'What plugs into what, for the tier 2 reference node. Generated from the same registry as the bill of materials, so swapping a part moves the wiring with it.',
             content: (
               <Container className="py-9">
                 <NodeBlockDiagram tier="t2" />
@@ -207,7 +207,7 @@ export default function HardwarePage() {
           {
             id: 'boards',
             label: 'Carrier boards',
-            hint: 'The wiring table compiled into a circuit. Every part above records which physical header pin each of its signals lands on, and reading that table is how a UART ended up routed to two pins with no UART function. It is now a netlist, so a pin conflict is a build failure.',
+            hint: 'Every part above records which physical header pin each of its signals lands on. That table is compiled to a netlist and routed, so a pin claimed twice, or asked to carry a signal it has no function for, fails the build rather than reaching a soldering iron.',
             content: (
               <Container className="py-9">
                 <CarrierBoards />
@@ -217,14 +217,13 @@ export default function HardwarePage() {
           {
             id: 'power',
             label: 'Power',
-            hint: 'Summed from the parts actually in the tier rather than rounded to a comfortable number. This is the figure that strands remote builds.',
+            hint: 'Summed from the parts in the tier. Panel and battery are sized against this figure, which is the one that decides whether an off-grid node survives a week of overcast.',
             content: (
               <Container className="py-9">
                 <PowerBudget tier="t2" />
               </Container>
             ),
-          },
-          ...(uncategorised.length > 0
+          }, ...(uncategorised.length > 0
             ? [
                 {
                   id: 'alternatives',

@@ -22,7 +22,7 @@ const CORROBORATIONS = [...CORROBORATION_ORDER] as [string, ...string[]]
  * Everything the platform records is public, and until now "public" meant a
  * PostgREST endpoint and a schema document: technically reachable, and not
  * usable by anyone who did not already know the table layout. This is the query
- * a person actually has — events in a window, in these bands, at least this
+ * a person actually has, events in a window, in these bands, at least this
  * confident, from these nodes.
  *
  * It reads through the anonymous key rather than the service role, deliberately.

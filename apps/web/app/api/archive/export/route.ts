@@ -15,7 +15,7 @@ import { SCHEMA_VERSION } from '../../../../lib/schema/generated'
  * taste. Parquet would be better for size and for anything columnar, but it
  * needs a writer in the request path and this has to stream: the archive grows
  * without bound and the export must never depend on holding it in memory. CSV
- * cannot represent the shape of this data at all — `bands` is an array,
+ * cannot represent the shape of this data at all, `bands` is an array,
  * `peak_metrics` and `track` are JSON, and flattening them loses the structure
  * that makes them worth keeping. NDJSON streams, survives being cut in half,
  * and every language reads it.
@@ -28,7 +28,7 @@ import { SCHEMA_VERSION } from '../../../../lib/schema/generated'
  * can tell whether the verdicts in it have since been superseded.
  *
  * **It is honest about what it excludes.** The same anonymous key and the same
- * row-level security as everywhere else, so simulated nodes are absent — and
+ * row-level security as everywhere else, so simulated nodes are absent, and
  * the manifest says so rather than leaving a reader to wonder why their node
  * count is lower than the grid page.
  */

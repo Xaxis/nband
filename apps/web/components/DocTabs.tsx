@@ -6,9 +6,9 @@ import { Container } from './ui'
 /**
  * Panelled navigation for a page that had become a single 16,000-pixel scroll.
  *
- * The hardware page carries five different things — an architecture diagram, a
+ * The hardware page carries five different things, an architecture diagram, a
  * bill of materials per tier, the wiring table, the power budget and the
- * generated boards — and someone arriving to check one part number had to
+ * generated boards, and someone arriving to check one part number had to
  * scroll past all of the others. They are not a narrative; nothing here is read
  * in order. So they are panels, and the URL says which one is open.
  *
@@ -132,7 +132,7 @@ export function DocTabs({ tabs, label }: { tabs: DocTab[]; label: string }) {
 
       {/* Every panel stays mounted and inactive ones carry `hidden`, so
           switching back is instant and any anchor inside a closed panel is
-          still findable by getElementById — which is what lets a link like
+          still findable by getElementById, which is what lets a link like
           "#t1" open the panel containing it.
 
           It does NOT make the content reachable by the browser's find-on-page,

@@ -6,21 +6,21 @@
       "widthMm": 90,
       "modules": 4,
       "signals": 17,
-      "digest": "02a0dd8050ae239c"
+      "digest": "c8a24103adc94585"
     },
     {
       "tier": "t2",
       "widthMm": 115,
       "modules": 8,
       "signals": 36,
-      "digest": "520bea1b356bd7d7"
+      "digest": "b91937af2b80db03"
     },
     {
       "tier": "t3",
       "widthMm": 140,
       "modules": 9,
       "signals": 41,
-      "digest": "814fb51a24442421"
+      "digest": "67acdfe82b28dd6d"
     }
   ]
 }

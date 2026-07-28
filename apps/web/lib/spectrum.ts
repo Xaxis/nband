@@ -142,7 +142,7 @@ export function bandExtent(b: Band): string {
   if (b.frequency?.minHz != null && b.frequency.maxHz != null) {
     return `${formatHertz(b.frequency.minHz)} – ${formatHertz(b.frequency.maxHz)}`
   }
-  return '—'
+  return ', '
 }
 
 export function formatMetres(m: number): string {

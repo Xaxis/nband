@@ -29,7 +29,7 @@ The signature does **not** cover the body alone. It covers a canonical payload t
 nband/v1\n{path}\n{timestamp}\n{nonce}\n{body}
 ```
 
-`{path}` is the request path exactly as sent, such as `/api/grid/telemetry`. The four newlines are literal. A signature over the body alone was valid forever, on any endpoint, and could be replayed to fabricate archive content — the three bound fields close that, and each closes a different hole. The path stops a telemetry signature being presented to `/detections`. The timestamp bounds how long a captured request stays usable: more than **300 seconds** of skew in either direction is refused with a 401. The nonce is recorded in a server-side ledger and makes the request usable exactly once inside that window; a repeat is refused with a 409.
+`{path}` is the request path exactly as sent, such as `/api/grid/telemetry`. The four newlines are literal. A signature over the body alone was valid forever, on any endpoint, and could be replayed to fabricate archive content, the three bound fields close that, and each closes a different hole. The path stops a telemetry signature being presented to `/detections`. The timestamp bounds how long a captured request stays usable: more than **300 seconds** of skew in either direction is refused with a 401. The nonce is recorded in a server-side ledger and makes the request usable exactly once inside that window; a repeat is refused with a 409.
 
 Omitting `X-Nband-Timestamp` or `X-Nband-Nonce` is a 401, not a warning. Nodes on the body-only scheme cannot write to the grid.
 

@@ -11,7 +11,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
  * The carrier board answers how the thing is wired. This answers what it is:
  * a Raspberry Pi with a carrier on standoffs, breakouts on top of that, USB
  * peripherals on cables beside it, two cameras on ribbon, and a case around
- * the lot. Scale and stacking are the point — whether it fits, what dominates
+ * the lot. Scale and stacking are the point, whether it fits, what dominates
  * the volume, how big the solar array really is next to the node it feeds.
  *
  * One body is real geometry and the rest are boxes, and the difference is

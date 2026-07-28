@@ -181,9 +181,9 @@ function stampSvg(path, board, kind) {
   const what = kind.startsWith('schematic')
     ? 'Schematic, generated from schema/hardware.json'
     : 'PCB layout, machine-placed and auto-routed'
-  const title = `nband ${board.tier.toUpperCase()} carrier — ${what}`
+  const title = `nband ${board.tier.toUpperCase()} carrier, ${what}`
   const caveat =
-    'GENERATED REFERENCE — never fabricated, never electrically verified. ' +
+    'GENERATED REFERENCE, never fabricated, never electrically verified. ' +
     'Component placement is machine-generated. Verify against the registry before use. nband.space'
 
   // Viewbox tells us where the foot of the drawing is.
@@ -222,7 +222,7 @@ for (const b of manifest.boards) {
       if (ext.endsWith('.svg')) stampSvg(dest, b, ext)
       artifacts[format] = `/boards/${b.tier}-${ext}`
     } catch (err) {
-      console.error(`  ${b.tier}: ${format} failed — ${String(err.stderr ?? err).slice(0, 160)}`)
+      console.error(`  ${b.tier}: ${format} failed, ${String(err.stderr ?? err).slice(0, 160)}`)
       process.exitCode = 1
     }
   }
@@ -252,7 +252,7 @@ for (const b of manifest.boards) {
 
   built.push({ ...b, artifacts, components, routing: { routed, nets, unrouted, drc } })
   console.log(
-    `  ${b.tier}: schematic, pcb, glb — ${components} components, ` +
+    `  ${b.tier}: schematic, pcb, glb, ${components} components, ` +
       `${unrouted === 0 ? 'fully routed' : `${unrouted} unrouted`}` +
       `${drc ? `, ${drc} design-rule violation(s)` : ''}`,
   )

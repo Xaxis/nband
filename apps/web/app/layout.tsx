@@ -8,8 +8,8 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'nband — instrument-grade evidence for unexplained aerial phenomena',
-    template: '%s — nband',
+    default: 'nband, instrument-grade evidence for unexplained aerial phenomena',
+    template: '%s, nband',
   },
   description:
     'Thousands of unexplained sightings a year, and almost no usable evidence. nband is an open sensor node you can build that watches up to thirteen bands at once, timestamps everything to GPS, rules out every ordinary explanation it can, and publishes the rest.',
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     // explicit template every page shared the site-wide one. Templates here
     // mirror the document title, so a shared link names the page it points at.
     title: {
-      default: 'nband — instrument-grade evidence for unexplained aerial phenomena',
-      template: '%s — nband',
+      default: 'nband, instrument-grade evidence for unexplained aerial phenomena',
+      template: '%s, nband',
     },
     description:
       'Fourteen bands, one clock, an open archive. Build a node, rule out the ordinary, publish what is left.',
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: {
-      default: 'nband — instrument-grade evidence for unexplained aerial phenomena',
-      template: '%s — nband',
+      default: 'nband, instrument-grade evidence for unexplained aerial phenomena',
+      template: '%s, nband',
     },
   },
   robots: { index: true, follow: true },

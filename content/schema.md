@@ -52,13 +52,13 @@ This is the most important design decision in the schema. If the aircraft transp
 
 Operators run these at home, so an exact coordinate is a home address. `nodes.lat` and `nodes.lon` are already fuzzed when written; the true position is never stored anywhere. `location_precision_m` records how much fuzz was applied so downstream geometry can widen its error bars rather than treating a fuzzed point as exact.
 
-The offset has to be two things at once, and an earlier version of this platform delivered only the first.
+The offset has to be two things at once, and both are required.
 
 It must be **deterministic** per node, because an offset regenerated on each request is averaged away by anyone patient enough to collect samples, and the mean of that collection is the operator's front door.
 
-It must also be **unguessable**, because a deterministic offset that a stranger can recompute is not an offset at all — it is the true position written in a cipher whose key is printed next to it. In 0.1.0 the bearing was derived by hashing the node's public key, which is stored on the same publicly readable row, and the distance was always exactly `location_precision_m`. Both halves could be reconstructed from published data, and reviewers inverted them to about five metres.
+It must also be **unguessable**, because a deterministic offset a stranger can recompute is not an offset at all. It is the true position written in a cipher whose key is printed beside it.
 
-Now the offset is an HMAC keyed on a salt held only in the server's environment, and the distance is drawn as `precision × √u` so that the true point is uniform across the whole disc rather than pinned to its rim. A searcher who knows the slug, the declared precision, the published coordinate and every line of this codebase is left with the full disc — for the default one-kilometre precision, about three square kilometres, with a median error of roughly 700 m. `tools/check-privacy.mjs` measures that distribution on every build rather than taking this paragraph's word for it.
+So the bearing is an HMAC keyed on a salt held only in the server's environment, and the distance is drawn as `precision × √u` so the true point is uniform across the whole disc rather than pinned to its rim. A searcher holding the slug, the declared precision, the published coordinate and every line of this codebase is left with the full disc: for the default one-kilometre precision, about three square kilometres, with a median error near 700 m. `tools/check-privacy.mjs` measures that distribution on every build rather than taking this paragraph's word for it.
 
 `horizon_mask` maps azimuth to the minimum elevation at which sky is actually visible. Without it, "nothing detected to the north" is ambiguous between a clear sky and a ridgeline, and the archive cannot tell you which.
 

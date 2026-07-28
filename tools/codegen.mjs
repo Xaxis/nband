@@ -342,7 +342,7 @@ function generatePython() {
 
 // ---------------------------------------------------------------------------
 
-console.log(checkOnly ? 'Checking generated files...' : 'Generating...')
+console.log(checkOnly ? 'Checking generated files, ...' : 'Generating, ...')
 emit('apps/web/lib/schema/generated.ts', generateTypeScript())
 emit('apps/web/lib/schema/constants.mjs', generateConstantsModule())
 emit('firmware/nband_node/schema_generated.py', generatePython())

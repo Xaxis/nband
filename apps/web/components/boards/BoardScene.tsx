@@ -101,7 +101,7 @@ export default function BoardScene({ src, label }: { src: string; label: string 
         // previously cleared only at the end of this callback, so any throw in
         // the camera maths left "Loading model…" sitting on top of a model that
         // had loaded perfectly well. GLTFLoader routes a throwing onLoad to
-        // onError, so the failure was not even silent — it was just attributed
+        // onError, so the failure was not even silent, it was just attributed
         // to the wrong thing.
         setStatus('ready')
 
@@ -118,7 +118,7 @@ export default function BoardScene({ src, label }: { src: string; label: string 
         // filling under half the panel. Fitting the box against both the
         // vertical field of view and the horizontal one derived from the aspect
         // ratio gets the real answer, and it stays right when the board changes
-        // size — which it does, because the geometry is regenerated whenever a
+        // size, which it does, because the geometry is regenerated whenever a
         // part moves in the hardware registry.
         const size = new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3())
         // Clamped, because a host that has not been laid out yet reports a

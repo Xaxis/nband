@@ -97,7 +97,7 @@ export async function POST(request: Request) {
 
   // Keyed on the slug rather than the public key: the key is a column on the
   // anon-readable row, so seeding the offset with it let anyone recompute the
-  // offset and recover the operator's true position. The slug is public too —
+  // offset and recover the operator's true position. The slug is public too
   // the secrecy lives entirely in NBAND_FUZZ_SALT.
   let shown: { lat: number; lon: number }
   try {

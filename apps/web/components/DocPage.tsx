@@ -67,8 +67,8 @@ export function DocPage({ slug }: { slug: string }) {
 
       <Container className="py-10">
         {/* On a narrow screen the sidebar below is hidden, which left the
-            longest documents on the site — the build guide runs to nine
-            thousand pixels — with no in-page navigation at all on a phone.
+            longest documents on the site, the build guide runs to nine
+            thousand pixels, with no in-page navigation at all on a phone.
             A details element rather than a scripted disclosure: it collapses by
             default, is keyboard operable, is announced correctly, and works
             with JavaScript off, which matters for a document someone is reading

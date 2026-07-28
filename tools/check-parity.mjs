@@ -34,7 +34,7 @@ for (const c of cases) {
   const exp = expected[c.id]
   if (!exp) {
     failures.push(c.id)
-    console.log(`  FAIL  ${c.id} — missing from expected.json (run gen-fixtures.py)`)
+    console.log(`  FAIL  ${c.id}, missing from expected.json (run gen-fixtures.py)`)
     continue
   }
 

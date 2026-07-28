@@ -3,7 +3,7 @@
 //
 // This exists because the footer shipped links to /software/schema and
 // /software/api, neither of which was ever built, and an earlier version of
-// this check missed them: it only matched JSX `href="..."` attributes, and the
+// this check missed them: it only matched JSX `href=", ..."` attributes, and the
 // footer built its links from an object literal. A checker that only finds the
 // mistakes you thought of is worse than none, because it grants confidence it
 // has not earned.

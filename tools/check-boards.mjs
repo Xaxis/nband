@@ -10,7 +10,7 @@
  *
  * The second needs the tscircuit CLI and is the reason this file exists. `tsci
  * export` prints "Exported to hat.glb!" and exits zero when the autorouter has
- * thrown and laid down no copper at all — the artifact is produced, it is just
+ * thrown and laid down no copper at all, the artifact is produced, it is just
  * empty of traces. That is the same shape of trap as grepping a build log for
  * "Compiled successfully" while type-checking fails afterwards, which has
  * already cost this project one silently broken deploy. So the check does not
@@ -90,8 +90,8 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
           }
         } else {
           // Two legitimate shapes. A signal used by one module is a direct
-          // trace to its header pin. A signal on a bus — I2C shared by four
-          // modules, SPI by two — goes to a named net, and the header pin is
+          // trace to its header pin. A signal on a bus, I2C shared by four
+          // modules, SPI by two, goes to a named net, and the header pin is
           // tied to that same net. Both terminate on the pin the registry
           // names; only the first is a single line of source.
           const direct = new RegExp(
@@ -171,7 +171,7 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
 if (!full) {
   console.log('  skip  routing and design-rule pass (run `make boards-verify`)')
 } else if (!existsSync(join(root, 'hardware/node_modules/tscircuit/cli.mjs'))) {
-  console.log('  skip  routing pass — the board toolchain is not installed (`make boards-deps`)')
+  console.log('  skip  routing pass, the board toolchain is not installed (`make boards-deps`)')
 } else {
   // Inside the tree: the CLI resolves output paths relative to the project and
   // returns a bare ENOENT for anything outside it.
@@ -204,7 +204,7 @@ if (!full) {
         { cwd: join(root, 'hardware/boards'), stdio: 'pipe' },
       )
     } catch (err) {
-      fail(`${b.tier}: tsci export failed — ${String(err.stderr ?? err).slice(0, 200)}`)
+      fail(`${b.tier}: tsci export failed, ${String(err.stderr ?? err).slice(0, 200)}`)
       continue
     }
 
@@ -230,7 +230,7 @@ if (!full) {
       fail(`${b.tier}: ${unroutable} connection(s) could not be routed`)
     } else {
       ok(
-        `${b.tier}: fully routed — ${routed} traces, ${count('pcb_component')} components, ` +
+        `${b.tier}: fully routed, ${routed} traces, ${count('pcb_component')} components, ` +
           `${count('pcb_plated_hole')} plated holes, ${count('pcb_hole')} mounting holes`,
       )
     }
@@ -238,7 +238,7 @@ if (!full) {
     // The header pin numbering, re-derived from the exported geometry.
     //
     // tscircuit numbers a doubleRow pinheader the way an IC package is
-    // numbered — counter-clockwise, so the top row reads 1, 40, 39 … 22 — while
+    // numbered, counter-clockwise, so the top row reads 1, 40, 39 … 22, while
     // the Raspberry Pi numbers odd pins along one row and even along the other.
     // Only pins 1 and 2 agree. A generator emitting `.J1 > .pin7` would have
     // wired the GNSS pulse-per-second line, the one connection the whole clock
@@ -288,7 +288,7 @@ if (!full) {
         if (Math.abs(at.P1.x - at.P2.x) > 0.01) geomProblems.push('P1 and P2 are not aligned')
       }
       if (geomProblems.length) {
-        geomProblems.forEach((g) => fail(`${b.tier}: header numbering — ${g}`))
+        geomProblems.forEach((g) => fail(`${b.tier}: header numbering, ${g}`))
       } else {
         ok(`${b.tier}: all 40 header labels sit where the Raspberry Pi pin does`)
       }
@@ -298,7 +298,7 @@ if (!full) {
     //
     // tscircuit's own design-rule pass did not report this, and an audit claimed
     // t3 had a hard short between the 5 V rail and the GNSS UART. The netlist
-    // said otherwise, so the claim could only be about geometry — which nothing
+    // said otherwise, so the claim could only be about geometry, which nothing
     // was checking. Measuring it found no short, but did find two chip-select
     // traces 0.291 mm apart centre to centre.
     //
@@ -356,7 +356,7 @@ if (!full) {
       }
       if (hard > 0) {
         fail(
-          `${b.tier}: ${hard} copper clearance violation(s) below ${HARD_MM} mm — ` +
+          `${b.tier}: ${hard} copper clearance violation(s) below ${HARD_MM} mm, ` +
             `closest ${worst.toFixed(3)} mm. No fab will build this.`,
         )
       } else if (soft > 0) {
@@ -375,7 +375,7 @@ if (!full) {
     // (61.5, 3.5), (3.5, 52.5) and (61.5, 52.5) from the board corner and the
     // 40-way connector's pin 1 at (7.5, 52.5): level with the top row of holes,
     // 4 mm inboard of the left column. The hole pattern here was right from the
-    // first version. The header was not — it sat 44 mm away on the opposite
+    // first version. The header was not, it sat 44 mm away on the opposite
     // edge, because its position was a literal nobody had checked against
     // anything. A board fabricated that way bolts to the standoffs and does not
     // reach the Pi's pins.
@@ -406,7 +406,7 @@ if (!full) {
         if (Math.abs(hy[1] - hy[0] - 49) > 0.05) problems.push(`holes span ${(hy[1] - hy[0]).toFixed(1)} mm in y, spec 49`)
         if (Math.abs(p1.x - hx[0] - 4.0) > 0.1) problems.push(`pin 1 is ${(p1.x - hx[0]).toFixed(2)} mm from the left hole column, spec 4.0`)
         if (Math.abs(p1.y - hy[1]) > 0.1) problems.push(`pin 1 is ${(p1.y - hy[1]).toFixed(2)} mm from the top hole row, spec 0.0`)
-        if (problems.length) fail(`${b.tier}: HAT geometry — ${problems.join('; ')}`)
+        if (problems.length) fail(`${b.tier}: HAT geometry, ${problems.join('; ')}`)
         else ok(`${b.tier}: header and mounting holes match the HAT mechanical specification`)
       }
     }
@@ -437,7 +437,7 @@ if (!full) {
       } else {
         ok(
           `${b.tier}: ground poured on ${[...planeLayers].join(', ')}, ` +
-            `${cuts} trace segment(s) crossing it — the plane is not continuous, which is ` +
+            `${cuts} trace segment(s) crossing it, the plane is not continuous, which is ` +
             `why this is a reference layout`,
         )
       }
@@ -448,7 +448,7 @@ if (!full) {
       // Not a failure. These boards are a reference carrier that has never been
       // fabricated, and saying so honestly is worth more than a clean number.
       // They are printed so the count is public rather than quietly discarded.
-      console.log(`        ${errors.length} unrouted net(s) or rule violation(s) on ${b.tier} — layout is unfinished by design:`)
+      console.log(`        ${errors.length} unrouted net(s) or rule violation(s) on ${b.tier}, layout is unfinished by design:`)
       for (const e of errors.slice(0, 3)) {
         console.log(`          ${String(e.message ?? e.type).slice(0, 96)}`)
       }
