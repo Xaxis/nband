@@ -147,13 +147,28 @@ for (const slug of unroutedDocs) {
   })
 }
 
+const apiLinks = []
+
 for (const [path, sources] of [...found].sort()) {
   if (routes.has(path)) continue
   if (handlers.has(path)) {
-    broken.push({ path, sources, why: 'is an API route handler, not a page' })
+    // A handler is a valid link target when the link is meant to fetch or
+    // download rather than navigate: the archive page offers the export
+    // endpoint as a download, which resolves. What is not valid is a
+    // navigation link pointing at one, and the two are indistinguishable from
+    // the href alone, so this reports rather than fails.
+    apiLinks.push({ path, sources })
     continue
   }
   broken.push({ path, sources, why: 'has no page.tsx' })
+}
+
+if (apiLinks.length > 0) {
+  console.log(`\n  ${apiLinks.length} link(s) point at an API route rather than a page:`)
+  for (const { path, sources } of apiLinks) {
+    console.log(`    ${path}  from ${[...sources].join(', ')}`)
+  }
+  console.log('    These resolve. Check each is a download or fetch and not navigation.')
 }
 
 // The sitemap is another place that used to keep its own copy of the site's

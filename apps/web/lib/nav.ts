@@ -118,6 +118,11 @@ export const NAV: NavSection[] = [
     summary: 'What the grid is doing right now.',
     items: [
       {
+        href: '/archive',
+        label: 'The archive',
+        summary: 'Every event recorded, the verdict reached, and the reasoning behind it.',
+      },
+      {
         href: '/grid',
         label: 'The grid',
         summary: 'Every node reporting, and whether its clock is good enough to contribute geometry.',
