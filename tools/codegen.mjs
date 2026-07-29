@@ -182,7 +182,9 @@ function generateTypeScript() {
     ``,
     `export interface Part {`,
     `  id: string`,
-    `  category: string`,
+    `  category: string
+  /** Ships inside another part box, so its price is zero and was paid under that part. */
+  includedWith?: string`,
     `  band: BandId | null`,
     `  vendor: string`,
     `  model: string`,

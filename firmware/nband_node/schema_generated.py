@@ -290,6 +290,7 @@ PART_DRIVERS: Final[dict[str, str | None]] = {
     "pi5-4gb": None,
     "pi5-8gb": None,
     "gnss-lc29h": "gnss_nmea_pps",
+    "gnss-antenna": None,
     "cam-hq-imx477": "picamera2_still",
     "cam-noir-imx477": "picamera2_still",
     "sdr-rtl-v3": "soapy_rtlsdr",

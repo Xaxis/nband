@@ -529,6 +529,69 @@
           "remote": false
         },
         {
+          "id": "gnss-antenna",
+          "label": "Waveshare Active GNSS antenna on 170 mm IPEX to SMA lead",
+          "band": null,
+          "hue": null,
+          "mount": "enclosure-wall",
+          "size": [
+            48,
+            13,
+            40
+          ],
+          "pos": [
+            -118,
+            50.4,
+            -80
+          ],
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "interface": "none",
+          "shell": true
+        },
+        {
+          "id": "gnss-antenna-body",
+          "label": "patch antenna",
+          "parent": "gnss-antenna",
+          "mount": "detail",
+          "size": [
+            48,
+            11,
+            40
+          ],
+          "pos": [
+            -118,
+            49.4,
+            -80
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "remote": false
+        },
+        {
+          "id": "gnss-antenna-lead",
+          "label": "SMA lead",
+          "parent": "gnss-antenna",
+          "mount": "detail",
+          "size": [
+            6,
+            5,
+            5
+          ],
+          "pos": [
+            -118,
+            49.4,
+            -97.6
+          ],
+          "colour": "#c9a961",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "remote": false
+        },
+        {
           "id": "env-bme688",
           "label": "Bosch BME688",
           "band": "env",
@@ -540,7 +603,7 @@
             18
           ],
           "pos": [
-            -129.5,
+            -69.5,
             50.4,
             -91
           ],
@@ -560,7 +623,7 @@
             18
           ],
           "pos": [
-            -129.5,
+            -69.5,
             48.5,
             -91
           ],
@@ -581,7 +644,7 @@
             3.2
           ],
           "pos": [
-            -129.5,
+            -69.5,
             49.65,
             -90.1
           ],
@@ -602,7 +665,7 @@
             2.4
           ],
           "pos": [
-            -129.5,
+            -69.5,
             50.6,
             -97.84
           ],
@@ -624,7 +687,7 @@
             25
           ],
           "pos": [
-            -92.5,
+            -32.5,
             50.4,
             -87.5
           ],
@@ -644,7 +707,7 @@
             25
           ],
           "pos": [
-            -92.5,
+            -32.5,
             46.5,
             -87.5
           ],
@@ -665,7 +728,7 @@
             9
           ],
           "pos": [
-            -92.5,
+            -32.5,
             50.35,
             -86.25
           ],
@@ -1217,12 +1280,12 @@
           "remote": false
         },
         {
-          "id": "cable-env-bme688",
-          "label": "Bosch BME688 to the carrier",
+          "id": "cable-gnss-antenna",
+          "label": "Waveshare Active GNSS antenna on 170 mm IPEX to SMA lead to the carrier",
           "from": [
-            -129.5,
+            -118,
             50.4,
-            -82
+            -60
           ],
           "remote": false,
           "to": [
@@ -1233,10 +1296,26 @@
           "kind": "cable"
         },
         {
+          "id": "cable-env-bme688",
+          "label": "Bosch BME688 to the carrier",
+          "from": [
+            -69.5,
+            50.4,
+            -82
+          ],
+          "remote": false,
+          "to": [
+            -61,
+            51.4,
+            -40.400000000000006
+          ],
+          "kind": "cable"
+        },
+        {
           "id": "cable-lwir-mlx90640",
           "label": "Melexis MLX90640 32x24 thermal array to the carrier",
           "from": [
-            -92.5,
+            -32.5,
             50.4,
             -75
           ],
@@ -1266,11 +1345,11 @@
         }
       ],
       "counts": {
-        "total": 58,
+        "total": 61,
         "sourced": 12,
-        "approximate": 46,
+        "approximate": 49,
         "onCarrier": 1,
-        "onWall": 2,
+        "onWall": 3,
         "usb": 1,
         "csi": 2
       }
@@ -1990,6 +2069,69 @@
           "remote": false
         },
         {
+          "id": "gnss-antenna",
+          "label": "Waveshare Active GNSS antenna on 170 mm IPEX to SMA lead",
+          "band": null,
+          "hue": null,
+          "mount": "enclosure-wall",
+          "size": [
+            48,
+            13,
+            40
+          ],
+          "pos": [
+            -180.5,
+            65.1,
+            -122
+          ],
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "interface": "none",
+          "shell": true
+        },
+        {
+          "id": "gnss-antenna-body",
+          "label": "patch antenna",
+          "parent": "gnss-antenna",
+          "mount": "detail",
+          "size": [
+            48,
+            11,
+            40
+          ],
+          "pos": [
+            -180.5,
+            64.1,
+            -122
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "remote": false
+        },
+        {
+          "id": "gnss-antenna-lead",
+          "label": "SMA lead",
+          "parent": "gnss-antenna",
+          "mount": "detail",
+          "size": [
+            6,
+            5,
+            5
+          ],
+          "pos": [
+            -180.5,
+            64.1,
+            -139.6
+          ],
+          "colour": "#c9a961",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "remote": false
+        },
+        {
           "id": "env-bme688",
           "label": "Bosch BME688",
           "band": "env",
@@ -2001,7 +2143,7 @@
             18
           ],
           "pos": [
-            -192,
+            -132,
             65.1,
             -133
           ],
@@ -2021,7 +2163,7 @@
             18
           ],
           "pos": [
-            -192,
+            -132,
             63.199999999999996,
             -133
           ],
@@ -2042,7 +2184,7 @@
             3.2
           ],
           "pos": [
-            -192,
+            -132,
             64.35,
             -132.1
           ],
@@ -2063,7 +2205,7 @@
             2.4
           ],
           "pos": [
-            -192,
+            -132,
             65.3,
             -139.84
           ],
@@ -2085,7 +2227,7 @@
             18
           ],
           "pos": [
-            -155,
+            -95,
             65.1,
             -133
           ],
@@ -2105,7 +2247,7 @@
             18
           ],
           "pos": [
-            -155,
+            -95,
             63.199999999999996,
             -133
           ],
@@ -2126,7 +2268,7 @@
             3
           ],
           "pos": [
-            -155,
+            -95,
             64.25,
             -132.1
           ],
@@ -2147,7 +2289,7 @@
             2.4
           ],
           "pos": [
-            -155,
+            -95,
             65.3,
             -139.84
           ],
@@ -2169,7 +2311,7 @@
             15
           ],
           "pos": [
-            -120.5,
+            -60.5,
             65.1,
             -134.5
           ],
@@ -2189,7 +2331,7 @@
             15
           ],
           "pos": [
-            -120.5,
+            -60.5,
             63.699999999999996,
             -134.5
           ],
@@ -2210,7 +2352,7 @@
             2.6
           ],
           "pos": [
-            -120.5,
+            -60.5,
             64.8,
             -133.75
           ],
@@ -2231,7 +2373,7 @@
             2.4
           ],
           "pos": [
-            -120.5,
+            -60.5,
             65.8,
             -140.2
           ],
@@ -2253,7 +2395,7 @@
             18
           ],
           "pos": [
-            -86,
+            -26,
             65.1,
             -133
           ],
@@ -2273,7 +2415,7 @@
             18
           ],
           "pos": [
-            -86,
+            -26,
             63.199999999999996,
             -133
           ],
@@ -2294,7 +2436,7 @@
             3
           ],
           "pos": [
-            -86,
+            -26,
             64.3,
             -132.1
           ],
@@ -2315,7 +2457,7 @@
             2.4
           ],
           "pos": [
-            -86,
+            -26,
             65.3,
             -139.84
           ],
@@ -3028,16 +3170,32 @@
           "remote": false
         },
         {
+          "id": "cable-gnss-antenna",
+          "label": "Waveshare Active GNSS antenna on 170 mm IPEX to SMA lead to the carrier",
+          "from": [
+            -180.5,
+            65.1,
+            -102
+          ],
+          "remote": false,
+          "to": [
+            -193,
+            51.4,
+            -82.4
+          ],
+          "kind": "cable"
+        },
+        {
           "id": "cable-env-bme688",
           "label": "Bosch BME688 to the carrier",
           "from": [
-            -192,
+            -132,
             65.1,
             -124
           ],
           "remote": false,
           "to": [
-            -193,
+            -101,
             51.4,
             -82.4
           ],
@@ -3047,13 +3205,13 @@
           "id": "cable-uv-as7331",
           "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
           "from": [
-            -155,
+            -95,
             65.1,
             -124
           ],
           "remote": false,
           "to": [
-            -193,
+            -101,
             51.4,
             -82.4
           ],
@@ -3063,9 +3221,9 @@
           "id": "cable-mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
           "from": [
-            -120.5,
+            -70.5,
             65.1,
-            -127
+            -134.5
           ],
           "remote": false,
           "to": [
@@ -3079,9 +3237,9 @@
           "id": "cable-pwr-ina226",
           "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
           "from": [
-            -86,
+            -38.5,
             65.1,
-            -124
+            -133
           ],
           "remote": false,
           "to": [
@@ -3125,11 +3283,11 @@
         }
       ],
       "counts": {
-        "total": 83,
+        "total": 86,
         "sourced": 13,
-        "approximate": 70,
+        "approximate": 73,
         "onCarrier": 2,
-        "onWall": 4,
+        "onWall": 5,
         "usb": 2,
         "csi": 2
       }
@@ -4248,6 +4406,69 @@
           "remote": false
         },
         {
+          "id": "gnss-antenna",
+          "label": "Waveshare Active GNSS antenna on 170 mm IPEX to SMA lead",
+          "band": null,
+          "hue": null,
+          "mount": "enclosure-wall",
+          "size": [
+            48,
+            13,
+            40
+          ],
+          "pos": [
+            -180.5,
+            65.1,
+            -122
+          ],
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "interface": "none",
+          "shell": true
+        },
+        {
+          "id": "gnss-antenna-body",
+          "label": "patch antenna",
+          "parent": "gnss-antenna",
+          "mount": "detail",
+          "size": [
+            48,
+            11,
+            40
+          ],
+          "pos": [
+            -180.5,
+            64.1,
+            -122
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "remote": false
+        },
+        {
+          "id": "gnss-antenna-lead",
+          "label": "SMA lead",
+          "parent": "gnss-antenna",
+          "mount": "detail",
+          "size": [
+            6,
+            5,
+            5
+          ],
+          "pos": [
+            -180.5,
+            64.1,
+            -139.6
+          ],
+          "colour": "#c9a961",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+          "remote": false
+        },
+        {
           "id": "env-bme688",
           "label": "Bosch BME688",
           "band": "env",
@@ -4259,7 +4480,7 @@
             18
           ],
           "pos": [
-            -192,
+            -132,
             65.1,
             -133
           ],
@@ -4279,7 +4500,7 @@
             18
           ],
           "pos": [
-            -192,
+            -132,
             63.199999999999996,
             -133
           ],
@@ -4300,7 +4521,7 @@
             3.2
           ],
           "pos": [
-            -192,
+            -132,
             64.35,
             -132.1
           ],
@@ -4321,7 +4542,7 @@
             2.4
           ],
           "pos": [
-            -192,
+            -132,
             65.3,
             -139.84
           ],
@@ -4343,7 +4564,7 @@
             18
           ],
           "pos": [
-            -155,
+            -95,
             65.1,
             -133
           ],
@@ -4363,7 +4584,7 @@
             18
           ],
           "pos": [
-            -155,
+            -95,
             63.199999999999996,
             -133
           ],
@@ -4384,7 +4605,7 @@
             3
           ],
           "pos": [
-            -155,
+            -95,
             64.25,
             -132.1
           ],
@@ -4405,7 +4626,7 @@
             2.4
           ],
           "pos": [
-            -155,
+            -95,
             65.3,
             -139.84
           ],
@@ -4427,7 +4648,7 @@
             15
           ],
           "pos": [
-            -120.5,
+            -60.5,
             65.1,
             -134.5
           ],
@@ -4447,7 +4668,7 @@
             15
           ],
           "pos": [
-            -120.5,
+            -60.5,
             63.699999999999996,
             -134.5
           ],
@@ -4468,7 +4689,7 @@
             2.6
           ],
           "pos": [
-            -120.5,
+            -60.5,
             64.8,
             -133.75
           ],
@@ -4489,7 +4710,7 @@
             2.4
           ],
           "pos": [
-            -120.5,
+            -60.5,
             65.8,
             -140.2
           ],
@@ -4511,7 +4732,7 @@
             18
           ],
           "pos": [
-            -86,
+            -26,
             65.1,
             -133
           ],
@@ -4531,7 +4752,7 @@
             18
           ],
           "pos": [
-            -86,
+            -26,
             63.199999999999996,
             -133
           ],
@@ -4552,7 +4773,7 @@
             3
           ],
           "pos": [
-            -86,
+            -26,
             64.3,
             -132.1
           ],
@@ -4573,7 +4794,7 @@
             2.4
           ],
           "pos": [
-            -86,
+            -26,
             65.3,
             -139.84
           ],
@@ -5478,16 +5699,32 @@
           "remote": false
         },
         {
+          "id": "cable-gnss-antenna",
+          "label": "Waveshare Active GNSS antenna on 170 mm IPEX to SMA lead to the carrier",
+          "from": [
+            -180.5,
+            65.1,
+            -102
+          ],
+          "remote": false,
+          "to": [
+            -190.5,
+            51.4,
+            -82.4
+          ],
+          "kind": "cable"
+        },
+        {
           "id": "cable-env-bme688",
           "label": "Bosch BME688 to the carrier",
           "from": [
-            -192,
+            -132,
             65.1,
             -124
           ],
           "remote": false,
           "to": [
-            -190.5,
+            -78.5,
             51.4,
             -82.4
           ],
@@ -5497,13 +5734,13 @@
           "id": "cable-uv-as7331",
           "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
           "from": [
-            -155,
+            -95,
             65.1,
             -124
           ],
           "remote": false,
           "to": [
-            -190.5,
+            -78.5,
             51.4,
             -82.4
           ],
@@ -5513,7 +5750,7 @@
           "id": "cable-mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
           "from": [
-            -120.5,
+            -60.5,
             65.1,
             -127
           ],
@@ -5529,9 +5766,9 @@
           "id": "cable-pwr-ina226",
           "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
           "from": [
-            -86,
+            -38.5,
             65.1,
-            -124
+            -133
           ],
           "remote": false,
           "to": [
@@ -5607,11 +5844,11 @@
         }
       ],
       "counts": {
-        "total": 108,
+        "total": 111,
         "sourced": 13,
-        "approximate": 95,
+        "approximate": 98,
         "onCarrier": 2,
-        "onWall": 4,
+        "onWall": 5,
         "usb": 6,
         "csi": 2
       }

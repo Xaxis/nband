@@ -113,7 +113,11 @@ export default function VariantsPage() {
                       </span>
                     </td>
                     <td className="num whitespace-nowrap px-3 py-3 text-right text-[13px] text-[var(--ink)]">
-                      {p.priceUsd === 0 ? 'recovered' : `$${p.priceUsd.toFixed(2)}`}
+                      {p.priceUsd !== 0
+                        ? `$${p.priceUsd.toFixed(2)}`
+                        : p.includedWith
+                          ? 'in the box'
+                          : 'recovered'}
                     </td>
                   </tr>
                 ))}

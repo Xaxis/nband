@@ -1250,6 +1250,8 @@ export const THRESHOLDS = {
 export interface Part {
   id: string
   category: string
+  /** Ships inside another part box, so its price is zero and was paid under that part. */
+  includedWith?: string
   band: BandId | null
   vendor: string
   model: string
@@ -2036,6 +2038,71 @@ export const PARTS: readonly Part[] = [
           "colour": "#9aa0a8",
           "base": 1.6,
           "round": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "gnss-antenna",
+    "category": "timing",
+    "band": null,
+    "vendor": "Waveshare",
+    "model": "Active GNSS antenna on 170 mm IPEX to SMA lead",
+    "status": "reference",
+    "tiers": [
+      "t1",
+      "t2",
+      "t3"
+    ],
+    "priceUsd": 0,
+    "priceAsOf": "2026-07-29",
+    "sourceUrl": "https://www.waveshare.com/wiki/LC29H(XX)_GPS/RTK_HAT",
+    "includedWith": "gnss-lc29h",
+    "interface": "none",
+    "driver": null,
+    "keySpecs": {
+      "type": "active patch",
+      "leadMm": 170,
+      "connector": "SMA to IPEX 1"
+    },
+    "alternatives": [],
+    "candidateAlternatives": [],
+    "electrical": {
+      "idleW": 0,
+      "activeW": 0,
+      "rail": "3V3",
+      "pins": []
+    },
+    "notes": "Ships in the LC29H box and is drawn because where it goes is the single most common way this build fails. The receiver needs sky, not a room with a roof: a cold start under clear sky takes 30 to 90 seconds and indoors it may never lock at all, and a node without pulse-per-second lock can file solo reports and can never contribute to multi-node geometry. The lead is 170 mm, which is the real constraint on how far the antenna can get from the board.",
+    "mechanical": {
+      "widthMm": 48,
+      "depthMm": 40,
+      "heightMm": 13,
+      "mount": "enclosure-wall",
+      "dimensionsSourced": false,
+      "note": "Approximate active patch antenna body. It reaches the HAT on a 170 mm lead, which is what limits where it can sit.",
+      "detail": [
+        {
+          "id": "body",
+          "label": "patch antenna",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 11,
+          "colour": "#2a2d33",
+          "fill": true
+        },
+        {
+          "id": "lead",
+          "label": "SMA lead",
+          "cx": 0.5,
+          "cy": 0.06,
+          "w": 6,
+          "d": 5,
+          "h": 5,
+          "colour": "#c9a961",
+          "base": 3
         }
       ]
     }

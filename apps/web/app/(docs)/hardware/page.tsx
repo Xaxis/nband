@@ -38,8 +38,15 @@ export const metadata = pageMetadata({
 // fact waiting to disagree with the first.
 const TIER_ORDER: Tier[] = GENERATED_TIER_ORDER.filter((t) => TIER[t].buildable)
 
-function money(n: number) {
-  return n === 0 ? 'recovered' : `$${n.toFixed(2)}`
+/**
+ * A price of zero means two different things and they are not interchangeable.
+ * A salvaged part was recovered; an accessory that ships inside another part's
+ * box was paid for once, under that part. Printing "recovered" for the GNSS
+ * antenna would say the build expects you to find one.
+ */
+function money(part: Pick<Part, 'priceUsd' | 'includedWith'>) {
+  if (part.priceUsd !== 0) return `$${part.priceUsd.toFixed(2)}`
+  return part.includedWith ? 'in the box' : 'recovered'
 }
 
 const bandsIn = (tier: Tier) =>
@@ -93,7 +100,7 @@ function PartRow({ part }: { part: Part }) {
       </td>
       <td className="num px-3 py-3 text-[12px] text-[var(--ink-3)]">{part.interface}</td>
       <td className="num whitespace-nowrap px-3 py-3 text-right text-[13px] text-[var(--ink)]">
-        {money(part.priceUsd)}
+        {money(part)}
         <a
           href={part.sourceUrl}
           target="_blank"

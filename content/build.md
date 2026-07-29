@@ -63,7 +63,7 @@ Expected: at least `/dev/i2c-1`, `/dev/spidev0.0`, and `/dev/ttyAMA0`. If `/dev/
 
 This is the step that determines whether your node is a member of an array or a lone camera. Do not skip it.
 
-Wire the GNSS receiver: `VCC` to 3.3 V, `GND` to ground, `TX` to the Pi's `RX` (GPIO15), `RX` to the Pi's `TX` (GPIO14), and the `PPS` output to **GPIO4, physical pin 7**. Take the receiver outside or put the antenna against a window. A cold start with a clear sky view takes 30 to 90 seconds; indoors under a roof it may never lock at all, and that is the single most common cause of "PPS is not working".
+Wire the GNSS receiver: `VCC` to 3.3 V, `GND` to ground, `TX` to the Pi's `RX` (GPIO15), `RX` to the Pi's `TX` (GPIO14), and the `PPS` output to **GPIO4, physical pin 7**. The active antenna ships in the same box and reaches the board on a 170 mm lead, which is the real constraint on where it can go: take the receiver outside or put the antenna against a window and the board beside it. A cold start with a clear sky view takes 30 to 90 seconds; indoors under a roof it may never lock at all, and that is the single most common cause of "PPS is not working".
 
 Tell the kernel the PPS pin exists by adding this line to `/boot/firmware/config.txt`, then reboot:
 

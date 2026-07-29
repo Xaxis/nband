@@ -76,7 +76,7 @@ function PartsForBand({ band }: { band: Band }) {
           >
             <span className="text-[11.5px] text-[var(--ink)]">{p.model}</span>
             <span className="num text-[10.5px] text-[var(--ink-3)]">
-              {p.priceUsd === 0 ? 'recovered' : `$${p.priceUsd.toFixed(0)}`}
+              {p.priceUsd !== 0 ? `$${p.priceUsd.toFixed(0)}` : p.includedWith ? 'in the box' : 'recovered'}
               {p.tiers?.length ? ` · ${p.tiers.map((t) => t.toUpperCase()).join(', ')}` : ''}
             </span>
           </Link>

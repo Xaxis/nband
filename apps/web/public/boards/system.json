@@ -4,10 +4,11 @@
     {
       "tier": "t1",
       "label": "Tier 1 - Baseline",
-      "parts": 10,
+      "parts": 11,
       "covered": [
         "pi5-2gb",
         "gnss-lc29h",
+        "gnss-antenna",
         "cam-hq-imx477",
         "cam-noir-imx477",
         "sdr-rtl-v3",
@@ -44,6 +45,7 @@
             "sdr-rtl-v3"
           ],
           "none": [
+            "gnss-antenna",
             "psu-usbc-27w",
             "storage-microsd-64gb"
           ]
@@ -56,10 +58,11 @@
     {
       "tier": "t2",
       "label": "Tier 2 - Core",
-      "parts": 16,
+      "parts": 17,
       "covered": [
         "pi5-4gb",
         "gnss-lc29h",
+        "gnss-antenna",
         "cam-hq-imx477",
         "cam-noir-imx477",
         "sdr-rtl-v3",
@@ -113,6 +116,7 @@
             "lwir-lepton35"
           ],
           "none": [
+            "gnss-antenna",
             "case-pelican1500",
             "power-solar-150w",
             "storage-microsd-64gb"
@@ -126,10 +130,11 @@
     {
       "tier": "t3",
       "label": "Tier 3 - Extended",
-      "parts": 22,
+      "parts": 23,
       "covered": [
         "pi5-8gb",
         "gnss-lc29h",
+        "gnss-antenna",
         "cam-hq-imx477",
         "cam-noir-imx477",
         "sdr-rtl-v3",
@@ -195,6 +200,7 @@
             "swir-ingaas640"
           ],
           "none": [
+            "gnss-antenna",
             "case-pelican1500",
             "power-solar-200w",
             "storage-microsd-64gb"
