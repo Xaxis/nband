@@ -97,6 +97,14 @@ function assemblyFor(tier) {
         cylinder: f.round === true,
         sourced: false,
         note: part.mechanical.note,
+        // A feature is only ever where its part is, so it hides when its part
+        // hides. Without this the solar array's frame, cells and junction box
+        // stayed on screen after the array itself was toggled off, and since
+        // the array is 1.6 metres wide beside an 85 mm Raspberry Pi, the whole
+        // view stayed scaled to a panel the reader had asked to remove. The
+        // parent block is skipped when it has detail, so nothing was left to
+        // carry the flag.
+        remote: base.remote === true,
       }
     })
   }
@@ -125,7 +133,50 @@ function assemblyFor(tier) {
     }
   }
 
-  // 1. The host, centred at the origin. Drawn as the bare board with its
+  // 0. The volume everything else is placed inside.
+  //
+  //    The layout used to hang parts off the origin at hand-picked offsets: USB
+  //    peripherals at x = 72 and marching right, wall sensors at a fixed z of
+  //    -70, cameras at x = -60 and marching left. Those numbers were chosen so
+  //    the parts could be seen, and the result was a node whose peripherals sat
+  //    two hundred millimetres away from the host they plug into, floating
+  //    beside a case they are supposed to be inside. It answered "what parts
+  //    are there" and not "what does this look like packed", and the second
+  //    question is the only one a massing model is for.
+  //
+  //    So the case interior is the frame of reference. The host stack sits on
+  //    the floor at the left, the peripherals pack onto the floor beside it,
+  //    and the parts that measure the outside sit against the wall they look
+  //    through. A tier with no case gets a notional footprint the same shape,
+  //    because tier 1 is an indoor build on a bench and still has to be drawn.
+  const shell = by('enclosure')[0]
+  const CASE = shell?.mechanical?.interiorWidthMm
+    ? {
+        w: shell.mechanical.interiorWidthMm,
+        d: shell.mechanical.interiorDepthMm,
+        h: shell.mechanical.interiorHeightMm,
+        real: true,
+      }
+    : { w: 300, d: 200, h: 120, real: false }
+  const FLOOR = 0 // everything sits on y = 0 and stacks upward
+  const WALL_CLEAR = 8 // fingers, foam, and cable bend at the wall
+
+  // The host stack sits toward the back left, leaving the rest of the floor for
+  // the peripherals. Its own x is needed by several sections below, so it is
+  // computed once here rather than repeated as a literal.
+  const hostPart = by('host')[0]
+  const PI_W = hostPart?.mechanical?.widthMm ?? 85
+  const PI_D = hostPart?.mechanical?.depthMm ?? 56
+  // The stack is as wide as its widest board, not as wide as the Pi. Dense
+  // tiers overhang the HAT footprint so the router can clear a fabricator's
+  // minimum copper gap, and insetting by half the Pi put the tier 3 carrier's
+  // left edge 20 mm outside the case wall. Nothing in the picture looked wrong,
+  // because a board passing through a wireframe wall reads as a board.
+  const STACK_W = Math.max(PI_W, boardWidth(tier.id))
+  const HOST_X = -CASE.w / 2 + WALL_CLEAR + STACK_W / 2
+  const HOST_Z = -CASE.d / 2 + WALL_CLEAR + PI_D / 2 + 46
+
+  // 1. The host, on the floor toward the back left. Drawn as the bare board with its
   //    connectors, chips and header on top, rather than as one solid block the
   //    height of the Ethernet jack, which is what it was, and which is why the
   //    model read as a pile of anonymous boxes. A Raspberry Pi is recognisable
@@ -134,7 +185,7 @@ function assemblyFor(tier) {
   const featureBodies = []
   if (host) {
     const m = host.mechanical
-    push(host, 0, PI_BOARD_T / 2, 0, { boardOnly: true, heightOverride: PI_BOARD_T })
+    push(host, HOST_X, FLOOR + PI_BOARD_T / 2, HOST_Z, { boardOnly: true, heightOverride: PI_BOARD_T })
     for (const f of m.features ?? []) {
       // Registry coordinates put the board origin at its bottom-left corner;
       // the scene is centred on the board.
@@ -145,9 +196,9 @@ function assemblyFor(tier) {
         mount: 'feature',
         size: [f.w, f.h, f.d],
         pos: [
-          f.x + f.w / 2 - m.widthMm / 2,
-          PI_BOARD_T + f.h / 2,
-          f.y + f.d / 2 - m.depthMm / 2,
+          HOST_X + f.x + f.w / 2 - m.widthMm / 2,
+          FLOOR + PI_BOARD_T + f.h / 2,
+          HOST_Z + f.y + f.d / 2 - m.depthMm / 2,
         ],
         colour: f.colour,
         sourced: false,
@@ -172,9 +223,9 @@ function assemblyFor(tier) {
     }
     push(
       p,
-      f.x + f.w / 2 - host.mechanical.widthMm / 2,
-      -m.heightMm / 2, // the slot is on the underside of the board
-      f.y + f.d / 2 - host.mechanical.depthMm / 2 - m.depthMm * 0.3,
+      HOST_X + f.x + f.w / 2 - host.mechanical.widthMm / 2,
+      FLOOR - m.heightMm / 2, // the slot is on the underside of the board
+      HOST_Z + f.y + f.d / 2 - host.mechanical.depthMm / 2 - m.depthMm * 0.3,
     )
   }
 
@@ -185,7 +236,7 @@ function assemblyFor(tier) {
   //    the entire clock discipline rests on was missing from the picture.
   let stackY = (host?.mechanical.heightMm ?? 18) - PI_BOARD_T + STANDOFF
   for (const p of by('hat')) {
-    push(p, 0, stackY + p.mechanical.heightMm / 2, 0)
+    push(p, HOST_X, FLOOR + stackY + p.mechanical.heightMm / 2, HOST_Z)
     stackY += p.mechanical.heightMm + STANDOFF
   }
 
@@ -199,7 +250,7 @@ function assemblyFor(tier) {
     mount: 'hat',
     glb: `/boards/${tier.id}-board.glb`,
     size: [boardWidth(tier.id), HAT_BOARD_T, 56],
-    pos: [0, hatY, 0],
+    pos: [HOST_X, FLOOR + hatY, HOST_Z],
     sourced: true,
     note: `Generated from the hardware registry. ${boardWidth(tier.id)} x 56 mm, mounting on the HAT hole pattern.`,
   })
@@ -215,68 +266,73 @@ function assemblyFor(tier) {
   const cw = boardWidth(tier.id)
   const cd = 56
   const PAD = 3
-  let cx = -cw / 2 + PAD
-  let cz = -cd / 2 + PAD
+  let cx = HOST_X - cw / 2 + PAD
+  let cz = HOST_Z - cd / 2 + PAD
   let rowDepth = 0
   for (const p of onCarrier) {
     const w = p.mechanical.widthMm
     const dpt = p.mechanical.depthMm
-    if (cx + w > cw / 2 - PAD) {
-      cx = -cw / 2 + PAD
+    if (cx + w > HOST_X + cw / 2 - PAD) {
+      cx = HOST_X - cw / 2 + PAD
       cz += rowDepth + PAD
       rowDepth = 0
     }
-    push(p, cx + w / 2, hatY + HAT_BOARD_T / 2 + p.mechanical.heightMm / 2, cz + dpt / 2)
+    push(p, cx + w / 2, FLOOR + hatY + HAT_BOARD_T / 2 + p.mechanical.heightMm / 2, cz + dpt / 2)
     cx += w + PAD
     rowDepth = Math.max(rowDepth, dpt)
   }
 
-  // 5. USB peripherals, clustered beside the host rather than strung out in a
-  //    line. Tier 3 carries six of them and a single row put the far one half a
-  //    metre from the node it plugs into, which is not what the bench looks
-  //    like and made the whole model read as scattered debris.
-  const usb = by('usb')
-  const USB_ROW_W = 190
-  let ux = 0
-  let uz = 0
+  // 5. USB peripherals, packed onto the case floor to the right of the host
+  //    stack, wrapping within the interior rather than marching off it. Six
+  //    peripherals in one row put the far one half a metre from the host it
+  //    plugs into, outside the case it ships in.
+  const usbLeft = HOST_X + STACK_W / 2 + 20
+  const usbRight = CASE.w / 2 - WALL_CLEAR
+  let ux = usbLeft
+  let uz = -CASE.d / 2 + WALL_CLEAR + 30
   let rowH = 0
-  for (const p of usb) {
+  for (const p of by('usb')) {
     const w = p.mechanical.widthMm
-    if (ux + w > USB_ROW_W) {
-      ux = 0
-      uz += rowH + 14
+    if (ux + w > usbRight && ux > usbLeft) {
+      ux = usbLeft
+      uz += rowH + 12
       rowH = 0
     }
-    push(p, 72 + ux + w / 2, p.mechanical.heightMm / 2, -30 + uz)
-    ux += w + 14
+    push(p, ux + w / 2, FLOOR + p.mechanical.heightMm / 2, uz + p.mechanical.depthMm / 2)
+    ux += w + 12
     rowH = Math.max(rowH, p.mechanical.depthMm)
   }
 
-  // 6. Cameras on their ribbons, in front of the node and pointing up, which is
-  //    where they actually sit: a mast-mounted node looks at the sky.
-  let kx = -60
+  // 6. Cameras against the front wall, looking out through it. They were drawn
+  //    floating in front of the node pointing up, which is a claim that the
+  //    node has no case; a camera inside a sealed box has to be at a window.
+  const frontZ = CASE.d / 2 - WALL_CLEAR
+  let kx = HOST_X - STACK_W / 2
   for (const p of by('csi')) {
-    push(p, kx - p.mechanical.widthMm / 2, p.mechanical.heightMm / 2, 55)
-    kx -= p.mechanical.widthMm + 16
+    push(p, kx + p.mechanical.widthMm / 2, FLOOR + p.mechanical.heightMm / 2, frontZ - p.mechanical.depthMm / 2)
+    kx += p.mechanical.widthMm + 14
   }
 
   // 7. Sensors that mount at the enclosure wall rather than on the board,
-  //     because what they measure is outside it: ambient air, sky, sound.
-  //     Drawing these on the carrier was not a layout bug so much as a claim
-  //     about the build that was not true, a BME688 bolted above the Pi reads
-  //     the Pi's temperature, not the site's.
-  //     Placed against the case's own inner face rather than floating above the
-  //     node, which is where they actually go and which stops them reading as
-  //     parts that came loose. The case is much larger than the node, so they
-  //     sit some distance from it, that separation is real and is most of why
-  //     the enclosure is the size it is.
-  const shellPart = by('enclosure')[0]
-  const wallZ = shellPart ? -shellPart.mechanical.depthMm / 2 + 12 : -70
-  const wallY = shellPart ? 30 : 40
-  let wx = -60
+  //    because what they measure is outside it: ambient air, sky, sound.
+  //    Drawing these on the carrier was not a layout bug so much as a claim
+  //    about the build that was not true, since a BME688 bolted above the Pi
+  //    reads the Pi's temperature and not the site's.
+  //
+  //    Against the inside of the back wall and standing at mid height, which is
+  //    where a wall-gasketed breakout goes. They were previously placed at a
+  //    fixed z with a fixed y and no relation to any wall, so on tier 3 they
+  //    hung in mid-air 150 mm behind a node they are bolted to.
+  const backZ = -CASE.d / 2 + WALL_CLEAR
+  let wx = -CASE.w / 2 + WALL_CLEAR
   for (const p of by('enclosure-wall')) {
-    push(p, wx + p.mechanical.widthMm / 2, wallY, wallZ)
-    wx += p.mechanical.widthMm + 10
+    push(
+      p,
+      wx + p.mechanical.widthMm / 2,
+      FLOOR + CASE.h * 0.42,
+      backZ + p.mechanical.depthMm / 2,
+    )
+    wx += p.mechanical.widthMm + 12
   }
 
   // 8. Everything that lives away from the node: the geophone in the ground,
@@ -306,7 +362,11 @@ function assemblyFor(tier) {
         label: 'M2.5 standoff',
         mount: 'standoff',
         size: [5, STANDOFF, 5],
-        pos: [sx, below, sz],
+        // Offset from the board they hold up, not from the origin. These were
+        // absolute, which is the same thing only while the stack sits at 0,0;
+        // once the node moved into its case the standoffs stayed behind and
+        // floated beside it, which is a worse picture than having none.
+        pos: [board.pos[0] + sx, below, board.pos[2] + sz],
         cylinder: true,
         sourced: true,
         note: 'M2.5 x 11 mm, the usual HAT spacing.',
@@ -343,6 +403,7 @@ function assemblyFor(tier) {
       from: surface(b, target.pos),
       to: surface(target, b.pos),
       kind: part.interface === 'csi' || plug.startsWith('csi') ? 'ribbon' : 'cable',
+      remote: b.remote === true,
     })
   }
   // Anything at the wall or on the mast reaches the carrier by cable too.
@@ -358,6 +419,10 @@ function assemblyFor(tier) {
         Math.abs(dx) > Math.abs(dz)
           ? [b.pos[0] + Math.sign(dx) * (b.size[0] / 2), b.pos[1], b.pos[2]]
           : [b.pos[0], b.pos[1], b.pos[2] + Math.sign(dz) * (b.size[2] / 2)],
+      // A cable is only drawn when both of its ends are. Four cables ran off
+      // the bottom of the frame toward a magnetometer, a geophone and a beacon
+      // that the default view hides, which reads as wiring to nothing.
+      remote: b.remote === true,
       to: [
         carrierBody.pos[0] + Math.sign(-dx) * (carrierBody.size[0] / 2) * 0.8,
         carrierBody.pos[1],
@@ -369,18 +434,22 @@ function assemblyFor(tier) {
 
   bodies.push(...featureBodies)
 
-  // 12. The case, as an outline the rest sits inside.
-  const shell = by('enclosure')[0]
+  // 12. The case, as an outline the rest sits inside. Its floor is the floor
+  //     everything was placed on, so the outline is centred on the interior
+  //     rather than on the origin: drawn centred, the lid cut through the parts
+  //     it is supposed to contain.
   if (shell) {
+    const m = shell.mechanical
+    const wallT = (m.widthMm - (m.interiorWidthMm ?? m.widthMm)) / 2
     bodies.push({
       id: shell.id,
       label: `${shell.vendor} ${shell.model}`,
       mount: 'enclosure',
-      size: [shell.mechanical.widthMm, shell.mechanical.heightMm, shell.mechanical.depthMm],
-      pos: [0, shell.mechanical.heightMm / 2 - 30, 0],
+      size: [m.widthMm, m.heightMm, m.depthMm],
+      pos: [0, FLOOR - wallT + m.heightMm / 2, 0],
       wireframe: true,
-      sourced: shell.mechanical.dimensionsSourced === true,
-      note: shell.mechanical.note,
+      sourced: m.dimensionsSourced === true,
+      note: m.note,
     })
   }
 

@@ -19,9 +19,9 @@
             56
           ],
           "pos": [
-            0,
+            -97,
             0.8,
-            0
+            -18
           ],
           "sourced": true,
           "note": "Raspberry Pi 5 mechanical spec: 85 x 56 mm board, ~18 mm to the top of the Ethernet jack.",
@@ -40,9 +40,9 @@
             11
           ],
           "pos": [
-            -14.5,
+            -111.5,
             -0.5,
-            -31.7
+            -49.699999999999996
           ],
           "sourced": true,
           "note": "microSD form factor, 15 x 11 x 1 mm. Sits in the Pi's card slot.",
@@ -60,9 +60,9 @@
             56
           ],
           "pos": [
-            0,
+            -97,
             33.9,
-            0
+            -18
           ],
           "sourced": true,
           "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
@@ -80,14 +80,15 @@
             56
           ],
           "pos": [
-            0,
+            -97,
             28.2,
-            0
+            -18
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-header",
@@ -100,14 +101,15 @@
             5.1
           ],
           "pos": [
-            0,
+            -97,
             23.15,
-            -24.64
+            -42.64
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-module",
@@ -120,14 +122,15 @@
             16
           ],
           "pos": [
-            -9.100000000000001,
+            -106.1,
             30.3,
-            0
+            -18
           ],
           "colour": "#3d4148",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-ufl",
@@ -140,14 +143,15 @@
             3
           ],
           "pos": [
-            26,
+            -71,
             29.7,
-            -12.319999999999999
+            -30.32
           ],
           "colour": "#c9a961",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-sma",
@@ -160,14 +164,15 @@
             6.5
           ],
           "pos": [
-            29.9,
+            -67.1,
             32,
-            8.96
+            -9.04
           ],
           "colour": "#c9a961",
           "cylinder": true,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-pps",
@@ -180,14 +185,15 @@
             1.5
           ],
           "pos": [
-            10.399999999999999,
+            -86.6,
             29.5,
-            -16.799999999999997
+            -34.8
           ],
           "colour": "#3fb950",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-battery",
@@ -200,14 +206,15 @@
             12.5
           ],
           "pos": [
-            -19.5,
+            -116.5,
             30.5,
-            17.919999999999995
+            -0.0800000000000054
           ],
           "colour": "#9aa0a8",
           "cylinder": true,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "carrier-t1",
@@ -220,9 +227,9 @@
             56
           ],
           "pos": [
-            0,
+            -97,
             51.4,
-            0
+            -18
           ],
           "sourced": true,
           "note": "Generated from the hardware registry. 90 x 56 mm, mounting on the HAT hole pattern."
@@ -239,9 +246,9 @@
             18
           ],
           "pos": [
-            -29.5,
+            -126.5,
             54.699999999999996,
-            -16
+            -34
           ],
           "sourced": false,
           "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
@@ -259,14 +266,15 @@
             18
           ],
           "pos": [
-            -29.5,
+            -126.5,
             52.8,
-            -16
+            -34
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "imu-bno085-pkg",
@@ -279,14 +287,15 @@
             3.8
           ],
           "pos": [
-            -29.5,
+            -126.5,
             53.949999999999996,
-            -15.1
+            -33.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "imu-bno085-hdr",
@@ -299,14 +308,15 @@
             2.4
           ],
           "pos": [
-            -29.5,
+            -126.5,
             54.9,
-            -22.84
+            -40.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3",
@@ -320,9 +330,9 @@
             27
           ],
           "pos": [
-            112,
+            8,
             7.5,
-            -30
+            -48.5
           ],
           "sourced": false,
           "note": "Approximate dongle body, excluding the antenna.",
@@ -340,14 +350,15 @@
             27
           ],
           "pos": [
-            112,
+            8,
             6.5,
-            -30
+            -48.5
           ],
           "colour": "#5a5f66",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3-plug",
@@ -360,14 +371,15 @@
             12
           ],
           "pos": [
-            76.8,
+            -27.2,
             5.5,
-            -30
+            -48.5
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3-sma",
@@ -380,14 +392,15 @@
             7
           ],
           "pos": [
-            149.6,
+            45.599999999999994,
             7,
-            -30
+            -48.5
           ],
           "colour": "#c9a961",
           "cylinder": true,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "cam-hq-imx477",
@@ -401,9 +414,9 @@
             38
           ],
           "pos": [
-            -79,
+            -123,
             24,
-            55
+            73
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
@@ -421,14 +434,15 @@
             38
           ],
           "pos": [
-            -79,
+            -123,
             5,
-            55
+            73
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
         },
         {
           "id": "cam-hq-imx477-lens",
@@ -441,14 +455,15 @@
             30
           ],
           "pos": [
-            -79,
+            -123,
             28,
-            55
+            73
           ],
           "colour": "#232629",
           "cylinder": true,
           "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
         },
         {
           "id": "cam-noir-imx477",
@@ -462,9 +477,9 @@
             38
           ],
           "pos": [
-            -133,
+            -71,
             24,
-            55
+            73
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
@@ -482,14 +497,15 @@
             38
           ],
           "pos": [
-            -133,
+            -71,
             5,
-            55
+            73
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "As above, with the bandpass filter fitted."
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
         },
         {
           "id": "cam-noir-imx477-lens",
@@ -502,14 +518,15 @@
             30
           ],
           "pos": [
-            -133,
+            -71,
             28,
-            55
+            73
           ],
           "colour": "#232629",
           "cylinder": true,
           "sourced": false,
-          "note": "As above, with the bandpass filter fitted."
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
         },
         {
           "id": "env-bme688",
@@ -523,9 +540,9 @@
             18
           ],
           "pos": [
-            -47.5,
-            40,
-            -70
+            -129.5,
+            50.4,
+            -83
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
@@ -543,14 +560,15 @@
             18
           ],
           "pos": [
-            -47.5,
-            38.1,
-            -70
+            -129.5,
+            48.5,
+            -83
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "env-bme688-pkg",
@@ -563,14 +581,15 @@
             3.2
           ],
           "pos": [
-            -47.5,
-            39.25,
-            -69.1
+            -129.5,
+            49.65,
+            -82.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "env-bme688-hdr",
@@ -583,14 +602,15 @@
             2.4
           ],
           "pos": [
-            -47.5,
-            40.2,
-            -76.84
+            -129.5,
+            50.6,
+            -89.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "lwir-mlx90640",
@@ -604,9 +624,9 @@
             25
           ],
           "pos": [
-            -12.5,
-            40,
-            -70
+            -92.5,
+            50.4,
+            -79.5
           ],
           "sourced": false,
           "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
@@ -624,14 +644,15 @@
             25
           ],
           "pos": [
-            -12.5,
-            36.1,
-            -70
+            -92.5,
+            46.5,
+            -79.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Points at the sky through a germanium window. Mounted at the enclosure wall."
+          "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "lwir-mlx90640-lens",
@@ -644,14 +665,15 @@
             9
           ],
           "pos": [
-            -12.5,
-            39.95,
-            -68.75
+            -92.5,
+            50.35,
+            -78.25
           ],
           "colour": "#8a8f98",
           "cylinder": true,
           "sourced": false,
-          "note": "Points at the sky through a germanium window. Mounted at the enclosure wall."
+          "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "psu-usbc-27w",
@@ -693,7 +715,8 @@
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate wall-plug body. Lives outside the enclosure."
+          "note": "Approximate wall-plug body. Lives outside the enclosure.",
+          "remote": true
         },
         {
           "id": "standoff-gnss-lc29h--29--24.5",
@@ -705,9 +728,9 @@
             5
           ],
           "pos": [
-            -29,
+            -126,
             27.599999999999998,
-            -24.5
+            -42.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -723,9 +746,9 @@
             5
           ],
           "pos": [
-            29,
+            -68,
             27.599999999999998,
-            -24.5
+            -42.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -741,9 +764,9 @@
             5
           ],
           "pos": [
-            -29,
+            -126,
             27.599999999999998,
-            24.5
+            6.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -759,9 +782,9 @@
             5
           ],
           "pos": [
-            29,
+            -68,
             27.599999999999998,
-            24.5
+            6.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -777,9 +800,9 @@
             5
           ],
           "pos": [
-            -29,
+            -126,
             45.1,
-            -24.5
+            -42.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -795,9 +818,9 @@
             5
           ],
           "pos": [
-            29,
+            -68,
             45.1,
-            -24.5
+            -42.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -813,9 +836,9 @@
             5
           ],
           "pos": [
-            -29,
+            -126,
             45.1,
-            24.5
+            6.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -831,9 +854,9 @@
             5
           ],
           "pos": [
-            29,
+            -68,
             45.1,
-            24.5
+            6.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -850,9 +873,9 @@
             5.1
           ],
           "pos": [
-            -14.100000000000001,
+            -111.1,
             5.85,
-            23.25
+            5.25
           ],
           "colour": "#1c1f24",
           "sourced": false,
@@ -869,9 +892,9 @@
             16
           ],
           "pos": [
-            35.25,
+            -61.75,
             8.35,
-            -18.5
+            -36.5
           ],
           "colour": "#43484f",
           "sourced": false,
@@ -888,9 +911,9 @@
             17.5
           ],
           "pos": [
-            35.25,
+            -61.75,
             9.799999999999999,
-            0.75
+            -17.25
           ],
           "colour": "#2f4f8f",
           "sourced": false,
@@ -907,9 +930,9 @@
             17.5
           ],
           "pos": [
-            35.25,
+            -61.75,
             9.799999999999999,
-            19.25
+            1.25
           ],
           "colour": "#26292f",
           "sourced": false,
@@ -926,9 +949,9 @@
             3.4
           ],
           "pos": [
-            -29.5,
+            -126.5,
             3.25,
-            -26.9
+            -44.900000000000006
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -945,9 +968,9 @@
             3.2
           ],
           "pos": [
-            -16.4,
+            -113.4,
             3.25,
-            -27
+            -45
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -964,9 +987,9 @@
             3.2
           ],
           "pos": [
-            -2.3999999999999986,
+            -99.4,
             3.25,
-            -27
+            -45
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -983,9 +1006,9 @@
             1.6
           ],
           "pos": [
-            -14.5,
+            -111.5,
             2.4000000000000004,
-            -28.4
+            -46.4
           ],
           "colour": "#6b7078",
           "sourced": false,
@@ -1002,9 +1025,9 @@
             21
           ],
           "pos": [
-            3.799999999999997,
+            -93.2,
             3.1,
-            -15.5
+            -33.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -1021,9 +1044,9 @@
             21
           ],
           "pos": [
-            14.799999999999997,
+            -82.2,
             3.1,
-            -15.5
+            -33.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -1040,9 +1063,9 @@
             15
           ],
           "pos": [
-            -4.5,
+            -101.5,
             2.8,
-            1.5
+            -16.5
           ],
           "colour": "#53585f",
           "sourced": false,
@@ -1059,9 +1082,9 @@
             10
           ],
           "pos": [
-            12.5,
+            -84.5,
             2.45,
-            7
+            -11
           ],
           "colour": "#4a4f56",
           "sourced": false,
@@ -1078,9 +1101,9 @@
             9.5
           ],
           "pos": [
-            -6.25,
+            -103.25,
             2.3,
-            17.25
+            -0.75
           ],
           "colour": "#3f444b",
           "sourced": false,
@@ -1097,9 +1120,9 @@
             6
           ],
           "pos": [
-            18.5,
+            -78.5,
             2.2,
-            -9
+            -27
           ],
           "colour": "#4a4f56",
           "sourced": false,
@@ -1116,9 +1139,9 @@
             12
           ],
           "pos": [
-            21,
+            -76,
             2.9000000000000004,
-            22
+            4
           ],
           "colour": "#b9a97f",
           "sourced": false,
@@ -1135,9 +1158,9 @@
             2.5
           ],
           "pos": [
-            23.75,
+            -73.25,
             3.1,
-            25.25
+            7.25
           ],
           "colour": "#d8d0b0",
           "sourced": false,
@@ -1149,59 +1172,63 @@
           "id": "cable-storage-microsd-64gb",
           "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
           "from": [
-            -14.5,
+            -111.5,
             -0.5,
-            -26.2
+            -44.199999999999996
           ],
           "to": [
-            -14.5,
+            -111.5,
             2.4000000000000004,
-            -29.2
+            -47.199999999999996
           ],
-          "kind": "cable"
+          "kind": "cable",
+          "remote": false
         },
         {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -60,
+            -123,
             24,
-            55
+            54
           ],
           "to": [
-            2.4999999999999973,
+            -93.2,
             3.1,
-            -15.5
+            -23
           ],
-          "kind": "ribbon"
+          "kind": "ribbon",
+          "remote": false
         },
         {
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -114,
+            -71,
             24,
-            55
+            54
           ],
           "to": [
-            13.499999999999996,
+            -82.2,
             3.1,
-            -15.5
+            -23
           ],
-          "kind": "ribbon"
+          "kind": "ribbon",
+          "remote": false
         },
         {
           "id": "cable-env-bme688",
           "label": "Bosch BME688 to the carrier",
           "from": [
-            -47.5,
-            40,
-            -61
+            -129.5,
+            50.4,
+            -74
           ],
+          "remote": false,
           "to": [
-            -36,
+            -133,
             51.4,
-            -22.400000000000002
+            -40.400000000000006
           ],
           "kind": "cable"
         },
@@ -1209,14 +1236,15 @@
           "id": "cable-lwir-mlx90640",
           "label": "Melexis MLX90640 32x24 thermal array to the carrier",
           "from": [
-            -12.5,
-            40,
-            -57.5
+            -92.5,
+            50.4,
+            -67
           ],
+          "remote": false,
           "to": [
-            -36,
+            -61,
             51.4,
-            -22.400000000000002
+            -40.400000000000006
           ],
           "kind": "cable"
         },
@@ -1224,14 +1252,15 @@
           "id": "cable-psu-usbc-27w",
           "label": "Raspberry Pi 27 W USB-C power supply to the carrier",
           "from": [
-            -260,
+            -282.5,
             15,
-            190
+            167.5
           ],
+          "remote": true,
           "to": [
-            -36,
+            -133,
             51.4,
-            22.400000000000002
+            4.400000000000002
           ],
           "kind": "cable"
         }
@@ -1262,9 +1291,9 @@
             56
           ],
           "pos": [
-            0,
+            -147,
             0.8,
-            0
+            -60
           ],
           "sourced": true,
           "note": "Raspberry Pi 5 mechanical spec.",
@@ -1283,9 +1312,9 @@
             11
           ],
           "pos": [
-            -14.5,
+            -161.5,
             -0.5,
-            -31.7
+            -91.7
           ],
           "sourced": true,
           "note": "microSD form factor, 15 x 11 x 1 mm. Sits in the Pi's card slot.",
@@ -1303,9 +1332,9 @@
             56
           ],
           "pos": [
-            0,
+            -147,
             33.9,
-            0
+            -60
           ],
           "sourced": true,
           "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
@@ -1323,14 +1352,15 @@
             56
           ],
           "pos": [
-            0,
+            -147,
             28.2,
-            0
+            -60
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-header",
@@ -1343,14 +1373,15 @@
             5.1
           ],
           "pos": [
-            0,
+            -147,
             23.15,
-            -24.64
+            -84.64
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-module",
@@ -1363,14 +1394,15 @@
             16
           ],
           "pos": [
-            -9.100000000000001,
+            -156.1,
             30.3,
-            0
+            -60
           ],
           "colour": "#3d4148",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-ufl",
@@ -1383,14 +1415,15 @@
             3
           ],
           "pos": [
-            26,
+            -121,
             29.7,
-            -12.319999999999999
+            -72.32
           ],
           "colour": "#c9a961",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-sma",
@@ -1403,14 +1436,15 @@
             6.5
           ],
           "pos": [
-            29.9,
+            -117.1,
             32,
-            8.96
+            -51.04
           ],
           "colour": "#c9a961",
           "cylinder": true,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-pps",
@@ -1423,14 +1457,15 @@
             1.5
           ],
           "pos": [
-            10.399999999999999,
+            -136.6,
             29.5,
-            -16.799999999999997
+            -76.8
           ],
           "colour": "#3fb950",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-battery",
@@ -1443,14 +1478,15 @@
             12.5
           ],
           "pos": [
-            -19.5,
+            -166.5,
             30.5,
-            17.919999999999995
+            -42.080000000000005
           ],
           "colour": "#9aa0a8",
           "cylinder": true,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "carrier-t2",
@@ -1463,9 +1499,9 @@
             56
           ],
           "pos": [
-            0,
+            -147,
             51.4,
-            0
+            -60
           ],
           "sourced": true,
           "note": "Generated from the hardware registry. 115 x 56 mm, mounting on the HAT hole pattern."
@@ -1482,9 +1518,9 @@
             18
           ],
           "pos": [
-            -42,
+            -189,
             54.699999999999996,
-            -16
+            -76
           ],
           "sourced": false,
           "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
@@ -1502,14 +1538,15 @@
             18
           ],
           "pos": [
-            -42,
+            -189,
             52.8,
-            -16
+            -76
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "imu-bno085-pkg",
@@ -1522,14 +1559,15 @@
             3.8
           ],
           "pos": [
-            -42,
+            -189,
             53.949999999999996,
-            -15.1
+            -75.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "imu-bno085-hdr",
@@ -1542,14 +1580,15 @@
             2.4
           ],
           "pos": [
-            -42,
+            -189,
             54.9,
-            -22.84
+            -82.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "radar-ld2450",
@@ -1563,9 +1602,9 @@
             25
           ],
           "pos": [
-            -9,
+            -156,
             55.199999999999996,
-            -12.5
+            -72.5
           ],
           "sourced": false,
           "note": "Approximate module footprint.",
@@ -1583,14 +1622,15 @@
             25
           ],
           "pos": [
-            -9,
+            -156,
             52.8,
-            -12.5
+            -72.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate module footprint."
+          "note": "Approximate module footprint.",
+          "remote": false
         },
         {
           "id": "radar-ld2450-pkg",
@@ -1603,14 +1643,15 @@
             10
           ],
           "pos": [
-            -9,
+            -156,
             54.199999999999996,
-            -11.249999999999998
+            -71.25
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate module footprint."
+          "note": "Approximate module footprint.",
+          "remote": false
         },
         {
           "id": "radar-ld2450-hdr",
@@ -1623,14 +1664,15 @@
             2.4
           ],
           "pos": [
-            -9,
+            -156,
             54.9,
-            -22
+            -82
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate module footprint."
+          "note": "Approximate module footprint.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3",
@@ -1644,9 +1686,9 @@
             27
           ],
           "pos": [
-            112,
+            -29.5,
             7.5,
-            -30
+            -90.5
           ],
           "sourced": false,
           "note": "Approximate dongle body, excluding the antenna.",
@@ -1664,14 +1706,15 @@
             27
           ],
           "pos": [
-            112,
+            -29.5,
             6.5,
-            -30
+            -90.5
           ],
           "colour": "#5a5f66",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3-plug",
@@ -1684,14 +1727,15 @@
             12
           ],
           "pos": [
-            76.8,
+            -64.7,
             5.5,
-            -30
+            -90.5
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3-sma",
@@ -1704,14 +1748,15 @@
             7
           ],
           "pos": [
-            149.6,
+            8.099999999999994,
             7,
-            -30
+            -90.5
           ],
           "colour": "#c9a961",
           "cylinder": true,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35",
@@ -1725,9 +1770,9 @@
             30
           ],
           "pos": [
-            181,
+            37.5,
             6,
-            -30
+            -89
           ],
           "sourced": false,
           "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
@@ -1745,14 +1790,15 @@
             30
           ],
           "pos": [
-            181,
+            37.5,
             1,
-            -30
+            -89
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35-socket",
@@ -1765,14 +1811,15 @@
             13
           ],
           "pos": [
-            181,
+            37.5,
             5,
-            -32.4
+            -91.4
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35-lens",
@@ -1785,14 +1832,15 @@
             7.5
           ],
           "pos": [
-            181,
+            37.5,
             9.5,
-            -32.4
+            -91.4
           ],
           "colour": "#3d4148",
           "cylinder": true,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35-usb",
@@ -1805,14 +1853,15 @@
             3.2
           ],
           "pos": [
-            181,
+            37.5,
             3.6,
-            -16.200000000000003
+            -75.2
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "cam-hq-imx477",
@@ -1826,9 +1875,9 @@
             38
           ],
           "pos": [
-            -79,
+            -185.5,
             24,
-            55
+            115
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
@@ -1846,14 +1895,15 @@
             38
           ],
           "pos": [
-            -79,
+            -185.5,
             5,
-            55
+            115
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
         },
         {
           "id": "cam-hq-imx477-lens",
@@ -1866,14 +1916,15 @@
             30
           ],
           "pos": [
-            -79,
+            -185.5,
             28,
-            55
+            115
           ],
           "colour": "#232629",
           "cylinder": true,
           "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
         },
         {
           "id": "cam-noir-imx477",
@@ -1887,9 +1938,9 @@
             38
           ],
           "pos": [
-            -133,
+            -133.5,
             24,
-            55
+            115
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
@@ -1907,14 +1958,15 @@
             38
           ],
           "pos": [
-            -133,
+            -133.5,
             5,
-            55
+            115
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "As above, with the bandpass filter fitted."
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
         },
         {
           "id": "cam-noir-imx477-lens",
@@ -1927,14 +1979,15 @@
             30
           ],
           "pos": [
-            -133,
+            -133.5,
             28,
-            55
+            115
           ],
           "colour": "#232629",
           "cylinder": true,
           "sourced": false,
-          "note": "As above, with the bandpass filter fitted."
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
         },
         {
           "id": "env-bme688",
@@ -1948,9 +2001,9 @@
             18
           ],
           "pos": [
-            -47.5,
-            30,
-            -154
+            -192,
+            65.1,
+            -125
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
@@ -1968,14 +2021,15 @@
             18
           ],
           "pos": [
-            -47.5,
-            28.1,
-            -154
+            -192,
+            63.199999999999996,
+            -125
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "env-bme688-pkg",
@@ -1988,14 +2042,15 @@
             3.2
           ],
           "pos": [
-            -47.5,
-            29.25,
-            -153.1
+            -192,
+            64.35,
+            -124.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "env-bme688-hdr",
@@ -2008,14 +2063,15 @@
             2.4
           ],
           "pos": [
-            -47.5,
-            30.2,
-            -160.84
+            -192,
+            65.3,
+            -131.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "uv-as7331",
@@ -2029,9 +2085,9 @@
             18
           ],
           "pos": [
-            -12.5,
-            30,
-            -154
+            -155,
+            65.1,
+            -125
           ],
           "sourced": false,
           "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
@@ -2049,14 +2105,15 @@
             18
           ],
           "pos": [
-            -12.5,
-            28.1,
-            -154
+            -155,
+            63.199999999999996,
+            -125
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "uv-as7331-pkg",
@@ -2069,14 +2126,15 @@
             3
           ],
           "pos": [
-            -12.5,
-            29.15,
-            -153.1
+            -155,
+            64.25,
+            -124.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "uv-as7331-hdr",
@@ -2089,14 +2147,15 @@
             2.4
           ],
           "pos": [
-            -12.5,
-            30.2,
-            -160.84
+            -155,
+            65.3,
+            -131.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "mic-ics43434",
@@ -2110,9 +2169,9 @@
             15
           ],
           "pos": [
-            20,
-            30,
-            -154
+            -120.5,
+            65.1,
+            -126.5
           ],
           "sourced": false,
           "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
@@ -2130,14 +2189,15 @@
             15
           ],
           "pos": [
-            20,
-            28.6,
-            -154
+            -120.5,
+            63.699999999999996,
+            -126.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "remote": false
         },
         {
           "id": "mic-ics43434-pkg",
@@ -2150,14 +2210,15 @@
             2.6
           ],
           "pos": [
-            20,
-            29.7,
-            -153.25
+            -120.5,
+            64.8,
+            -125.75
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "remote": false
         },
         {
           "id": "mic-ics43434-hdr",
@@ -2170,14 +2231,15 @@
             2.4
           ],
           "pos": [
-            20,
-            30.7,
-            -159.7
+            -120.5,
+            65.8,
+            -132.2
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "remote": false
         },
         {
           "id": "pwr-ina226",
@@ -2191,9 +2253,9 @@
             18
           ],
           "pos": [
-            52.5,
-            30,
-            -154
+            -86,
+            65.1,
+            -125
           ],
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
@@ -2211,14 +2273,15 @@
             18
           ],
           "pos": [
-            52.5,
-            28.1,
-            -154
+            -86,
+            63.199999999999996,
+            -125
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
         },
         {
           "id": "pwr-ina226-pkg",
@@ -2231,14 +2294,15 @@
             3
           ],
           "pos": [
-            52.5,
-            29.2,
-            -153.1
+            -86,
+            64.3,
+            -124.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
         },
         {
           "id": "pwr-ina226-hdr",
@@ -2251,14 +2315,15 @@
             2.4
           ],
           "pos": [
-            52.5,
-            30.2,
-            -160.84
+            -86,
+            65.3,
+            -131.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
         },
         {
           "id": "mag-rm3100",
@@ -2300,7 +2365,8 @@
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "remote": true
         },
         {
           "id": "mag-rm3100-pkg",
@@ -2320,7 +2386,8 @@
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "remote": true
         },
         {
           "id": "mag-rm3100-hdr",
@@ -2340,7 +2407,8 @@
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "remote": true
         },
         {
           "id": "power-solar-150w",
@@ -2382,7 +2450,8 @@
           "colour": "#8b929c",
           "cylinder": false,
           "sourced": false,
-          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled."
+          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+          "remote": true
         },
         {
           "id": "power-solar-150w-cells",
@@ -2402,7 +2471,8 @@
           "colour": "#1b2740",
           "cylinder": false,
           "sourced": false,
-          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled."
+          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+          "remote": true
         },
         {
           "id": "power-solar-150w-junction",
@@ -2422,7 +2492,8 @@
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled."
+          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+          "remote": true
         },
         {
           "id": "standoff-gnss-lc29h--29--24.5",
@@ -2434,9 +2505,9 @@
             5
           ],
           "pos": [
-            -29,
+            -176,
             27.599999999999998,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2452,9 +2523,9 @@
             5
           ],
           "pos": [
-            29,
+            -118,
             27.599999999999998,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2470,9 +2541,9 @@
             5
           ],
           "pos": [
-            -29,
+            -176,
             27.599999999999998,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2488,9 +2559,9 @@
             5
           ],
           "pos": [
-            29,
+            -118,
             27.599999999999998,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2506,9 +2577,9 @@
             5
           ],
           "pos": [
-            -29,
+            -176,
             45.1,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2524,9 +2595,9 @@
             5
           ],
           "pos": [
-            29,
+            -118,
             45.1,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2542,9 +2613,9 @@
             5
           ],
           "pos": [
-            -29,
+            -176,
             45.1,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2560,9 +2631,9 @@
             5
           ],
           "pos": [
-            29,
+            -118,
             45.1,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -2579,9 +2650,9 @@
             5.1
           ],
           "pos": [
-            -14.100000000000001,
+            -161.10000000000002,
             5.85,
-            23.25
+            -36.75
           ],
           "colour": "#1c1f24",
           "sourced": false,
@@ -2598,9 +2669,9 @@
             16
           ],
           "pos": [
-            35.25,
+            -111.75,
             8.35,
-            -18.5
+            -78.5
           ],
           "colour": "#43484f",
           "sourced": false,
@@ -2617,9 +2688,9 @@
             17.5
           ],
           "pos": [
-            35.25,
+            -111.75,
             9.799999999999999,
-            0.75
+            -59.25
           ],
           "colour": "#2f4f8f",
           "sourced": false,
@@ -2636,9 +2707,9 @@
             17.5
           ],
           "pos": [
-            35.25,
+            -111.75,
             9.799999999999999,
-            19.25
+            -40.75
           ],
           "colour": "#26292f",
           "sourced": false,
@@ -2655,9 +2726,9 @@
             3.4
           ],
           "pos": [
-            -29.5,
+            -176.5,
             3.25,
-            -26.9
+            -86.9
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -2674,9 +2745,9 @@
             3.2
           ],
           "pos": [
-            -16.4,
+            -163.4,
             3.25,
-            -27
+            -87
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -2693,9 +2764,9 @@
             3.2
           ],
           "pos": [
-            -2.3999999999999986,
+            -149.4,
             3.25,
-            -27
+            -87
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -2712,9 +2783,9 @@
             1.6
           ],
           "pos": [
-            -14.5,
+            -161.5,
             2.4000000000000004,
-            -28.4
+            -88.4
           ],
           "colour": "#6b7078",
           "sourced": false,
@@ -2731,9 +2802,9 @@
             21
           ],
           "pos": [
-            3.799999999999997,
+            -143.2,
             3.1,
-            -15.5
+            -75.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -2750,9 +2821,9 @@
             21
           ],
           "pos": [
-            14.799999999999997,
+            -132.2,
             3.1,
-            -15.5
+            -75.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -2769,9 +2840,9 @@
             15
           ],
           "pos": [
-            -4.5,
+            -151.5,
             2.8,
-            1.5
+            -58.5
           ],
           "colour": "#53585f",
           "sourced": false,
@@ -2788,9 +2859,9 @@
             10
           ],
           "pos": [
-            12.5,
+            -134.5,
             2.45,
-            7
+            -53
           ],
           "colour": "#4a4f56",
           "sourced": false,
@@ -2807,9 +2878,9 @@
             9.5
           ],
           "pos": [
-            -6.25,
+            -153.25,
             2.3,
-            17.25
+            -42.75
           ],
           "colour": "#3f444b",
           "sourced": false,
@@ -2826,9 +2897,9 @@
             6
           ],
           "pos": [
-            18.5,
+            -128.5,
             2.2,
-            -9
+            -69
           ],
           "colour": "#4a4f56",
           "sourced": false,
@@ -2845,9 +2916,9 @@
             12
           ],
           "pos": [
-            21,
+            -126,
             2.9000000000000004,
-            22
+            -38
           ],
           "colour": "#b9a97f",
           "sourced": false,
@@ -2864,9 +2935,9 @@
             2.5
           ],
           "pos": [
-            23.75,
+            -123.25,
             3.1,
-            25.25
+            -34.75
           ],
           "colour": "#d8d0b0",
           "sourced": false,
@@ -2883,7 +2954,7 @@
           ],
           "pos": [
             0,
-            48.5,
+            74,
             0
           ],
           "wireframe": true,
@@ -2896,59 +2967,63 @@
           "id": "cable-storage-microsd-64gb",
           "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
           "from": [
-            -14.5,
+            -161.5,
             -0.5,
-            -26.2
+            -86.2
           ],
           "to": [
-            -14.5,
+            -161.5,
             2.4000000000000004,
-            -29.2
+            -89.2
           ],
-          "kind": "cable"
+          "kind": "cable",
+          "remote": false
         },
         {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -60,
+            -185.5,
             24,
-            55
+            96
           ],
           "to": [
-            2.4999999999999973,
+            -143.2,
             3.1,
-            -15.5
+            -65
           ],
-          "kind": "ribbon"
+          "kind": "ribbon",
+          "remote": false
         },
         {
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -114,
+            -133.5,
             24,
-            55
+            96
           ],
           "to": [
-            13.499999999999996,
+            -132.2,
             3.1,
-            -15.5
+            -65
           ],
-          "kind": "ribbon"
+          "kind": "ribbon",
+          "remote": false
         },
         {
           "id": "cable-env-bme688",
           "label": "Bosch BME688 to the carrier",
           "from": [
-            -47.5,
-            30,
-            -145
+            -192,
+            65.1,
+            -116
           ],
+          "remote": false,
           "to": [
-            -46,
+            -193,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -2956,14 +3031,15 @@
           "id": "cable-uv-as7331",
           "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
           "from": [
-            -12.5,
-            30,
-            -145
+            -155,
+            65.1,
+            -116
           ],
+          "remote": false,
           "to": [
-            -46,
+            -193,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -2971,14 +3047,15 @@
           "id": "cable-mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
           "from": [
-            20,
-            30,
-            -146.5
+            -120.5,
+            65.1,
+            -119
           ],
+          "remote": false,
           "to": [
-            46,
+            -101,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -2986,14 +3063,15 @@
           "id": "cable-pwr-ina226",
           "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
           "from": [
-            52.5,
-            30,
-            -145
+            -86,
+            65.1,
+            -116
           ],
+          "remote": false,
           "to": [
-            46,
+            -101,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -3001,14 +3079,15 @@
           "id": "cable-mag-rm3100",
           "label": "PNI Sensor RM3100 3-axis geomagnetic sensor to the carrier",
           "from": [
-            -260,
+            -272.5,
             2.5,
-            190
+            177.5
           ],
+          "remote": true,
           "to": [
-            -46,
+            -193,
             51.4,
-            22.400000000000002
+            -37.599999999999994
           ],
           "kind": "cable"
         },
@@ -3020,10 +3099,11 @@
             17.5,
             190
           ],
+          "remote": true,
           "to": [
-            -46,
+            -193,
             51.4,
-            22.400000000000002
+            -37.599999999999994
           ],
           "kind": "cable"
         }
@@ -3054,9 +3134,9 @@
             56
           ],
           "pos": [
-            0,
+            -134.5,
             0.8,
-            0
+            -60
           ],
           "sourced": true,
           "note": "Raspberry Pi 5 mechanical spec.",
@@ -3075,9 +3155,9 @@
             11
           ],
           "pos": [
-            -14.5,
+            -149,
             -0.5,
-            -31.7
+            -91.7
           ],
           "sourced": true,
           "note": "microSD form factor, 15 x 11 x 1 mm. Sits in the Pi's card slot.",
@@ -3095,9 +3175,9 @@
             56
           ],
           "pos": [
-            0,
+            -134.5,
             33.9,
-            0
+            -60
           ],
           "sourced": true,
           "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
@@ -3115,14 +3195,15 @@
             56
           ],
           "pos": [
-            0,
+            -134.5,
             28.2,
-            0
+            -60
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-header",
@@ -3135,14 +3216,15 @@
             5.1
           ],
           "pos": [
-            0,
+            -134.5,
             23.15,
-            -24.64
+            -84.64
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-module",
@@ -3155,14 +3237,15 @@
             16
           ],
           "pos": [
-            -9.100000000000001,
+            -143.6,
             30.3,
-            0
+            -60
           ],
           "colour": "#3d4148",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-ufl",
@@ -3175,14 +3258,15 @@
             3
           ],
           "pos": [
-            26,
+            -108.5,
             29.7,
-            -12.319999999999999
+            -72.32
           ],
           "colour": "#c9a961",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-sma",
@@ -3195,14 +3279,15 @@
             6.5
           ],
           "pos": [
-            29.9,
+            -104.6,
             32,
-            8.96
+            -51.04
           ],
           "colour": "#c9a961",
           "cylinder": true,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-pps",
@@ -3215,14 +3300,15 @@
             1.5
           ],
           "pos": [
-            10.399999999999999,
+            -124.1,
             29.5,
-            -16.799999999999997
+            -76.8
           ],
           "colour": "#3fb950",
           "cylinder": false,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "gnss-lc29h-battery",
@@ -3235,14 +3321,15 @@
             12.5
           ],
           "pos": [
-            -19.5,
+            -154,
             30.5,
-            17.919999999999995
+            -42.080000000000005
           ],
           "colour": "#9aa0a8",
           "cylinder": true,
           "sourced": false,
-          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock."
+          "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+          "remote": false
         },
         {
           "id": "carrier-t3",
@@ -3255,9 +3342,9 @@
             56
           ],
           "pos": [
-            0,
+            -134.5,
             51.4,
-            0
+            -60
           ],
           "sourced": true,
           "note": "Generated from the hardware registry. 140 x 56 mm, mounting on the HAT hole pattern."
@@ -3274,9 +3361,9 @@
             18
           ],
           "pos": [
-            -54.5,
+            -189,
             54.699999999999996,
-            -16
+            -76
           ],
           "sourced": false,
           "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
@@ -3294,14 +3381,15 @@
             18
           ],
           "pos": [
-            -54.5,
+            -189,
             52.8,
-            -16
+            -76
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "imu-bno085-pkg",
@@ -3314,14 +3402,15 @@
             3.8
           ],
           "pos": [
-            -54.5,
+            -189,
             53.949999999999996,
-            -15.1
+            -75.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "imu-bno085-hdr",
@@ -3334,14 +3423,15 @@
             2.4
           ],
           "pos": [
-            -54.5,
+            -189,
             54.9,
-            -22.84
+            -82.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports."
+          "note": "Genuinely board-mounted, and has to be: it records the orientation of the node itself, so it is only meaningful if it is rigidly attached to the thing whose pose it reports.",
+          "remote": false
         },
         {
           "id": "adc-ads1256",
@@ -3355,9 +3445,9 @@
             35
           ],
           "pos": [
-            -11.5,
+            -146,
             58.199999999999996,
-            -7.5
+            -67.5
           ],
           "sourced": false,
           "note": "Board-mounted alongside the carrier.",
@@ -3375,14 +3465,15 @@
             35
           ],
           "pos": [
-            -11.5,
+            -146,
             52.8,
-            -7.5
+            -67.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Board-mounted alongside the carrier."
+          "note": "Board-mounted alongside the carrier.",
+          "remote": false
         },
         {
           "id": "adc-ads1256-pkg",
@@ -3395,14 +3486,15 @@
             11
           ],
           "pos": [
-            -11.5,
+            -146,
             54.15,
-            -5.75
+            -65.75
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Board-mounted alongside the carrier."
+          "note": "Board-mounted alongside the carrier.",
+          "remote": false
         },
         {
           "id": "adc-ads1256-hdr",
@@ -3415,14 +3507,15 @@
             2.4
           ],
           "pos": [
-            -11.5,
+            -146,
             54.9,
-            -20.8
+            -80.8
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Board-mounted alongside the carrier."
+          "note": "Board-mounted alongside the carrier.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3",
@@ -3436,9 +3529,9 @@
             27
           ],
           "pos": [
-            112,
+            -4.5,
             7.5,
-            -30
+            -90.5
           ],
           "sourced": false,
           "note": "Approximate dongle body, excluding the antenna.",
@@ -3456,14 +3549,15 @@
             27
           ],
           "pos": [
-            112,
+            -4.5,
             6.5,
-            -30
+            -90.5
           ],
           "colour": "#5a5f66",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3-plug",
@@ -3476,14 +3570,15 @@
             12
           ],
           "pos": [
-            76.8,
+            -39.7,
             5.5,
-            -30
+            -90.5
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "sdr-rtl-v3-sma",
@@ -3496,14 +3591,15 @@
             7
           ],
           "pos": [
-            149.6,
+            33.099999999999994,
             7,
-            -30
+            -90.5
           ],
           "colour": "#c9a961",
           "cylinder": true,
           "sourced": false,
-          "note": "Approximate dongle body, excluding the antenna."
+          "note": "Approximate dongle body, excluding the antenna.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35",
@@ -3517,9 +3613,9 @@
             30
           ],
           "pos": [
-            181,
+            62.5,
             6,
-            -30
+            -89
           ],
           "sourced": false,
           "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
@@ -3537,14 +3633,15 @@
             30
           ],
           "pos": [
-            181,
+            62.5,
             1,
-            -30
+            -89
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35-socket",
@@ -3557,14 +3654,15 @@
             13
           ],
           "pos": [
-            181,
+            62.5,
             5,
-            -32.4
+            -91.4
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35-lens",
@@ -3577,14 +3675,15 @@
             7.5
           ],
           "pos": [
-            181,
+            62.5,
             9.5,
-            -32.4
+            -91.4
           ],
           "colour": "#3d4148",
           "cylinder": true,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "lwir-lepton35-usb",
@@ -3597,14 +3696,15 @@
             3.2
           ],
           "pos": [
-            181,
+            62.5,
             3.6,
-            -16.200000000000003
+            -75.2
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface."
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
         },
         {
           "id": "radar-iwr6843",
@@ -3618,9 +3718,9 @@
             55
           ],
           "pos": [
-            99.5,
+            117,
             8,
-            14
+            -76.5
           ],
           "sourced": false,
           "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky.",
@@ -3638,14 +3738,15 @@
             55
           ],
           "pos": [
-            99.5,
+            117,
             1,
-            14
+            -76.5
           ],
           "colour": "#1b3a2a",
           "cylinder": false,
           "sourced": false,
-          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky."
+          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky.",
+          "remote": false
         },
         {
           "id": "radar-iwr6843-antenna",
@@ -3658,14 +3759,15 @@
             17
           ],
           "pos": [
-            99.5,
+            117,
             2.3,
-            -2.5
+            -93
           ],
           "colour": "#c9a961",
           "cylinder": false,
           "sourced": false,
-          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky."
+          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky.",
+          "remote": false
         },
         {
           "id": "radar-iwr6843-shield",
@@ -3678,14 +3780,15 @@
             22
           ],
           "pos": [
-            99.5,
+            117,
             3.75,
-            17.300000000000004
+            -73.19999999999999
           ],
           "colour": "#8b929c",
           "cylinder": false,
           "sourced": false,
-          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky."
+          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky.",
+          "remote": false
         },
         {
           "id": "radar-iwr6843-connector",
@@ -3698,14 +3801,15 @@
             5
           ],
           "pos": [
-            99.5,
+            117,
             4,
-            33.8
+            -56.7
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky."
+          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky.",
+          "remote": false
         },
         {
           "id": "radar-iwr6843-usb",
@@ -3718,14 +3822,15 @@
             8
           ],
           "pos": [
-            76.4,
+            93.9,
             3.5,
-            33.8
+            -56.7
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky."
+          "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky.",
+          "remote": false
         },
         {
           "id": "gamma-csi-sipm",
@@ -3739,9 +3844,9 @@
             40
           ],
           "pos": [
-            176,
+            -9.5,
             11,
-            14
+            -17
           ],
           "sourced": false,
           "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
@@ -3759,14 +3864,15 @@
             40
           ],
           "pos": [
-            176,
+            -9.5,
             1,
-            14
+            -17
           ],
           "colour": "#1b2a3a",
           "cylinder": false,
           "sourced": false,
-          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes."
+          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
+          "remote": false
         },
         {
           "id": "gamma-csi-sipm-crystal",
@@ -3779,14 +3885,15 @@
             22
           ],
           "pos": [
-            159.2,
+            -26.3,
             9.5,
-            14
+            -17
           ],
           "colour": "#d8d4c4",
           "cylinder": false,
           "sourced": false,
-          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes."
+          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
+          "remote": false
         },
         {
           "id": "gamma-csi-sipm-sipm",
@@ -3799,14 +3906,15 @@
             8
           ],
           "pos": [
-            174.6,
+            -10.899999999999999,
             2.8,
-            14
+            -17
           ],
           "colour": "#3d4148",
           "cylinder": false,
           "sourced": false,
-          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes."
+          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
+          "remote": false
         },
         {
           "id": "gamma-csi-sipm-mcu",
@@ -3819,14 +3927,15 @@
             11
           ],
           "pos": [
-            188.6,
+            3.1000000000000014,
             2.9,
-            14
+            -17
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes."
+          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
+          "remote": false
         },
         {
           "id": "gamma-csi-sipm-usb",
@@ -3839,14 +3948,15 @@
             9
           ],
           "pos": [
-            208.89999999999998,
+            23.39999999999999,
             3.6,
-            14
+            -17
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes."
+          "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
+          "remote": false
         },
         {
           "id": "swir-ingaas640",
@@ -3860,9 +3970,9 @@
             60
           ],
           "pos": [
-            102,
+            67.5,
             37.5,
-            83
+            -7
           ],
           "sourced": false,
           "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
@@ -3880,14 +3990,15 @@
             60
           ],
           "pos": [
-            102,
+            67.5,
             20,
-            83
+            -7
           ],
           "colour": "#3d4148",
           "cylinder": false,
           "sourced": false,
-          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel."
+          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
+          "remote": false
         },
         {
           "id": "swir-ingaas640-lens",
@@ -3900,14 +4011,15 @@
             42
           ],
           "pos": [
-            102,
+            67.5,
             56,
-            83
+            -7
           ],
           "colour": "#232629",
           "cylinder": true,
           "sourced": false,
-          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel."
+          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
+          "remote": false
         },
         {
           "id": "swir-ingaas640-connector",
@@ -3920,14 +4032,15 @@
             6
           ],
           "pos": [
-            102,
+            67.5,
             11,
-            56.6
+            -33.4
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
-          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel."
+          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
+          "remote": false
         },
         {
           "id": "usb-hub-powered",
@@ -3941,9 +4054,9 @@
             42
           ],
           "pos": [
-            196,
+            5.5,
             11,
-            83
+            56
           ],
           "sourced": false,
           "note": "Approximate 4-port hub body.",
@@ -3961,14 +4074,15 @@
             42
           ],
           "pos": [
-            196,
+            5.5,
             9,
-            83
+            56
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate 4-port hub body."
+          "note": "Approximate 4-port hub body.",
+          "remote": false
         },
         {
           "id": "usb-hub-powered-ports",
@@ -3981,14 +4095,15 @@
             4
           ],
           "pos": [
-            196,
+            5.5,
             8.5,
-            100.64
+            73.64
           ],
           "colour": "#2f4f8f",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate 4-port hub body."
+          "note": "Approximate 4-port hub body.",
+          "remote": false
         },
         {
           "id": "cam-hq-imx477",
@@ -4002,9 +4117,9 @@
             38
           ],
           "pos": [
-            -79,
+            -185.5,
             24,
-            55
+            115
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
@@ -4022,14 +4137,15 @@
             38
           ],
           "pos": [
-            -79,
+            -185.5,
             5,
-            55
+            115
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
         },
         {
           "id": "cam-hq-imx477-lens",
@@ -4042,14 +4158,15 @@
             30
           ],
           "pos": [
-            -79,
+            -185.5,
             28,
-            55
+            115
           ],
           "colour": "#232629",
           "cylinder": true,
           "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate."
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
         },
         {
           "id": "cam-noir-imx477",
@@ -4063,9 +4180,9 @@
             38
           ],
           "pos": [
-            -133,
+            -133.5,
             24,
-            55
+            115
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
@@ -4083,14 +4200,15 @@
             38
           ],
           "pos": [
-            -133,
+            -133.5,
             5,
-            55
+            115
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "As above, with the bandpass filter fitted."
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
         },
         {
           "id": "cam-noir-imx477-lens",
@@ -4103,14 +4221,15 @@
             30
           ],
           "pos": [
-            -133,
+            -133.5,
             28,
-            55
+            115
           ],
           "colour": "#232629",
           "cylinder": true,
           "sourced": false,
-          "note": "As above, with the bandpass filter fitted."
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
         },
         {
           "id": "env-bme688",
@@ -4124,9 +4243,9 @@
             18
           ],
           "pos": [
-            -47.5,
-            30,
-            -154
+            -192,
+            65.1,
+            -125
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
@@ -4144,14 +4263,15 @@
             18
           ],
           "pos": [
-            -47.5,
-            28.1,
-            -154
+            -192,
+            63.199999999999996,
+            -125
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "env-bme688-pkg",
@@ -4164,14 +4284,15 @@
             3.2
           ],
           "pos": [
-            -47.5,
-            29.25,
-            -153.1
+            -192,
+            64.35,
+            -124.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "env-bme688-hdr",
@@ -4184,14 +4305,15 @@
             2.4
           ],
           "pos": [
-            -47.5,
-            30.2,
-            -160.84
+            -192,
+            65.3,
+            -131.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi."
+          "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
+          "remote": false
         },
         {
           "id": "uv-as7331",
@@ -4205,9 +4327,9 @@
             18
           ],
           "pos": [
-            -12.5,
-            30,
-            -154
+            -155,
+            65.1,
+            -125
           ],
           "sourced": false,
           "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
@@ -4225,14 +4347,15 @@
             18
           ],
           "pos": [
-            -12.5,
-            28.1,
-            -154
+            -155,
+            63.199999999999996,
+            -125
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "uv-as7331-pkg",
@@ -4245,14 +4368,15 @@
             3
           ],
           "pos": [
-            -12.5,
-            29.15,
-            -153.1
+            -155,
+            64.25,
+            -124.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "uv-as7331-hdr",
@@ -4265,14 +4389,15 @@
             2.4
           ],
           "pos": [
-            -12.5,
-            30.2,
-            -160.84
+            -155,
+            65.3,
+            -131.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall."
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
         },
         {
           "id": "mic-ics43434",
@@ -4286,9 +4411,9 @@
             15
           ],
           "pos": [
-            20,
-            30,
-            -154
+            -120.5,
+            65.1,
+            -126.5
           ],
           "sourced": false,
           "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
@@ -4306,14 +4431,15 @@
             15
           ],
           "pos": [
-            20,
-            28.6,
-            -154
+            -120.5,
+            63.699999999999996,
+            -126.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "remote": false
         },
         {
           "id": "mic-ics43434-pkg",
@@ -4326,14 +4452,15 @@
             2.6
           ],
           "pos": [
-            20,
-            29.7,
-            -153.25
+            -120.5,
+            64.8,
+            -125.75
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "remote": false
         },
         {
           "id": "mic-ics43434-hdr",
@@ -4346,14 +4473,15 @@
             2.4
           ],
           "pos": [
-            20,
-            30.7,
-            -159.7
+            -120.5,
+            65.8,
+            -132.2
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Needs acoustic access to outside air through a vented, water-shedding port."
+          "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
+          "remote": false
         },
         {
           "id": "pwr-ina226",
@@ -4367,9 +4495,9 @@
             18
           ],
           "pos": [
-            52.5,
-            30,
-            -154
+            -86,
+            65.1,
+            -125
           ],
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
@@ -4387,14 +4515,15 @@
             18
           ],
           "pos": [
-            52.5,
-            28.1,
-            -154
+            -86,
+            63.199999999999996,
+            -125
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
         },
         {
           "id": "pwr-ina226-pkg",
@@ -4407,14 +4536,15 @@
             3
           ],
           "pos": [
-            52.5,
-            29.2,
-            -153.1
+            -86,
+            64.3,
+            -124.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
         },
         {
           "id": "pwr-ina226-hdr",
@@ -4427,14 +4557,15 @@
             2.4
           ],
           "pos": [
-            52.5,
-            30.2,
-            -160.84
+            -86,
+            65.3,
+            -131.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again."
+          "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
         },
         {
           "id": "mag-rm3100",
@@ -4476,7 +4607,8 @@
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "remote": true
         },
         {
           "id": "mag-rm3100-pkg",
@@ -4496,7 +4628,8 @@
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "remote": true
         },
         {
           "id": "mag-rm3100-hdr",
@@ -4516,7 +4649,8 @@
           "colour": "#1c1f24",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen."
+          "note": "Approximate breakout footprint. Mounts remote from the node on a non-ferrous mast section. Mounted remote from the node, not on the carrier: its own siting requirement is at least two metres from the node's electronics on a non-ferrous mast section, and an assembly that drew it bolted to the board contradicted the part's own note on screen.",
+          "remote": true
         },
         {
           "id": "seis-sm24",
@@ -4558,7 +4692,8 @@
           "colour": "#4a4f56",
           "cylinder": true,
           "sourced": false,
-          "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled."
+          "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled.",
+          "remote": true
         },
         {
           "id": "seis-sm24-spike",
@@ -4578,7 +4713,8 @@
           "colour": "#6b7078",
           "cylinder": true,
           "sourced": false,
-          "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled."
+          "note": "Approximate: SM-24 geophone body, cylindrical, buried or ground-coupled.",
+          "remote": true
         },
         {
           "id": "sem-ir-beacon",
@@ -4620,7 +4756,8 @@
           "colour": "#1f5f3a",
           "cylinder": false,
           "sourced": false,
-          "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate."
+          "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate.",
+          "remote": true
         },
         {
           "id": "sem-ir-beacon-led",
@@ -4640,7 +4777,8 @@
           "colour": "#5a1f1f",
           "cylinder": true,
           "sourced": false,
-          "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate."
+          "note": "Approximate. Mounted remote from the node, on the mast and pointing above the horizon. It is an emitter and belongs where it can be aimed, not sitting on the carrier among the receivers it would otherwise illuminate.",
+          "remote": true
         },
         {
           "id": "power-solar-200w",
@@ -4682,7 +4820,8 @@
           "colour": "#8b929c",
           "cylinder": false,
           "sourced": false,
-          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled."
+          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+          "remote": true
         },
         {
           "id": "power-solar-200w-cells",
@@ -4702,7 +4841,8 @@
           "colour": "#1b2740",
           "cylinder": false,
           "sourced": false,
-          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled."
+          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+          "remote": true
         },
         {
           "id": "power-solar-200w-junction",
@@ -4722,7 +4862,8 @@
           "colour": "#2a2d33",
           "cylinder": false,
           "sourced": false,
-          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled."
+          "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+          "remote": true
         },
         {
           "id": "standoff-gnss-lc29h--29--24.5",
@@ -4734,9 +4875,9 @@
             5
           ],
           "pos": [
-            -29,
+            -163.5,
             27.599999999999998,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4752,9 +4893,9 @@
             5
           ],
           "pos": [
-            29,
+            -105.5,
             27.599999999999998,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4770,9 +4911,9 @@
             5
           ],
           "pos": [
-            -29,
+            -163.5,
             27.599999999999998,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4788,9 +4929,9 @@
             5
           ],
           "pos": [
-            29,
+            -105.5,
             27.599999999999998,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4806,9 +4947,9 @@
             5
           ],
           "pos": [
-            -29,
+            -163.5,
             45.1,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4824,9 +4965,9 @@
             5
           ],
           "pos": [
-            29,
+            -105.5,
             45.1,
-            -24.5
+            -84.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4842,9 +4983,9 @@
             5
           ],
           "pos": [
-            -29,
+            -163.5,
             45.1,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4860,9 +5001,9 @@
             5
           ],
           "pos": [
-            29,
+            -105.5,
             45.1,
-            24.5
+            -35.5
           ],
           "cylinder": true,
           "sourced": true,
@@ -4879,9 +5020,9 @@
             5.1
           ],
           "pos": [
-            -14.100000000000001,
+            -148.60000000000002,
             5.85,
-            23.25
+            -36.75
           ],
           "colour": "#1c1f24",
           "sourced": false,
@@ -4898,9 +5039,9 @@
             16
           ],
           "pos": [
-            35.25,
+            -99.25,
             8.35,
-            -18.5
+            -78.5
           ],
           "colour": "#43484f",
           "sourced": false,
@@ -4917,9 +5058,9 @@
             17.5
           ],
           "pos": [
-            35.25,
+            -99.25,
             9.799999999999999,
-            0.75
+            -59.25
           ],
           "colour": "#2f4f8f",
           "sourced": false,
@@ -4936,9 +5077,9 @@
             17.5
           ],
           "pos": [
-            35.25,
+            -99.25,
             9.799999999999999,
-            19.25
+            -40.75
           ],
           "colour": "#26292f",
           "sourced": false,
@@ -4955,9 +5096,9 @@
             3.4
           ],
           "pos": [
-            -29.5,
+            -164,
             3.25,
-            -26.9
+            -86.9
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -4974,9 +5115,9 @@
             3.2
           ],
           "pos": [
-            -16.4,
+            -150.9,
             3.25,
-            -27
+            -87
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -4993,9 +5134,9 @@
             3.2
           ],
           "pos": [
-            -2.3999999999999986,
+            -136.9,
             3.25,
-            -27
+            -87
           ],
           "colour": "#9aa0a8",
           "sourced": false,
@@ -5012,9 +5153,9 @@
             1.6
           ],
           "pos": [
-            -14.5,
+            -149,
             2.4000000000000004,
-            -28.4
+            -88.4
           ],
           "colour": "#6b7078",
           "sourced": false,
@@ -5031,9 +5172,9 @@
             21
           ],
           "pos": [
-            3.799999999999997,
+            -130.7,
             3.1,
-            -15.5
+            -75.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -5050,9 +5191,9 @@
             21
           ],
           "pos": [
-            14.799999999999997,
+            -119.7,
             3.1,
-            -15.5
+            -75.5
           ],
           "colour": "#c8b48a",
           "sourced": false,
@@ -5069,9 +5210,9 @@
             15
           ],
           "pos": [
-            -4.5,
+            -139,
             2.8,
-            1.5
+            -58.5
           ],
           "colour": "#53585f",
           "sourced": false,
@@ -5088,9 +5229,9 @@
             10
           ],
           "pos": [
-            12.5,
+            -122,
             2.45,
-            7
+            -53
           ],
           "colour": "#4a4f56",
           "sourced": false,
@@ -5107,9 +5248,9 @@
             9.5
           ],
           "pos": [
-            -6.25,
+            -140.75,
             2.3,
-            17.25
+            -42.75
           ],
           "colour": "#3f444b",
           "sourced": false,
@@ -5126,9 +5267,9 @@
             6
           ],
           "pos": [
-            18.5,
+            -116,
             2.2,
-            -9
+            -69
           ],
           "colour": "#4a4f56",
           "sourced": false,
@@ -5145,9 +5286,9 @@
             12
           ],
           "pos": [
-            21,
+            -113.5,
             2.9000000000000004,
-            22
+            -38
           ],
           "colour": "#b9a97f",
           "sourced": false,
@@ -5164,9 +5305,9 @@
             2.5
           ],
           "pos": [
-            23.75,
+            -110.75,
             3.1,
-            25.25
+            -34.75
           ],
           "colour": "#d8d0b0",
           "sourced": false,
@@ -5183,7 +5324,7 @@
           ],
           "pos": [
             0,
-            48.5,
+            74,
             0
           ],
           "wireframe": true,
@@ -5196,59 +5337,63 @@
           "id": "cable-storage-microsd-64gb",
           "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
           "from": [
-            -14.5,
+            -149,
             -0.5,
-            -26.2
+            -86.2
           ],
           "to": [
-            -14.5,
+            -149,
             2.4000000000000004,
-            -29.2
+            -89.2
           ],
-          "kind": "cable"
+          "kind": "cable",
+          "remote": false
         },
         {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -60,
+            -185.5,
             24,
-            55
+            96
           ],
           "to": [
-            2.4999999999999973,
+            -130.7,
             3.1,
-            -15.5
+            -65
           ],
-          "kind": "ribbon"
+          "kind": "ribbon",
+          "remote": false
         },
         {
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -114,
+            -133.5,
             24,
-            55
+            96
           ],
           "to": [
-            13.499999999999996,
+            -119.7,
             3.1,
-            -15.5
+            -65
           ],
-          "kind": "ribbon"
+          "kind": "ribbon",
+          "remote": false
         },
         {
           "id": "cable-env-bme688",
           "label": "Bosch BME688 to the carrier",
           "from": [
-            -47.5,
-            30,
-            -145
+            -192,
+            65.1,
+            -116
           ],
+          "remote": false,
           "to": [
-            -56,
+            -190.5,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -5256,14 +5401,15 @@
           "id": "cable-uv-as7331",
           "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
           "from": [
-            -12.5,
-            30,
-            -145
+            -155,
+            65.1,
+            -116
           ],
+          "remote": false,
           "to": [
-            -56,
+            -190.5,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -5271,14 +5417,15 @@
           "id": "cable-mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
           "from": [
-            20,
-            30,
-            -146.5
+            -120.5,
+            65.1,
+            -119
           ],
+          "remote": false,
           "to": [
-            56,
+            -78.5,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -5286,14 +5433,15 @@
           "id": "cable-pwr-ina226",
           "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
           "from": [
-            52.5,
-            30,
-            -145
+            -86,
+            65.1,
+            -116
           ],
+          "remote": false,
           "to": [
-            56,
+            -78.5,
             51.4,
-            -22.400000000000002
+            -82.4
           ],
           "kind": "cable"
         },
@@ -5301,14 +5449,15 @@
           "id": "cable-mag-rm3100",
           "label": "PNI Sensor RM3100 3-axis geomagnetic sensor to the carrier",
           "from": [
-            -260,
+            -272.5,
             2.5,
-            190
+            177.5
           ],
+          "remote": true,
           "to": [
-            -56,
+            -190.5,
             51.4,
-            22.400000000000002
+            -37.599999999999994
           ],
           "kind": "cable"
         },
@@ -5316,14 +5465,15 @@
           "id": "cable-seis-sm24",
           "label": "ION / Sercel SM-24 geophone element to the carrier",
           "from": [
-            -345,
+            -361,
             17.5,
-            190
+            174
           ],
+          "remote": true,
           "to": [
-            -56,
+            -190.5,
             51.4,
-            22.400000000000002
+            -37.599999999999994
           ],
           "kind": "cable"
         },
@@ -5335,10 +5485,11 @@
             6,
             190
           ],
+          "remote": true,
           "to": [
-            -56,
+            -190.5,
             51.4,
-            22.400000000000002
+            -37.599999999999994
           ],
           "kind": "cable"
         },
@@ -5350,10 +5501,11 @@
             17.5,
             190
           ],
+          "remote": true,
           "to": [
-            -56,
+            -190.5,
             51.4,
-            22.400000000000002
+            -37.599999999999994
           ],
           "kind": "cable"
         }

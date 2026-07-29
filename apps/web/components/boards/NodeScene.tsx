@@ -54,6 +54,8 @@ interface Cable {
   from: [number, number, number]
   to: [number, number, number]
   kind: 'cable' | 'ribbon'
+  /** Runs to a mast or ground-mounted part, so it hides with them. */
+  remote?: boolean
 }
 
 export interface Assembly {
@@ -230,7 +232,8 @@ export default function NodeScene({
     // peripheral floated beside a board it had no visible relationship to.
     // Drawn as a sag rather than a straight line, because a straight line
     // between two components reads as a dimension, not a wire.
-    for (const c of assembly.cables ?? []) {
+    // A cable whose far end is hidden is wiring to nothing.
+    for (const c of (assembly.cables ?? []).filter((c) => !c.remote || showRemote)) {
       const a = new THREE.Vector3(...c.from)
       const bb = new THREE.Vector3(...c.to)
       const mid = a.clone().lerp(bb, 0.5)
@@ -268,7 +271,13 @@ export default function NodeScene({
       // space and there is no way to judge how big any of it is.
       const span = Math.ceil((Math.max(size.x, size.z) * 1.5) / 50) * 50
       const grid = new THREE.GridHelper(span, span / 50, 0x55607a, 0x333b4d)
-      grid.position.set(centre.x - centre.x, -centre.y, centre.z - centre.z)
+      // In the group's own coordinates, where the bodies still sit: the group
+      // is moved by -centre, its children are not. This read `centre.x -
+      // centre.x` and `-centre.y`, which is the right answer only while the
+      // node happens to straddle the origin. It did, until the layout moved
+      // into the case it ships in, and then the bench plane slid out from under
+      // the node by however far the node had moved.
+      grid.position.set(centre.x, box.min.y, centre.z)
       const gm = grid.material as THREE.Material
       gm.transparent = true
       gm.opacity = 0.3
@@ -383,10 +392,28 @@ export default function NodeScene({
         aria-label={`Assembly model of the ${assembly.label} node: ${assembly.counts.total} parts including the Raspberry Pi, the carrier board, sensor breakouts, USB peripherals and cameras. Drag to rotate, scroll to zoom.`}
       />
 
-      {status !== 'ready' && (
+      {status === 'loading' && (
         <p className="absolute inset-0 grid place-items-center text-[13px] text-[var(--ink-3)]">
-          {status === 'loading' ? 'Assembling node…' : 'This browser cannot display the 3D view.'}
+          Assembling node…
         </p>
+      )}
+
+      {/* Without WebGL this used to say only that the browser could not show
+          the view, which is true and useless. The same assembly is projected to
+          SVG at build time from exactly this data, so a browser that refuses a
+          context gets the node rather than an apology. */}
+      {status === 'error' && (
+        <div className="absolute inset-0 grid place-items-center bg-[#f7f6f3]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`/boards/${assembly.tier}-node.svg`}
+            alt={`Assembly of the ${assembly.label} node, drawn flat: ${assembly.counts.total} parts including the Raspberry Pi, the carrier board, sensor breakouts, USB peripherals and cameras`}
+            className="max-h-full max-w-full object-contain"
+          />
+          <p className="num absolute bottom-2 right-3 text-[11px] text-[#5a616c]">
+            static view: this browser gave no WebGL context
+          </p>
+        </div>
       )}
 
       {hovered && (

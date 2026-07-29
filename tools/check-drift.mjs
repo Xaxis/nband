@@ -410,11 +410,17 @@ check('the assembly is physically consistent', () => {
       errors.push(`${a.tier}: no carrier body in the assembly`)
       continue
     }
+    // Relative to where the carrier actually is, not to the origin. The stack
+    // used to sit at 0,0 and this compared absolute coordinates against half
+    // the board width, which was the same thing until the node was moved into
+    // the case it ships in and every breakout on the carrier read as overhanging
+    // by exactly the distance the stack had moved.
     const [cw, , cd] = carrier.size
+    const [cx, , cz] = carrier.pos
     for (const b of a.bodies.filter((x) => x.mount === 'carrier')) {
       const [w, , d] = b.size
       const [x, , z] = b.pos
-      if (Math.abs(x) + w / 2 > cw / 2 + 0.01 || Math.abs(z) + d / 2 > cd / 2 + 0.01) {
+      if (Math.abs(x - cx) + w / 2 > cw / 2 + 0.01 || Math.abs(z - cz) + d / 2 > cd / 2 + 0.01) {
         errors.push(
           `${a.tier}: '${b.id}' is drawn on the carrier but extends past its ${cw} x ${cd} mm outline`,
         )
@@ -486,6 +492,38 @@ check('the assembly is physically consistent', () => {
     }
   }
 
+  // Nothing drawn inside the case may stick out through it. The tier 3 carrier
+  // overhangs the HAT footprint so the router can clear a fabricator's minimum
+  // copper gap, and the stack was inset by half a Raspberry Pi, which put the
+  // carrier's left edge 20 mm outside the case wall. Nothing about the picture
+  // looked wrong, because a board passing through a wireframe outline reads as
+  // a board, and the fit check passes on summed floor area rather than on
+  // position so it had nothing to say either.
+  for (const a of assemblies) {
+    const shellBody = a.bodies.find((b) => b.mount === 'enclosure')
+    const shell = hardware.parts.find((p) => p.id === shellBody?.id)
+    const m = shell?.mechanical
+    if (!m?.interiorWidthMm) continue
+    const half = [m.interiorWidthMm / 2, null, m.interiorDepthMm / 2]
+    for (const b of a.bodies) {
+      if (b.parent || b.remote || b.mount === 'enclosure') continue
+      for (const axis of [0, 2]) {
+        const reach = Math.abs(b.pos[axis]) + b.size[axis] / 2
+        if (reach > half[axis] + 0.01) {
+          errors.push(
+            `${a.tier}: '${b.id}' reaches ${reach.toFixed(0)} mm on the ` +
+              `${axis === 0 ? 'width' : 'depth'} axis, outside the case interior at ` +
+              `${half[axis]} mm`,
+          )
+        }
+      }
+      const top = b.pos[1] + b.size[1] / 2
+      if (top > m.interiorHeightMm + 0.01) {
+        errors.push(`${a.tier}: '${b.id}' stands ${top.toFixed(0)} mm tall inside a ${m.interiorHeightMm} mm case`)
+      }
+    }
+  }
+
   // A part whose own notes demand distance from the node cannot be mounted on it.
   for (const part of hardware.parts) {
     const wantsDistance = /at least .{0,12}(metre|meter)|remote from the node|away from the node/i.test(
@@ -494,6 +532,28 @@ check('the assembly is physically consistent', () => {
     if (wantsDistance && part.mechanical?.mount === 'carrier') {
       errors.push(
         `part '${part.id}' says it must be mounted away from the node but mechanical.mount is 'carrier'`,
+      )
+    }
+  }
+
+  // The flat view a reader without WebGL is shown has to be the same node as
+  // the interactive one. It is generated from this file by render-node.mjs, and
+  // the only way it can disagree is by being stale, so its body count is
+  // compared against what the assembly would draw.
+  for (const a of assemblies) {
+    const svgPath = resolve(root, `apps/web/public/boards/${a.tier}-node.svg`)
+    if (!existsSync(svgPath)) {
+      errors.push(`${a.tier}: ${a.tier}-node.svg is missing. Run \`make boards\`.`)
+      continue
+    }
+    const expected = a.bodies.filter(
+      (b) => !b.shell && b.mount !== 'enclosure' && !b.remote,
+    ).length
+    const claimed = Number(/(\d+) bodies/.exec(readFileSync(svgPath, 'utf8'))?.[1] ?? -1)
+    if (claimed !== expected) {
+      errors.push(
+        `${a.tier}: ${a.tier}-node.svg draws ${claimed} bodies but the assembly has ${expected}. ` +
+          'Run `make boards`.',
       )
     }
   }
