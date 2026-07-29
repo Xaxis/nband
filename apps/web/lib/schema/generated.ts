@@ -1413,6 +1413,18 @@ export interface Part {
   category: string
   /** Ships inside another part box, so its price is zero and was paid under that part. */
   includedWith?: string
+  /** Physical size and where the part mounts. Present on every part in a tier. */
+  mechanical?: {
+    widthMm: number
+    depthMm: number
+    heightMm: number
+    mount: string
+    dimensionsSourced?: boolean
+    interiorWidthMm?: number
+    interiorDepthMm?: number
+    interiorHeightMm?: number
+    note?: string
+  }
   /** For an enclosure: what has to be cut into it, and out of what. */
   apertures?: {
     id: string
@@ -3801,9 +3813,9 @@ export const PARTS: readonly Part[] = [
           "nir"
         ],
         "face": "lid",
-        "material": "acrylic or tempered glass, 60 mm",
-        "sizeMm": 60,
-        "note": "One window serves both cameras: they sit side by side looking through it. Tempered glass over acrylic if the node lives outdoors for years, because acrylic yellows and that is a slow calibration drift rather than an obvious failure. Bed it in the lid on a gasket, not in a printed frame that will craze."
+        "material": "acrylic or tempered glass, two windows of 34 mm",
+        "sizeMm": 34,
+        "note": "One window per camera, not one shared between them. Two HQ camera bodies are 38 mm wide each, so side by side they span more than 76 mm and a single 60 mm hole cannot serve both; 34 mm clears the 30 mm lens barrel with a margin to seal against. Tempered glass over acrylic if the node lives outdoors for years, because acrylic yellows and that is a slow calibration drift rather than an obvious failure."
       },
       {
         "id": "win-uv",
@@ -3854,6 +3866,95 @@ export const PARTS: readonly Part[] = [
         "material": "ePTFE vent membrane, M12 threaded",
         "sizeMm": 12,
         "note": "Two jobs in one part. The environmental sensor has to exchange air with outside or it measures the box: sealed, its temperature lags the air by tens of minutes, its humidity is whatever was shut in at assembly and its pressure never changes. And the enclosure needs the vent regardless, because a sealed box breathes as it warms and cools and will pull water in through whatever imperfection it can find. A vent is not a hole in the waterproofing, it is what makes the waterproofing work."
+      }
+    ],
+    "candidateAlternatives": [
+      "case-printed-asa"
+    ]
+  },
+  {
+    "id": "case-printed-asa",
+    "category": "enclosure",
+    "band": null,
+    "vendor": "nband",
+    "model": "Printed ASA enclosure, filament for the body and lid",
+    "status": "submitted",
+    "tiers": [],
+    "priceUsd": 31.99,
+    "priceAsOf": "2026-07-29",
+    "sourceUrl": "https://www.matterhackers.com/store/c/asa",
+    "interface": "none",
+    "driver": null,
+    "keySpecs": {
+      "material": "ASA",
+      "wallMm": 3,
+      "sealGrooveMm": 3.4,
+      "printsPerSpool": 4,
+      "bedMm": "fits 220 x 220"
+    },
+    "alternatives": [],
+    "candidateAlternatives": [],
+    "electrical": {
+      "idleW": 0,
+      "activeW": 0,
+      "rail": "none",
+      "pins": []
+    },
+    "notes": "A design, not a product, and nobody has printed one. The price is one 1 kg spool of ASA, which is the only part of this you can put in a basket; a body and lid take roughly 250 g, so a spool is about four enclosures. It does not include the seal cord, the vent, the cable glands or any of the windows, and those are not free: the germanium window for the thermal channel costs more than several of the sensors. What it does buy is the difference between a 179 dollar case and a spool of filament, and the freedom to put each window where its sensor actually looks rather than where a moulded lid allows. ASA rather than PLA because PLA creeps at the temperature the inside of a dark box reaches in summer and goes brittle within a year of ultraviolet. Do not print in anything carbon filled: it is conductive enough to matter and this enclosure is the antenna window for GNSS, the software radio and the radar.",
+    "mechanical": {
+      "widthMm": 196,
+      "depthMm": 151,
+      "heightMm": 96,
+      "mount": "enclosure",
+      "dimensionsSourced": false,
+      "interiorWidthMm": 190,
+      "interiorDepthMm": 145,
+      "interiorHeightMm": 90,
+      "note": "Sized from the tier 1 parts rather than chosen: their summed footprint is 16,893 mm2, and at the 1.6x packing factor the fit check uses that needs 27,029 mm2 of floor, which 190 x 145 provides. The 90 mm interior is what lets a camera hang 48 mm from the lid while the board stack rises 32 mm from the floor without the two meeting. The exterior fits a 220 x 220 bed with room for a brim, which is the constraint that actually decides whether a design like this is printable at home."
+    },
+    "apertures": [
+      {
+        "id": "wall-rf",
+        "bands": [
+          "nav",
+          "rf",
+          "mmw"
+        ],
+        "face": "none",
+        "material": "the printed wall itself, unfilled ASA",
+        "sizeMm": null,
+        "note": "No hole, provided the filament is not carbon filled. This is the reason the material matters more than the geometry: carbon-filled ASA prints beautifully and costs this node three bands."
+      },
+      {
+        "id": "win-optical",
+        "bands": [
+          "vis",
+          "nir"
+        ],
+        "face": "lid",
+        "material": "acrylic or tempered glass, two windows of 34 mm",
+        "sizeMm": 34,
+        "note": "One per camera, each clearing the 30 mm lens barrel with a margin to seal against. Print a 1.5 mm rebate around each so the disc sits flush and the gasket has a face."
+      },
+      {
+        "id": "win-lwir",
+        "bands": [
+          "lwir"
+        ],
+        "face": "lid",
+        "material": "germanium, 25 mm, anti-reflection coated",
+        "sizeMm": 25,
+        "note": "The one aperture a printed enclosure cannot make cheaper. Nothing printable passes 8 to 14 um, so this window is bought or the thermal channel is not real. Mount the sensor against the window rather than behind a standoff: a 110 degree field of view vignettes fast on a 25 mm aperture held away from it."
+      },
+      {
+        "id": "vent-env",
+        "bands": [
+          "env"
+        ],
+        "face": "side, facing down",
+        "material": "ePTFE vent membrane, M12 threaded",
+        "sizeMm": 12,
+        "note": "Print the boss for it. A sealed box breathes as it warms and cools, and one that cannot equalise pulls water through whatever imperfection it has, which on a printed part is the layer lines. The vent is what makes the seal work rather than a hole in it."
       }
     ]
   },

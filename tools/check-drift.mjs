@@ -261,6 +261,37 @@ check('every sensor has a way through the enclosure', () => {
   const bandOf = Object.fromEntries(bands.bands.map((b) => [b.id, b]))
   const NEEDS_NOTHING = new Set(['none', 'external'])
 
+  // Whole-phrase matching does not work here and quietly passed the test
+  // written to catch it: blockedBy says "carbon-filled filament" and a material
+  // reads "carbon-filled ASA", which shares no complete phrase. So each entry
+  // is matched by its distinctive words instead, on word boundaries, with only
+  // the genuinely generic ones dropped. "glass" has to stay matchable, because
+  // it is the word that blocks both long-wave infrared and ultraviolet.
+  const GENERIC = new Set(['any', 'or', 'and', 'filament', 'material', 'wall', 'fastener'])
+
+  // "any metal" is a class, and nobody writes "metal" on a drawing. A wall
+  // described as aluminium sheet passed a check that forbids any metal, because
+  // the two strings share no word. Classes are expanded to the names people
+  // actually use; the list is deliberately short and specific rather than a
+  // clever pattern, because a wrong guess here fails open.
+  const CLASS = {
+    metal: ['metal', 'aluminium', 'aluminum', 'steel', 'brass', 'copper', 'tin', 'zinc', 'foil', 'alloy'],
+    ferrous: ['ferrous', 'steel', 'iron', 'nickel'],
+  }
+  const blocks = (material, phrase) => {
+    const lower = phrase.toLowerCase()
+    const expanded = Object.entries(CLASS)
+      .filter(([name]) => lower.includes(name))
+      .flatMap(([, names]) => names)
+    const words = [
+      ...expanded,
+      ...lower.split(/[\s,]+/).filter((w) => w.length >= 3 && !GENERIC.has(w)),
+    ]
+    if (words.length === 0) return false
+    const hay = material.toLowerCase()
+    return words.some((w) => new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`).test(hay))
+  }
+
   for (const tier of spec.enums.tier.values) {
     const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id))
     const shell = parts.find((p) => p.category === 'enclosure')
@@ -284,9 +315,7 @@ check('every sensor has a way through the enclosure', () => {
       }
       // The aperture existing is not enough: it has to be made of something
       // that passes the band rather than something that looks like it does.
-      const blocked = need.blockedBy.find((m) =>
-        match.material.toLowerCase().includes(m.toLowerCase().replace(/^any /, '')),
-      )
+      const blocked = need.blockedBy.find((m) => blocks(match.material, m))
       if (blocked) {
         errors.push(
           `${tier.id}: '${match.id}' is ${match.material}, which blocks ${part.band} ` +
@@ -296,11 +325,30 @@ check('every sensor has a way through the enclosure', () => {
     }
   }
 
+  // Every enclosure, not only the ones a tier ships. A registered alternative
+  // nobody has built is exactly where a wrong window material would sit
+  // unnoticed, because no tier's parts point at it and the loop above never
+  // reaches it.
+  for (const shell of hardware.parts.filter((p) => p.category === 'enclosure')) {
+    for (const a of shell.apertures ?? []) {
+      for (const band of a.bands ?? []) {
+        const need = bandOf[band]?.aperture
+        if (!need) {
+          errors.push(`'${shell.id}': aperture '${a.id}' names unknown band '${band}'`)
+          continue
+        }
+        const blocked = need.blockedBy.find((m) => blocks(a.material, m))
+        if (blocked) {
+          errors.push(`'${shell.id}': aperture '${a.id}' is ${a.material}, which blocks ${band}`)
+        }
+      }
+    }
+  }
+
   if (errors.length) throw new Error(errors.join('; '))
-  const cut = hardware.parts
-    .filter((p) => p.category === 'enclosure')
-    .flatMap((p) => p.apertures ?? []).length
-  return `${cut} aperture(s) declared, each of a material that passes the band behind it`
+  const shells = hardware.parts.filter((p) => p.category === 'enclosure')
+  const cut = shells.flatMap((p) => p.apertures ?? []).length
+  return `${cut} aperture(s) across ${shells.length} enclosure(s), each of a material that passes the band behind it`
 })
 
 check('a solar panel is the size its rating implies', () => {

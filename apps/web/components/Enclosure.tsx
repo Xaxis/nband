@@ -31,9 +31,25 @@ export function EnclosureApertures() {
   if (cases.length === 0) return null
 
   return (
-    <div className="mt-7">
+    <div className="mt-7 space-y-8">
       {cases.map((shell: Part) => (
         <div key={shell.id}>
+          {/* Named, because there is more than one and they are not
+              interchangeable: one is bought and moulded, one is printed and
+              has not been. */}
+          <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+            <h4 className="text-[14px] font-semibold text-[var(--ink)]">
+              {shell.vendor} {shell.model}
+            </h4>
+            <span className="num text-[11.5px] text-[var(--ink-3)]">
+              {shell.tiers && shell.tiers.length > 0
+                ? `ships with ${shell.tiers.join(', ')}`
+                : 'registered alternative, unbuilt'}
+              {' · '}
+              {shell.mechanical?.interiorWidthMm} × {shell.mechanical?.interiorDepthMm} ×{' '}
+              {shell.mechanical?.interiorHeightMm} mm inside
+            </span>
+          </div>
           <div className="card scroll-x">
             <table className="w-full min-w-[820px] border-collapse">
               <caption className="sr-only">

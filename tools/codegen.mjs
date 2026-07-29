@@ -196,6 +196,18 @@ function generateTypeScript() {
     `  category: string
   /** Ships inside another part box, so its price is zero and was paid under that part. */
   includedWith?: string
+  /** Physical size and where the part mounts. Present on every part in a tier. */
+  mechanical?: {
+    widthMm: number
+    depthMm: number
+    heightMm: number
+    mount: string
+    dimensionsSourced?: boolean
+    interiorWidthMm?: number
+    interiorDepthMm?: number
+    interiorHeightMm?: number
+    note?: string
+  }
   /** For an enclosure: what has to be cut into it, and out of what. */
   apertures?: {
     id: string

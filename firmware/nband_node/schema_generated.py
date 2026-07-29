@@ -308,6 +308,7 @@ PART_DRIVERS: Final[dict[str, str | None]] = {
     "seis-sm24": None,
     "sem-ir-beacon": "sem_beacon",
     "case-pelican1500": None,
+    "case-printed-asa": None,
     "power-solar-150w": None,
     "power-solar-200w": None,
     "usb-hub-powered": None,
