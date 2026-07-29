@@ -1,7 +1,6 @@
 {
   "$comment": "Canonical nband hardware registry. Drives the bill of materials, the community variant registry, and the firmware driver map. Every entry carries the price actually paid at a named vendor on a named date, because 2026 component pricing is unstable enough that an unsourced number is worse than no number. `status` follows schema/spec.json:enums.variantStatus.",
   "schemaVersion": "0.1.0",
-  "pricesAsOf": "2026-07-27",
   "priceNote": "Silicon pricing through 2026 is being distorted by LPDDR4 and DRAM supply being redirected to AI datacentre demand. Raspberry Pi board prices have risen in three separate rounds since December 2025 and are now 80 to 150 percent above original MSRP depending on memory size. Treat every figure here as a snapshot, not a quote. The tier budgets are held stable by moving down the memory ladder rather than by pretending prices did not move.",
   "parts": [
     {

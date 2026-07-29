@@ -182,6 +182,32 @@ if (!/NAV_FLAT/.test(sitemapSrc)) {
   process.exit(1)
 }
 
+// One page header, not thirteen. Every page hand-rolled its own band of
+// eyebrow, h1 and lede, and across eight of them the h1 ran 30 to 34 pixels on
+// mobile and 38 to 46 on desktop with three different paddings, because a
+// pattern copied by hand drifts. They all render PageHeader now, and a new page
+// that declares its own <h1> is either reintroducing that drift or has a reason
+// worth writing down.
+{
+  const offenders = []
+  for (const file of walk(resolve(root, 'apps/web/app'), ['.tsx'])) {
+    const src = readFileSync(file, 'utf8')
+    if (!/<h1[\s>]/.test(src)) continue
+    // The landing page is deliberately its own composition: the hero scene
+    // underlays it and the headline sits on top at a size nothing else uses.
+    if (file.endsWith('apps/web/app/page.tsx')) continue
+    offenders.push(file.replace(root + '/', ''))
+  }
+  if (offenders.length) {
+    console.error(
+      `  BROKEN  ${offenders.length} page(s) declare their own <h1> instead of using PageHeader:`,
+    )
+    for (const o of offenders) console.error(`            ${o}`)
+    console.error('          One header component, or the type scale drifts again.')
+    process.exit(1)
+  }
+}
+
 // Same for the chrome: header and footer must read the manifest, not a list.
 const chromeSrc = readFileSync(resolve(root, 'apps/web/components/Chrome.tsx'), 'utf8')
 if (!/from '\.\.\/lib\/nav'/.test(chromeSrc)) {

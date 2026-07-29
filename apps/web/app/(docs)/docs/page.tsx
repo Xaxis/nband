@@ -1,14 +1,8 @@
 import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
-import { Container, Section } from '../../../components/ui'
+import { PageHeader, Section } from '../../../components/ui'
 import { NAV } from '../../../lib/nav'
-import {
-  BANDS,
-  PARTS,
-  PLATFORM_VERSION,
-  tierCost,
-  tierPower,
-} from '../../../lib/schema/generated'
+import { BANDS, PARTS, PLATFORM_VERSION, tierCost, tierPower } from '../../../lib/schema/generated'
 
 export const metadata = pageMetadata({
   title: 'Documentation',
@@ -50,43 +44,41 @@ export default function DocsIndex() {
 
   return (
     <>
-      <section className="border-b border-[var(--line)]">
-        <Container className="py-12">
-          <p className="eyebrow">Documentation · v{PLATFORM_VERSION}</p>
-          <h1 className="mt-2.5 max-w-[24ch] text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--ink)] sm:text-[40px]">
-            Building an instrument that can be argued with.
-          </h1>
-          <p className="mt-4 max-w-[66ch] text-[15.5px] leading-relaxed text-[var(--ink-2)]">
+      <PageHeader
+        eyebrow={<>Documentation · v{PLATFORM_VERSION}</>}
+        title="Building an instrument that can be argued with."
+        lede={
+          <>
             The reason unexplained sightings stay unexplained is almost never that the object was
             exotic. It is that nobody measured it properly. Everything documented here exists to
             change that: hardware, firmware, database, analysis, and these pages in one repository
             on one version, with a drift check that fails the build when any of them disagree.
-            Documentation that has quietly stopped matching the hardware is worse than none,
-            because it is trusted.
-          </p>
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              // "Bands sampled: 14" was hardcoded between two computed stats,
-              // and nothing samples fourteen: the gravimetric band has no
-              // registered part in any tier and no node carries one. Defined
-              // and sampled are different numbers, so the label says which.
-              { k: 'Bands defined', v: String(BANDS.length) },
-              {
-                k: 'Bands with a part',
-                v: String(new Set(PARTS.map((p) => p.band).filter(Boolean)).size),
-              },
-              { k: 'Entry build', v: `$${tierCost('t1').toFixed(0)}` },
-              { k: 'Tier 2 draw', v: `${t2.activeW.toFixed(1)} W` },
-            ].map((s) => (
-              <div key={s.k} className="card p-4">
-                <div className="eyebrow">{s.k}</div>
-                <div className="num mt-1 text-[22px] font-semibold text-[var(--ink)]">{s.v}</div>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
+            Documentation that has quietly stopped matching the hardware is worse than none, because
+            it is trusted.
+          </>
+        }
+      >
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            // "Bands sampled: 14" was hardcoded between two computed stats,
+            // and nothing samples fourteen: the gravimetric band has no
+            // registered part in any tier and no node carries one. Defined
+            // and sampled are different numbers, so the label says which.
+            { k: 'Bands defined', v: String(BANDS.length) },
+            {
+              k: 'Bands with a part',
+              v: String(new Set(PARTS.map((p) => p.band).filter(Boolean)).size),
+            },
+            { k: 'Entry build', v: `$${tierCost('t1').toFixed(0)}` },
+            { k: 'Tier 2 draw', v: `${t2.activeW.toFixed(1)} W` },
+          ].map((s) => (
+            <div key={s.k} className="card p-4">
+              <div className="eyebrow">{s.k}</div>
+              <div className="num mt-1 text-[22px] font-semibold text-[var(--ink)]">{s.v}</div>
+            </div>
+          ))}
+        </div>
+      </PageHeader>
 
       <Section
         eyebrow="Shortest path"

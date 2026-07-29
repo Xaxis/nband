@@ -1,7 +1,7 @@
 import { pageMetadata } from '../../../../lib/metadata'
 import Link from 'next/link'
 import { BandChip } from '../../../../components/Bands'
-import { Container, Note, Section } from '../../../../components/ui'
+import { Container, Note, PageHeader, Section } from '../../../../components/ui'
 import { PARTS, VARIANTSTATUS, type VariantStatus } from '../../../../lib/schema/generated'
 
 export const metadata = pageMetadata({
@@ -23,20 +23,18 @@ const STATUS_COLOR: Record<VariantStatus, string> = {
 export default function VariantsPage() {
   return (
     <>
-      <section className="border-b border-[var(--line)]">
-        <Container className="py-12">
-          <p className="eyebrow">Registry</p>
-          <h1 className="mt-2.5 max-w-[26ch] text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--ink)] sm:text-[42px]">
-            People will build this with parts nobody picked.
-          </h1>
-          <p className="mt-4 max-w-[68ch] text-[15.5px] leading-relaxed text-[var(--ink-2)]">
+      <PageHeader
+        eyebrow="Registry"
+        title="People will build this with parts nobody picked."
+        lede={
+          <>
             The registry exists so that substituting a part is a supported path rather than a fork.
             Each entry declares what its sensor can and cannot resolve, and the discriminator reads
             those declarations rather than assuming them. That is what lets a USD 75 thermal array
             and a USD 329 radiometric camera both contribute to the same band honestly.
-          </p>
-        </Container>
-      </section>
+          </>
+        }
+      />
 
       <Container className="py-8">
         <div className="grid gap-3 sm:grid-cols-4">
@@ -45,8 +43,11 @@ export default function VariantsPage() {
             return (
               <div key={s} className="card p-4">
                 <div className="flex items-center gap-2">
-                  <span aria-hidden="true" className="h-2 w-2 rounded-[2px]"
-                        style={{ background: STATUS_COLOR[s] }} />
+                  <span
+                    aria-hidden="true"
+                    className="h-2 w-2 rounded-[2px]"
+                    style={{ background: STATUS_COLOR[s] }}
+                  />
                   <span className="eyebrow">{VARIANTSTATUS[s].label}</span>
                 </div>
                 <div className="num mt-1 text-[22px] font-semibold text-[var(--ink)]">{n}</div>
@@ -103,8 +104,11 @@ export default function VariantsPage() {
                     </td>
                     <td className="px-3 py-3">
                       <span className="flex items-center gap-1.5 text-[12.5px] text-[var(--ink-2)]">
-                        <span aria-hidden="true" className="h-2 w-2 rounded-[2px]"
-                              style={{ background: STATUS_COLOR[p.status] }} />
+                        <span
+                          aria-hidden="true"
+                          className="h-2 w-2 rounded-[2px]"
+                          style={{ background: STATUS_COLOR[p.status] }}
+                        />
                         {VARIANTSTATUS[p.status].label}
                       </span>
                     </td>

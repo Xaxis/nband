@@ -22,8 +22,8 @@ If a proposed change would widen what the data appears to support, it is wrong e
 
 ```
 schema/         Source of truth: bands.json, spec.json, hardware.json, sql/
-firmware/       nband_node — the node agent (Python 3.11+)
-discriminator/  nband_discriminator — analysis engine + CLI
+firmware/       nband_node, the node agent (Python 3.11+)
+discriminator/  nband_discriminator, analysis engine and CLI
 apps/web/       Next.js 15 App Router site + grid ingest API
 content/        Flat-file docs, versioned beside the firmware
 tools/          codegen, checks, seed, fixtures, gen-palette
@@ -61,7 +61,7 @@ after changing discriminator scoring. Both are checked in CI.
 
 **Adding a part to `hardware.json` with a `driver` requires implementing that driver.** `test_registry.py` enforces it. Thirteen were advertised-but-missing at one point and the shipped example config would have crashed on real hardware.
 
-**Colour never carries meaning alone.** Fourteen band hues cannot clear CVD separation at any spacing — measured with the dataviz palette validator, not assumed. Band colour is an accent beside a label; telemetry uses small multiples, never overlaid series. The five-class verdict palette is a validated categorical set and must stay in its validated order.
+**Colour never carries meaning alone.** Fourteen band hues cannot clear CVD separation at any spacing. That was measured with the dataviz palette validator, not assumed. Band colour is an accent beside a label; telemetry uses small multiples, never overlaid series. The five-class verdict palette is a validated categorical set and must stay in its validated order.
 
 ## Environment
 

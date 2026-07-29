@@ -211,7 +211,14 @@ function generateTypeScript() {
     `}`,
     ``,
     `export const PARTS: readonly Part[] = ${JSON.stringify(stripAnnotations(hardware.parts), null, 2)} as unknown as readonly Part[]`,
-    `export const PRICES_AS_OF = '${hardware.pricesAsOf}' as const`,
+    // Derived from the parts, not declared beside them. A hand-set date said
+    // every price was read on 2026-07-27 while two parts carried 2026-07-29,
+    // and the landing copy repeated the claim verbatim. Every part already
+    // records when its price was checked, so the summary is computed from those
+    // and cannot disagree with them.
+    `/** The oldest and newest dates any part price was checked. */`,
+    `export const PRICE_DATES = { oldest: '${[...hardware.parts.map((p) => p.priceAsOf)].sort()[0]}', newest: '${[...hardware.parts.map((p) => p.priceAsOf)].sort().at(-1)}' } as const`,
+    `export const PRICES_AS_OF = PRICE_DATES.newest`,
     `export const PRICE_NOTE = ${JSON.stringify(hardware.priceNote)} as const`,
     ``,
     `export function partsForTier(tier: Tier): Part[] {`,

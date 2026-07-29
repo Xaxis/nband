@@ -1,4 +1,4 @@
-# nband — one entry point for everything.
+# nband: one entry point for everything.
 #
 # The repository holds a Next.js app, a Python node agent, a Python analysis
 # engine, a Postgres schema, and flat-file documentation, and the whole premise
@@ -15,7 +15,7 @@ PY ?= python3
 
 .PHONY: help install codegen check check-fast lint lint-web lint-python format test \
         test-firmware test-discriminator \
-        drift parity links privacy boards boards-deps boards-check boards-verify build dev deploy \
+        drift parity links privacy prose boards boards-deps boards-check boards-verify build dev deploy \
         fixtures seed clean node-selftest
 
 help: ## List available targets
@@ -56,6 +56,9 @@ links: ## Every internal link and every document resolves
 
 privacy: ## Published positions do not give away where an operator lives
 	@node tools/check-privacy.mjs
+
+prose: ## Copy and comments follow the conventions in CLAUDE.md
+	@node tools/check-prose.mjs
 
 boards-check: ## Carrier board netlists match the hardware registry
 	@node tools/check-boards.mjs
@@ -103,7 +106,7 @@ format: ## Format Python and web sources in place
 build: ## Production build of the site
 	@yarn workspace @nband/web build
 
-check-fast: drift parity links privacy boards-verify test ## Everything except the web build
+check-fast: drift parity links privacy prose boards-verify test ## Everything except the web build
 	@echo "fast checks green"
 
 check: check-fast lint build ## Everything CI runs

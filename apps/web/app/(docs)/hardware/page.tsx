@@ -6,14 +6,14 @@ import {
   PowerBudget,
   WiringTable,
 } from '../../../components/HardwareVisuals'
-import { Button, Container, Note, Section } from '../../../components/ui'
+import { Button, Container, Note, PageHeader, Section } from '../../../components/ui'
 import { CarrierBoards } from '../../../components/CarrierBoard'
 import { SystemArchitecture } from '../../../components/SystemArchitecture'
 import { DocTabs } from '../../../components/DocTabs'
 import { TierScope } from '../../../components/TierScope'
 import {
   PARTS,
-  PRICES_AS_OF,
+  PRICE_DATES,
   PRICE_NOTE,
   TIER,
   TIER_ORDER as GENERATED_TIER_ORDER,
@@ -42,7 +42,12 @@ function money(n: number) {
   return n === 0 ? 'recovered' : `$${n.toFixed(2)}`
 }
 
-const bandsIn = (tier: Tier) => new Set(partsForTier(tier).map((p) => p.band).filter(Boolean))
+const bandsIn = (tier: Tier) =>
+  new Set(
+    partsForTier(tier)
+      .map((p) => p.band)
+      .filter(Boolean),
+  )
 
 /** "Tier 1 opens 6 bands for $504. Tier 2 adds 4 more for $1,158." */
 function tierLadder(): string {
@@ -159,44 +164,43 @@ export default function HardwarePage() {
 
   return (
     <>
-      <section className="gridfield border-b border-[var(--line)]">
-        <Container className="py-14 sm:py-18">
-          <p className="eyebrow">Hardware</p>
-          <h1 className="mt-3 max-w-[24ch] text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--ink)] sm:text-[46px]">
-            What to buy, what it buys you, and what to skip.
-          </h1>
-          <p className="mt-5 max-w-[64ch] text-[16px] leading-relaxed text-[var(--ink-2)]">
+      <PageHeader
+        field
+        eyebrow="Hardware"
+        title="What to buy, what it buys you, and what to skip."
+        lede={
+          <>
             {/* "Below" was true when this was one long scroll. Panelling the
                 page made it false for anyone arriving on a link to #power or
                 #boards, where there are no prices below anything. */}
-            Every price in the bill of materials was read off a named vendor page on{' '}
-            {PRICES_AS_OF} and links back to it. Nothing is estimated. The tiers are a suggestion
-            about sequence rather than a
-            product line: the grid accepts any combination of these parts, and any substitute you
-            register. The cheapest useful node costs less than a phone.
-          </p>
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {TIER_ORDER.map((t) => (
-              <a
-                key={t}
-                // The tier's own anchor, not the panel's. All three cards
-                // pointed at #tiers, which no element carries and which is the
-                // panel already open on arrival, so every card was a click that
-                // moved nothing. DocTabs resolves an anchor to the panel
-                // containing it, so #t3 opens the right panel and scrolls.
-                href={`#${t}`}
-                className="card flex items-baseline justify-between p-4 transition-colors hover:border-[var(--line-strong)]"
-              >
-                <span className="text-[14px] font-medium text-[var(--ink)]">{TIER[t].label}</span>
-                <span className="num text-[15px] font-semibold text-[var(--ink)]">
-                  ${tierCost(t).toFixed(0)}
-                </span>
-              </a>
-            ))}
-          </div>
-        </Container>
-      </section>
+            Every price in the bill of materials was read off a named vendor page and links back
+            to it, each on the date recorded with it, the oldest {PRICE_DATES.oldest} and the newest{' '}
+            {PRICE_DATES.newest}. Nothing is estimated. The tiers are a suggestion about sequence
+            rather than a product line: the grid accepts any combination of these parts, and any
+            substitute you register. The cheapest useful node costs less than a phone.
+          </>
+        }
+      >
+        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          {TIER_ORDER.map((t) => (
+            <a
+              key={t}
+              // The tier's own anchor, not the panel's. All three cards
+              // pointed at #tiers, which no element carries and which is the
+              // panel already open on arrival, so every card was a click that
+              // moved nothing. DocTabs resolves an anchor to the panel
+              // containing it, so #t3 opens the right panel and scrolls.
+              href={`#${t}`}
+              className="card flex items-baseline justify-between p-4 transition-colors hover:border-[var(--line-strong)]"
+            >
+              <span className="text-[14px] font-medium text-[var(--ink)]">{TIER[t].label}</span>
+              <span className="num text-[15px] font-semibold text-[var(--ink)]">
+                ${tierCost(t).toFixed(0)}
+              </span>
+            </a>
+          ))}
+        </div>
+      </PageHeader>
 
       <DocTabs
         label="Hardware sections"
@@ -234,19 +238,19 @@ export default function HardwarePage() {
                 <p className="mt-5 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
                   The sheet above and the summary here answer different questions. The summary
                   groups the tier&nbsp;2 sensors by the bus each one speaks, which is what you want
-                  when deciding whether a substitute part will fit. The sheet is the whole node:
-                  the power chain with the node&rsquo;s measured load at the end of it, the parts
-                  that reach the host through a converter or a hub rather than directly, and what
-                  happens to a reading after it leaves the board.
+                  when deciding whether a substitute part will fit. The sheet is the whole node: the
+                  power chain with the node&rsquo;s measured load at the end of it, the parts that
+                  reach the host through a converter or a hub rather than directly, and what happens
+                  to a reading after it leaves the board.
                 </p>
                 <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
-                  Two details on the sheet are easy to read past and are the whole reason it
-                  exists. The geophone is drawn under the converter that reads it rather than in a
-                  lane of its own, because the Raspberry Pi has no analogue input and a diagram
-                  that runs a coil straight into the header describes a node nobody can build. The
-                  infrared beacon&rsquo;s arrow points away from the host: it is the one part the
-                  node drives rather than reads, and an emission the node forgot it commanded is an
-                  emission it cannot subtract from its own record.
+                  Two details on the sheet are easy to read past and are the whole reason it exists.
+                  The geophone is drawn under the converter that reads it rather than in a lane of
+                  its own, because the Raspberry Pi has no analogue input and a diagram that runs a
+                  coil straight into the header describes a node nobody can build. The infrared
+                  beacon&rsquo;s arrow points away from the host: it is the one part the node drives
+                  rather than reads, and an emission the node forgot it commanded is an emission it
+                  cannot subtract from its own record.
                 </p>
               </Container>
             ),
@@ -282,10 +286,9 @@ export default function HardwarePage() {
                   )}
                 />
                 <p className="mt-6 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
-                  The tiers do not share a pinout, so wiring a tier&nbsp;3 node from the
-                  tier&nbsp;2 diagram lands two signals on pins that node has nothing connected to
-                  and leaves out the beacon&rsquo;s gate line entirely. Pick the tier you are
-                  building.
+                  The tiers do not share a pinout, so wiring a tier&nbsp;3 node from the tier&nbsp;2
+                  diagram lands two signals on pins that node has nothing connected to and leaves
+                  out the beacon&rsquo;s gate line entirely. Pick the tier you are building.
                 </p>
               </Container>
             ),
@@ -314,14 +317,14 @@ export default function HardwarePage() {
                 />
                 <p className="mt-6 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
                   A tier&nbsp;3 node draws roughly twice a tier&nbsp;2 node, which is why the bill
-                  of materials sells two different solar kits rather than one. Sizing a
-                  tier&nbsp;3 build against the tier&nbsp;2 figure buys about half the panel it
-                  needs, and the failure arrives during the first overcast week, a long way from
-                  the bench.
+                  of materials sells two different solar kits rather than one. Sizing a tier&nbsp;3
+                  build against the tier&nbsp;2 figure buys about half the panel it needs, and the
+                  failure arrives during the first overcast week, a long way from the bench.
                 </p>
               </Container>
             ),
-          }, ...(uncategorised.length > 0
+          },
+          ...(uncategorised.length > 0
             ? [
                 {
                   id: 'alternatives',
@@ -364,8 +367,8 @@ export default function HardwarePage() {
               One node measures direction. It cannot measure distance, and without distance it
               cannot measure size or speed either. Two nodes with disciplined clocks measure
               position, and position is what turns a bright dot into a trajectory with an altitude
-              and a velocity attached. Doubling the optical resolution of a single node does not
-              get you any of that. This is the single most common way builders spend money badly.
+              and a velocity attached. Doubling the optical resolution of a single node does not get
+              you any of that. This is the single most common way builders spend money badly.
             </p>
           </div>
           <div className="card p-5">
@@ -373,12 +376,11 @@ export default function HardwarePage() {
               Buy the timing hardware before the second sensor
             </h2>
             <p className="mt-2.5 text-[13.5px] leading-relaxed text-[var(--ink-2)]">
-              A fifty dollar GNSS receiver with a pulse-per-second output wired to a GPIO pin is
-              the difference between a node that can join an array and a node that can only ever
-              file solo reports. Without it, timestamps are good to milliseconds, which is three
-              to four orders of magnitude too coarse for time-of-arrival work. It is the least
-              exciting part in the build and the one that determines whether the rest of it means
-              anything.
+              A fifty dollar GNSS receiver with a pulse-per-second output wired to a GPIO pin is the
+              difference between a node that can join an array and a node that can only ever file
+              solo reports. Without it, timestamps are good to milliseconds, which is three to four
+              orders of magnitude too coarse for time-of-arrival work. It is the least exciting part
+              in the build and the one that determines whether the rest of it means anything.
             </p>
           </div>
         </div>

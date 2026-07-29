@@ -4127,7 +4127,9 @@ export const PARTS: readonly Part[] = [
     ]
   }
 ] as unknown as readonly Part[]
-export const PRICES_AS_OF = '2026-07-27' as const
+/** The oldest and newest dates any part price was checked. */
+export const PRICE_DATES = { oldest: '2026-07-27', newest: '2026-07-29' } as const
+export const PRICES_AS_OF = PRICE_DATES.newest
 export const PRICE_NOTE = "Silicon pricing through 2026 is being distorted by LPDDR4 and DRAM supply being redirected to AI datacentre demand. Raspberry Pi board prices have risen in three separate rounds since December 2025 and are now 80 to 150 percent above original MSRP depending on memory size. Treat every figure here as a snapshot, not a quote. The tier budgets are held stable by moving down the memory ladder rather than by pretending prices did not move." as const
 
 export function partsForTier(tier: Tier): Part[] {

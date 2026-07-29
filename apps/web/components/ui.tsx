@@ -11,6 +11,52 @@ export function Container({
   return <div className={`mx-auto max-w-[1180px] px-4 sm:px-6 ${className}`}>{children}</div>
 }
 
+/**
+ * The band at the top of a page: eyebrow, h1, lede.
+ *
+ * Every page hand-rolled this and no two agreed. Across eight pages the h1 ran
+ * 30 to 34 pixels on mobile and 38 to 46 on desktop, the padding was py-10,
+ * py-12 or py-14, the tracking was one of two values, and the lede was capped
+ * at 64, 66 or 68 characters. None of that was a design decision; it was eight
+ * copies of one pattern drifting. A reader moving between /grid and /telemetry
+ * met a different type scale for no reason they could act on.
+ *
+ * The only genuine variation is the background, so that is the only prop: the
+ * pages that lead with an argument carry the grid field, and the live data
+ * pages do not.
+ */
+export function PageHeader({
+  eyebrow,
+  title,
+  lede,
+  field = false,
+  children,
+}: {
+  eyebrow: ReactNode
+  title: ReactNode
+  lede?: ReactNode
+  /** Draw the faint grid field behind it. Reference pages yes, tool pages no. */
+  field?: boolean
+  children?: ReactNode
+}) {
+  return (
+    <section className={`border-b border-[var(--line)] ${field ? 'gridfield' : ''}`}>
+      <Container className="py-12 sm:py-16">
+        <p className="eyebrow">{eyebrow}</p>
+        <h1 className="mt-3 max-w-[24ch] text-[32px] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--ink)] sm:text-[44px]">
+          {title}
+        </h1>
+        {lede && (
+          <p className="mt-5 max-w-[68ch] text-[16px] leading-relaxed text-[var(--ink-2)]">
+            {lede}
+          </p>
+        )}
+        {children}
+      </Container>
+    </section>
+  )
+}
+
 export function Section({
   eyebrow,
   title,

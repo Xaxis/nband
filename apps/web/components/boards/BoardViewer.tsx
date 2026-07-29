@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useId, useState, useSyncExternalStore } from 'react'
 import { PanZoom } from './PanZoom'
+import { TierTabs } from '../TierTabs'
 import type { Assembly } from './NodeScene'
 
 /**
@@ -150,33 +151,15 @@ export function BoardViewer({
 
   return (
     <div className="card mt-7 overflow-hidden">
-      {/* Tier selector */}
-      <div
-        role="tablist"
-        aria-label="Board tier"
-        className="flex flex-wrap gap-1 border-b border-[var(--line)] bg-[var(--surface-3)] p-2"
-      >
-        {boards.map((b) => (
-          <button
-            key={b.tier}
-            role="tab"
-            type="button"
-            aria-selected={b.tier === tier}
-            aria-controls={panelId}
-            onClick={() => setTier(b.tier)}
-            className={`rounded-[6px] px-3 py-1.5 text-[13px] transition-colors ${
-              b.tier === tier
-                ? 'bg-[var(--surface-1)] font-semibold text-[var(--ink)]'
-                : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
-            }`}
-          >
-            {b.label}
-            <span className="num ml-2 text-[11.5px] text-[var(--ink-3)]">
-              {b.modules} modules
-            </span>
-          </button>
-        ))}
-      </div>
+      {/* Tier selector. The same control as the architecture panel and the
+          wiring panel, from the same component, because three hand-maintained
+          copies of one picker drifted apart on chrome and on accessible name. */}
+      <TierTabs
+        items={boards.map((b) => ({ id: b.tier, label: b.label, meta: `${b.modules} modules` }))}
+        active={tier}
+        onSelect={setTier}
+        controls={panelId}
+      />
 
       {/* View selector */}
       <div
@@ -263,7 +246,11 @@ export function BoardViewer({
           />
         )}
         {view === 'model' && (
-          <BoardScene key={`${board.tier}-3d`} src={board.artifacts.glb} label={`${board.label} carrier`} />
+          <BoardScene
+            key={`${board.tier}-3d`}
+            src={board.artifacts.glb}
+            label={`${board.label} carrier`}
+          />
         )}
       </div>
 

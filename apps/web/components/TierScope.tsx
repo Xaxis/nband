@@ -1,6 +1,7 @@
 'use client'
 
 import { useId, useSyncExternalStore } from 'react'
+import { TierTabs } from './TierTabs'
 import { TIER, TIER_ORDER, partsForTier, tierPower, type Tier } from '../lib/schema/generated'
 
 // Derived, not listed. The research tier is in the enum so the schema can name
@@ -71,30 +72,14 @@ export function TierScope({
 
   return (
     <div>
-      <div
-        role="tablist"
-        aria-label="Tier"
-        className="mb-5 flex flex-wrap items-center gap-1 rounded-[var(--radius-card)] border border-[var(--line)] bg-[var(--surface-3)] p-2"
-      >
-        {BUILDABLE.map((t) => (
-          <button
-            key={t}
-            role="tab"
-            type="button"
-            aria-selected={t === tier}
-            aria-controls={panelId}
-            onClick={() => select(t)}
-            className={`rounded-[6px] px-3 py-1.5 text-[13px] transition-colors ${
-              t === tier
-                ? 'bg-[var(--surface-1)] font-semibold text-[var(--ink)]'
-                : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
-            }`}
-          >
-            {TIER[t].label}
-          </button>
-        ))}
-        <span className="num ml-auto pr-1 text-[11.5px] text-[var(--ink-3)]">{status}</span>
-      </div>
+      <TierTabs
+        variant="standalone"
+        items={BUILDABLE.map((t) => ({ id: t, label: TIER[t].label }))}
+        active={tier}
+        onSelect={(t) => select(t as Tier)}
+        status={status}
+        controls={panelId}
+      />
       {/* All three stay mounted so switching is instant and an anchor inside a
           tier that is not showing still resolves, which is what lets a link
           like #t3 open the right one. */}

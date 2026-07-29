@@ -1,7 +1,7 @@
 import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
 import { BandChip } from '../../../components/Bands'
-import { Container, Note, Section } from '../../../components/ui'
+import { Container, Note, PageHeader, Section } from '../../../components/ui'
 import { getFeed } from '../../../lib/feed'
 import { NODESTATUS, PARTS, THRESHOLDS, TIER_ORDER } from '../../../lib/schema/generated'
 import { STATUS } from '../../../lib/spectrum'
@@ -51,20 +51,18 @@ export default async function GridPage() {
 
   return (
     <>
-      <section className="border-b border-[var(--line)]">
-        <Container className="py-12">
-          <p className="eyebrow">The grid</p>
-          <h1 className="mt-2.5 max-w-[24ch] text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--ink)] sm:text-[42px]">
-            Every node, and whether its clock can be trusted.
-          </h1>
-          <p className="mt-4 max-w-[66ch] text-[15.5px] leading-relaxed text-[var(--ink-2)]">
+      <PageHeader
+        eyebrow="The grid"
+        title="Every node, and whether its clock can be trusted."
+        lede={
+          <>
             Two nodes within {THRESHOLDS.maxNodeSeparationKmForGeometry} km, both holding
             pulse-per-second lock, can triangulate a real altitude and speed rather than an angular
             track. That pairing is worth more than any single sensor upgrade, which is why this page
             leads with clock quality rather than with hardware.
-          </p>
-        </Container>
-      </section>
+          </>
+        }
+      />
 
       <Container className="py-8">
         {feed.kind === 'mock' && (
@@ -99,22 +97,54 @@ export default async function GridPage() {
         {/* Map */}
         <div className="card mt-4 overflow-hidden">
           <div className="relative aspect-[2/1] w-full bg-[var(--surface-0)]">
-            <svg viewBox="0 0 100 50" className="absolute inset-0 h-full w-full" role="img"
-                 aria-label={`World map showing ${located.length} node positions`}>
+            <svg
+              viewBox="0 0 100 50"
+              className="absolute inset-0 h-full w-full"
+              role="img"
+              aria-label={`World map showing ${located.length} node positions`}
+            >
               {/* Graticule. Recessive by design: it is a reference frame, not data. */}
               {[...Array(11)].map((_, i) => (
-                <line key={`v${i}`} x1={i * 10} x2={i * 10} y1={0} y2={50}
-                      stroke="var(--line)" strokeWidth="0.15" />
+                <line
+                  key={`v${i}`}
+                  x1={i * 10}
+                  x2={i * 10}
+                  y1={0}
+                  y2={50}
+                  stroke="var(--line)"
+                  strokeWidth="0.15"
+                />
               ))}
               {[...Array(6)].map((_, i) => (
-                <line key={`h${i}`} x1={0} x2={100} y1={i * 10} y2={50 - (50 - i * 10)}
-                      stroke="var(--line)" strokeWidth="0.15" />
+                <line
+                  key={`h${i}`}
+                  x1={0}
+                  x2={100}
+                  y1={i * 10}
+                  y2={50 - (50 - i * 10)}
+                  stroke="var(--line)"
+                  strokeWidth="0.15"
+                />
               ))}
               {[...Array(6)].map((_, i) => (
-                <line key={`h2${i}`} x1={0} x2={100} y1={i * 10} y2={i * 10}
-                      stroke="var(--line)" strokeWidth="0.15" />
+                <line
+                  key={`h2${i}`}
+                  x1={0}
+                  x2={100}
+                  y1={i * 10}
+                  y2={i * 10}
+                  stroke="var(--line)"
+                  strokeWidth="0.15"
+                />
               ))}
-              <line x1={0} x2={100} y1={25} y2={25} stroke="var(--line-strong)" strokeWidth="0.25" />
+              <line
+                x1={0}
+                x2={100}
+                y1={25}
+                y2={25}
+                stroke="var(--line-strong)"
+                strokeWidth="0.25"
+              />
 
               {located.map((n) => {
                 const p = project(n.lat!, n.lon!)
@@ -135,9 +165,15 @@ export default async function GridPage() {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--line)] px-4 py-2.5">
             <span className="eyebrow">Status</span>
             {Object.entries(NODESTATUS).map(([id, meta]) => (
-              <span key={id} className="flex items-center gap-1.5 text-[11.5px] text-[var(--ink-2)]">
-                <span aria-hidden="true" className="h-2 w-2 rounded-full"
-                      style={{ background: STATUS_COLOR[id] ?? '#6f7788' }} />
+              <span
+                key={id}
+                className="flex items-center gap-1.5 text-[11.5px] text-[var(--ink-2)]"
+              >
+                <span
+                  aria-hidden="true"
+                  className="h-2 w-2 rounded-full"
+                  style={{ background: STATUS_COLOR[id] ?? '#6f7788' }}
+                />
                 {meta.label}
               </span>
             ))}
@@ -172,13 +208,17 @@ export default async function GridPage() {
                     </Link>
                     <div className="num mt-0.5 text-[11px] text-[var(--ink-3)]">
                       {n.operatorHandle ? `@${n.operatorHandle}` : 'unattributed'}
-                      {n.lat != null && ` · ${n.lat.toFixed(2)}, ${n.lon!.toFixed(2)} ±${n.locationPrecisionM} m`}
+                      {n.lat != null &&
+                        ` · ${n.lat.toFixed(2)}, ${n.lon!.toFixed(2)} ±${n.locationPrecisionM} m`}
                     </div>
                   </td>
                   <td className="px-3 py-3">
                     <span className="flex items-center gap-1.5 text-[12.5px] text-[var(--ink-2)]">
-                      <span aria-hidden="true" className="h-2 w-2 rounded-full"
-                            style={{ background: STATUS_COLOR[n.status] ?? '#6f7788' }} />
+                      <span
+                        aria-hidden="true"
+                        className="h-2 w-2 rounded-full"
+                        style={{ background: STATUS_COLOR[n.status] ?? '#6f7788' }}
+                      />
                       {NODESTATUS[n.status].label}
                     </span>
                   </td>
@@ -186,8 +226,10 @@ export default async function GridPage() {
                     {n.tier.toUpperCase()}
                   </td>
                   <td className="px-3 py-3">
-                    <span className="num text-[12.5px]"
-                          style={{ color: n.clock === 'gnss_pps' ? STATUS.good : STATUS.warning }}>
+                    <span
+                      className="num text-[12.5px]"
+                      style={{ color: n.clock === 'gnss_pps' ? STATUS.good : STATUS.warning }}
+                    >
                       {/* Same wording as the telemetry page for the same field.
                           A locked clock that has not reported an offset is not
                           a clock with an unknown offset written as "?", and it
@@ -200,7 +242,9 @@ export default async function GridPage() {
                         : n.clock}
                     </span>
                     {n.clock !== 'gnss_pps' && (
-                      <div className="text-[11px] text-[var(--ink-3)]">no geometry contribution</div>
+                      <div className="text-[11px] text-[var(--ink-3)]">
+                        no geometry contribution
+                      </div>
                     )}
                   </td>
                   <td className="px-3 py-3">

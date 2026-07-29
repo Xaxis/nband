@@ -21,7 +21,7 @@ const M_PER_DEG_LAT = 111_320
  * Deterministic and unguessable are both required and are not the same thing.
  * Deterministic, because a point that moves between requests is averaged back
  * to its true centre by anyone who watches. Unguessable, because a point whose
- * offset can be recomputed by the public is not obscured at all — it is the
+ * offset can be recomputed by the public is not obscured at all. It is the
  * true position written in a cipher whose key is printed beside it.
  *
  * @param {number} lat        true latitude, degrees
@@ -52,8 +52,8 @@ export async function fuzzPosition(lat, lon, precisionM, nodeId, salt) {
   const bearing = (word(0) / 2 ** 32) * 2 * Math.PI
 
   // sqrt, not a bare uniform. Area grows as r², so drawing the radius uniformly
-  // would crowd points toward the rim; at the extreme, a fixed radius — which is
-  // what this used to do — puts every node on a circle of known size, and a
+  // would crowd points toward the rim. At the extreme a fixed radius, which is
+  // what this used to do, puts every node on a circle of known size, and a
   // searcher who knows the declared precision gets a thin annulus instead of a
   // disc. For a 1 km precision that is the difference between about 0.14 km² and
   // the full 3.14 km².

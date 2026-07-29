@@ -7,7 +7,7 @@ import {
   BandProfilePanel,
   DetectionMatrix,
 } from '../../../components/BandVisuals'
-import { Container, Section } from '../../../components/ui'
+import { Container, PageHeader, Section } from '../../../components/ui'
 import {
   CONTEXT_BANDS,
   DETECTION_BANDS,
@@ -136,24 +136,24 @@ export default function BandsPage() {
 
   return (
     <>
-      <section className="gridfield border-b border-[var(--line)]">
-        <Container className="py-12 sm:py-16">
-          <p className="eyebrow">Reference</p>
-          <h1 className="mt-3 max-w-[22ch] text-[32px] font-semibold leading-[1.08] tracking-[-0.03em] text-[var(--ink)] sm:text-[46px]">
-            Fourteen bands, and what each one is bad at.
-          </h1>
-          <p className="mt-5 max-w-[64ch] text-[16px] leading-relaxed text-[var(--ink-2)]">
+      <PageHeader
+        eyebrow="Reference"
+        title="Fourteen bands, and what each one is bad at."
+        lede={
+          <>
             An object that shows up in one band is a story. An object that shows up in four
-            different physical channels at the same instant is a measurement. This page is what
-            each of those channels can and cannot do, because the limits matter far more than the
+            different physical channels at the same instant is a measurement. This page is what each
+            of those channels can and cannot do, because the limits matter far more than the
             capabilities: almost every false alarm in a system like this comes from someone
             forgetting one.
-          </p>
-          <div className="mt-10">
-            <SpectrumBar />
-          </div>
-        </Container>
-      </section>
+          </>
+        }
+        field
+      >
+        <div className="mt-10">
+          <SpectrumBar />
+        </div>
+      </PageHeader>
 
       <DocTabs
         label="Band reference sections"
@@ -217,74 +217,78 @@ export default function BandsPage() {
             hint: 'Cheapest registered part that produces usable data in each band. Three bands cost less than a takeaway meal, and one costs more than a car.',
             content: (
               <Container className="py-9">
-        <div className="card scroll-x mt-8">
-          <table className="w-full min-w-[560px] border-collapse">
-            <thead>
-              <tr className="bg-[var(--surface-3)] text-left">
-                <th className="eyebrow px-3 py-2.5 font-normal">Band</th>
-                <th className="eyebrow px-3 py-2.5 text-right font-normal">Entry cost</th>
-                <th className="eyebrow px-3 py-2.5 text-right font-normal">Reach</th>
-                <th className="eyebrow px-3 py-2.5 text-right font-normal">Phenomena seen</th>
-                <th className="eyebrow px-3 py-2.5 font-normal">Killed by</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cheapest.map((b) => {
-                const seen = PHENOMENA.filter(
-                  (p) => b.profile.detects[p.id as PhenomenonId] >= 2,
-                ).length
-                const killers = (
-                  [
-                    ['cloud', b.profile.penetrates.cloud],
-                    ['rain', b.profile.penetrates.rain],
-                    ['fog', b.profile.penetrates.fog],
-                    ['daylight', b.profile.day],
-                  ] as const
-                )
-                  .filter(([, v]) => v === 0)
-                  .map(([k]) => k)
-                return (
-                  <tr key={b.id} className="border-t border-[var(--line)]">
-                    <td className="px-3 py-2.5">
-                      <a href={`#${b.id}`} className="flex items-center gap-2 hover:underline">
-                        <span
-                          aria-hidden="true"
-                          className="h-2 w-2 shrink-0 rounded-[2px]"
-                          style={{
-                            background: `light-dark(${SPECTRAL.light[b.id]}, ${SPECTRAL.dark[b.id]})`,
-                          }}
-                        />
-                        <span className="text-[13px] text-[var(--ink)]">{b.label}</span>
-                      </a>
-                    </td>
-                    <td className="num px-3 py-2.5 text-right text-[13px] text-[var(--ink)]">
-                      {b.profile.entryCostUsd >= 1000
-                        ? `$${(b.profile.entryCostUsd / 1000).toFixed(b.profile.entryCostUsd >= 10000 ? 0 : 1)}k`
-                        : `$${b.profile.entryCostUsd.toFixed(0)}`}
-                    </td>
-                    <td className="num px-3 py-2.5 text-right text-[12.5px] text-[var(--ink-2)]">
-                      {b.profile.typicalRangeM >= 1000
-                        ? `${(b.profile.typicalRangeM / 1000).toFixed(0)} km`
-                        : `${b.profile.typicalRangeM} m`}
-                    </td>
-                    <td className="num px-3 py-2.5 text-right text-[12.5px] text-[var(--ink-2)]">
-                      {seen} / {PHENOMENA.length}
-                    </td>
-                    <td className="num px-3 py-2.5 text-[12px] text-[var(--ink-3)]">
-                      {killers.length ? killers.join(', ') : 'nothing here'}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+                <div className="card scroll-x mt-8">
+                  <table className="w-full min-w-[560px] border-collapse">
+                    <thead>
+                      <tr className="bg-[var(--surface-3)] text-left">
+                        <th className="eyebrow px-3 py-2.5 font-normal">Band</th>
+                        <th className="eyebrow px-3 py-2.5 text-right font-normal">Entry cost</th>
+                        <th className="eyebrow px-3 py-2.5 text-right font-normal">Reach</th>
+                        <th className="eyebrow px-3 py-2.5 text-right font-normal">
+                          Phenomena seen
+                        </th>
+                        <th className="eyebrow px-3 py-2.5 font-normal">Killed by</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cheapest.map((b) => {
+                        const seen = PHENOMENA.filter(
+                          (p) => b.profile.detects[p.id as PhenomenonId] >= 2,
+                        ).length
+                        const killers = (
+                          [
+                            ['cloud', b.profile.penetrates.cloud],
+                            ['rain', b.profile.penetrates.rain],
+                            ['fog', b.profile.penetrates.fog],
+                            ['daylight', b.profile.day],
+                          ] as const
+                        )
+                          .filter(([, v]) => v === 0)
+                          .map(([k]) => k)
+                        return (
+                          <tr key={b.id} className="border-t border-[var(--line)]">
+                            <td className="px-3 py-2.5">
+                              <a
+                                href={`#${b.id}`}
+                                className="flex items-center gap-2 hover:underline"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                                  style={{
+                                    background: `light-dark(${SPECTRAL.light[b.id]}, ${SPECTRAL.dark[b.id]})`,
+                                  }}
+                                />
+                                <span className="text-[13px] text-[var(--ink)]">{b.label}</span>
+                              </a>
+                            </td>
+                            <td className="num px-3 py-2.5 text-right text-[13px] text-[var(--ink)]">
+                              {b.profile.entryCostUsd >= 1000
+                                ? `$${(b.profile.entryCostUsd / 1000).toFixed(b.profile.entryCostUsd >= 10000 ? 0 : 1)}k`
+                                : `$${b.profile.entryCostUsd.toFixed(0)}`}
+                            </td>
+                            <td className="num px-3 py-2.5 text-right text-[12.5px] text-[var(--ink-2)]">
+                              {b.profile.typicalRangeM >= 1000
+                                ? `${(b.profile.typicalRangeM / 1000).toFixed(0)} km`
+                                : `${b.profile.typicalRangeM} m`}
+                            </td>
+                            <td className="num px-3 py-2.5 text-right text-[12.5px] text-[var(--ink-2)]">
+                              {seen} / {PHENOMENA.length}
+                            </td>
+                            <td className="num px-3 py-2.5 text-[12px] text-[var(--ink-3)]">
+                              {killers.length ? killers.join(', ') : 'nothing here'}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </Container>
             ),
           },
         ]}
       />
-
     </>
   )
 }

@@ -1,16 +1,13 @@
 import Link from 'next/link'
-import { Container } from '../components/ui'
+import { PageHeader } from '../components/ui'
 
 export default function NotFound() {
   return (
-    <Container className="py-24 sm:py-32">
-      <p className="eyebrow">404</p>
-      <h1 className="mt-3 max-w-[20ch] text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--ink)] sm:text-[42px]">
-        Nothing recorded at this address.
-      </h1>
-      <p className="mt-4 max-w-[58ch] text-[15.5px] leading-relaxed text-[var(--ink-2)]">
-        Which, unlike most of what this instrument reports, is unambiguous.
-      </p>
+    <PageHeader
+      eyebrow="404"
+      title="Nothing recorded at this address."
+      lede="Which, unlike most of what this instrument reports, is unambiguous."
+    >
       <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
         {[
           { href: '/', label: 'Home' },
@@ -28,6 +25,6 @@ export default function NotFound() {
           </Link>
         ))}
       </div>
-    </Container>
+    </PageHeader>
   )
 }

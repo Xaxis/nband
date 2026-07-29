@@ -74,13 +74,13 @@ If you are within 60 km of an existing node, put yours there. A second node with
 
 Everything is published at [nband.space](https://nband.space) and lives in
 `content/` beside the firmware it describes. Start at
-[nband.space/docs](https://nband.space/docs).
+[nband.space/docs](https://nband.space/docs), or go straight to one of these:
 
 - [What the fourteen bands can and cannot see](https://nband.space/bands)
 - [Bill of materials, wiring, and power budget](https://nband.space/hardware)
-- [Build guide](https://nband.space/build) — ten steps, each one verifiable
-- [How verdicts are reached](https://nband.space/discriminator) — runs live
-- [Safety and regulation](https://nband.space/safety) — read before building an emitter
+- [Build guide](https://nband.space/build), ten steps, each one verifiable
+- [How verdicts are reached](https://nband.space/discriminator), runs live
+- [Safety and regulation](https://nband.space/safety), read before building an emitter
 
 ## Contributing
 

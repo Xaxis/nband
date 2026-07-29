@@ -288,7 +288,11 @@ export function ArchiveBrowser() {
                       )}
                     </td>
                     <td className="num px-3 py-3 text-right text-[13px] text-[var(--ink)]">
-                      {v ? v.anomaly_score.toFixed(1) : '—'}
+                      {/* The word, matching every other absent value on the
+                          site. An event with no verdict yet is not an event
+                          scoring nothing, and a dash in a numeric column reads
+                          as a value. */}
+                      {v ? v.anomaly_score.toFixed(1) : <span className="text-[var(--ink-3)]">not scored</span>}
                     </td>
                     <td className="num px-3 py-3 text-[12px] text-[var(--ink-2)]">
                       {e.fix_lat != null && e.fix_lon != null ? (

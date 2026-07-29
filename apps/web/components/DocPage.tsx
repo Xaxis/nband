@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Container } from './ui'
+import { Container, PageHeader } from './ui'
 import { getDoc, listDocs } from '../lib/content'
 import { NAV_FLAT } from '../lib/nav'
 import { pageMetadata } from '../lib/metadata'
@@ -42,28 +42,23 @@ export function DocPage({ slug }: { slug: string }) {
 
   return (
     <>
-      <section className="border-b border-[var(--line)]">
-        <Container className="py-10 sm:py-12">
-          <p className="eyebrow">{doc.section}</p>
-          <h1 className="mt-2.5 max-w-[24ch] text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--ink)] sm:text-[40px]">
-            {doc.title}
-          </h1>
-          <p className="mt-4 max-w-[66ch] text-[15.5px] leading-relaxed text-[var(--ink-2)]">
-            {doc.description}
-          </p>
-          <div className="num mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-[var(--ink-3)]">
-            <span>
-              written against firmware v{doc.version}
-              {drifted && (
-                <span className="ml-1.5 text-[#fab219]">· platform is now v{PLATFORM_VERSION}</span>
-              )}
-            </span>
-            {doc.updated && <span>updated {doc.updated}</span>}
-            <span>{doc.readingMinutes} min read</span>
-            {doc.audience && <span className="text-[var(--ink-3)]">for: {doc.audience}</span>}
-          </div>
-        </Container>
-      </section>
+      {/* The same header as every other page. These six were a second type
+          scale, 32/40 against 32/44, for no reason a reader could act on: a
+          document is not a smaller kind of page than the index that links to
+          it. */}
+      <PageHeader eyebrow={doc.section} title={doc.title} lede={doc.description}>
+        <div className="num mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-[var(--ink-3)]">
+          <span>
+            written against firmware v{doc.version}
+            {drifted && (
+              <span className="ml-1.5 text-[#fab219]">· platform is now v{PLATFORM_VERSION}</span>
+            )}
+          </span>
+          {doc.updated && <span>updated {doc.updated}</span>}
+          <span>{doc.readingMinutes} min read</span>
+          {doc.audience && <span className="text-[var(--ink-3)]">for: {doc.audience}</span>}
+        </div>
+      </PageHeader>
 
       <Container className="py-10">
         {/* On a narrow screen the sidebar below is hidden, which left the

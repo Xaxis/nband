@@ -28,18 +28,18 @@ export default function HomePage() {
           </h1>
 
           <p className="mt-5 max-w-[60ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
-            Thousands of people report something in the sky every year. Almost none of it produces
-            a record worth arguing about: one shaky camera, no clock, no second angle, no way to
-            rule out a satellite. The mystery is real. The evidence is terrible.
+            Thousands of people report something in the sky every year. Almost none of it produces a
+            record worth arguing about: one shaky camera, no clock, no second angle, no way to rule
+            out a satellite. The mystery is real. The evidence is terrible.
           </p>
 
           <p className="mt-4 max-w-[60ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
             <span className="text-[var(--ink)]">nband is a fix for the evidence.</span> A sensor
             node watching up to thirteen bands at once, timestamped to GPS within a few hundred
-            nanoseconds, publishing everything it records to an open archive. The entry build
-            costs about what a used laptop does and watches six of those bands; thirteen is the
-            full build. Most of what any of them catches will be aircraft. That is the point: you
-            cannot say a thing is unexplained until you have properly ruled out the explanations.
+            nanoseconds, publishing everything it records to an open archive. The entry build costs
+            about what a used laptop does and watches six of those bands; thirteen is the full
+            build. Most of what any of them catches will be aircraft. That is the point: you cannot
+            say a thing is unexplained until you have properly ruled out the explanations.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -54,9 +54,8 @@ export default function HomePage() {
 
           <p className="mt-10 max-w-[52ch] text-[12.5px] leading-relaxed text-[var(--ink-3)]">
             Behind this text: one node, its detection shells at their real ranges, and something
-            crossing them. A band lights as the object enters its range. Two lit at the same
-            instant is a coincidence, and a coincidence is the difference between a story and a
-            measurement.
+            crossing them. A band lights as the object enters its range. Two lit at the same instant
+            is a coincidence, and a coincidence is the difference between a story and a measurement.
           </p>
         </Container>
       </HeroScene>
@@ -109,18 +108,17 @@ export default function HomePage() {
             <p>
               Every famous piece of UAP footage has the same flaw. A bright shape on one sensor,
               filmed at unknown range, with no independent measurement of anything. Nothing in the
-              recording distinguishes enormous and distant from small and close, or says whether
-              the thing was hot, whether it was transmitting, or whether it made a sound. The
-              argument never ends, and it never ends because the recording never contained the
-              answer in the first place.
+              recording distinguishes enormous and distant from small and close, or says whether the
+              thing was hot, whether it was transmitting, or whether it made a sound. The argument
+              never ends, and it never ends because the recording never contained the answer in the
+              first place.
             </p>
             <p className="mt-3">
-              The way out is asking every other band what it saw at the same instant.
-              Something with an engine is hot in the thermal band and audible seconds later. A
-              satellite is exactly where the orbital catalogue says it will be. A transmitting
-              drone shows up on the radio. An insect near the lens shows up nowhere else at all.
-              You do not need to guess when four independent physical channels disagree with each
-              other.
+              The way out is asking every other band what it saw at the same instant. Something with
+              an engine is hot in the thermal band and audible seconds later. A satellite is exactly
+              where the orbital catalogue says it will be. A transmitting drone shows up on the
+              radio. An insect near the lens shows up nowhere else at all. You do not need to guess
+              when four independent physical channels disagree with each other.
             </p>
           </>
         }
@@ -204,7 +202,10 @@ export default function HomePage() {
           {CLASSIFICATION_ORDER.map((id) => {
             const c = CLASSIFICATION[id]
             return (
-              <div key={id} className="card flex flex-col gap-2 p-4 sm:flex-row sm:items-start sm:gap-4">
+              <div
+                key={id}
+                className="card flex flex-col gap-2 p-4 sm:flex-row sm:items-start sm:gap-4"
+              >
                 <div className="flex shrink-0 items-center gap-2.5 sm:w-[190px]">
                   <span
                     aria-hidden="true"
@@ -273,9 +274,9 @@ export default function HomePage() {
         <p className="mt-5 max-w-[70ch] text-[12.5px] leading-relaxed text-[var(--ink-3)]">
           Costs are the sum of sourced part prices as of July 2026 and exclude tools, shipping, and
           tax. Silicon pricing is unstable this year: Raspberry Pi boards have risen three times
-          since December 2025 as memory supply moved to AI datacentre demand. The entry tier is
-          held near its target by specifying a 2 GB board and writing firmware disciplined enough
-          to run on it, not by pretending prices did not move.
+          since December 2025 as memory supply moved to AI datacentre demand. The entry tier is held
+          near its target by specifying a 2 GB board and writing firmware disciplined enough to run
+          on it, not by pretending prices did not move.
         </p>
       </Section>
 
@@ -319,10 +320,10 @@ export default function HomePage() {
               It starts with one camera and a clock.
             </h2>
             <p className="mt-3 text-[15.5px] leading-relaxed text-[var(--ink-2)]">
-              Ten steps, each ending in something you can check before spending money on the next:
-              a command that prints an expected value, an image you can look at, a timing offset
-              you can read. If a step does not verify, the guide names what usually causes it. You
-              can stop after step five and still be contributing real data to the grid.
+              Ten steps, each ending in something you can check before spending money on the next: a
+              command that prints an expected value, an image you can look at, a timing offset you
+              can read. If a step does not verify, the guide names what usually causes it. You can
+              stop after step five and still be contributing real data to the grid.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button href="/build">Start the build guide</Button>
