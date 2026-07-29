@@ -41,6 +41,7 @@ boards: boards-deps ## Regenerate the tier carrier boards, system schematics and
 	@node tools/build-boards.mjs
 	@node tools/gen-assembly.mjs
 	@node tools/render-node.mjs
+	@node tools/gen-enclosure.mjs
 	@node tools/gen-system-schematic.mjs
 
 # --- verification ------------------------------------------------------------

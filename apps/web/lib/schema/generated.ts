@@ -3904,13 +3904,13 @@ export const PARTS: readonly Part[] = [
     "mechanical": {
       "widthMm": 196,
       "depthMm": 151,
-      "heightMm": 96,
+      "heightMm": 116,
       "mount": "enclosure",
       "dimensionsSourced": false,
       "interiorWidthMm": 190,
       "interiorDepthMm": 145,
-      "interiorHeightMm": 90,
-      "note": "Sized from the tier 1 parts rather than chosen: their summed footprint is 16,893 mm2, and at the 1.6x packing factor the fit check uses that needs 27,029 mm2 of floor, which 190 x 145 provides. The 90 mm interior is what lets a camera hang 48 mm from the lid while the board stack rises 32 mm from the floor without the two meeting. The exterior fits a 220 x 220 bed with room for a brim, which is the constraint that actually decides whether a design like this is printable at home."
+      "interiorHeightMm": 110,
+      "note": "Sized from the tier 1 parts rather than chosen: their summed footprint is 16,893 mm2, and at the 1.6x packing factor the fit check uses that needs 27,029 mm2 of floor, which 190 x 145 provides. The 110 mm interior comes from stacking the two things that face each other: a camera hangs 48 mm from the lid and the board stack rises 32 mm from the floor, and the 30 mm left between them is cable bend radius. A 90 mm interior closes that to 10 mm, which fits on paper and does not fit a cable. The exterior fits a 220 x 220 bed with room for a brim, which is the constraint that actually decides whether a design like this is printable at home."
     },
     "apertures": [
       {

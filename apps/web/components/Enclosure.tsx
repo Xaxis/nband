@@ -50,6 +50,17 @@ export function EnclosureApertures() {
               {shell.mechanical?.interiorHeightMm} mm inside
             </span>
           </div>
+          {/* The drawing before the table, because the table says a 25 mm
+              germanium window is needed and the drawing says where, and where
+              is most of the work. */}
+          <div className="card mb-3 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/boards/${shell.id}.svg`}
+              alt={`Dimensioned drawing of the ${shell.model}: lid plan with its windows placed on the parts that look through them, body plan, and a section showing the interior height`}
+              className="w-full"
+            />
+          </div>
           <div className="card scroll-x">
             <table className="w-full min-w-[820px] border-collapse">
               <caption className="sr-only">

@@ -325,6 +325,29 @@ check('every sensor has a way through the enclosure', () => {
     }
   }
 
+  // The drawing has to exist and has to be the drawing of this enclosure. It is
+  // generated from these apertures, so the only way it can disagree is by being
+  // stale, and a stale dimensioned drawing is worse than none: someone cuts to
+  // it.
+  for (const shell of hardware.parts.filter(
+    (p) => p.category === 'enclosure' && (p.apertures ?? []).length > 0 && p.mechanical?.interiorWidthMm,
+  )) {
+    const svg = resolve(root, `apps/web/public/boards/${shell.id}.svg`)
+    if (!existsSync(svg)) {
+      errors.push(`'${shell.id}': no drawing at ${shell.id}.svg. Run \`make boards\`.`)
+      continue
+    }
+    const drawn = readFileSync(svg, 'utf8')
+    const m = shell.mechanical
+    const expected = `Interior ${m.interiorWidthMm} x ${m.interiorDepthMm} x ${m.interiorHeightMm} mm`
+    if (!drawn.includes(expected)) {
+      errors.push(
+        `'${shell.id}': the drawing does not state "${expected}", so it was made against ` +
+          'different dimensions. Run `make boards`.',
+      )
+    }
+  }
+
   // Every enclosure, not only the ones a tier ships. A registered alternative
   // nobody has built is exactly where a wrong window material would sit
   // unnoticed, because no tier's parts point at it and the loop above never

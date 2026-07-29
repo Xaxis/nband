@@ -25,6 +25,10 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+// The packing rule is shared with the enclosure drawing, which has to cut its
+// windows exactly where these parts end up. Written out twice, the two agree
+// until one is edited.
+import { packFace, PART_GAP, WALL_CLEAR as CLEAR } from './lib/pack.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const hardware = JSON.parse(readFileSync(join(root, 'schema/hardware.json'), 'utf8'))
@@ -175,7 +179,7 @@ function assemblyFor(tier) {
       }
     : { w: 300, d: 200, h: 120, real: false }
   const FLOOR = 0 // everything sits on y = 0 and stacks upward
-  const WALL_CLEAR = 8 // fingers, foam, and cable bend at the wall
+  const WALL_CLEAR = CLEAR
 
   // The host stack sits toward the back left, leaving the rest of the floor for
   // the peripherals. Its own x is needed by several sections below, so it is
@@ -362,20 +366,13 @@ function assemblyFor(tier) {
   //     window with nothing under it is a hole, and a sensor on the floor under
   //     a closed lid is blind.
   const lidParts = parts.filter(looksUp)
-  const lidY = CASE.h
-  let lx2 = -CASE.w / 2 + WALL_CLEAR
-  let lz = -CASE.d / 2 + WALL_CLEAR
-  let lidRow = 0
+  const placed = packFace(
+    lidParts.map((p) => ({ id: p.id, ...p.mechanical })),
+    { width: CASE.w, depth: CASE.d, gap: PART_GAP, clear: WALL_CLEAR },
+  )
   for (const p of lidParts) {
-    const m = p.mechanical
-    if (lx2 + m.widthMm > CASE.w / 2 - WALL_CLEAR && lx2 > -CASE.w / 2 + WALL_CLEAR) {
-      lx2 = -CASE.w / 2 + WALL_CLEAR
-      lz += lidRow + 12
-      lidRow = 0
-    }
-    push(p, lx2 + m.widthMm / 2, lidY - m.heightMm / 2, lz + m.depthMm / 2)
-    lx2 += m.widthMm + 12
-    lidRow = Math.max(lidRow, m.depthMm)
+    const at = placed.find((q) => q.id === p.id)
+    push(p, at.x, CASE.h - p.mechanical.heightMm / 2, at.z)
   }
 
   // 8. Everything that lives away from the node: the geophone in the ground,
