@@ -12,10 +12,20 @@ export const metadata = pageMetadata({
 
 export const dynamic = 'force-dynamic'
 
-export default async function TelemetryPage() {
+export default async function TelemetryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ node?: string }>
+}) {
   const feed = getFeed()
   const nodes = await feed.listNodes()
-  const first = nodes.find((n) => n.status === 'online') ?? nodes[0]
+  // Every row of the grid table linked here with no way to say which node, so
+  // clicking "Blackwood Ridge" opened whichever node this line happened to
+  // pick. A named node wins; the first online one is the fallback, and an
+  // unknown slug falls back rather than rendering an empty view.
+  const { node: wanted } = await searchParams
+  const first =
+    nodes.find((n) => n.slug === wanted) ?? nodes.find((n) => n.status === 'online') ?? nodes[0]
 
   return (
     <>

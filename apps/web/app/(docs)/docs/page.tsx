@@ -117,7 +117,11 @@ export default function DocsIndex() {
         </div>
       </Section>
 
-      {NAV.filter((s) => s.id !== 'start' || true).map((section) => (
+      {/* Every section, including "Start here". The footer drops that one
+          because it repeats the links beside it; an index should not. The
+          filter here was `s.id !== 'start' || true`, which is unconditionally
+          true and read as if it excluded something. */}
+      {NAV.map((section) => (
         <Section
           key={section.id}
           className="border-t border-[var(--line)]"

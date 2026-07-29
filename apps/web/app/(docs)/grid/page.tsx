@@ -164,7 +164,10 @@ export default async function GridPage() {
               {nodes.map((n) => (
                 <tr key={n.slug} className="border-t border-[var(--line)] align-top">
                   <td className="px-3 py-3">
-                    <Link href={`/telemetry`} className="text-[13.5px] font-medium text-[var(--ink)] hover:underline">
+                    <Link
+                      href={`/telemetry?node=${encodeURIComponent(n.slug)}`}
+                      className="text-[13.5px] font-medium text-[var(--ink)] hover:underline"
+                    >
                       {n.displayName}
                     </Link>
                     <div className="num mt-0.5 text-[11px] text-[var(--ink-3)]">

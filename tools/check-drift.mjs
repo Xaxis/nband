@@ -463,6 +463,29 @@ check('the assembly is physically consistent', () => {
     }
   }
 
+  // No two parts occupy the same space. The layout marches parts outward from
+  // the host and nothing enforced spacing, so adding a part to a tier could
+  // silently drop it inside another one; two boxes interpenetrating render as a
+  // single ambiguous shape rather than as an error, which is the failure mode
+  // this whole file exists to refuse. Half a millimetre of slack, because
+  // touching faces are a stack and not a collision.
+  const SLACK = 0.5
+  for (const a of assemblies) {
+    const solid = a.bodies.filter(
+      (b) => !b.parent && !b.wireframe && b.mount !== 'enclosure' && b.mount !== 'standoff',
+    )
+    for (let i = 0; i < solid.length; i += 1) {
+      for (let j = i + 1; j < solid.length; j += 1) {
+        const [A, B] = [solid[i], solid[j]]
+        const overlapsOn = (k) =>
+          Math.abs(A.pos[k] - B.pos[k]) < (A.size[k] + B.size[k]) / 2 - SLACK
+        if (overlapsOn(0) && overlapsOn(1) && overlapsOn(2)) {
+          errors.push(`${a.tier}: '${A.id}' and '${B.id}' occupy the same space`)
+        }
+      }
+    }
+  }
+
   // A part whose own notes demand distance from the node cannot be mounted on it.
   for (const part of hardware.parts) {
     const wantsDistance = /at least .{0,12}(metre|meter)|remote from the node|away from the node/i.test(
@@ -479,7 +502,11 @@ check('the assembly is physically consistent', () => {
   const onCarrier = assemblies.reduce(
     (n, a) => n + a.bodies.filter((b) => b.mount === 'carrier').length, 0,
   )
-  return `${assemblies.length} assemblies, ${onCarrier} carrier-mounted bodies all within their board`
+  const features = assemblies.reduce((n, a) => n + a.bodies.filter((b) => b.parent).length, 0)
+  return (
+    `${assemblies.length} assemblies, ${onCarrier} carrier-mounted bodies within their board, ` +
+    `${features} features each touching the part they belong to, nothing intersecting`
+  )
 })
 
 check('the node fits inside the case it is sold with', () => {
