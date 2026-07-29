@@ -54,9 +54,14 @@ export function CarrierBoards() {
         build: every connection routes and nothing sits closer than a fabricator&rsquo;s minimum
         copper gap. Placement is machine-generated rather than laid out by a person, so take the
         netlist and lay it out yourself before ordering anything. The whole-node view is weaker
-        again. It is a massing model: only the Raspberry Pi and HAT outlines and the case are
-        published mechanical figures; every other body is an approximation sized to show scale and
-        stacking, drawn with a visible edge so you can tell which is which.
+        again, and it is weakest exactly where it looks strongest. Six parts carry published
+        mechanical figures: the three Raspberry Pi boards, the GNSS HAT outline, the case, and the
+        card. Everything else is sized to show scale and stacking, and the features on those
+        bodies, the lens barrels, antenna patches, shield cans and connectors, are drawn where a
+        part of that kind has them rather than measured from a drawing. They are there because a
+        node built from anonymous blocks tells you nothing about which part is which or which way
+        a sensor has to face. Read them as identification, not as dimensions. The counter under
+        each view gives the split, and every approximate body is drawn with a visible edge.
       </Note>
 
       <BoardViewer boards={boards} assemblies={loadAssemblies()} />

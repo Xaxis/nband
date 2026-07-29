@@ -682,7 +682,88 @@
         "heightMm": 13,
         "mount": "hat",
         "dimensionsSourced": true,
-        "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm."
+        "note": "Raspberry Pi HAT mechanical standard: 65 x 56 mm. Component placement on the board is approximate. The antenna connector is the one that matters when siting a node: the module needs sky, and a HAT under a lid with the antenna still on the board holds no lock.",
+        "detail": [
+          {
+            "id": "board",
+            "label": "HAT board",
+            "x": 0,
+            "y": 0,
+            "w": null,
+            "d": null,
+            "h": 1.6,
+            "colour": "#1f5f3a",
+            "fill": true
+          },
+          {
+            "id": "header",
+            "label": "40-pin header socket",
+            "cx": 0.5,
+            "cy": 0.06,
+            "w": 52.4,
+            "d": 5.1,
+            "h": 8.5,
+            "colour": "#1c1f24",
+            "base": -8.5
+          },
+          {
+            "id": "module",
+            "label": "LC29H(DA) GNSS module",
+            "cx": 0.36,
+            "cy": 0.5,
+            "w": 16,
+            "d": 16,
+            "h": 2.6,
+            "colour": "#3d4148",
+            "base": 1.6
+          },
+          {
+            "id": "ufl",
+            "label": "u.FL antenna connector",
+            "cx": 0.9,
+            "cy": 0.28,
+            "w": 3,
+            "d": 3,
+            "h": 1.4,
+            "colour": "#c9a961",
+            "base": 1.6
+          },
+          {
+            "id": "sma",
+            "label": "SMA antenna connector",
+            "cx": 0.96,
+            "cy": 0.66,
+            "w": 6.5,
+            "d": 6.5,
+            "h": 6,
+            "colour": "#c9a961",
+            "base": 1.6,
+            "round": true
+          },
+          {
+            "id": "pps",
+            "label": "PPS indicator",
+            "cx": 0.66,
+            "cy": 0.2,
+            "w": 2,
+            "d": 1.5,
+            "h": 1,
+            "colour": "#3fb950",
+            "base": 1.6
+          },
+          {
+            "id": "battery",
+            "label": "backup cell for the almanac",
+            "cx": 0.2,
+            "cy": 0.82,
+            "w": 12.5,
+            "d": 12.5,
+            "h": 3,
+            "colour": "#9aa0a8",
+            "base": 1.6,
+            "round": true
+          }
+        ]
       }
     },
     {
@@ -1162,8 +1243,55 @@
         "heightMm": 12,
         "mount": "usb",
         "dimensionsSourced": false,
-        "note": "Approximate PureThermal carrier footprint.",
-        "plugsInto": "usb3a"
+        "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+        "plugsInto": "usb3a",
+        "detail": [
+          {
+            "id": "board",
+            "label": "PureThermal carrier",
+            "x": 0,
+            "y": 0,
+            "w": null,
+            "d": null,
+            "h": 2,
+            "colour": "#1f5f3a",
+            "fill": true
+          },
+          {
+            "id": "socket",
+            "label": "Lepton 3.5 socket",
+            "cx": 0.5,
+            "cy": 0.42,
+            "w": 13,
+            "d": 13,
+            "h": 6,
+            "colour": "#2a2d33",
+            "base": 2
+          },
+          {
+            "id": "lens",
+            "label": "fixed lens",
+            "cx": 0.5,
+            "cy": 0.42,
+            "w": 7.5,
+            "d": 7.5,
+            "h": 3,
+            "colour": "#3d4148",
+            "base": 8,
+            "round": true
+          },
+          {
+            "id": "usb",
+            "label": "USB-C",
+            "cx": 0.5,
+            "cy": 0.96,
+            "w": 9,
+            "d": 3.2,
+            "h": 3.2,
+            "colour": "#9aa0a8",
+            "base": 2
+          }
+        ]
       },
       "poweredBy": "usb-hub-powered"
     },
@@ -1490,8 +1618,65 @@
         "heightMm": 16,
         "mount": "usb",
         "dimensionsSourced": false,
-        "note": "Approximate evaluation-module footprint.",
-        "plugsInto": "usb2a"
+        "note": "The antenna array is the reason this part cannot go inside a metal case or behind anything opaque at 60 GHz. It is the light patch region at one end of the board, and it has to face the sky.",
+        "plugsInto": "usb2a",
+        "detail": [
+          {
+            "id": "board",
+            "label": "IWR6843ISK board",
+            "x": 0,
+            "y": 0,
+            "w": null,
+            "d": null,
+            "h": 2,
+            "colour": "#1b3a2a",
+            "fill": true
+          },
+          {
+            "id": "antenna",
+            "label": "4 x 3 patch antenna array",
+            "cx": 0.5,
+            "cy": 0.2,
+            "w": 30,
+            "d": 17,
+            "h": 0.6,
+            "colour": "#c9a961",
+            "base": 2
+          },
+          {
+            "id": "shield",
+            "label": "RF shield over the transceiver",
+            "cx": 0.5,
+            "cy": 0.56,
+            "w": 22,
+            "d": 22,
+            "h": 3.5,
+            "colour": "#8b929c",
+            "base": 2
+          },
+          {
+            "id": "connector",
+            "label": "60-pin board-to-board",
+            "cx": 0.5,
+            "cy": 0.86,
+            "w": 26,
+            "d": 5,
+            "h": 4,
+            "colour": "#2a2d33",
+            "base": 2
+          },
+          {
+            "id": "usb",
+            "label": "micro-USB",
+            "cx": 0.08,
+            "cy": 0.86,
+            "w": 3.2,
+            "d": 8,
+            "h": 3,
+            "colour": "#9aa0a8",
+            "base": 2
+          }
+        ]
       },
       "poweredBy": "usb-hub-powered"
     },
@@ -1747,8 +1932,65 @@
         "heightMm": 22,
         "mount": "usb",
         "dimensionsSourced": false,
-        "note": "Approximate; the CsI crystal sets the depth.",
-        "plugsInto": "usb2a"
+        "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
+        "plugsInto": "usb2a",
+        "detail": [
+          {
+            "id": "board",
+            "label": "detector board",
+            "x": 0,
+            "y": 0,
+            "w": null,
+            "d": null,
+            "h": 2,
+            "colour": "#1b2a3a",
+            "fill": true
+          },
+          {
+            "id": "crystal",
+            "label": "CsI(Tl) scintillator in its reflector",
+            "cx": 0.26,
+            "cy": 0.5,
+            "w": 22,
+            "d": 22,
+            "h": 15,
+            "colour": "#d8d4c4",
+            "base": 2
+          },
+          {
+            "id": "sipm",
+            "label": "SiPM",
+            "cx": 0.48,
+            "cy": 0.5,
+            "w": 8,
+            "d": 8,
+            "h": 1.6,
+            "colour": "#3d4148",
+            "base": 2
+          },
+          {
+            "id": "mcu",
+            "label": "pulse-height ADC and MCU",
+            "cx": 0.68,
+            "cy": 0.5,
+            "w": 11,
+            "d": 11,
+            "h": 1.8,
+            "colour": "#2a2d33",
+            "base": 2
+          },
+          {
+            "id": "usb",
+            "label": "USB-C",
+            "cx": 0.97,
+            "cy": 0.5,
+            "w": 3.2,
+            "d": 9,
+            "h": 3.2,
+            "colour": "#9aa0a8",
+            "base": 2
+          }
+        ]
       },
       "poweredBy": "usb-hub-powered"
     },
@@ -1791,8 +2033,44 @@
         "heightMm": 75,
         "mount": "usb",
         "dimensionsSourced": false,
-        "note": "Approximate camera body with lens.",
-        "plugsInto": "usb3a"
+        "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
+        "plugsInto": "usb3a",
+        "detail": [
+          {
+            "id": "body",
+            "label": "camera body",
+            "x": 0,
+            "y": 0,
+            "w": null,
+            "d": null,
+            "h": 40,
+            "colour": "#3d4148",
+            "fill": true
+          },
+          {
+            "id": "lens",
+            "label": "C-mount lens",
+            "cx": 0.5,
+            "cy": 0.5,
+            "w": 42,
+            "d": 42,
+            "h": 32,
+            "colour": "#232629",
+            "base": 40,
+            "round": true
+          },
+          {
+            "id": "connector",
+            "label": "USB 3.0 micro-B",
+            "cx": 0.5,
+            "cy": 0.06,
+            "w": 14,
+            "d": 6,
+            "h": 6,
+            "colour": "#9aa0a8",
+            "base": 8
+          }
+        ]
       },
       "poweredBy": "usb-hub-powered"
     },
@@ -2021,12 +2299,47 @@
         "pins": []
       },
       "mechanical": {
-        "widthMm": 1480,
-        "depthMm": 670,
+        "widthMm": 1160,
+        "depthMm": 540,
         "heightMm": 35,
         "mount": "external",
         "dimensionsSourced": false,
-        "note": "Approximate 120 W panel; the MPPT and battery are separate bodies not modelled."
+        "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+        "detail": [
+          {
+            "id": "frame",
+            "label": "anodised frame",
+            "x": 0,
+            "y": 0,
+            "w": null,
+            "d": null,
+            "h": 35,
+            "colour": "#8b929c",
+            "fill": true
+          },
+          {
+            "id": "cells",
+            "label": "monocrystalline cells",
+            "cx": 0.5,
+            "cy": 0.5,
+            "w": 1120,
+            "d": 500,
+            "h": 3,
+            "colour": "#1b2740",
+            "base": 32
+          },
+          {
+            "id": "junction",
+            "label": "junction box",
+            "cx": 0.5,
+            "cy": 0.86,
+            "w": 100,
+            "d": 70,
+            "h": 18,
+            "colour": "#2a2d33",
+            "base": -18
+          }
+        ]
       },
       "powerChain": [
         {
@@ -2092,7 +2405,42 @@
         "heightMm": 35,
         "mount": "external",
         "dimensionsSourced": false,
-        "note": "Approximate 220 W array; the MPPT and battery are separate bodies not modelled."
+        "note": "The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled. The frame is the mounting footprint; the junction box on the underside is where the pair of leads leaves. Cell layout is indicative and the MPPT controller and battery are separate bodies that are not modelled.",
+        "detail": [
+          {
+            "id": "frame",
+            "label": "anodised frame",
+            "x": 0,
+            "y": 0,
+            "w": null,
+            "d": null,
+            "h": 35,
+            "colour": "#8b929c",
+            "fill": true
+          },
+          {
+            "id": "cells",
+            "label": "monocrystalline cells",
+            "cx": 0.5,
+            "cy": 0.5,
+            "w": 1580,
+            "d": 660,
+            "h": 3,
+            "colour": "#1b2740",
+            "base": 32
+          },
+          {
+            "id": "junction",
+            "label": "junction box",
+            "cx": 0.5,
+            "cy": 0.86,
+            "w": 120,
+            "d": 80,
+            "h": 18,
+            "colour": "#2a2d33",
+            "base": -18
+          }
+        ]
       },
       "powerChain": [
         {

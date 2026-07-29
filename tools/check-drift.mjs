@@ -244,6 +244,62 @@ check('off-grid power sizing matches the tier load', () => {
   return 'panel and battery cover the summed draw of every tier that ships them'
 })
 
+check('a solar panel is the size its rating implies', () => {
+  // The panel is drawn in the whole-node view and its footprint is most of what
+  // a reader uses to decide whether a site can host one, so the body has to
+  // agree with the rating. The tier 2 panel was drawn 1480 x 670 mm against a
+  // 120 W rating, which is 12 percent efficient, while the tier 3 array in the
+  // same registry was sized as monocrystalline at 19. One of the two was wrong
+  // and nothing said which.
+  //
+  // Absolute bounds alone do not catch it, and the first version of this check
+  // proved that by passing on the exact dimensions that prompted writing it:
+  // 12 percent is thin film and perfectly real, so any range wide enough to
+  // admit every panel technology admits the bug too. What was actually wrong is
+  // that two panels in one registry disagreed by seven points with nothing
+  // declaring a different technology. So the rule is agreement, and the wide
+  // bounds are left in only to catch an order-of-magnitude typo.
+  const MIN = 0.1
+  const MAX = 0.24
+  const SPREAD = 0.04
+  const errors = []
+  const panels = []
+
+  for (const part of hardware.parts) {
+    const w = Number(part.keySpecs?.panelW ?? 0)
+    const m = part.mechanical
+    if (!w || !m?.widthMm || !m?.depthMm) continue
+    const areaM2 = (m.widthMm / 1000) * (m.depthMm / 1000)
+    const efficiency = w / (areaM2 * 1000) // 1000 W/m2 at standard test conditions
+    panels.push({ id: part.id, w, m, areaM2, efficiency })
+    if (efficiency < MIN || efficiency > MAX) {
+      errors.push(
+        `${part.id}: a ${w} W panel drawn ${m.widthMm} x ${m.depthMm} mm is ` +
+          `${areaM2.toFixed(2)} m2, implying ${(efficiency * 100).toFixed(0)}% efficiency at ` +
+          `standard test conditions. No panel technology reaches that.`,
+      )
+    }
+  }
+
+  if (panels.length > 1) {
+    const lo = panels.reduce((a, b) => (a.efficiency < b.efficiency ? a : b))
+    const hi = panels.reduce((a, b) => (a.efficiency > b.efficiency ? a : b))
+    if (hi.efficiency - lo.efficiency > SPREAD) {
+      errors.push(
+        `panels disagree on technology: ${lo.id} is ${(lo.efficiency * 100).toFixed(0)}% ` +
+          `(${lo.w} W over ${lo.areaM2.toFixed(2)} m2) and ${hi.id} is ` +
+          `${(hi.efficiency * 100).toFixed(0)}% (${hi.w} W over ${hi.areaM2.toFixed(2)} m2). ` +
+          `One of the two bodies is the wrong size, or the registry needs to say why they differ.`,
+      )
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return panels.length
+    ? `${panels.map((p) => `${p.id} ${(p.efficiency * 100).toFixed(0)}%`).join(', ')} at standard test conditions`
+    : 'no panels in the registry'
+})
+
 check('every declared driver is claimed by a wireable part', () => {
   // The mirror of the check firmware/tests/test_registry.py already runs.
   // That one asserts a part naming a driver has an implementation; nothing
@@ -366,6 +422,47 @@ check('the assembly is physically consistent', () => {
     }
   }
 
+  // A feature drawn on a part has to touch that part. Detail geometry is
+  // written as fractions of the parent footprint, so a transposed cx and cy, or
+  // a dimension in the wrong unit, leaves a lens barrel floating beside its
+  // camera rather than on it. Nothing could catch that while the parts were
+  // plain boxes because there were no features to misplace; tier 3 now carries
+  // 108 bodies and a stray one reads as a design decision.
+  //
+  // Overlap, not containment. Connectors legitimately stand proud of the board
+  // they sit on, and the Raspberry Pi's card slot is 0.4 mm off the front edge
+  // because that is where a card goes in. Requiring the centre to be inside the
+  // parent failed all three assemblies on geometry that is correct.
+  for (const a of assemblies) {
+    const byId = new Map(a.bodies.map((b) => [b.id, b]))
+    for (const b of a.bodies) {
+      if (!b.parent) continue
+      const parent = byId.get(b.parent)
+      if (!parent) {
+        errors.push(`${a.tier}: '${b.id}' names parent '${b.parent}', which is not in the assembly`)
+        continue
+      }
+      const [pw, ph, pd] = parent.size
+      const [px, py, pz] = parent.pos
+      const [w, h, d] = b.size
+      const [x, y, z] = b.pos
+      const disjoint =
+        Math.abs(x - px) > (pw + w) / 2 + 0.01 ||
+        Math.abs(z - pz) > (pd + d) / 2 + 0.01 ||
+        Math.abs(y - py) > (ph + h) / 2 + 0.01
+      if (disjoint) {
+        errors.push(
+          `${a.tier}: '${b.id}' is drawn as a feature of '${b.parent}' but does not touch it`,
+        )
+      }
+      if (w > pw + 0.01 || d > pd + 0.01) {
+        errors.push(
+          `${a.tier}: '${b.id}' is ${w} x ${d} mm on a parent only ${pw} x ${pd} mm`,
+        )
+      }
+    }
+  }
+
   // A part whose own notes demand distance from the node cannot be mounted on it.
   for (const part of hardware.parts) {
     const wantsDistance = /at least .{0,12}(metre|meter)|remote from the node|away from the node/i.test(
@@ -419,8 +516,19 @@ check('the node fits inside the case it is sold with', () => {
     // What actually goes in the box. Mast and ground-mounted parts do not, by
     // definition, and the case is not inside itself. The carrier stacks on the
     // host rather than beside it, so it takes no additional floor.
+    // A feature drawn on a part is not a second thing to pack. Every body with
+    // a parent is a lens barrel, a connector or a shield can already inside the
+    // footprint of the part it belongs to, so counting it again double-counts.
+    // This sat latent while parts were plain boxes with no children; giving the
+    // six most expensive parts real geometry took tier 2 from 34 percent of the
+    // interior floor to 162 percent without a single part changing size.
     const inside = a.bodies.filter(
-      (b) => b.mount !== 'enclosure' && !b.remote && b.mount !== 'hat' && b.mount !== 'carrier',
+      (b) =>
+        !b.parent &&
+        b.mount !== 'enclosure' &&
+        !b.remote &&
+        b.mount !== 'hat' &&
+        b.mount !== 'carrier',
     )
     if (inside.length === 0) continue
 
