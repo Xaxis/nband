@@ -104,6 +104,16 @@ export function CarrierBoards() {
       </p>
 
       <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+        The whole-node view is laid out against the case interior rather than around the origin,
+        so what it answers is how the parts pack rather than only which parts there are. Tier 3
+        uses about a third of the floor and stands 75&nbsp;mm into a 155&nbsp;mm case, which is
+        the margin that decides whether a substitute part fits. Nothing drawn inside the case may
+        reach outside it and the build fails if it does, because the tier&nbsp;3 carrier overhangs
+        the HAT footprint far enough that it used to pass 20&nbsp;mm through the wall, and a board
+        crossing a wireframe outline looks exactly like a board.
+      </p>
+
+      <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
         Header pins are labelled by Raspberry Pi physical number. The connector&rsquo;s own
         numbering runs counter-clockwise and agrees with the Pi on two of its forty pins, so
         anything that reads &ldquo;P7&rdquo; means physical&nbsp;7 and the pulse-per-second line.

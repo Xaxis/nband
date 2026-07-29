@@ -416,7 +416,7 @@
           "pos": [
             -123,
             24,
-            73
+            81
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
@@ -436,7 +436,7 @@
           "pos": [
             -123,
             5,
-            73
+            81
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -457,7 +457,7 @@
           "pos": [
             -123,
             28,
-            73
+            81
           ],
           "colour": "#232629",
           "cylinder": true,
@@ -479,7 +479,7 @@
           "pos": [
             -71,
             24,
-            73
+            81
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
@@ -499,7 +499,7 @@
           "pos": [
             -71,
             5,
-            73
+            81
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -520,7 +520,7 @@
           "pos": [
             -71,
             28,
-            73
+            81
           ],
           "colour": "#232629",
           "cylinder": true,
@@ -542,7 +542,7 @@
           "pos": [
             -129.5,
             50.4,
-            -83
+            -91
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
@@ -562,7 +562,7 @@
           "pos": [
             -129.5,
             48.5,
-            -83
+            -91
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -583,7 +583,7 @@
           "pos": [
             -129.5,
             49.65,
-            -82.1
+            -90.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -604,7 +604,7 @@
           "pos": [
             -129.5,
             50.6,
-            -89.84
+            -97.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -626,7 +626,7 @@
           "pos": [
             -92.5,
             50.4,
-            -79.5
+            -87.5
           ],
           "sourced": false,
           "note": "Points at the sky through a germanium window. Mounted at the enclosure wall.",
@@ -646,7 +646,7 @@
           "pos": [
             -92.5,
             46.5,
-            -79.5
+            -87.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -667,7 +667,7 @@
           "pos": [
             -92.5,
             50.35,
-            -78.25
+            -86.25
           ],
           "colour": "#8a8f98",
           "cylinder": true,
@@ -1169,17 +1169,17 @@
       ],
       "cables": [
         {
-          "id": "cable-storage-microsd-64gb",
-          "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
+          "id": "cable-sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0 x2",
           "from": [
-            -111.5,
-            -0.5,
-            -44.199999999999996
+            -32,
+            7.5,
+            -48.5
           ],
           "to": [
-            -111.5,
-            2.4000000000000004,
-            -47.199999999999996
+            -54.5,
+            9.799999999999999,
+            -17.25
           ],
           "kind": "cable",
           "remote": false
@@ -1190,7 +1190,7 @@
           "from": [
             -123,
             24,
-            54
+            62
           ],
           "to": [
             -93.2,
@@ -1206,7 +1206,7 @@
           "from": [
             -71,
             24,
-            54
+            62
           ],
           "to": [
             -82.2,
@@ -1222,7 +1222,7 @@
           "from": [
             -129.5,
             50.4,
-            -74
+            -82
           ],
           "remote": false,
           "to": [
@@ -1238,7 +1238,7 @@
           "from": [
             -92.5,
             50.4,
-            -67
+            -75
           ],
           "remote": false,
           "to": [
@@ -1877,7 +1877,7 @@
           "pos": [
             -185.5,
             24,
-            115
+            123
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
@@ -1897,7 +1897,7 @@
           "pos": [
             -185.5,
             5,
-            115
+            123
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -1918,7 +1918,7 @@
           "pos": [
             -185.5,
             28,
-            115
+            123
           ],
           "colour": "#232629",
           "cylinder": true,
@@ -1940,7 +1940,7 @@
           "pos": [
             -133.5,
             24,
-            115
+            123
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
@@ -1960,7 +1960,7 @@
           "pos": [
             -133.5,
             5,
-            115
+            123
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -1981,7 +1981,7 @@
           "pos": [
             -133.5,
             28,
-            115
+            123
           ],
           "colour": "#232629",
           "cylinder": true,
@@ -2003,7 +2003,7 @@
           "pos": [
             -192,
             65.1,
-            -125
+            -133
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
@@ -2023,7 +2023,7 @@
           "pos": [
             -192,
             63.199999999999996,
-            -125
+            -133
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -2044,7 +2044,7 @@
           "pos": [
             -192,
             64.35,
-            -124.1
+            -132.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -2065,7 +2065,7 @@
           "pos": [
             -192,
             65.3,
-            -131.84
+            -139.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -2087,7 +2087,7 @@
           "pos": [
             -155,
             65.1,
-            -125
+            -133
           ],
           "sourced": false,
           "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
@@ -2107,7 +2107,7 @@
           "pos": [
             -155,
             63.199999999999996,
-            -125
+            -133
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -2128,7 +2128,7 @@
           "pos": [
             -155,
             64.25,
-            -124.1
+            -132.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -2149,7 +2149,7 @@
           "pos": [
             -155,
             65.3,
-            -131.84
+            -139.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -2171,7 +2171,7 @@
           "pos": [
             -120.5,
             65.1,
-            -126.5
+            -134.5
           ],
           "sourced": false,
           "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
@@ -2191,7 +2191,7 @@
           "pos": [
             -120.5,
             63.699999999999996,
-            -126.5
+            -134.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -2212,7 +2212,7 @@
           "pos": [
             -120.5,
             64.8,
-            -125.75
+            -133.75
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -2233,7 +2233,7 @@
           "pos": [
             -120.5,
             65.8,
-            -132.2
+            -140.2
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -2255,7 +2255,7 @@
           "pos": [
             -86,
             65.1,
-            -125
+            -133
           ],
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
@@ -2275,7 +2275,7 @@
           "pos": [
             -86,
             63.199999999999996,
-            -125
+            -133
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -2296,7 +2296,7 @@
           "pos": [
             -86,
             64.3,
-            -124.1
+            -132.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -2317,7 +2317,7 @@
           "pos": [
             -86,
             65.3,
-            -131.84
+            -139.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -2964,17 +2964,33 @@
       ],
       "cables": [
         {
-          "id": "cable-storage-microsd-64gb",
-          "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
+          "id": "cable-sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3 to USB 3.0 x2",
           "from": [
-            -161.5,
-            -0.5,
-            -86.2
+            -69.5,
+            7.5,
+            -90.5
           ],
           "to": [
-            -161.5,
-            2.4000000000000004,
-            -89.2
+            -104.5,
+            9.799999999999999,
+            -59.25
+          ],
+          "kind": "cable",
+          "remote": false
+        },
+        {
+          "id": "cable-lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to USB 3.0 x2",
+          "from": [
+            22.5,
+            6,
+            -89
+          ],
+          "to": [
+            -104.5,
+            9.799999999999999,
+            -59.25
           ],
           "kind": "cable",
           "remote": false
@@ -2985,7 +3001,7 @@
           "from": [
             -185.5,
             24,
-            96
+            104
           ],
           "to": [
             -143.2,
@@ -3001,7 +3017,7 @@
           "from": [
             -133.5,
             24,
-            96
+            104
           ],
           "to": [
             -132.2,
@@ -3017,7 +3033,7 @@
           "from": [
             -192,
             65.1,
-            -116
+            -124
           ],
           "remote": false,
           "to": [
@@ -3033,7 +3049,7 @@
           "from": [
             -155,
             65.1,
-            -116
+            -124
           ],
           "remote": false,
           "to": [
@@ -3049,7 +3065,7 @@
           "from": [
             -120.5,
             65.1,
-            -119
+            -127
           ],
           "remote": false,
           "to": [
@@ -3065,7 +3081,7 @@
           "from": [
             -86,
             65.1,
-            -116
+            -124
           ],
           "remote": false,
           "to": [
@@ -4119,7 +4135,7 @@
           "pos": [
             -185.5,
             24,
-            115
+            123
           ],
           "sourced": false,
           "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
@@ -4139,7 +4155,7 @@
           "pos": [
             -185.5,
             5,
-            115
+            123
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -4160,7 +4176,7 @@
           "pos": [
             -185.5,
             28,
-            115
+            123
           ],
           "colour": "#232629",
           "cylinder": true,
@@ -4182,7 +4198,7 @@
           "pos": [
             -133.5,
             24,
-            115
+            123
           ],
           "sourced": false,
           "note": "As above, with the bandpass filter fitted.",
@@ -4202,7 +4218,7 @@
           "pos": [
             -133.5,
             5,
-            115
+            123
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -4223,7 +4239,7 @@
           "pos": [
             -133.5,
             28,
-            115
+            123
           ],
           "colour": "#232629",
           "cylinder": true,
@@ -4245,7 +4261,7 @@
           "pos": [
             -192,
             65.1,
-            -125
+            -133
           ],
           "sourced": false,
           "note": "Needs ambient air to measure it. Mounted at a vented enclosure wall on a short cable, not on the carrier, where it would read the temperature of the Raspberry Pi.",
@@ -4265,7 +4281,7 @@
           "pos": [
             -192,
             63.199999999999996,
-            -125
+            -133
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -4286,7 +4302,7 @@
           "pos": [
             -192,
             64.35,
-            -124.1
+            -132.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -4307,7 +4323,7 @@
           "pos": [
             -192,
             65.3,
-            -131.84
+            -139.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -4329,7 +4345,7 @@
           "pos": [
             -155,
             65.1,
-            -125
+            -133
           ],
           "sourced": false,
           "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
@@ -4349,7 +4365,7 @@
           "pos": [
             -155,
             63.199999999999996,
-            -125
+            -133
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -4370,7 +4386,7 @@
           "pos": [
             -155,
             64.25,
-            -124.1
+            -132.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -4391,7 +4407,7 @@
           "pos": [
             -155,
             65.3,
-            -131.84
+            -139.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -4413,7 +4429,7 @@
           "pos": [
             -120.5,
             65.1,
-            -126.5
+            -134.5
           ],
           "sourced": false,
           "note": "Needs acoustic access to outside air through a vented, water-shedding port.",
@@ -4433,7 +4449,7 @@
           "pos": [
             -120.5,
             63.699999999999996,
-            -126.5
+            -134.5
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -4454,7 +4470,7 @@
           "pos": [
             -120.5,
             64.8,
-            -125.75
+            -133.75
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -4475,7 +4491,7 @@
           "pos": [
             -120.5,
             65.8,
-            -132.2
+            -140.2
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -4497,7 +4513,7 @@
           "pos": [
             -86,
             65.1,
-            -125
+            -133
           ],
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
@@ -4517,7 +4533,7 @@
           "pos": [
             -86,
             63.199999999999996,
-            -125
+            -133
           ],
           "colour": "#1f5f3a",
           "cylinder": false,
@@ -4538,7 +4554,7 @@
           "pos": [
             -86,
             64.3,
-            -124.1
+            -132.1
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -4559,7 +4575,7 @@
           "pos": [
             -86,
             65.3,
-            -131.84
+            -139.84
           ],
           "colour": "#1c1f24",
           "cylinder": false,
@@ -5334,17 +5350,97 @@
       ],
       "cables": [
         {
-          "id": "cable-storage-microsd-64gb",
-          "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
+          "id": "cable-sdr-rtl-v3",
+          "label": "RTL-SDR Blog RTL-SDR Blog V3 to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
           "from": [
-            -149,
-            -0.5,
-            -86.2
+            -4.5,
+            7.5,
+            -77
           ],
           "to": [
-            -149,
-            2.4000000000000004,
-            -89.2
+            5.5,
+            11,
+            35
+          ],
+          "kind": "cable",
+          "remote": false
+        },
+        {
+          "id": "cable-lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
+          "from": [
+            62.5,
+            6,
+            -74
+          ],
+          "to": [
+            5.5,
+            11,
+            35
+          ],
+          "kind": "cable",
+          "remote": false
+        },
+        {
+          "id": "cable-radar-iwr6843",
+          "label": "Texas Instruments IWR6843ISK 60 GHz mmWave to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
+          "from": [
+            117,
+            8,
+            -49
+          ],
+          "to": [
+            5.5,
+            11,
+            35
+          ],
+          "kind": "cable",
+          "remote": false
+        },
+        {
+          "id": "cable-gamma-csi-sipm",
+          "label": "OpenGammaDetector CsI(Tl) + SiPM open gamma spectrometer to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
+          "from": [
+            -9.5,
+            11,
+            3
+          ],
+          "to": [
+            5.5,
+            11,
+            35
+          ],
+          "kind": "cable",
+          "remote": false
+        },
+        {
+          "id": "cable-swir-ingaas640",
+          "label": "various InGaAs 640x512 SWIR module to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
+          "from": [
+            67.5,
+            37.5,
+            23
+          ],
+          "to": [
+            5.5,
+            11,
+            35
+          ],
+          "kind": "cable",
+          "remote": false
+        },
+        {
+          "id": "cable-usb-hub-powered",
+          "label": "generic 4-port USB 3.0 hub with 5 V 4 A external supply to USB 3.0 x2",
+          "from": [
+            5.5,
+            11,
+            35
+          ],
+          "to": [
+            -99.25,
+            9.799999999999999,
+            -50.5
           ],
           "kind": "cable",
           "remote": false
@@ -5355,7 +5451,7 @@
           "from": [
             -185.5,
             24,
-            96
+            104
           ],
           "to": [
             -130.7,
@@ -5371,7 +5467,7 @@
           "from": [
             -133.5,
             24,
-            96
+            104
           ],
           "to": [
             -119.7,
@@ -5387,7 +5483,7 @@
           "from": [
             -192,
             65.1,
-            -116
+            -124
           ],
           "remote": false,
           "to": [
@@ -5403,7 +5499,7 @@
           "from": [
             -155,
             65.1,
-            -116
+            -124
           ],
           "remote": false,
           "to": [
@@ -5419,7 +5515,7 @@
           "from": [
             -120.5,
             65.1,
-            -119
+            -127
           ],
           "remote": false,
           "to": [
@@ -5435,7 +5531,7 @@
           "from": [
             -86,
             65.1,
-            -116
+            -124
           ],
           "remote": false,
           "to": [

@@ -306,7 +306,9 @@ function assemblyFor(tier) {
   // 6. Cameras against the front wall, looking out through it. They were drawn
   //    floating in front of the node pointing up, which is a claim that the
   //    node has no case; a camera inside a sealed box has to be at a window.
-  const frontZ = CASE.d / 2 - WALL_CLEAR
+  // Flush against the wall, not held off it. A camera that looks out through a
+  // window is bolted to the panel the window is in.
+  const frontZ = CASE.d / 2
   let kx = HOST_X - STACK_W / 2
   for (const p of by('csi')) {
     push(p, kx + p.mechanical.widthMm / 2, FLOOR + p.mechanical.heightMm / 2, frontZ - p.mechanical.depthMm / 2)
@@ -323,7 +325,9 @@ function assemblyFor(tier) {
   //    where a wall-gasketed breakout goes. They were previously placed at a
   //    fixed z with a fixed y and no relation to any wall, so on tier 3 they
   //    hung in mid-air 150 mm behind a node they are bolted to.
-  const backZ = -CASE.d / 2 + WALL_CLEAR
+  // Against the wall itself. Held off it by the clearance used for floor parts,
+  // these read as floating in the elevation, which is exactly what they are not.
+  const backZ = -CASE.d / 2
   let wx = -CASE.w / 2 + WALL_CLEAR
   for (const p of by('enclosure-wall')) {
     push(
@@ -377,13 +381,35 @@ function assemblyFor(tier) {
   // 11. Cables. A node is defined by what plugs into what, and nothing in the
   //     model said so: every peripheral floated unconnected beside a board it
   //     had no visible relationship to.
-  const featureAt = (fid) => featureBodies.find((f) => f.id === `${host?.id}-${fid}`)
+  //     The port name a part declares is not always the name of a feature. The
+  //     registry says `usb3a` and `usb2a`, meaning the first of a pair, while
+  //     the Pi's mechanical drawing has one body covering both ports and calls
+  //     it `usb3`. Requiring an exact match silently dropped the cable for
+  //     every USB peripheral in the tier, which is six of them on tier 3: they
+  //     sat in a group on the floor with nothing joining them to the host, and
+  //     the render read as parts laid out for photography rather than a node.
+  const featureAt = (fid) =>
+    featureBodies.find((f) => f.id === `${host?.id}-${fid}`) ??
+    featureBodies.find((f) => f.id === `${host?.id}-${fid.replace(/[a-z]$/, '')}`)
+
+  // Where a hub ships, the peripherals reach the host through it. Drawing six
+  // cables converging on one Raspberry Pi port claims a fan-out the host does
+  // not have, and the hub is in the tier precisely because it does not.
+  const hubBody = bodies.find((b) => {
+    const p = parts.find((q) => q.id === b.id)
+    return p?.keySpecs?.ports != null
+  })
+
   const cables = []
   for (const b of bodies) {
     const part = parts.find((p) => p.id === b.id)
     const plug = part?.mechanical?.plugsInto
     if (!plug) continue
-    const target = featureAt(plug)
+    // A card in a slot is inserted, not cabled.
+    if (part.mechanical.mount === 'host-slot') continue
+    const viaHub =
+      hubBody && b.id !== hubBody.id && part.mechanical.mount === 'usb' ? hubBody : null
+    const target = viaHub ?? featureAt(plug)
     if (!target) continue
     // From the face of each body that points at the other, not from the two
     // centres. A cable drawn centre to centre passes through both parts it

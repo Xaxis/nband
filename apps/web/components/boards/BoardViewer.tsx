@@ -55,7 +55,7 @@ const VIEWS: { id: View; label: string; blurb: string }[] = [
     id: 'node',
     label: 'Whole node',
     blurb:
-      'Every part in the tier, where it physically goes: board-mounted parts on the carrier, sensors that measure the outside at the enclosure wall, emitters and the magnetometer on the mast, USB peripherals on cables. A massing model for scale and stacking, not CAD.',
+      'Every part in the tier laid out inside the case it ships in: the host stack on the floor at the back left, peripherals packed beside it, cameras against the wall they look out through, sensors that measure the outside bolted to the wall, and the mast and ground-mounted parts outside. A massing model for scale and packing, not CAD.',
   },
   {
     id: 'schematic',
@@ -136,7 +136,11 @@ export function BoardViewer({
   const panelId = useId()
   // Local rather than in the URL: these are display toggles, not a view worth
   // linking to, and putting four booleans in the hash makes the link unreadable.
-  const [showCase, setShowCase] = useState(false)
+  // The case is on by default where a tier ships one. A node drawn without the
+  // box it lives in reads as parts on a bench, and the wall-mounted sensors in
+  // particular have nothing to be mounted to; the outline is faint enough that
+  // it frames the node rather than hiding it.
+  const [showCase, setShowCase] = useState(true)
   const [showRemote, setShowRemote] = useState(false)
 
   const board = boards.find((b) => b.tier === tier) ?? boards[0]
