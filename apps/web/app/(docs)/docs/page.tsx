@@ -2,7 +2,13 @@ import { pageMetadata } from '../../../lib/metadata'
 import Link from 'next/link'
 import { Container, Section } from '../../../components/ui'
 import { NAV } from '../../../lib/nav'
-import { PLATFORM_VERSION, tierCost, tierPower } from '../../../lib/schema/generated'
+import {
+  BANDS,
+  PARTS,
+  PLATFORM_VERSION,
+  tierCost,
+  tierPower,
+} from '../../../lib/schema/generated'
 
 export const metadata = pageMetadata({
   title: 'Documentation',
@@ -59,9 +65,17 @@ export default function DocsIndex() {
             because it is trusted.
           </p>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { k: 'Bands sampled', v: '14' },
+              // "Bands sampled: 14" was hardcoded between two computed stats,
+              // and nothing samples fourteen: the gravimetric band has no
+              // registered part in any tier and no node carries one. Defined
+              // and sampled are different numbers, so the label says which.
+              { k: 'Bands defined', v: String(BANDS.length) },
+              {
+                k: 'Bands with a part',
+                v: String(new Set(PARTS.map((p) => p.band).filter(Boolean)).size),
+              },
               { k: 'Entry build', v: `$${tierCost('t1').toFixed(0)}` },
               { k: 'Tier 2 draw', v: `${t2.activeW.toFixed(1)} W` },
             ].map((s) => (

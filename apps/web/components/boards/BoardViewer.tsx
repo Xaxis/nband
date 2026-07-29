@@ -60,7 +60,7 @@ const VIEWS: { id: View; label: string; blurb: string }[] = [
     id: 'schematic',
     label: 'Schematic',
     blurb:
-      'Derived from the netlist alone, so it is exactly as correct as the hardware registry. It shows the connections as a circuit; the Wiring panel above shows the same connections as physical pin numbers, which is what you count while soldering.',
+      'Derived from the netlist alone, so it is exactly as correct as the hardware registry. It shows the connections as a circuit; the Pinout and wiring panel shows the same connections as physical pin numbers, which is what you count while soldering.',
   },
   {
     id: 'pcb',

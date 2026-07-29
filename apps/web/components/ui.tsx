@@ -27,7 +27,14 @@ export function Section({
   id?: string
 }) {
   return (
-    <section id={id} className={`py-14 sm:py-20 ${className}`}>
+    // A section with an id is an anchor target, and every anchor target on this
+    // site sits under a 56px sticky header, with a second sticky tab strip
+    // beneath it inside a panelled page. Native anchor scroll accounts for
+    // neither, so following /hardware#t3 put the tier heading behind the chrome
+    // and the reader landed mid-table. The .prose headings already carry this;
+    // sections did not, which is why the anchors the search index uses were the
+    // ones that looked broken.
+    <section id={id} className={`py-14 sm:py-20 ${id ? 'scroll-mt-28' : ''} ${className}`}>
       <Container>
         {(eyebrow || title || lede) && (
           <header className="max-w-[62ch]">

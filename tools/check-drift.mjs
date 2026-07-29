@@ -683,13 +683,28 @@ check('band counts on the site match the registry', () => {
   const detection = bands.bands.filter((b) => b.role === 'detection').length
   const context = bands.bands.filter((b) => b.role === 'context').length
 
-  const words = { 2: 'Two', 3: 'Three', 11: 'eleven', 12: 'twelve', 13: 'thirteen', 14: 'fourteen' }
+  const words = { 2: 'Two', 3: 'Three', 6: 'six', 10: 'ten', 11: 'eleven', 12: 'twelve', 13: 'thirteen', 14: 'fourteen' }
   const hero = readText('apps/web/app/page.tsx')
   if (!hero.includes(`up to ${words[best]} bands at once`)) {
     errors.push(`the landing page does not claim "up to ${words[best]} bands at once"`)
   }
   if (!new RegExp(`value="${best}"`).test(hero)) {
     errors.push(`the landing page stat does not read ${best}`)
+  }
+
+  // The ceiling was guarded and the floor was not, so the hero attached the
+  // entry price and the thirteen-band ceiling to one noun phrase and sold a
+  // $5,341 capability at a $504 price. Whatever the entry tier actually opens
+  // has to appear in the same paragraph as the ceiling that qualifies it.
+  const entry = spec.enums.tier.values.find((t) => t.buildable)
+  const entryBands = new Set(
+    hardware.parts.filter((p) => p.band && p.tiers?.includes(entry.id)).map((p) => p.band),
+  ).size
+  if (!new RegExp(`\\b${words[entryBands] ?? entryBands}\\b`, 'i').test(hero.slice(0, 4000))) {
+    errors.push(
+      `the landing page does not say the entry build opens ${words[entryBands] ?? entryBands} ` +
+        `bands, so "up to ${words[best]} bands at once" reads as what the entry price buys`,
+    )
   }
 
   // Two more places on the same page counted bands by hand and both were wrong.
@@ -703,14 +718,25 @@ check('band counts on the site match the registry', () => {
   // function exists because that same fourteen-simultaneous claim was made in
   // the hero, so this is the identical error re-entering through prose the
   // check did not read.
+  // Buildable, not defined. Heading the grid with the number of detection bands
+  // in the schema forced the grid to show all of them, and gravimetric is a
+  // detection band with no sensor anyone can buy: the card renders
+  // shortDescription and whatItSees and never limits, which is the field that
+  // says so. A front page advertising a channel that does not exist is the
+  // overclaim this repository is organised to refuse, and it does not stop
+  // being one because a schema enum agrees.
+  const buildableDetection = bands.bands.filter(
+    (b) => b.role === 'detection' && hardware.parts.some((p) => p.band === b.id),
+  ).length
   const cap = (w) => `${w[0].toUpperCase()}${w.slice(1)}`
-  if (!hero.includes(`${cap(words[detection])} ways of being wrong`)) {
+  if (!hero.includes(`${cap(words[buildableDetection])} ways of being wrong`)) {
     errors.push(
-      `the landing page band grid is not headed "${cap(words[detection])} ways of being wrong": ` +
-        `${detection} bands carry role 'detection'`,
+      `the landing page band grid is not headed ` +
+        `"${cap(words[buildableDetection])} ways of being wrong": ${buildableDetection} detection ` +
+        `bands have a registered part, out of ${detection} defined`,
     )
   }
-  for (const n of [best, detection, 14]) {
+  for (const n of [best, detection, buildableDetection, 14]) {
     if (new RegExp(`${words[n]} other bands`).test(hero)) {
       errors.push(
         `the landing page says "${words[n]} other bands" beside a single sensor, which claims ` +
@@ -735,7 +761,10 @@ check('band counts on the site match the registry', () => {
   }
 
   if (errors.length) throw new Error(errors.join('; '))
-  return `${bands.bands.length} defined, ${best} buildable at once, ${detection} detection / ${context} context`
+  return (
+    `${bands.bands.length} defined, ${best} buildable at once, ${detection} detection ` +
+    `(${buildableDetection} with a registered part) / ${context} context`
+  )
 })
 
 check('the documented wire protocol matches the ingest code', () => {

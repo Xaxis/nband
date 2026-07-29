@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { BandChip } from '../../../components/Bands'
 import { Container, Note, Section } from '../../../components/ui'
 import { getFeed } from '../../../lib/feed'
-import { NODESTATUS, THRESHOLDS } from '../../../lib/schema/generated'
+import { NODESTATUS, PARTS, THRESHOLDS, TIER_ORDER } from '../../../lib/schema/generated'
 import { STATUS } from '../../../lib/spectrum'
 
 export const metadata = pageMetadata({
@@ -22,6 +22,17 @@ const STATUS_COLOR: Record<string, string> = {
   provisioning: '#6f7788',
   retired: '#6f7788',
 }
+
+/**
+ * The most bands any single tier reaches, which is what a coverage figure has
+ * to be measured against. The band enum has fourteen entries and no node can
+ * carry them all: the gravimetric band has no registered part at any price.
+ */
+const REACHABLE_BANDS = Math.max(
+  ...TIER_ORDER.map(
+    (t) => new Set(PARTS.filter((p) => p.band && p.tiers?.includes(t)).map((p) => p.band)).size,
+  ),
+)
 
 /** Equirectangular projection. Adequate for a sparse world map and free of the
  *  dependency weight a real projection library would add for no benefit here. */
@@ -71,7 +82,12 @@ export default async function GridPage() {
             { k: 'Nodes enrolled', v: String(nodes.length) },
             { k: 'Online now', v: `${online.length} / ${nodes.length}` },
             { k: 'PPS-disciplined', v: `${pps.length} / ${nodes.length}` },
-            { k: 'Bands covered', v: `${bands.size} / 14` },
+            // Against what a node can actually carry, not against the size of
+            // the taxonomy. Fourteen is the enum; thirteen is the most any tier
+            // reaches, because the gravimetric band has no buildable sensor. A
+            // denominator nobody can reach makes full coverage look like a
+            // shortfall forever.
+            { k: 'Bands covered', v: `${bands.size} / ${REACHABLE_BANDS}` },
           ].map((s) => (
             <div key={s.k} className="card p-4">
               <div className="eyebrow">{s.k}</div>
@@ -169,7 +185,16 @@ export default async function GridPage() {
                   <td className="px-3 py-3">
                     <span className="num text-[12.5px]"
                           style={{ color: n.clock === 'gnss_pps' ? STATUS.good : STATUS.warning }}>
-                      {n.clock === 'gnss_pps' ? `PPS ±${n.clockOffsetNs ?? '?'} ns` : n.clock}
+                      {/* Same wording as the telemetry page for the same field.
+                          A locked clock that has not reported an offset is not
+                          a clock with an unknown offset written as "?", and it
+                          is certainly not the zero-offset clock that "PPS ±,
+                          ns" implied before this. */}
+                      {n.clock === 'gnss_pps'
+                        ? n.clockOffsetNs != null
+                          ? `PPS ±${n.clockOffsetNs} ns`
+                          : 'PPS, offset not reported'
+                        : n.clock}
                     </span>
                     {n.clock !== 'gnss_pps' && (
                       <div className="text-[11px] text-[var(--ink-3)]">no geometry contribution</div>

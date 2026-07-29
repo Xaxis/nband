@@ -6,6 +6,7 @@ import {
   CLASSIFICATION,
   CLASSIFICATION_ORDER,
   DETECTION_BANDS,
+  PARTS,
   TIER,
   THRESHOLDS,
   tierCost,
@@ -74,7 +75,11 @@ export default function HomePage() {
             <Stat
               value="13"
               label="Bands one node can watch at once"
-              detail="Six on the entry build. Gamma through radio, plus sound and ground motion"
+              // The span belongs to the thirteen, not the six. Read in the
+              // written order it said the entry build sees gamma through radio,
+              // and the entry six are visible, near and long-wave infrared,
+              // radio, environmental and navigation.
+              detail="Gamma through radio, plus sound and ground motion. Six of them on the entry build."
             />
             <Stat
               value="±500 ns"
@@ -153,15 +158,20 @@ export default function HomePage() {
       <Section
         className="border-y border-[var(--line)] bg-[var(--surface-0)]"
         eyebrow="What it sees"
-        title="Twelve ways of being wrong about the same object"
-        lede="These are not twelve versions of one picture. Each responds to different physics, fails in different weather, and is fooled by different things. Two further bands, environmental and navigation, provide context rather than detections and are not counted here. An object that survives all of them at once is genuinely difficult to explain, and that is the only kind of claim worth making."
+        title="Eleven ways of being wrong about the same object"
+        lede="These are not eleven versions of one picture. Each responds to different physics, fails in different weather, and is fooled by different things. A twelfth detection band, gravimetric, is defined in the schema and has no sensor anyone can buy, so no node carries it and it is not shown here. Two further bands, environmental and navigation, give context rather than detections. An object that survives all of these at once is genuinely difficult to explain, and that is the only kind of claim worth making."
       >
         <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {/* All twelve, not nine of them. A heading that counts the detection
-              bands above a grid showing three fewer invites the reader to
-              count, and the three it dropped were the last three in wavelength
-              order rather than the three least interesting. */}
-          {DETECTION_BANDS.map((b) => (
+          {/* The detection bands a node can actually carry, which is not the
+              same as the detection bands the schema defines. Showing all twelve
+              put a gravimetric card on the front page, and the card renders
+              shortDescription and whatItSees but never limits, which is the
+              field saying atom-interferometer gravimeters cost six figures and
+              that no nband node has one. Slicing to the first nine was worse
+              again: ordinal order is wavelength order, so it kept exactly the
+              nine electromagnetic bands and cut acoustic and seismic, under a
+              lede claiming each responds to different physics. */}
+          {DETECTION_BANDS.filter((b) => PARTS.some((p) => p.band === b.id)).map((b) => (
             <Link
               key={b.id}
               href={`/bands#${b.id}`}

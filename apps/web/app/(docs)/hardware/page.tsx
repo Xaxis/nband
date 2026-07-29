@@ -42,6 +42,21 @@ function money(n: number) {
   return n === 0 ? 'recovered' : `$${n.toFixed(2)}`
 }
 
+const bandsIn = (tier: Tier) => new Set(partsForTier(tier).map((p) => p.band).filter(Boolean))
+
+/** "Tier 1 opens 6 bands for $504. Tier 2 adds 4 more for $1,158." */
+function tierLadder(): string {
+  return TIER_ORDER.map((t, i) => {
+    const count = bandsIn(t).size
+    const cost = tierCost(t)
+    if (i === 0) return `${TIER[t].label} opens ${count} bands for $${cost.toFixed(0)}.`
+    const previous = TIER_ORDER[i - 1]
+    const gained = [...bandsIn(t)].filter((b) => !bandsIn(previous).has(b)).length
+    const step = cost - tierCost(previous)
+    return `${TIER[t].label} adds ${gained} more for $${step.toFixed(0)}.`
+  }).join(' ')
+}
+
 function PartRow({ part }: { part: Part }) {
   return (
     <tr className="border-t border-[var(--line)] align-top">
@@ -189,7 +204,11 @@ export default function HardwarePage() {
           {
             id: 'tiers',
             label: 'Build tiers',
-            hint: 'Three reference builds, priced from the same registry that generates every diagram on this page. Tier 1 opens six bands and runs on mains power indoors. Tier 2 adds four more and is the first build that survives outdoors, which is most of what the step costs. Tier 3 adds three and doubles the power budget.',
+            // Counted from the registry, not typed. The first draft of this
+            // hint carried "six bands, adds four more, adds three" as literals,
+            // which is the same class of hand-written count that put thermal in
+            // the wrong tier for months.
+            hint: `${TIER_ORDER.length} reference builds, priced from the same registry that generates every diagram on this page. ${tierLadder()} The tiers are a suggestion about sequence: the grid accepts any combination of these parts.`,
             content: (
               <>
                 <Container className="pb-4 pt-7">
@@ -234,8 +253,14 @@ export default function HardwarePage() {
           },
           {
             id: 'wiring',
-            label: 'Wiring',
-            hint: 'The 40-pin header pinout and the per-sensor wiring table for the tier you select. Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal and is the one connection that must be exactly right.',
+            // "Wiring" and "Carrier boards" were the same subject cut across
+            // rather than along, and the authority sat in the wrong one: the
+            // board schematic's blurb called itself the wiring reference from
+            // inside the panel that is not called Wiring. Naming this one for
+            // what it holds, and cross-linking both ways, separates them by
+            // scope instead: pin numbers here, the circuit there.
+            label: 'Pinout and wiring',
+            hint: 'The 40-pin header pinout and the per-sensor wiring table for the tier you select. Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal and is the one connection that must be exactly right. The same connections drawn as a circuit are under Carrier boards.',
             content: (
               <Container className="py-9">
                 <TierScope
@@ -268,7 +293,7 @@ export default function HardwarePage() {
           {
             id: 'boards',
             label: 'Carrier boards',
-            hint: 'Each part in the bill of materials records which physical header pin every one of its signals lands on. That table is compiled to a netlist and routed, so a pin claimed twice, or asked to carry a signal it has no function for, fails the build rather than reaching a soldering iron.',
+            hint: 'Each part in the bill of materials records which physical header pin every one of its signals lands on. That table is compiled to a netlist and routed, so a pin claimed twice, or asked to carry a signal it has no function for, fails the build rather than reaching a soldering iron. Header pin numbers per sensor are under Pinout and wiring.',
             content: (
               <Container className="py-9">
                 <CarrierBoards />
