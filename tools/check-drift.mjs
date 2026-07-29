@@ -1062,6 +1062,33 @@ check('band counts on the site match the registry', () => {
         `bands have a registered part, out of ${detection} defined`,
     )
   }
+  // The same claim in a different file. This scanned only the landing page, and
+  // the telemetry page said "the only reason to record fourteen bands is to ask
+  // what all of them were doing at the same instant", which asserts fourteen
+  // simultaneous channels exactly as the hero once did. A check that guards one
+  // file against a mistake the whole site can make has a hole in it.
+  // Whitespace collapsed first. JSX wraps prose across lines at whatever column
+  // the formatter picks, so "record\n  fourteen bands" is one phrase to a reader
+  // and two to a regex; the first version of this passed the test written to
+  // catch it for exactly that reason.
+  const flat = (t) => t.replace(/\s+/g, ' ')
+  const simultaneous = [
+    ['apps/web/app/page.tsx', flat(hero)],
+    [
+      'apps/web/app/(docs)/telemetry/page.tsx',
+      flat(readText('apps/web/app/(docs)/telemetry/page.tsx')),
+    ],
+    ['apps/web/app/layout.tsx', flat(readText('apps/web/app/layout.tsx'))],
+  ]
+  for (const [file, text] of simultaneous) {
+    for (const n of Object.keys(words).map(Number).filter((v) => v > best)) {
+      const claim = new RegExp(`record ${words[n]} bands|${words[n]} bands at (?:once|the same)`)
+      if (claim.test(text)) {
+        errors.push(`${file} claims ${words[n]} bands at once; no tier exceeds ${best}`)
+      }
+    }
+  }
+
   for (const n of [best, detection, buildableDetection, 14]) {
     if (new RegExp(`${words[n]} other bands`).test(hero)) {
       errors.push(

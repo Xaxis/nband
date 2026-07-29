@@ -35,7 +35,8 @@ export default async function TelemetryPage({
         lede={
           <>
             Hovering any chart moves the cursor on every chart, because the only reason to record
-            fourteen bands is to ask what all of them were doing at the same instant. Shaded columns
+            more than one band is to ask what all of them were doing at the same instant. Shaded
+            columns
             are events; the darker shading marks the bands that actually witnessed it. Amber dots
             are samples the node recorded but flagged as compromised, and they are drawn rather than
             dropped.
