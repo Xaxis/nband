@@ -169,7 +169,11 @@ export function PinoutDiagram({ tier }: { tier: Tier }) {
               {shared && <span className="text-[var(--ink-3)]"> +{uses.length - 1}</span>}
             </span>
           ) : (
-            <span className="text-[var(--ink-3)]">{power ?? ', '}</span>
+            // 'free' is the word the legend already uses for an unassigned pin,
+            // not a placeholder glyph. An em-dash sweep replaced the dash here
+            // with a bare comma, which rendered a stray "," beside fourteen of
+            // the forty pins, directly under a legend swatch reading "free".
+            <span className="text-[var(--ink-3)]">{power ?? 'free'}</span>
           )}
         </span>
       </div>

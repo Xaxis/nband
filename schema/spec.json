@@ -8,22 +8,22 @@
         {
           "id": "t1",
           "label": "Tier 1 - Baseline",
-          "budgetUsd": 460,
-          "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid.",
+          "budgetUsd": 510,
+          "summary": "Visible, near-infrared, long-wave infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid.",
           "buildable": true
         },
         {
           "id": "t2",
           "label": "Tier 2 - Core",
-          "budgetUsd": 1650,
-          "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against.",
+          "budgetUsd": 1670,
+          "summary": "Adds ultraviolet, millimetre-wave radar, acoustic, and magnetometry, and upgrades the thermal array to a 160x120 imager. This is the first tier that survives outdoors, and the weatherproof case and solar supply are most of the price increase rather than the sensors. The configuration the build guide is written against.",
           "buildable": true
         },
         {
           "id": "t3",
           "label": "Tier 3 - Extended",
           "budgetUsd": 5350,
-          "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost.",
+          "summary": "Adds short-wave infrared, gamma spectroscopy, and a seismometer, and replaces the presence radar with an imaging one. The short-wave imager is close to half the tier on its own. Research-grade coverage without research-grade cost.",
           "buildable": true
         },
         {

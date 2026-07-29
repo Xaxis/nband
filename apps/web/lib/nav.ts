@@ -66,8 +66,10 @@ export const NAV: NavSection[] = [
       {
         href: '/hardware',
         label: 'Hardware and BOM',
-        summary:
-          'Three tiers with sourced prices, wiring diagrams, pinout, and the power budget. Generated from the registry.',
+        // Describes the page rather than listing its panels. The panels are
+        // indexed individually now, so enumerating them here only meant the
+        // bare route outranked the panel that actually holds the answer.
+        summary: 'Three build tiers, every part priced from a named vendor page, and the diagrams generated from that same registry.',
         audience: 'Pricing a build',
       },
       {

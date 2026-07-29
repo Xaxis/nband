@@ -14,7 +14,9 @@ The order is deliberate. Timing comes before sensors, and one working sensor com
 
 ## Before you start
 
-You need a Raspberry Pi 5 (2 GB is enough and saves USD 110 over the 8 GB board at July 2026 prices), a 32 GB or larger A2-rated microSD card, a 27 W USB-C supply, and the GNSS receiver from the bill of materials. Everything else can arrive later.
+You need a Raspberry Pi 5 (2 GB is enough and saves USD 110 over the 8 GB board at July 2026 prices), an endurance-rated microSD card, a 27 W USB-C supply, and the GNSS receiver. All four are in the bill of materials with sourced prices. Everything else can arrive later.
+
+Two of those are worth a sentence each, because the obvious choice is wrong in both cases. Buy the card for write endurance rather than for speed class: a node writes its spool continuously for years and never launches an application, so the A2 random-read rating that sells consumer cards buys nothing here, and a card that wears out takes with it the only copy of anything the grid has not yet acknowledged. Buy the supply for its Power Delivery profile: the Pi 5 asks for 5 A over USB-C and quietly settles for 3 A on a supply that cannot offer it, which caps everything downstream of the USB ports at 600 mA. A node that runs for weeks and then starts dropping a channel under load is usually a node on a phone charger.
 
 Two things are worth knowing now. The node runs headless, so you will need either SSH or a serial console. And the single most common way this build fails is skipping the pulse-per-second wiring in step 3, because it is fiddly and nothing appears broken without it. A node without PPS can never contribute to multi-node geometry, which is most of what the grid is for.
 

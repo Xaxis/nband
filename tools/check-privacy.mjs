@@ -32,7 +32,7 @@ let failures = 0
 async function check(name, fn) {
   try {
     const note = await fn()
-    console.log(`  ok    ${name}${note ? ` , ${note}` : ''}`)
+    console.log(`  ok    ${name}${note ? `: ${note}` : ''}`)
   } catch (err) {
     failures++
     console.log(`  FAIL  ${name}\n        ${err.message}`)

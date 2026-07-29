@@ -1,0 +1,209 @@
+{
+  "generatedFrom": "schema/hardware.json",
+  "sheets": [
+    {
+      "tier": "t1",
+      "label": "Tier 1 - Baseline",
+      "parts": 10,
+      "covered": [
+        "pi5-2gb",
+        "gnss-lc29h",
+        "cam-hq-imx477",
+        "cam-noir-imx477",
+        "sdr-rtl-v3",
+        "env-bme688",
+        "imu-bno085",
+        "lwir-mlx90640",
+        "psu-usbc-27w",
+        "storage-microsd-64gb"
+      ],
+      "facts": {
+        "power": {
+          "stages": [
+            "mains",
+            "psu"
+          ],
+          "draw": 10.8,
+          "peak": 10.8,
+          "headroom": 60
+        },
+        "signal": {
+          "i2c": [
+            "env-bme688",
+            "imu-bno085",
+            "lwir-mlx90640"
+          ],
+          "uart": [
+            "gnss-lc29h"
+          ],
+          "csi": [
+            "cam-hq-imx477",
+            "cam-noir-imx477"
+          ],
+          "usb": [
+            "sdr-rtl-v3"
+          ],
+          "none": [
+            "psu-usbc-27w",
+            "storage-microsd-64gb"
+          ]
+        },
+        "host": "pi5-2gb",
+        "hub": null
+      },
+      "href": "/boards/t1-system.svg"
+    },
+    {
+      "tier": "t2",
+      "label": "Tier 2 - Core",
+      "parts": 16,
+      "covered": [
+        "pi5-4gb",
+        "gnss-lc29h",
+        "cam-hq-imx477",
+        "cam-noir-imx477",
+        "sdr-rtl-v3",
+        "env-bme688",
+        "imu-bno085",
+        "lwir-lepton35",
+        "uv-as7331",
+        "radar-ld2450",
+        "mag-rm3100",
+        "mic-ics43434",
+        "case-pelican1500",
+        "power-solar-150w",
+        "storage-microsd-64gb",
+        "pwr-ina226"
+      ],
+      "facts": {
+        "power": {
+          "stages": [
+            "panel",
+            "mppt",
+            "battery",
+            "rail"
+          ],
+          "draw": 12.8,
+          "peak": 12.8,
+          "headroom": 83
+        },
+        "signal": {
+          "i2c": [
+            "env-bme688",
+            "imu-bno085",
+            "uv-as7331",
+            "pwr-ina226"
+          ],
+          "spi": [
+            "mag-rm3100"
+          ],
+          "uart": [
+            "gnss-lc29h",
+            "radar-ld2450"
+          ],
+          "i2s": [
+            "mic-ics43434"
+          ],
+          "csi": [
+            "cam-hq-imx477",
+            "cam-noir-imx477"
+          ],
+          "usb": [
+            "sdr-rtl-v3",
+            "lwir-lepton35"
+          ],
+          "none": [
+            "case-pelican1500",
+            "power-solar-150w",
+            "storage-microsd-64gb"
+          ]
+        },
+        "host": "pi5-4gb",
+        "hub": null
+      },
+      "href": "/boards/t2-system.svg"
+    },
+    {
+      "tier": "t3",
+      "label": "Tier 3 - Extended",
+      "parts": 22,
+      "covered": [
+        "pi5-8gb",
+        "gnss-lc29h",
+        "cam-hq-imx477",
+        "cam-noir-imx477",
+        "sdr-rtl-v3",
+        "env-bme688",
+        "imu-bno085",
+        "lwir-lepton35",
+        "uv-as7331",
+        "radar-iwr6843",
+        "mag-rm3100",
+        "mic-ics43434",
+        "gamma-csi-sipm",
+        "swir-ingaas640",
+        "seis-sm24",
+        "sem-ir-beacon",
+        "case-pelican1500",
+        "power-solar-200w",
+        "usb-hub-powered",
+        "storage-microsd-64gb",
+        "adc-ads1256",
+        "pwr-ina226"
+      ],
+      "facts": {
+        "power": {
+          "stages": [
+            "panel",
+            "mppt",
+            "battery",
+            "rail"
+          ],
+          "draw": 24.6,
+          "peak": 28,
+          "headroom": 77
+        },
+        "signal": {
+          "i2c": [
+            "env-bme688",
+            "imu-bno085",
+            "uv-as7331",
+            "pwr-ina226"
+          ],
+          "spi": [
+            "mag-rm3100",
+            "adc-ads1256"
+          ],
+          "uart": [
+            "gnss-lc29h"
+          ],
+          "i2s": [
+            "mic-ics43434"
+          ],
+          "gpio": [
+            "sem-ir-beacon"
+          ],
+          "csi": [
+            "cam-hq-imx477",
+            "cam-noir-imx477"
+          ],
+          "usb": [
+            "sdr-rtl-v3",
+            "lwir-lepton35",
+            "radar-iwr6843",
+            "gamma-csi-sipm",
+            "swir-ingaas640"
+          ],
+          "none": [
+            "case-pelican1500",
+            "power-solar-200w",
+            "storage-microsd-64gb"
+          ]
+        },
+        "host": "pi5-8gb",
+        "hub": "usb-hub-powered"
+      },
+      "href": "/boards/t3-system.svg"
+    }
+  ]
+}

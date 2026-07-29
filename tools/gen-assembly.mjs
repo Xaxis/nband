@@ -156,6 +156,28 @@ function assemblyFor(tier) {
     }
   }
 
+  // 1b. Parts that live in a slot on the host rather than beside it. The boot
+  //     card is one, and it is drawn because a bill of materials that omits it
+  //     omits the only copy of anything the grid has not yet acknowledged. It
+  //     is placed at the feature it names, pushed just clear of the board edge
+  //     so it reads as inserted rather than buried.
+  for (const p of by('host-slot')) {
+    const m = p.mechanical
+    const f = (host?.mechanical.features ?? []).find((x) => x.id === m.plugsInto)
+    if (!host || !f) {
+      // Falling through would drop the part from the assembly, which the
+      // coverage assertion below turns into a build failure rather than a
+      // quietly incomplete picture.
+      continue
+    }
+    push(
+      p,
+      f.x + f.w / 2 - host.mechanical.widthMm / 2,
+      -m.heightMm / 2, // the slot is on the underside of the board
+      f.y + f.d / 2 - host.mechanical.depthMm / 2 - m.depthMm * 0.3,
+    )
+  }
+
   // 2. Any HAT that is a bought board rather than the generated carrier. The
   //    GNSS receiver is one, and it was silently absent from every assembly:
   //    its mount is 'hat', the hat slot was assumed to mean the carrier, and

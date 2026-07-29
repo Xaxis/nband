@@ -776,22 +776,22 @@ export const TIER: Record<Tier, TierMeta> = {
   "t1": {
     "id": "t1",
     "label": "Tier 1 - Baseline",
-    "budgetUsd": 460,
-    "summary": "Visible, near-infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid.",
+    "budgetUsd": 510,
+    "summary": "Visible, near-infrared, long-wave infrared, radio, environmental, and disciplined time. The minimum configuration that can contribute usefully to the grid.",
     "buildable": true
   },
   "t2": {
     "id": "t2",
     "label": "Tier 2 - Core",
-    "budgetUsd": 1650,
-    "summary": "Adds long-wave infrared, ultraviolet, millimetre-wave radar, acoustic, and magnetometry. The configuration the build guide is written against.",
+    "budgetUsd": 1670,
+    "summary": "Adds ultraviolet, millimetre-wave radar, acoustic, and magnetometry, and upgrades the thermal array to a 160x120 imager. This is the first tier that survives outdoors, and the weatherproof case and solar supply are most of the price increase rather than the sensors. The configuration the build guide is written against.",
     "buildable": true
   },
   "t3": {
     "id": "t3",
     "label": "Tier 3 - Extended",
     "budgetUsd": 5350,
-    "summary": "Adds short-wave infrared, wideband SDR, gamma spectroscopy, and a seismometer. Research-grade coverage without research-grade cost.",
+    "summary": "Adds short-wave infrared, gamma spectroscopy, and a seismometer, and replaces the presence radar with an imaging one. The short-wave imager is close to half the tier on its own. Research-grade coverage without research-grade cost.",
     "buildable": true
   },
   "tr": {
@@ -2191,7 +2191,8 @@ export const PARTS: readonly Part[] = [
           "round": true
         }
       ]
-    }
+    },
+    "poweredBy": "usb-hub-powered"
   },
   {
     "id": "env-bme688",
@@ -2437,7 +2438,8 @@ export const PARTS: readonly Part[] = [
       "dimensionsSourced": false,
       "note": "Approximate PureThermal carrier footprint.",
       "plugsInto": "usb3a"
-    }
+    },
+    "poweredBy": "usb-hub-powered"
   },
   {
     "id": "lwir-mlx90640",
@@ -2764,7 +2766,8 @@ export const PARTS: readonly Part[] = [
       "dimensionsSourced": false,
       "note": "Approximate evaluation-module footprint.",
       "plugsInto": "usb2a"
-    }
+    },
+    "poweredBy": "usb-hub-powered"
   },
   {
     "id": "mag-rm3100",
@@ -3020,7 +3023,8 @@ export const PARTS: readonly Part[] = [
       "dimensionsSourced": false,
       "note": "Approximate; the CsI crystal sets the depth.",
       "plugsInto": "usb2a"
-    }
+    },
+    "poweredBy": "usb-hub-powered"
   },
   {
     "id": "swir-ingaas640",
@@ -3063,7 +3067,8 @@ export const PARTS: readonly Part[] = [
       "dimensionsSourced": false,
       "note": "Approximate camera body with lens.",
       "plugsInto": "usb3a"
-    }
+    },
+    "poweredBy": "usb-hub-powered"
   },
   {
     "id": "seis-sm24",
@@ -3138,7 +3143,8 @@ export const PARTS: readonly Part[] = [
           "round": true
         }
       ]
-    }
+    },
+    "connectsTo": "adc-ads1256"
   },
   {
     "id": "sem-ir-beacon",
@@ -3295,7 +3301,37 @@ export const PARTS: readonly Part[] = [
       "mount": "external",
       "dimensionsSourced": false,
       "note": "Approximate 120 W panel; the MPPT and battery are separate bodies not modelled."
-    }
+    },
+    "powerChain": [
+      {
+        "id": "panel",
+        "label": "120 W panel",
+        "detail": "4 peak-sun-hours assumed",
+        "outV": 18,
+        "outW": 120
+      },
+      {
+        "id": "mppt",
+        "label": "30 A MPPT controller",
+        "detail": "tracks panel Vmp against battery state",
+        "outV": 14.4,
+        "outW": 115
+      },
+      {
+        "id": "battery",
+        "label": "180 Ah LiFePO4",
+        "detail": "2160 Wh, 50 percent usable, 3 days autonomy",
+        "outV": 12.8,
+        "outW": null
+      },
+      {
+        "id": "rail",
+        "label": "5 V regulator",
+        "detail": "feeds the Pi and the header rails",
+        "outV": 5,
+        "outW": 75
+      }
+    ]
   },
   {
     "id": "power-solar-200w",
@@ -3331,7 +3367,37 @@ export const PARTS: readonly Part[] = [
       "mount": "external",
       "dimensionsSourced": false,
       "note": "Approximate 220 W array; the MPPT and battery are separate bodies not modelled."
-    }
+    },
+    "powerChain": [
+      {
+        "id": "panel",
+        "label": "220 W array",
+        "detail": "4 peak-sun-hours assumed",
+        "outV": 18,
+        "outW": 220
+      },
+      {
+        "id": "mppt",
+        "label": "40 A MPPT controller",
+        "detail": "tracks panel Vmp against battery state",
+        "outV": 14.4,
+        "outW": 210
+      },
+      {
+        "id": "battery",
+        "label": "300 Ah LiFePO4",
+        "detail": "3840 Wh, 50 percent usable, 3 days autonomy",
+        "outV": 12.8,
+        "outW": null
+      },
+      {
+        "id": "rail",
+        "label": "5 V regulator",
+        "detail": "feeds the Pi and the header rails",
+        "outV": 5,
+        "outW": 120
+      }
+    ]
   },
   {
     "id": "usb-hub-powered",
@@ -3399,6 +3465,115 @@ export const PARTS: readonly Part[] = [
           "base": 3
         }
       ]
+    }
+  },
+  {
+    "id": "psu-usbc-27w",
+    "category": "power",
+    "band": null,
+    "vendor": "Raspberry Pi",
+    "model": "27 W USB-C power supply",
+    "status": "reference",
+    "tiers": [
+      "t1"
+    ],
+    "priceUsd": 12.95,
+    "priceAsOf": "2026-07-29",
+    "sourceUrl": "https://www.pishop.us/product/raspberry-pi-27w-usb-c-power-supply-black-us/",
+    "interface": "none",
+    "driver": null,
+    "keySpecs": {
+      "outputV": 5.1,
+      "outputA": 5,
+      "outputW": 27,
+      "connector": "USB-C PD"
+    },
+    "powerChain": [
+      {
+        "id": "mains",
+        "label": "Mains",
+        "detail": "no autonomy: the node stops when the grid does",
+        "outV": null,
+        "outW": null
+      },
+      {
+        "id": "psu",
+        "label": "27 W USB-C supply",
+        "detail": "5 A PD profile, negotiated not assumed",
+        "outV": 5.1,
+        "outW": 27
+      }
+    ],
+    "alternatives": [],
+    "candidateAlternatives": [],
+    "electrical": {
+      "idleW": 0,
+      "activeW": 0,
+      "rail": "none",
+      "pins": []
+    },
+    "notes": "Tier 1 is mains powered and this is what powers it. The Pi 5 negotiates 5 A over USB-C Power Delivery and falls back to 3 A on a supply that cannot offer it, which silently caps the current available to USB peripherals at 600 mA. A node that runs for weeks and then drops a channel under load is usually a node on a phone charger. Tiers 2 and 3 do not list this part because their 5 V rail comes off the solar regulator.",
+    "mechanical": {
+      "widthMm": 45,
+      "depthMm": 45,
+      "heightMm": 30,
+      "mount": "external",
+      "dimensionsSourced": false,
+      "note": "Approximate wall-plug body. Lives outside the enclosure.",
+      "detail": [
+        {
+          "id": "body",
+          "label": "supply body",
+          "x": 0,
+          "y": 0,
+          "w": null,
+          "d": null,
+          "h": 30,
+          "colour": "#1c1f24",
+          "fill": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "storage-microsd-64gb",
+    "category": "storage",
+    "band": null,
+    "vendor": "SanDisk",
+    "model": "High Endurance microSDXC 64 GB",
+    "status": "reference",
+    "tiers": [
+      "t1",
+      "t2",
+      "t3"
+    ],
+    "priceUsd": 34.95,
+    "priceAsOf": "2026-07-29",
+    "sourceUrl": "https://www.pishop.us/product/sandisk-64gb-high-endurance-microsdxc-card/",
+    "interface": "none",
+    "driver": null,
+    "keySpecs": {
+      "capacityGb": 64,
+      "speedClass": "Class 10 U1",
+      "endurance": "rated for continuous recording"
+    },
+    "alternatives": [],
+    "candidateAlternatives": [],
+    "electrical": {
+      "idleW": 0,
+      "activeW": 0,
+      "rail": "3V3",
+      "pins": []
+    },
+    "notes": "Endurance rated rather than speed rated, which is the opposite of the usual advice and is deliberate. A node writes its spool continuously for years and never launches an application, so the A2 random-IOPS class that sells consumer cards buys nothing here while the write endurance that wears them out buys everything. A card that fails takes the local spool with it, which is the only copy of anything the grid has not yet acknowledged. 64 GB is far more than the spool needs; the smaller cards in this range are not cheaper by enough to matter.",
+    "mechanical": {
+      "widthMm": 15,
+      "depthMm": 11,
+      "heightMm": 1,
+      "mount": "host-slot",
+      "dimensionsSourced": true,
+      "note": "microSD form factor, 15 x 11 x 1 mm. Sits in the Pi's card slot.",
+      "plugsInto": "sd"
     }
   },
   {
@@ -3597,7 +3772,11 @@ export const PARTS: readonly Part[] = [
           "base": 1.2
         }
       ]
-    }
+    },
+    "measuresBetween": [
+      "battery",
+      "rail"
+    ]
   }
 ] as unknown as readonly Part[]
 export const PRICES_AS_OF = '2026-07-27' as const

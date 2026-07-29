@@ -461,10 +461,17 @@ export function TelemetryView({
             { k: 'Tier', v: node.tier.toUpperCase() },
             {
               k: 'Clock',
-              v: node.clock === 'gnss_pps' ? `PPS ±${node.clockOffsetNs ?? ', '} ns` : node.clock,
+              // A locked clock with no offset reported is not a zero-offset
+              // clock, and printing a bare unit beside nothing reads as one.
+              v:
+                node.clock === 'gnss_pps'
+                  ? node.clockOffsetNs != null
+                    ? `PPS ±${node.clockOffsetNs} ns`
+                    : 'PPS, offset not reported'
+                  : node.clock,
             },
             { k: 'Bands', v: String(node.bands.length) },
-            { k: 'Power', v: node.powerW != null ? `${node.powerW.toFixed(1)} W` : ', ' },
+            { k: 'Power', v: node.powerW != null ? `${node.powerW.toFixed(1)} W` : 'not reported' },
             { k: 'Firmware', v: node.firmwareVersion },
           ].map((s) => (
             <div key={s.k}>

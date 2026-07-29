@@ -29,6 +29,26 @@
           "boardOnly": true
         },
         {
+          "id": "storage-microsd-64gb",
+          "label": "SanDisk High Endurance microSDXC 64 GB",
+          "band": null,
+          "hue": null,
+          "mount": "host-slot",
+          "size": [
+            15,
+            1,
+            11
+          ],
+          "pos": [
+            -14.5,
+            -0.5,
+            -31.7
+          ],
+          "sourced": true,
+          "note": "microSD form factor, 15 x 11 x 1 mm. Sits in the Pi's card slot.",
+          "interface": "none"
+        },
+        {
           "id": "gnss-lc29h",
           "label": "Quectel / Waveshare LC29H(DA) RTK HAT with PPS",
           "band": "nav",
@@ -493,6 +513,48 @@
           "note": "Points at the sky through a germanium window. Mounted at the enclosure wall."
         },
         {
+          "id": "psu-usbc-27w",
+          "label": "Raspberry Pi 27 W USB-C power supply",
+          "band": null,
+          "hue": null,
+          "mount": "external",
+          "size": [
+            45,
+            30,
+            45
+          ],
+          "pos": [
+            -282.5,
+            15,
+            190
+          ],
+          "sourced": false,
+          "note": "Approximate wall-plug body. Lives outside the enclosure.",
+          "interface": "none",
+          "remote": true,
+          "shell": true
+        },
+        {
+          "id": "psu-usbc-27w-body",
+          "label": "supply body",
+          "parent": "psu-usbc-27w",
+          "mount": "detail",
+          "size": [
+            45,
+            30,
+            45
+          ],
+          "pos": [
+            -282.5,
+            15,
+            190
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Approximate wall-plug body. Lives outside the enclosure."
+        },
+        {
           "id": "standoff-gnss-lc29h--29--24.5",
           "label": "M2.5 standoff",
           "mount": "standoff",
@@ -943,6 +1005,21 @@
       ],
       "cables": [
         {
+          "id": "cable-storage-microsd-64gb",
+          "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
+          "from": [
+            -14.5,
+            -0.5,
+            -26.2
+          ],
+          "to": [
+            -14.5,
+            2.4000000000000004,
+            -29.2
+          ],
+          "kind": "cable"
+        },
+        {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
@@ -1001,12 +1078,27 @@
             -22.400000000000002
           ],
           "kind": "cable"
+        },
+        {
+          "id": "cable-psu-usbc-27w",
+          "label": "Raspberry Pi 27 W USB-C power supply to the carrier",
+          "from": [
+            -260,
+            15,
+            190
+          ],
+          "to": [
+            -36,
+            51.4,
+            22.400000000000002
+          ],
+          "kind": "cable"
         }
       ],
       "counts": {
-        "total": 48,
-        "sourced": 11,
-        "approximate": 37,
+        "total": 51,
+        "sourced": 12,
+        "approximate": 39,
         "onCarrier": 1,
         "onWall": 2,
         "usb": 1,
@@ -1037,6 +1129,26 @@
           "note": "Raspberry Pi 5 mechanical spec.",
           "interface": "host",
           "boardOnly": true
+        },
+        {
+          "id": "storage-microsd-64gb",
+          "label": "SanDisk High Endurance microSDXC 64 GB",
+          "band": null,
+          "hue": null,
+          "mount": "host-slot",
+          "size": [
+            15,
+            1,
+            11
+          ],
+          "pos": [
+            -14.5,
+            -0.5,
+            -31.7
+          ],
+          "sourced": true,
+          "note": "microSD form factor, 15 x 11 x 1 mm. Sits in the Pi's card slot.",
+          "interface": "none"
         },
         {
           "id": "gnss-lc29h",
@@ -2357,6 +2469,21 @@
       ],
       "cables": [
         {
+          "id": "cable-storage-microsd-64gb",
+          "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
+          "from": [
+            -14.5,
+            -0.5,
+            -26.2
+          ],
+          "to": [
+            -14.5,
+            2.4000000000000004,
+            -29.2
+          ],
+          "kind": "cable"
+        },
+        {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
@@ -2478,8 +2605,8 @@
         }
       ],
       "counts": {
-        "total": 68,
-        "sourced": 12,
+        "total": 69,
+        "sourced": 13,
         "approximate": 56,
         "onCarrier": 2,
         "onWall": 4,
@@ -2511,6 +2638,26 @@
           "note": "Raspberry Pi 5 mechanical spec.",
           "interface": "host",
           "boardOnly": true
+        },
+        {
+          "id": "storage-microsd-64gb",
+          "label": "SanDisk High Endurance microSDXC 64 GB",
+          "band": null,
+          "hue": null,
+          "mount": "host-slot",
+          "size": [
+            15,
+            1,
+            11
+          ],
+          "pos": [
+            -14.5,
+            -0.5,
+            -31.7
+          ],
+          "sourced": true,
+          "note": "microSD form factor, 15 x 11 x 1 mm. Sits in the Pi's card slot.",
+          "interface": "none"
         },
         {
           "id": "gnss-lc29h",
@@ -4076,6 +4223,21 @@
       ],
       "cables": [
         {
+          "id": "cable-storage-microsd-64gb",
+          "label": "SanDisk High Endurance microSDXC 64 GB to microSD",
+          "from": [
+            -14.5,
+            -0.5,
+            -26.2
+          ],
+          "to": [
+            -14.5,
+            2.4000000000000004,
+            -29.2
+          ],
+          "kind": "cable"
+        },
+        {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
@@ -4227,8 +4389,8 @@
         }
       ],
       "counts": {
-        "total": 80,
-        "sourced": 12,
+        "total": 81,
+        "sourced": 13,
         "approximate": 68,
         "onCarrier": 2,
         "onWall": 4,

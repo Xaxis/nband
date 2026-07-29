@@ -19,20 +19,71 @@ export function PanZoom({
   src,
   alt,
   surface = 'light',
+  initial = 'actual',
+  maxHeight = 900,
 }: {
   src: string
   alt: string
   surface?: 'light' | 'dark'
+  /**
+   * Where the view starts. A board schematic is close to a metre wide and is
+   * read by moving around it, so it opens at full size. A drawing laid out to
+   * be taken in whole opens fitted, because opening it cropped into the middle
+   * of its own signal section hides that it has a power chain at all.
+   */
+  initial?: 'actual' | 'fit'
+  /** Ceiling on the fitted frame, so a tall sheet cannot own the whole viewport. */
+  maxHeight?: number
 }) {
   const frameRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
   const [t, setT] = useState({ x: 0, y: 0, k: 1 })
   const drag = useRef<{ x: number; y: number; ox: number; oy: number } | null>(null)
   const [hint, setHint] = useState(false)
 
-  // No effect resets this when `src` changes, because nothing needs to: the
-  // parent gives each view its own `key`, so switching tier or view remounts
-  // the frame and the transform starts at identity again.
-  const reset = useCallback(() => setT({ x: 0, y: 0, k: 1 }), [])
+  // A fitted frame takes its height from the drawing rather than the other way
+  // round. Fitting a tall drawing into a fixed-height box letterboxes it, and
+  // the first attempt did exactly that: the sheet arrived scaled to the frame's
+  // height with a third of its width unused and its last two rows still cut
+  // off. The height is capped so a very tall sheet still cannot run away with
+  // the page.
+  const [frameH, setFrameH] = useState<number | null>(null)
+
+  // The fitted scale is held in state rather than recomputed from the refs on
+  // demand. Reading a ref inside a callback that render then puts in an array
+  // is exactly what react-hooks/refs forbids, and the rule is right: the value
+  // only changes when the image loads or the frame resizes, both of which are
+  // effects, so it belongs in state where a re-render can see it.
+  const [fitK, setFitK] = useState(1)
+
+  // Fit on load and on resize.
+  const applyFit = useCallback(() => {
+    const frame = frameRef.current
+    const img = imgRef.current
+    if (!frame || !img?.naturalWidth) return
+    const k = Math.min(1, frame.clientWidth / img.naturalWidth)
+    setFitK(k)
+    setFrameH(Math.min(maxHeight, Math.round(img.naturalHeight * k)))
+    // Only while the reader has not moved. Rescaling under someone who zoomed
+    // in to read a pin label is worse than a slightly wrong scale.
+    setT((p) => (p.x === 0 && p.y === 0 ? { ...p, k } : p))
+  }, [maxHeight])
+
+  // Reset returns to wherever the view started, not to 100 percent. Sending a
+  // fitted drawing to 1:1 is not a reset, it is a different view.
+  const reset = useCallback(() => {
+    setT({ x: 0, y: 0, k: initial === 'fit' ? fitK : 1 })
+  }, [initial, fitK])
+
+  useEffect(() => {
+    if (initial !== 'fit') return
+    if (imgRef.current?.complete) applyFit()
+    const frame = frameRef.current
+    if (!frame || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(applyFit)
+    ro.observe(frame)
+    return () => ro.disconnect()
+  }, [initial, applyFit, src])
 
   const zoomBy = useCallback((factor: number) => {
     setT((p) => ({ ...p, k: Math.min(8, Math.max(0.4, p.k * factor)) }))
@@ -127,9 +178,10 @@ export function PanZoom({
         // width of the screen and the page cannot be scrolled past it at all.
         // Vertical drags scroll the page; horizontal drags pan the drawing,
         // which is the axis that actually needs panning on a wide schematic.
-        className={`relative h-[420px] w-full cursor-grab touch-pan-y overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] active:cursor-grabbing sm:h-[520px] ${
-          surface === 'light' ? 'bg-[#f6f4ef]' : 'bg-[#0b0d10]'
-        }`}
+        style={frameH ? { height: frameH } : undefined}
+        className={`relative w-full cursor-grab touch-pan-y overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] active:cursor-grabbing ${
+          frameH ? '' : 'h-[420px] sm:h-[520px]'
+        } ${surface === 'light' ? 'bg-[#f6f4ef]' : 'bg-[#0b0d10]'}`}
         aria-label={`${alt}. Drag to pan. Hold Control or Command and scroll to zoom. Arrow keys pan, plus and minus zoom, zero resets.`}
         role="group"
       >
@@ -138,7 +190,14 @@ export function PanZoom({
           style={{ transform: `translate(-50%, -50%) translate(${t.x}px, ${t.y}px) scale(${t.k})` }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt={alt} draggable={false} className="max-w-none select-none" />
+          <img
+            ref={imgRef}
+            src={src}
+            alt={alt}
+            draggable={false}
+            onLoad={() => initial === 'fit' && applyFit()}
+            className="max-w-none select-none"
+          />
         </div>
 
         {hint && (
@@ -148,7 +207,10 @@ export function PanZoom({
         )}
       </div>
 
-      <div className="absolute right-2 top-2 flex gap-1">
+      {/* Bottom right, not top right. Technical drawings put their title block
+          and their caveats at the top, which is precisely what a floating
+          control cluster must not cover. */}
+      <div className="absolute bottom-2 right-2 flex gap-1">
         {[
           ['−', () => zoomBy(1 / 1.25), 'Zoom out'],
           ['+', () => zoomBy(1.25), 'Zoom in'],

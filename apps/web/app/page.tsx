@@ -34,9 +34,10 @@ export default function HomePage() {
 
           <p className="mt-4 max-w-[60ch] text-[16.5px] leading-relaxed text-[var(--ink-2)] sm:text-[18px]">
             <span className="text-[var(--ink)]">nband is a fix for the evidence.</span> A sensor
-            node you can build for the price of a used laptop, watching up to thirteen bands at once,
-            timestamped to GPS within a few hundred nanoseconds, publishing everything it records
-            to an open archive. Most of what it catches will be aircraft. That is the point: you
+            node watching up to thirteen bands at once, timestamped to GPS within a few hundred
+            nanoseconds, publishing everything it records to an open archive. The entry build
+            costs about what a used laptop does and watches six of those bands; thirteen is the
+            full build. Most of what any of them catches will be aircraft. That is the point: you
             cannot say a thing is unexplained until you have properly ruled out the explanations.
           </p>
 
@@ -74,25 +75,21 @@ export default function HomePage() {
               value="13"
               label="Bands one node can watch at once"
               detail="Six on the entry build. Gamma through radio, plus sound and ground motion"
-              accent="#4ea9ff"
             />
             <Stat
               value="±500 ns"
               label="Timing accuracy"
               detail="Two nodes this precise triangulate a real altitude"
-              accent="#199e70"
             />
             <Stat
               value={`$${tierCost('t1').toFixed(0)}`}
               label="To build the entry node"
               detail="Every price sourced and dated, nothing estimated"
-              accent="#c98500"
             />
             <Stat
               value="0"
               label="Things it will claim to identify"
               detail="It reports what it could not explain. Never what it was."
-              accent="#d55181"
             />
           </div>
         </Container>
@@ -106,13 +103,14 @@ export default function HomePage() {
           <>
             <p>
               Every famous piece of UAP footage has the same flaw. A bright shape on one sensor,
-              filmed at unknown range, with no independent measurement of anything. Is it enormous
-              and distant or small and close? Is it hot? Is it transmitting? Was it silent? Nobody
-              can say, so the argument never ends, and it never ends because the recording never
-              contained the answer in the first place.
+              filmed at unknown range, with no independent measurement of anything. Nothing in the
+              recording distinguishes enormous and distant from small and close, or says whether
+              the thing was hot, whether it was transmitting, or whether it made a sound. The
+              argument never ends, and it never ends because the recording never contained the
+              answer in the first place.
             </p>
             <p className="mt-3">
-              The way out is asking thirteen other bands what they saw at the same instant.
+              The way out is asking every other band what it saw at the same instant.
               Something with an engine is hot in the thermal band and audible seconds later. A
               satellite is exactly where the orbital catalogue says it will be. A transmitting
               drone shows up on the radio. An insect near the lens shows up nowhere else at all.
@@ -155,11 +153,15 @@ export default function HomePage() {
       <Section
         className="border-y border-[var(--line)] bg-[var(--surface-0)]"
         eyebrow="What it sees"
-        title="Fourteen ways of being wrong about the same object"
-        lede="These are not fourteen versions of one picture. Each responds to different physics, fails in different weather, and is fooled by different things. An object that survives all of them at once is genuinely difficult to explain, and that is the only kind of claim worth making."
+        title="Twelve ways of being wrong about the same object"
+        lede="These are not twelve versions of one picture. Each responds to different physics, fails in different weather, and is fooled by different things. Two further bands, environmental and navigation, provide context rather than detections and are not counted here. An object that survives all of them at once is genuinely difficult to explain, and that is the only kind of claim worth making."
       >
         <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {DETECTION_BANDS.slice(0, 9).map((b) => (
+          {/* All twelve, not nine of them. A heading that counts the detection
+              bands above a grid showing three fewer invites the reader to
+              count, and the three it dropped were the last three in wavelength
+              order rather than the three least interesting. */}
+          {DETECTION_BANDS.map((b) => (
             <Link
               key={b.id}
               href={`/bands#${b.id}`}

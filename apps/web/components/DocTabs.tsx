@@ -122,13 +122,20 @@ export function DocTabs({ tabs, label }: { tabs: DocTab[]; label: string }) {
         </Container>
       </div>
 
-      {active.hint && (
-        <Container>
+      {/* An h2 per panel, not just a tab label. A tablist is a control, not an
+          outline: with four of five panels hidden and out of the accessibility
+          tree, a reader navigating by heading found a page with one h1 and
+          nothing beneath it. The heading is visually hidden because the tab
+          above already reads as the title, but it exists in the document so
+          the outline is not a lie. */}
+      <Container>
+        <h2 className="sr-only">{active.label}</h2>
+        {active.hint && (
           <p className="max-w-[68ch] pt-7 text-[14px] leading-relaxed text-[var(--ink-2)]">
             {active.hint}
           </p>
-        </Container>
-      )}
+        )}
+      </Container>
 
       {/* Every panel stays mounted and inactive ones carry `hidden`, so
           switching back is instant and any anchor inside a closed panel is
@@ -139,8 +146,17 @@ export function DocTabs({ tabs, label }: { tabs: DocTab[]; label: string }) {
           and an earlier version of this comment claimed it did. `hidden` takes
           the subtree out of the accessibility tree and out of find. Four fifths
           of this page is therefore invisible to Ctrl-F while a panel is open,
-          which is the honest cost of panelling it. Site search covers the same
-          content and is one keystroke away. */}
+          which is the honest cost of panelling it.
+
+          Site search is the mitigation, and for a while that was a claim rather
+          than a fact: build-search-index.mjs walked nav.ts and content/*.md,
+          both of which are blind to a TSX page, so /hardware held one entry and
+          four of its five panels were unreachable by any means. Searching
+          "carrier board" returned nothing at all. The index now reads the tab
+          literals directly and emits one entry per panel with its hint as the
+          snippet, and it throws rather than emitting zero if that shape ever
+          changes. Do not weaken that: an index that silently stops covering
+          these panels looks exactly like one that does. */}
       {tabs.map((t) => (
         <div
           key={t.id}

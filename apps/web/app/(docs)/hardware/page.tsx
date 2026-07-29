@@ -8,15 +8,19 @@ import {
 } from '../../../components/HardwareVisuals'
 import { Button, Container, Note, Section } from '../../../components/ui'
 import { CarrierBoards } from '../../../components/CarrierBoard'
+import { SystemArchitecture } from '../../../components/SystemArchitecture'
 import { DocTabs } from '../../../components/DocTabs'
+import { TierScope } from '../../../components/TierScope'
 import {
   PARTS,
   PRICES_AS_OF,
   PRICE_NOTE,
   TIER,
+  TIER_ORDER as GENERATED_TIER_ORDER,
   VARIANTSTATUS,
   partsForTier,
   tierCost,
+  tierPower,
   type Part,
   type Tier,
 } from '../../../lib/schema/generated'
@@ -28,7 +32,11 @@ export const metadata = pageMetadata({
   path: '/hardware',
 })
 
-const TIER_ORDER: Tier[] = ['t1', 't2', 't3']
+// Derived from the registry rather than listed here. The research tier exists
+// in the enum so the schema can name an instrument class it cannot specify, and
+// it has no parts; a hardcoded list beside `buildable` is a second copy of that
+// fact waiting to disagree with the first.
+const TIER_ORDER: Tier[] = GENERATED_TIER_ORDER.filter((t) => TIER[t].buildable)
 
 function money(n: number) {
   return n === 0 ? 'recovered' : `$${n.toFixed(2)}`
@@ -57,8 +65,10 @@ function PartRow({ part }: { part: Part }) {
         </p>
       </td>
       <td className="px-3 py-3">
-        {part.band ? <BandChip band={part.band} size="sm" href={`/bands#${part.band}`} /> : (
-          <span className="num text-[11.5px] text-[var(--ink-3)]">, </span>
+        {part.band ? (
+          <BandChip band={part.band} size="sm" href={`/bands#${part.band}`} />
+        ) : (
+          <span className="num text-[11.5px] text-[var(--ink-3)]">no band</span>
         )}
       </td>
       <td className="num px-3 py-3 text-[12px] text-[var(--ink-3)]">{part.interface}</td>
@@ -81,6 +91,7 @@ function TierParts({ tier }: { tier: Tier }) {
   const parts = partsForTier(tier)
   const meta = TIER[tier]
   const total = tierCost(tier)
+  const bandCount = new Set(parts.map((p) => p.band).filter(Boolean)).size
   // A plain tier id, not "tier-t1". Twenty-four search results and the home
   // page have always linked to /hardware#t1; panelling the page turned those
   // into anchors inside a closed panel, and renaming them would have broken the
@@ -90,8 +101,13 @@ function TierParts({ tier }: { tier: Tier }) {
     <Section
       id={tier}
       className={`!pt-10 ${tier === 't2' ? 'border-y border-[var(--line)] bg-[var(--surface-0)]' : ''}`}
-      eyebrow={`${meta.label} · ${parts.length} parts`}
-      title={`$${total.toFixed(0)}, ${meta.summary.split('.')[0]}`}
+      // The title used to be the price plus the summary's first sentence, with
+      // the whole summary repeated as the lede directly beneath it. Two lines
+      // that start identically read as a rendering fault. The heading now
+      // carries what distinguishes the tier numerically and the lede says what
+      // it buys.
+      eyebrow={`${parts.length} parts · ${bandCount} bands · ${tierPower(tier).activeW.toFixed(1)} W`}
+      title={`${meta.label}, $${total.toFixed(0)}`}
       lede={meta.summary}
     >
       <div className="card scroll-x mt-7">
@@ -135,8 +151,12 @@ export default function HardwarePage() {
             What to buy, what it buys you, and what to skip.
           </h1>
           <p className="mt-5 max-w-[64ch] text-[16px] leading-relaxed text-[var(--ink-2)]">
-            Every price below was read off a named vendor page on {PRICES_AS_OF} and links back to
-            it. Nothing is estimated. The tiers are a suggestion about sequence rather than a
+            {/* "Below" was true when this was one long scroll. Panelling the
+                page made it false for anyone arriving on a link to #power or
+                #boards, where there are no prices below anything. */}
+            Every price in the bill of materials was read off a named vendor page on{' '}
+            {PRICES_AS_OF} and links back to it. Nothing is estimated. The tiers are a suggestion
+            about sequence rather than a
             product line: the grid accepts any combination of these parts, and any substitute you
             register. The cheapest useful node costs less than a phone.
           </p>
@@ -145,7 +165,12 @@ export default function HardwarePage() {
             {TIER_ORDER.map((t) => (
               <a
                 key={t}
-                href={`#tiers`}
+                // The tier's own anchor, not the panel's. All three cards
+                // pointed at #tiers, which no element carries and which is the
+                // panel already open on arrival, so every card was a click that
+                // moved nothing. DocTabs resolves an anchor to the panel
+                // containing it, so #t3 opens the right panel and scrolls.
+                href={`#${t}`}
                 className="card flex items-baseline justify-between p-4 transition-colors hover:border-[var(--line-strong)]"
               >
                 <span className="text-[14px] font-medium text-[var(--ink)]">{TIER[t].label}</span>
@@ -164,7 +189,7 @@ export default function HardwarePage() {
           {
             id: 'tiers',
             label: 'Build tiers',
-            hint: 'Three reference builds, priced from the same registry that generates every diagram on this page. The tiers are a suggestion about sequence rather than a product line.',
+            hint: 'Three reference builds, priced from the same registry that generates every diagram on this page. Tier 1 opens six bands and runs on mains power indoors. Tier 2 adds four more and is the first build that survives outdoors, which is most of what the step costs. Tier 3 adds three and doubles the power budget.',
             content: (
               <>
                 <Container className="pb-4 pt-7">
@@ -181,33 +206,69 @@ export default function HardwarePage() {
           {
             id: 'architecture',
             label: 'Architecture',
-            hint: 'What plugs into what, for the tier 2 reference node. Generated from the same registry as the bill of materials, so swapping a part moves the wiring with it.',
+            hint: 'The system schematic and the bus block diagram. Three chains: power from the panel to the load, signal from every sensor to the host, and data from the spool to the archive. Generated from the same registry as the bill of materials, so swapping a part moves the wiring with it.',
             content: (
               <Container className="py-9">
+                <SystemArchitecture />
+                <h3 className="eyebrow mb-3 mt-9">The buses, at a glance</h3>
                 <NodeBlockDiagram tier="t2" />
+                <p className="mt-5 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  The sheet above and the summary here answer different questions. The summary
+                  groups the tier&nbsp;2 sensors by the bus each one speaks, which is what you want
+                  when deciding whether a substitute part will fit. The sheet is the whole node:
+                  the power chain with the node&rsquo;s measured load at the end of it, the parts
+                  that reach the host through a converter or a hub rather than directly, and what
+                  happens to a reading after it leaves the board.
+                </p>
+                <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  Two details on the sheet are easy to read past and are the whole reason it
+                  exists. The geophone is drawn under the converter that reads it rather than in a
+                  lane of its own, because the Raspberry Pi has no analogue input and a diagram
+                  that runs a coil straight into the header describes a node nobody can build. The
+                  infrared beacon&rsquo;s arrow points away from the host: it is the one part the
+                  node drives rather than reads, and an emission the node forgot it commanded is an
+                  emission it cannot subtract from its own record.
+                </p>
               </Container>
             ),
           },
           {
             id: 'wiring',
             label: 'Wiring',
-            hint: 'Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal and is the one connection that must be exactly right.',
+            hint: 'The 40-pin header pinout and the per-sensor wiring table for the tier you select. Physical pin numbers, because that is what you count on the board. Pin 7 carries the pulse-per-second signal and is the one connection that must be exactly right.',
             content: (
               <Container className="py-9">
-                <div className="grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start">
-                  <PinoutDiagram tier="t2" />
-                  <div>
-                    <h3 className="eyebrow mb-3">Per sensor</h3>
-                    <WiringTable tier="t2" />
-                  </div>
-                </div>
+                <TierScope
+                  scope="wiring"
+                  panels={Object.fromEntries(
+                    TIER_ORDER.map((t) => [
+                      t,
+                      <div
+                        key={t}
+                        className="grid gap-6 lg:grid-cols-[minmax(0,460px)_1fr] lg:items-start"
+                      >
+                        <PinoutDiagram tier={t} />
+                        <div>
+                          <h3 className="eyebrow mb-3">Per sensor</h3>
+                          <WiringTable tier={t} />
+                        </div>
+                      </div>,
+                    ]),
+                  )}
+                />
+                <p className="mt-6 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  The tiers do not share a pinout, so wiring a tier&nbsp;3 node from the
+                  tier&nbsp;2 diagram lands two signals on pins that node has nothing connected to
+                  and leaves out the beacon&rsquo;s gate line entirely. Pick the tier you are
+                  building.
+                </p>
               </Container>
             ),
           },
           {
             id: 'boards',
             label: 'Carrier boards',
-            hint: 'Every part above records which physical header pin each of its signals lands on. That table is compiled to a netlist and routed, so a pin claimed twice, or asked to carry a signal it has no function for, fails the build rather than reaching a soldering iron.',
+            hint: 'Each part in the bill of materials records which physical header pin every one of its signals lands on. That table is compiled to a netlist and routed, so a pin claimed twice, or asked to carry a signal it has no function for, fails the build rather than reaching a soldering iron.',
             content: (
               <Container className="py-9">
                 <CarrierBoards />
@@ -217,10 +278,22 @@ export default function HardwarePage() {
           {
             id: 'power',
             label: 'Power',
-            hint: 'Summed from the parts in the tier. Panel and battery are sized against this figure, which is the one that decides whether an off-grid node survives a week of overcast.',
+            hint: 'The power budget, summed from the parts in the tier you select and never estimated. Solar panel and battery are sized against this figure, and it is the one that decides whether an off-grid node survives a week of overcast.',
             content: (
               <Container className="py-9">
-                <PowerBudget tier="t2" />
+                <TierScope
+                  scope="power"
+                  panels={Object.fromEntries(
+                    TIER_ORDER.map((t) => [t, <PowerBudget key={t} tier={t} />]),
+                  )}
+                />
+                <p className="mt-6 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  A tier&nbsp;3 node draws roughly twice a tier&nbsp;2 node, which is why the bill
+                  of materials sells two different solar kits rather than one. Sizing a
+                  tier&nbsp;3 build against the tier&nbsp;2 figure buys about half the panel it
+                  needs, and the failure arrives during the first overcast week, a long way from
+                  the bench.
+                </p>
               </Container>
             ),
           }, ...(uncategorised.length > 0

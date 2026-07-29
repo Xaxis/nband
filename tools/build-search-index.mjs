@@ -85,6 +85,44 @@ if (existsSync(contentDir)) {
   }
 }
 
+// --- panels inside the panelled pages ---------------------------------------
+//
+// /hardware and /bands are TSX rather than markdown, so the walk above indexed
+// them as a single entry each: the nav summary, pointing at a bare route. That
+// summary promises "wiring diagrams, pinout, and the power budget", none of
+// which is visible when you land, and DocTabs renders closed panels `hidden`,
+// which takes them out of find-on-page too. Searching "pinout" returned the
+// page and dropped the reader on the bill of materials with no onward signal,
+// and "carrier board" returned nothing at all.
+//
+// The tab definitions are the real source, so they are read from it. The hint
+// each panel already carries is written as a one-line description of that
+// panel, which is exactly what a search snippet is.
+const PANELLED = { '/hardware': 'Hardware', '/bands': 'Bands' }
+let panelCount = 0
+for (const [route, parent] of Object.entries(PANELLED)) {
+  const src = readFileSync(resolve(root, `apps/web/app/(docs)${route}/page.tsx`), 'utf8')
+  // Matches the tab object literal: id, then label, then hint, in that order.
+  // The label alternation covers the template-literal form, which one tab uses
+  // to interpolate a band count; matching only quoted strings dropped it and
+  // left the largest panel on /bands unfindable.
+  const re =
+    /id:\s*'([a-z0-9-]+)',\s*\n\s*label:\s*(?:'([^']*)'|`([^`]*)`),\s*\n\s*hint:\s*\n?\s*'([^']*)'/g
+  for (const m of src.matchAll(re)) {
+    // A template literal keeps its ${...} as written. Strip the interpolation
+    // rather than print it: "All ${DETECTION_BANDS.length} bands" as a search
+    // result title is worse than "All bands".
+    const title = (m[2] ?? m[3]).replace(/\$\{[^}]*\}\s*/g, '').replace(/\s+/g, ' ').trim()
+    add({ kind: 'section', title, href: `${route}#${m[1]}`, parent, text: m[4] })
+    panelCount += 1
+  }
+}
+if (panelCount === 0) {
+  // A silently empty match here would restore the exact gap this block closes,
+  // and it would look like a working index.
+  throw new Error('no DocTabs panels matched: the tab literal shape changed, so panels are unindexed')
+}
+
 // --- bands ------------------------------------------------------------------
 
 for (const b of bands.bands) {

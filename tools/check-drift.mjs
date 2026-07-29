@@ -205,10 +205,14 @@ check('off-grid power sizing matches the tier load', () => {
     const activeW = parts.reduce((sum, p) => sum + (p.electrical?.activeW ?? 0), 0)
     const dailyWh = activeW * 24
 
-    const power = parts.find((p) => p.category === 'power')
+    // The off-grid kit specifically, not merely the first part filed under
+    // power. Tier 1 is mains powered and lists a USB-C supply in that category;
+    // matching on the category alone made this read a 0 W panel off a wall wart
+    // and fail a tier that has no panel to size.
+    const power = parts.find((p) => p.keySpecs?.panelW)
     if (!power) continue
 
-    const panelW = Number(power.keySpecs?.panelW ?? 0)
+    const panelW = Number(power.keySpecs.panelW)
     const batteryWh = Number(power.keySpecs?.batteryWh ?? 0)
 
     // Four peak-sun-hours with a 35 percent margin; three days at 50 percent
@@ -688,6 +692,33 @@ check('band counts on the site match the registry', () => {
     errors.push(`the landing page stat does not read ${best}`)
   }
 
+  // Two more places on the same page counted bands by hand and both were wrong.
+  // The band-grid heading said "Fourteen ways of being wrong about the same
+  // object" over a grid of detection bands, counting the two context bands as
+  // ways of being wrong about an object they are not used to identify. And the
+  // paragraph above it said the way out is "asking thirteen other bands what
+  // they saw at the same instant", which with the camera it refers to asserts
+  // fourteen simultaneous channels: one more than the best tier reaches, and
+  // including the gravimetric band no node carries. The first check in this
+  // function exists because that same fourteen-simultaneous claim was made in
+  // the hero, so this is the identical error re-entering through prose the
+  // check did not read.
+  const cap = (w) => `${w[0].toUpperCase()}${w.slice(1)}`
+  if (!hero.includes(`${cap(words[detection])} ways of being wrong`)) {
+    errors.push(
+      `the landing page band grid is not headed "${cap(words[detection])} ways of being wrong": ` +
+        `${detection} bands carry role 'detection'`,
+    )
+  }
+  for (const n of [best, detection, 14]) {
+    if (new RegExp(`${words[n]} other bands`).test(hero)) {
+      errors.push(
+        `the landing page says "${words[n]} other bands" beside a single sensor, which claims ` +
+          `${n + 1} simultaneous channels; no tier exceeds ${best}`,
+      )
+    }
+  }
+
   const schemaDoc = readText('content/schema.md')
   if (!schemaDoc.includes(`${words[detection][0].toUpperCase()}${words[detection].slice(1)} are detection bands`)) {
     errors.push(`content/schema.md does not say there are ${words[detection]} detection bands`)
@@ -745,6 +776,151 @@ check('the documented wire protocol matches the ingest code', () => {
 
   if (errors.length) throw new Error(errors.join('; '))
   return `${new Set(headers).size} headers, canonical payload and skew window all documented`
+})
+
+check('each tier summary names the bands that tier actually gains', () => {
+  // These strings are rendered as the tier heading on /hardware and as the tier
+  // card on the landing page, and they drifted from the registry silently. The
+  // tier 1 summary omitted long-wave infrared while the tier 2 summary claimed
+  // to add it, so the page told a reader that thermal costs the $1,158 step up
+  // to tier 2 when a thermal array is a $75 part inside tier 1. A reader
+  // deciding what to buy acted on the wrong number, which is the whole failure
+  // this file exists to catch.
+  const alias = {
+    lwir: ['long-wave infrared', 'thermal'],
+    swir: ['short-wave infrared'],
+    nir: ['near-infrared', 'near infrared'],
+    uv: ['ultraviolet'],
+    vis: ['visible'],
+    rf: ['radio', 'sdr'],
+    mmw: ['millimetre-wave', 'millimetre wave'],
+    elf_vlf: ['magnetometry', 'magnetic'],
+    acoustic: ['acoustic'],
+    seismic: ['seismometer', 'seismic'],
+    gamma: ['gamma'],
+    env: ['environmental'],
+    nav: ['disciplined time', 'navigation'],
+    grav: ['gravimetry', 'gravimetric'],
+  }
+
+  const bandsOf = (tier) =>
+    new Set(
+      hardware.parts
+        .filter((p) => p.tiers?.includes(tier))
+        .map((p) => p.band)
+        .filter(Boolean),
+    )
+
+  const order = spec.enums.tier.values.map((t) => t.id)
+  const errors = []
+
+  for (const [i, tier] of spec.enums.tier.values.entries()) {
+    const mine = bandsOf(tier.id)
+    if (mine.size === 0) continue // tier r has no parts and says so in its own summary
+    const previous = i > 0 ? bandsOf(order[i - 1]) : new Set()
+    const gained = [...mine].filter((b) => !previous.has(b))
+    const text = tier.summary.toLowerCase()
+
+    for (const [band, names] of Object.entries(alias)) {
+      const named = names.some((n) => text.includes(n))
+      if (!named) continue
+      if (!mine.has(band)) {
+        errors.push(`${tier.id}: summary names ${band} but the tier carries no such band`)
+      } else if (previous.has(band) && !/\b(upgrad|replac|improv|better|swap)/.test(text)) {
+        // Naming a band the previous tier already had is fine when the tier
+        // buys a better instrument for it, which is what tier 2 does with the
+        // thermal array. It is not fine to list it as new. So the rule is not
+        // "do not mention it", it is "say which of the two you mean": a summary
+        // naming an inherited band must carry a word that marks it an upgrade.
+        errors.push(
+          `${tier.id}: summary names ${band}, which ${order[i - 1]} already carries, without ` +
+            'saying whether this tier adds it or improves it',
+        )
+      }
+    }
+
+    // The converse: a band gained and not mentioned is a capability the reader
+    // is not told they are buying.
+    const unmentioned = gained.filter((b) => !(alias[b] ?? []).some((n) => text.includes(n)))
+    if (unmentioned.length) {
+      errors.push(`${tier.id}: gains ${unmentioned.join(', ')} without naming them in its summary`)
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  const counts = spec.enums.tier.values
+    .map((t) => `${t.id} ${bandsOf(t.id).size}`)
+    .filter((s) => !s.endsWith(' 0'))
+    .join(', ')
+  return `band counts by tier: ${counts}`
+})
+
+check('the system schematic shows every part in its tier', () => {
+  // A figure captioned "the whole node" that is missing three parts is worse
+  // than no figure, because a reader who checks it against the bill of
+  // materials concludes the extra parts are optional. The board schematic gets
+  // away with covering nine of twenty-three only because it says so in its
+  // title; this one claims the lot, so it has to have the lot.
+  const manifest = resolve(root, 'apps/web/public/boards/system.json')
+  if (!existsSync(manifest)) {
+    throw new Error('apps/web/public/boards/system.json is missing. Run `make boards`.')
+  }
+  const system = JSON.parse(readFileSync(manifest, 'utf8'))
+  const errors = []
+
+  for (const tier of spec.enums.tier.values) {
+    const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id))
+    if (parts.length === 0) continue
+
+    const sheet = system.sheets.find((s) => s.tier === tier.id)
+    if (!sheet) {
+      errors.push(`${tier.id}: no system schematic, though the tier has ${parts.length} parts`)
+      continue
+    }
+    const missing = parts.filter((p) => !sheet.covered.includes(p.id))
+    if (missing.length) {
+      errors.push(`${tier.id}: absent from the schematic: ${missing.map((p) => p.id).join(', ')}`)
+    }
+
+    // The drawn SVG has to agree with the manifest that describes it. They are
+    // written by the same run, so a mismatch means the file on disk is stale.
+    const svg = resolve(root, `apps/web/public/boards/${tier.id}-system.svg`)
+    if (!existsSync(svg)) {
+      errors.push(`${tier.id}: ${tier.id}-system.svg is missing`)
+      continue
+    }
+    // The rendered file carries its own part list, so this asks the SVG on disk
+    // what it covers rather than trusting the manifest written beside it. A
+    // manifest can be current while the picture beside it is six commits old,
+    // and that is exactly the failure the figure would otherwise hide.
+    const drawn = readFileSync(svg, 'utf8')
+    const declared = (drawn.match(/data-parts="([^"]*)"/)?.[1] ?? '').split(/\s+/).filter(Boolean)
+    const undrawn = parts.filter((p) => !declared.includes(p.id))
+    const stale = declared.filter((id) => !parts.some((p) => p.id === id))
+    if (undrawn.length || stale.length) {
+      errors.push(
+        `${tier.id}: ${tier.id}-system.svg is out of date. ` +
+          (undrawn.length ? `Missing: ${undrawn.map((p) => p.id).join(', ')}. ` : '') +
+          (stale.length ? `No longer in the tier: ${stale.join(', ')}. ` : '') +
+          'Run `make boards`.',
+      )
+    }
+
+    // Every power stage the registry declares must reach the sheet too. A
+    // chain that quietly drops its regulator still draws as a chain.
+    const supply = parts.find((p) => p.powerChain)
+    if (supply) {
+      const shown = sheet.facts?.power?.stages ?? []
+      const lost = supply.powerChain.filter((st) => !shown.includes(st.id))
+      if (lost.length) {
+        errors.push(`${tier.id}: power stages missing: ${lost.map((s) => s.id).join(', ')}`)
+      }
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  const total = system.sheets.reduce((n, s) => n + s.covered.length, 0)
+  return `${system.sheets.length} sheets covering ${total} part placements, none omitted`
 })
 
 // ---------------------------------------------------------------------------

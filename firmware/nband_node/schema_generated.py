@@ -310,6 +310,8 @@ PART_DRIVERS: Final[dict[str, str | None]] = {
     "power-solar-150w": None,
     "power-solar-200w": None,
     "usb-hub-powered": None,
+    "psu-usbc-27w": None,
+    "storage-microsd-64gb": None,
     "adc-ads1256": "geophone_ads1256",
     "pwr-ina226": "ina226_monitor"
 }
