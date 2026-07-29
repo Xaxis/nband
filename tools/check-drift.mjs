@@ -245,6 +245,64 @@ check('off-grid power sizing matches the tier load', () => {
   return 'panel and battery cover the summed draw of every tier that ships them'
 })
 
+check('every sensor has a way through the enclosure', () => {
+  // A weatherproof box is a wall, and most of these bands cannot see through a
+  // wall. Glass and every common plastic are opaque past about 2.7 um, so a
+  // thermal camera inside a sealed case images the inside of the lid; ordinary
+  // glass cuts off below 400 nm, so a UV sensor behind it measures UVA and
+  // reports the band; a sealed enclosure has its own temperature, its own
+  // humidity and the pressure it was closed at, so an environmental sensor in
+  // one measures the box.
+  //
+  // None of that is visible in a bill of materials or in a render. It is
+  // visible here, because bands.json states what each band needs to get through
+  // a wall and the enclosure states what it actually cuts.
+  const errors = []
+  const bandOf = Object.fromEntries(bands.bands.map((b) => [b.id, b]))
+  const NEEDS_NOTHING = new Set(['none', 'external'])
+
+  for (const tier of spec.enums.tier.values) {
+    const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id))
+    const shell = parts.find((p) => p.category === 'enclosure')
+    if (!shell) continue // a tier with no case makes no claim to keep water out
+    const apertures = shell.apertures ?? []
+
+    for (const part of parts) {
+      if (!part.band) continue
+      const need = bandOf[part.band]?.aperture
+      if (!need || NEEDS_NOTHING.has(need.needs)) continue
+      // A part that lives outside the box does not need a hole in it.
+      if (['external', 'host-slot'].includes(part.mechanical?.mount)) continue
+
+      const match = apertures.find((a) => (a.bands ?? []).includes(part.band))
+      if (!match) {
+        errors.push(
+          `${tier.id}: '${part.id}' works in ${part.band}, which needs ${need.needs}, and ` +
+            `'${shell.id}' cuts no aperture for it`,
+        )
+        continue
+      }
+      // The aperture existing is not enough: it has to be made of something
+      // that passes the band rather than something that looks like it does.
+      const blocked = need.blockedBy.find((m) =>
+        match.material.toLowerCase().includes(m.toLowerCase().replace(/^any /, '')),
+      )
+      if (blocked) {
+        errors.push(
+          `${tier.id}: '${match.id}' is ${match.material}, which blocks ${part.band} ` +
+            `('${part.id}' reads through it)`,
+        )
+      }
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  const cut = hardware.parts
+    .filter((p) => p.category === 'enclosure')
+    .flatMap((p) => p.apertures ?? []).length
+  return `${cut} aperture(s) declared, each of a material that passes the band behind it`
+})
+
 check('a solar panel is the size its rating implies', () => {
   // The panel is drawn in the whole-node view and its footprint is most of what
   // a reader uses to decide whether a site can host one, so the body has to

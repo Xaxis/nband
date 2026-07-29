@@ -9,6 +9,7 @@ import {
 import { Button, Container, Note, PageHeader, Section } from '../../../components/ui'
 import { CarrierBoards } from '../../../components/CarrierBoard'
 import { SystemArchitecture } from '../../../components/SystemArchitecture'
+import { ApertureByBand, EnclosureApertures } from '../../../components/Enclosure'
 import { DocTabs } from '../../../components/DocTabs'
 import { TierScope } from '../../../components/TierScope'
 import {
@@ -307,6 +308,65 @@ export default function HardwarePage() {
             content: (
               <Container className="py-9">
                 <CarrierBoards />
+              </Container>
+            ),
+          },
+          {
+            id: 'enclosure',
+            label: 'Enclosure',
+            hint: 'What the weatherproof box has to let through, and the materials that only look like they do. A sealed case is a wall, and most of these bands cannot see through a wall.',
+            content: (
+              <Container className="py-9">
+                <p className="max-w-[68ch] text-[14px] leading-relaxed text-[var(--ink-2)]">
+                  This is the least obvious part of building one of these, and the failures it
+                  causes are quiet rather than loud. A thermal camera behind acrylic returns a
+                  plausible, steady, meaningless field, because it is imaging the inside of the
+                  lid. An ultraviolet sensor behind ordinary glass still reports a number: the UVA
+                  that got through, labelled as the band. An environmental sensor in a sealed box
+                  reports the box, whose temperature lags the air by tens of minutes and whose
+                  humidity is whatever was shut in at assembly. None of those look like a broken
+                  channel, which is what makes them worth a table.
+                </p>
+
+                <h3 className="eyebrow mb-2 mt-9">Cut into the case</h3>
+                <EnclosureApertures />
+
+                <h3 className="eyebrow mb-2 mt-10">What each band needs from a wall</h3>
+                <p className="max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  Stated per band rather than per hole, because anyone designing their own housing
+                  is working from the sensor they have rather than from a case somebody else
+                  picked. A build fails here if a sensor has no aperture at all, or has one made of
+                  something its band cannot cross.
+                </p>
+                <ApertureByBand />
+
+                <h3 className="eyebrow mb-2 mt-10">If you print your own</h3>
+                <p className="max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  Nothing above depends on the case being bought rather than printed, and a printed
+                  housing solves a problem the Pelican does not: it can put each window where its
+                  sensor actually looks instead of where a rectangular lid allows. Three things
+                  decide whether it survives outdoors. Print in ASA or PETG rather than PLA, which
+                  creeps in summer heat and goes brittle under a year of sunlight. Do not rely on
+                  layer adhesion for the seal, because a printed wall leaks along its layer lines
+                  under pressure; cut a groove and fit a rubber cord instead, so the seal is a
+                  bought part and the print is only the shape holding it. And fit the vent. A
+                  sealed box breathes as it warms and cools, and a box that cannot equalise pulls
+                  water in through whatever imperfection it can find, so the vent is not a hole in
+                  the waterproofing but the thing that makes it work.
+                </p>
+                <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  The radar section is the one place where wall thickness is a specification rather
+                  than a preference. A 60 GHz wave in polyethylene has a wavelength near
+                  3.3&nbsp;mm, so a radome wants to be a multiple of half of that or it reflects
+                  part of what it is meant to pass. A printed wall with infill is part air and its
+                  permittivity is therefore neither known nor repeatable, so print that section
+                  solid and measure a coupon before trusting the number.
+                </p>
+                <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  No printed enclosure is published yet. When one is, it will be generated from the
+                  same aperture list above rather than drawn beside it, and it will carry the same
+                  caveat every other model here does: nothing in this repository has been built.
+                </p>
               </Container>
             ),
           },

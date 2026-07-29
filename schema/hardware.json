@@ -2329,11 +2329,86 @@
         "heightMm": 157,
         "mount": "enclosure",
         "dimensionsSourced": true,
-        "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits.",
+        "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits. The apertures listed with this part are what has to be cut into it, and the material of each is chosen by what the band behind it can pass rather than by what is convenient to fit.",
         "interiorWidthMm": 425,
         "interiorDepthMm": 284,
         "interiorHeightMm": 155
-      }
+      },
+      "apertures": [
+        {
+          "id": "wall-rf",
+          "bands": [
+            "nav",
+            "rf",
+            "mmw"
+          ],
+          "face": "none",
+          "material": "the case wall itself, copolymer polypropylene",
+          "sizeMm": null,
+          "note": "No hole. A Pelican Protector shell is copolymer polypropylene, which is not conductive, so GNSS, the software radio and 60 GHz radar all read through the closed case. This is recorded as an aperture because the fact that no hole is needed is the useful part: drilling one, or swapping to a metal case, is how these three bands get lost. The radar wants the wall in front of it to be flat and free of ribs; a moulded corner is a lens."
+        },
+        {
+          "id": "win-optical",
+          "bands": [
+            "vis",
+            "nir"
+          ],
+          "face": "lid",
+          "material": "acrylic or tempered glass, 60 mm",
+          "sizeMm": 60,
+          "note": "One window serves both cameras: they sit side by side looking through it. Tempered glass over acrylic if the node lives outdoors for years, because acrylic yellows and that is a slow calibration drift rather than an obvious failure. Bed it in the lid on a gasket, not in a printed frame that will craze."
+        },
+        {
+          "id": "win-uv",
+          "bands": [
+            "uv"
+          ],
+          "face": "lid",
+          "material": "fused silica, 25 mm",
+          "sizeMm": 25,
+          "note": "Fused silica because glass and standard acrylic cut off between 350 and 400 nm. Behind either of those the AS7331 still returns numbers: it measures the UVA that gets through and reports it as the band, which is worse than reading nothing."
+        },
+        {
+          "id": "win-lwir",
+          "bands": [
+            "lwir"
+          ],
+          "face": "lid",
+          "material": "germanium, 25 mm, anti-reflection coated",
+          "sizeMm": 25,
+          "note": "The expensive one, and the reason a thermal channel is not just another hole. Nothing cheap passes 8 to 14 um: glass, acrylic and every printable filament are opaque, so a Lepton behind any of them images the inside of the lid at a steady indoor temperature and produces a plausible, constant, meaningless field. An uncoated germanium window reflects a third of what reaches it, so pay for the coating or accept the loss knowingly. Thin polyethylene film transmits and costs almost nothing, and is a film rather than a window; it is a bench answer, not a winter one."
+        },
+        {
+          "id": "win-swir",
+          "bands": [
+            "swir"
+          ],
+          "face": "lid",
+          "material": "fused silica, 25 mm",
+          "sizeMm": 25,
+          "note": "Glass works between 1000 and 1700 nm and acrylic does not, which is the trap: the cheap window that serves the visible cameras is opaque to the most expensive sensor in the tier. Fused silica rather than soda-lime because the OH absorption in ordinary glass sits inside this band."
+        },
+        {
+          "id": "port-acoustic",
+          "bands": [
+            "acoustic"
+          ],
+          "face": "side, facing down",
+          "material": "ePTFE acoustic membrane over a 6 mm port",
+          "sizeMm": 6,
+          "note": "Sound needs a path to the diaphragm and water does not need one in. A membrane passes the first and stops the second. Facing down, or into the lee, because a port facing the sky is a drain and a port facing the wind is a microphone recording the wind."
+        },
+        {
+          "id": "vent-env",
+          "bands": [
+            "env"
+          ],
+          "face": "side, facing down",
+          "material": "ePTFE vent membrane, M12 threaded",
+          "sizeMm": 12,
+          "note": "Two jobs in one part. The environmental sensor has to exchange air with outside or it measures the box: sealed, its temperature lags the air by tens of minutes, its humidity is whatever was shut in at assembly and its pressure never changes. And the enclosure needs the vent regardless, because a sealed box breathes as it warms and cools and will pull water in through whatever imperfection it can find. A vent is not a hole in the waterproofing, it is what makes the waterproofing work."
+        }
+      ]
     },
     {
       "id": "power-solar-150w",

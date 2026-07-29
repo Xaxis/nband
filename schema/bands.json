@@ -53,6 +53,12 @@
         },
         "typicalRangeM": 30,
         "entryCostUsd": 189.0
+      },
+      "aperture": {
+        "needs": "none",
+        "passedBy": [],
+        "blockedBy": [],
+        "note": "Passes through the enclosure. Above roughly 50 keV a few millimetres of plastic attenuates negligibly, so the detector needs no window and gains nothing from one. Below that the wall starts to matter, which is a reason to record the wall rather than to cut a hole in it."
       }
     },
     {
@@ -103,6 +109,20 @@
         },
         "typicalRangeM": 5000,
         "entryCostUsd": 24.95
+      },
+      "aperture": {
+        "needs": "uv-window",
+        "passedBy": [
+          "fused silica",
+          "quartz",
+          "UV-transmitting acrylic (UVA only)"
+        ],
+        "blockedBy": [
+          "soda-lime glass",
+          "standard acrylic",
+          "polycarbonate"
+        ],
+        "note": "Ordinary glass and standard acrylic cut off between roughly 350 and 400 nm, which removes UVB and all of UVC. A node reading through either measures UVA and reports it as the band. Fused silica passes to about 200 nm and is the only cheap material that does."
       }
     },
     {
@@ -153,6 +173,16 @@
         },
         "typicalRangeM": 30000,
         "entryCostUsd": 78.0
+      },
+      "aperture": {
+        "needs": "optical-window",
+        "passedBy": [
+          "glass",
+          "acrylic",
+          "polycarbonate"
+        ],
+        "blockedBy": [],
+        "note": "Any clear window works. Choose for scratch and weathering rather than transmission: acrylic yellows under years of sunlight, tempered glass does not."
       }
     },
     {
@@ -202,6 +232,15 @@
         },
         "typicalRangeM": 20000,
         "entryCostUsd": 96.0
+      },
+      "aperture": {
+        "needs": "optical-window",
+        "passedBy": [
+          "glass",
+          "acrylic"
+        ],
+        "blockedBy": [],
+        "note": "The same window as visible. Acrylic transmits usefully to about 1100 nm, which covers the 850 nm the beacon and the NoIR camera work at."
       }
     },
     {
@@ -250,6 +289,19 @@
         },
         "typicalRangeM": 25000,
         "entryCostUsd": 2400.0
+      },
+      "aperture": {
+        "needs": "swir-window",
+        "passedBy": [
+          "fused silica",
+          "soda-lime glass",
+          "sapphire"
+        ],
+        "blockedBy": [
+          "acrylic",
+          "polycarbonate"
+        ],
+        "note": "Between 1000 and 1700 nm, glass still transmits and acrylic does not: acrylic absorbs hard past about 1100 nm, so the cheap window that works for the visible cameras is opaque to the most expensive sensor in the tier."
       }
     },
     {
@@ -300,6 +352,23 @@
         },
         "typicalRangeM": 8000,
         "entryCostUsd": 74.95
+      },
+      "aperture": {
+        "needs": "lwir-window",
+        "passedBy": [
+          "germanium",
+          "zinc selenide",
+          "chalcogenide glass",
+          "thin polyethylene film"
+        ],
+        "blockedBy": [
+          "glass",
+          "acrylic",
+          "polycarbonate",
+          "ABS",
+          "PETG"
+        ],
+        "note": "The hard one, and the reason a thermal channel is not simply another hole in the lid. Glass and every common plastic are opaque beyond roughly 2.7 um, so at 8 to 14 um an ordinary window is a wall. Germanium works and costs more than some of the sensors. Thin polyethylene film transmits usefully and is what an infrared-transparent bag is, but it is a film rather than a structural window and it will not survive a winter outdoors unsupported."
       }
     },
     {
@@ -350,6 +419,21 @@
         },
         "typicalRangeM": 250,
         "entryCostUsd": 14.5
+      },
+      "aperture": {
+        "needs": "rf-transparent",
+        "passedBy": [
+          "HDPE",
+          "PTFE",
+          "polypropylene",
+          "unfilled PETG or ASA"
+        ],
+        "blockedBy": [
+          "any metal",
+          "carbon-filled filament",
+          "metallised paint"
+        ],
+        "note": "A radome rather than a window. Low-loss plastic passes 60 GHz; metal and carbon-filled filament do not. Wall thickness wants to be a multiple of half the wavelength inside the material, which for polyethylene at 60 GHz is about 1.65 mm, or the wall reflects part of what it is meant to pass. A printed wall with infill has air voids and therefore an uncertain permittivity, so the section in front of the antenna should be solid."
       }
     },
     {
@@ -400,6 +484,17 @@
         },
         "typicalRangeM": 300000,
         "entryCostUsd": 39.95
+      },
+      "aperture": {
+        "needs": "rf-transparent",
+        "passedBy": [
+          "any non-conductive material"
+        ],
+        "blockedBy": [
+          "any metal",
+          "carbon-filled filament"
+        ],
+        "note": "The antenna goes outside the enclosure or the enclosure is not metal. A metal box is a Faraday cage and this is the band that notices first."
       }
     },
     {
@@ -451,7 +546,19 @@
         "minM": 10000.0,
         "maxM": 10000000.0
       },
-      "$wavelengthNote": "30 kHz is 10 km; 30 Hz is 10,000 km. The band also covers DC, which has no wavelength, so the plotted extent is the AC portion only."
+      "$wavelengthNote": "30 kHz is 10 km; 30 Hz is 10,000 km. The band also covers DC, which has no wavelength, so the plotted extent is the AC portion only.",
+      "aperture": {
+        "needs": "external",
+        "passedBy": [
+          "any non-ferrous material"
+        ],
+        "blockedBy": [
+          "steel",
+          "nickel",
+          "any ferrous fastener"
+        ],
+        "note": "Not an aperture problem. The magnetometer has to be metres from the node because the node is the loudest magnetic source nearby, so it sits in its own small housing on a mast. Use non-ferrous fasteners: a steel screw beside a fluxgate is a permanent offset."
+      }
     },
     {
       "id": "acoustic",
@@ -497,6 +604,16 @@
         },
         "typicalRangeM": 12000,
         "entryCostUsd": 12.5
+      },
+      "aperture": {
+        "needs": "vented-acoustic",
+        "passedBy": [
+          "ePTFE acoustic membrane over a port"
+        ],
+        "blockedBy": [
+          "sealed wall"
+        ],
+        "note": "Sound needs a path to the diaphragm. A sealed box is a low-pass filter with a resonance of its own, and what comes out is the box rather than the site. An acoustic port covered by a waterproof breathable membrane passes sound and stops water."
       }
     },
     {
@@ -543,6 +660,12 @@
         },
         "typicalRangeM": 3000,
         "entryCostUsd": 89.0
+      },
+      "aperture": {
+        "needs": "external",
+        "passedBy": [],
+        "blockedBy": [],
+        "note": "The geophone is in the ground, coupled to it by a spike, on a cable. Nothing about the enclosure applies except that the cable has to leave it through a gland."
       }
     },
     {
@@ -584,6 +707,12 @@
         },
         "typicalRangeM": 100,
         "entryCostUsd": 150000.0
+      },
+      "aperture": {
+        "needs": "none",
+        "passedBy": [],
+        "blockedBy": [],
+        "note": "No buildable sensor, so no enclosure requirement to state."
       }
     },
     {
@@ -626,6 +755,16 @@
         },
         "typicalRangeM": 0,
         "entryCostUsd": 22.5
+      },
+      "aperture": {
+        "needs": "vented",
+        "passedBy": [
+          "ePTFE vent membrane"
+        ],
+        "blockedBy": [
+          "sealed wall"
+        ],
+        "note": "The most commonly botched one. A sealed enclosure measures the enclosure: its temperature lags the air by tens of minutes, its humidity is whatever was sealed in, and its pressure is whatever it was at assembly. The sensor needs air exchange with outside through a membrane vent, which the enclosure needs anyway for pressure equalisation."
       }
     },
     {
@@ -669,6 +808,17 @@
         },
         "typicalRangeM": 0,
         "entryCostUsd": 49.99
+      },
+      "aperture": {
+        "needs": "rf-transparent",
+        "passedBy": [
+          "any non-conductive material"
+        ],
+        "blockedBy": [
+          "any metal",
+          "carbon-filled filament"
+        ],
+        "note": "The GNSS antenna needs sky. Plastic overhead is fine and metal is not, and the 170 mm lead on the antenna that ships with the receiver is what decides how far it can get from the board."
       }
     }
   ],

@@ -1838,237 +1838,6 @@
           "remote": false
         },
         {
-          "id": "lwir-lepton35",
-          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3",
-          "band": "lwir",
-          "hue": 4,
-          "mount": "usb",
-          "size": [
-            30,
-            12,
-            30
-          ],
-          "pos": [
-            37.5,
-            6,
-            -89
-          ],
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "interface": "usb",
-          "shell": true
-        },
-        {
-          "id": "lwir-lepton35-board",
-          "label": "PureThermal carrier",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            30,
-            2,
-            30
-          ],
-          "pos": [
-            37.5,
-            1,
-            -89
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
-          "id": "lwir-lepton35-socket",
-          "label": "Lepton 3.5 socket",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            13,
-            6,
-            13
-          ],
-          "pos": [
-            37.5,
-            5,
-            -91.4
-          ],
-          "colour": "#2a2d33",
-          "cylinder": false,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
-          "id": "lwir-lepton35-lens",
-          "label": "fixed lens",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            7.5,
-            3,
-            7.5
-          ],
-          "pos": [
-            37.5,
-            9.5,
-            -91.4
-          ],
-          "colour": "#3d4148",
-          "cylinder": true,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
-          "id": "lwir-lepton35-usb",
-          "label": "USB-C",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            9,
-            3.2,
-            3.2
-          ],
-          "pos": [
-            37.5,
-            3.6,
-            -75.2
-          ],
-          "colour": "#9aa0a8",
-          "cylinder": false,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
-          "id": "cam-hq-imx477",
-          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens",
-          "band": "vis",
-          "hue": 150,
-          "mount": "csi",
-          "size": [
-            38,
-            48,
-            38
-          ],
-          "pos": [
-            -185.5,
-            24,
-            123
-          ],
-          "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "interface": "csi",
-          "shell": true
-        },
-        {
-          "id": "cam-hq-imx477-body",
-          "label": "HQ camera board",
-          "parent": "cam-hq-imx477",
-          "mount": "detail",
-          "size": [
-            38,
-            10,
-            38
-          ],
-          "pos": [
-            -185.5,
-            5,
-            123
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "remote": false
-        },
-        {
-          "id": "cam-hq-imx477-lens",
-          "label": "6 mm CS lens",
-          "parent": "cam-hq-imx477",
-          "mount": "detail",
-          "size": [
-            30,
-            36,
-            30
-          ],
-          "pos": [
-            -185.5,
-            28,
-            123
-          ],
-          "colour": "#232629",
-          "cylinder": true,
-          "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "remote": false
-        },
-        {
-          "id": "cam-noir-imx477",
-          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass",
-          "band": "nir",
-          "hue": 20,
-          "mount": "csi",
-          "size": [
-            38,
-            48,
-            38
-          ],
-          "pos": [
-            -133.5,
-            24,
-            123
-          ],
-          "sourced": false,
-          "note": "As above, with the bandpass filter fitted.",
-          "interface": "csi",
-          "shell": true
-        },
-        {
-          "id": "cam-noir-imx477-body",
-          "label": "NoIR camera board",
-          "parent": "cam-noir-imx477",
-          "mount": "detail",
-          "size": [
-            38,
-            10,
-            38
-          ],
-          "pos": [
-            -133.5,
-            5,
-            123
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "As above, with the bandpass filter fitted.",
-          "remote": false
-        },
-        {
-          "id": "cam-noir-imx477-lens",
-          "label": "6 mm CS lens + 850 nm bandpass",
-          "parent": "cam-noir-imx477",
-          "mount": "detail",
-          "size": [
-            30,
-            36,
-            30
-          ],
-          "pos": [
-            -133.5,
-            28,
-            123
-          ],
-          "colour": "#232629",
-          "cylinder": true,
-          "sourced": false,
-          "note": "As above, with the bandpass filter fitted.",
-          "remote": false
-        },
-        {
           "id": "gnss-antenna",
           "label": "Waveshare Active GNSS antenna on 170 mm IPEX to SMA lead",
           "band": null,
@@ -2216,90 +1985,6 @@
           "remote": false
         },
         {
-          "id": "uv-as7331",
-          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
-          "band": "uv",
-          "hue": 258,
-          "mount": "enclosure-wall",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -95,
-            65.1,
-            -133
-          ],
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "interface": "i2c",
-          "shell": true
-        },
-        {
-          "id": "uv-as7331-pcb",
-          "label": "AS7331 board",
-          "parent": "uv-as7331",
-          "mount": "detail",
-          "size": [
-            25,
-            1.2,
-            18
-          ],
-          "pos": [
-            -95,
-            63.199999999999996,
-            -133
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "remote": false
-        },
-        {
-          "id": "uv-as7331-pkg",
-          "label": "AS7331",
-          "parent": "uv-as7331",
-          "mount": "detail",
-          "size": [
-            3,
-            0.9,
-            3
-          ],
-          "pos": [
-            -95,
-            64.25,
-            -132.1
-          ],
-          "colour": "#2a2d33",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "remote": false
-        },
-        {
-          "id": "uv-as7331-hdr",
-          "label": "header",
-          "parent": "uv-as7331",
-          "mount": "detail",
-          "size": [
-            17.5,
-            3,
-            2.4
-          ],
-          "pos": [
-            -95,
-            65.3,
-            -139.84
-          ],
-          "colour": "#1c1f24",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "remote": false
-        },
-        {
           "id": "mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
           "band": "acoustic",
@@ -2311,7 +1996,7 @@
             15
           ],
           "pos": [
-            -60.5,
+            -97.5,
             65.1,
             -134.5
           ],
@@ -2331,7 +2016,7 @@
             15
           ],
           "pos": [
-            -60.5,
+            -97.5,
             63.699999999999996,
             -134.5
           ],
@@ -2352,7 +2037,7 @@
             2.6
           ],
           "pos": [
-            -60.5,
+            -97.5,
             64.8,
             -133.75
           ],
@@ -2373,7 +2058,7 @@
             2.4
           ],
           "pos": [
-            -60.5,
+            -97.5,
             65.8,
             -140.2
           ],
@@ -2395,7 +2080,7 @@
             18
           ],
           "pos": [
-            -26,
+            -63,
             65.1,
             -133
           ],
@@ -2415,7 +2100,7 @@
             18
           ],
           "pos": [
-            -26,
+            -63,
             63.199999999999996,
             -133
           ],
@@ -2436,7 +2121,7 @@
             3
           ],
           "pos": [
-            -26,
+            -63,
             64.3,
             -132.1
           ],
@@ -2457,7 +2142,7 @@
             2.4
           ],
           "pos": [
-            -26,
+            -63,
             65.3,
             -139.84
           ],
@@ -2465,6 +2150,321 @@
           "cylinder": false,
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
+        },
+        {
+          "id": "cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens",
+          "band": "vis",
+          "hue": 150,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -185.5,
+            131,
+            -115
+          ],
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-hq-imx477-body",
+          "label": "HQ camera board",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -185.5,
+            112,
+            -115
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
+        },
+        {
+          "id": "cam-hq-imx477-lens",
+          "label": "6 mm CS lens",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -185.5,
+            135,
+            -115
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
+        },
+        {
+          "id": "cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass",
+          "band": "nir",
+          "hue": 20,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -135.5,
+            131,
+            -115
+          ],
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-noir-imx477-body",
+          "label": "NoIR camera board",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -135.5,
+            112,
+            -115
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
+        },
+        {
+          "id": "cam-noir-imx477-lens",
+          "label": "6 mm CS lens + 850 nm bandpass",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -135.5,
+            135,
+            -115
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3",
+          "band": "lwir",
+          "hue": 4,
+          "mount": "usb",
+          "size": [
+            30,
+            12,
+            30
+          ],
+          "pos": [
+            -89.5,
+            149,
+            -119
+          ],
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "interface": "usb",
+          "shell": true
+        },
+        {
+          "id": "lwir-lepton35-board",
+          "label": "PureThermal carrier",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            30,
+            2,
+            30
+          ],
+          "pos": [
+            -89.5,
+            144,
+            -119
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35-socket",
+          "label": "Lepton 3.5 socket",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            13,
+            6,
+            13
+          ],
+          "pos": [
+            -89.5,
+            148,
+            -121.4
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35-lens",
+          "label": "fixed lens",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            7.5,
+            3,
+            7.5
+          ],
+          "pos": [
+            -89.5,
+            152.5,
+            -121.4
+          ],
+          "colour": "#3d4148",
+          "cylinder": true,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35-usb",
+          "label": "USB-C",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            9,
+            3.2,
+            3.2
+          ],
+          "pos": [
+            -89.5,
+            146.6,
+            -105.2
+          ],
+          "colour": "#9aa0a8",
+          "cylinder": false,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
+          "band": "uv",
+          "hue": 258,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -50,
+            152.5,
+            -125
+          ],
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "uv-as7331-pcb",
+          "label": "AS7331 board",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -50,
+            150.6,
+            -125
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
+        },
+        {
+          "id": "uv-as7331-pkg",
+          "label": "AS7331",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            3,
+            0.9,
+            3
+          ],
+          "pos": [
+            -50,
+            151.64999999999998,
+            -124.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
+        },
+        {
+          "id": "uv-as7331-hdr",
+          "label": "header",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -50,
+            152.7,
+            -131.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
           "remote": false
         },
         {
@@ -3101,7 +3101,7 @@
           ],
           "wireframe": true,
           "sourced": true,
-          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits."
+          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits. The apertures listed with this part are what has to be cut into it, and the material of each is chosen by what the band behind it can pass rather than by what is convenient to fit."
         }
       ],
       "cables": [
@@ -3122,33 +3122,17 @@
           "remote": false
         },
         {
-          "id": "cable-lwir-lepton35",
-          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to USB 3.0 x2",
-          "from": [
-            22.5,
-            6,
-            -89
-          ],
-          "to": [
-            -104.5,
-            9.799999999999999,
-            -59.25
-          ],
-          "kind": "cable",
-          "remote": false
-        },
-        {
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -185.5,
-            24,
-            104
+            -166.5,
+            131,
+            -115
           ],
           "to": [
-            -143.2,
+            -144.5,
             3.1,
-            -65
+            -75.5
           ],
           "kind": "ribbon",
           "remote": false
@@ -3157,16 +3141,32 @@
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -133.5,
-            24,
-            104
+            -135.5,
+            131,
+            -96
           ],
           "to": [
             -132.2,
             3.1,
-            -65
+            -86
           ],
           "kind": "ribbon",
+          "remote": false
+        },
+        {
+          "id": "cable-lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to USB 3.0 x2",
+          "from": [
+            -89.5,
+            149,
+            -104
+          ],
+          "to": [
+            -111.75,
+            9.799999999999999,
+            -68
+          ],
+          "kind": "cable",
           "remote": false
         },
         {
@@ -3202,28 +3202,12 @@
           "kind": "cable"
         },
         {
-          "id": "cable-uv-as7331",
-          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
-          "from": [
-            -95,
-            65.1,
-            -124
-          ],
-          "remote": false,
-          "to": [
-            -101,
-            51.4,
-            -82.4
-          ],
-          "kind": "cable"
-        },
-        {
           "id": "cable-mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
           "from": [
-            -70.5,
+            -97.5,
             65.1,
-            -134.5
+            -127
           ],
           "remote": false,
           "to": [
@@ -3237,9 +3221,25 @@
           "id": "cable-pwr-ina226",
           "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
           "from": [
-            -38.5,
+            -75.5,
             65.1,
             -133
+          ],
+          "remote": false,
+          "to": [
+            -101,
+            51.4,
+            -82.4
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
+          "from": [
+            -62.5,
+            152.5,
+            -125
           ],
           "remote": false,
           "to": [
@@ -3287,9 +3287,9 @@
         "sourced": 13,
         "approximate": 73,
         "onCarrier": 2,
-        "onWall": 5,
-        "usb": 2,
-        "csi": 2
+        "onWall": 4,
+        "usb": 1,
+        "csi": 0
       }
     },
     {
@@ -3776,111 +3776,6 @@
           "remote": false
         },
         {
-          "id": "lwir-lepton35",
-          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3",
-          "band": "lwir",
-          "hue": 4,
-          "mount": "usb",
-          "size": [
-            30,
-            12,
-            30
-          ],
-          "pos": [
-            62.5,
-            6,
-            -89
-          ],
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "interface": "usb",
-          "shell": true
-        },
-        {
-          "id": "lwir-lepton35-board",
-          "label": "PureThermal carrier",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            30,
-            2,
-            30
-          ],
-          "pos": [
-            62.5,
-            1,
-            -89
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
-          "id": "lwir-lepton35-socket",
-          "label": "Lepton 3.5 socket",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            13,
-            6,
-            13
-          ],
-          "pos": [
-            62.5,
-            5,
-            -91.4
-          ],
-          "colour": "#2a2d33",
-          "cylinder": false,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
-          "id": "lwir-lepton35-lens",
-          "label": "fixed lens",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            7.5,
-            3,
-            7.5
-          ],
-          "pos": [
-            62.5,
-            9.5,
-            -91.4
-          ],
-          "colour": "#3d4148",
-          "cylinder": true,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
-          "id": "lwir-lepton35-usb",
-          "label": "USB-C",
-          "parent": "lwir-lepton35",
-          "mount": "detail",
-          "size": [
-            9,
-            3.2,
-            3.2
-          ],
-          "pos": [
-            62.5,
-            3.6,
-            -75.2
-          ],
-          "colour": "#9aa0a8",
-          "cylinder": false,
-          "sourced": false,
-          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
-          "remote": false
-        },
-        {
           "id": "radar-iwr6843",
           "label": "Texas Instruments IWR6843ISK 60 GHz mmWave",
           "band": "mmw",
@@ -3892,7 +3787,7 @@
             55
           ],
           "pos": [
-            117,
+            75,
             8,
             -76.5
           ],
@@ -3912,7 +3807,7 @@
             55
           ],
           "pos": [
-            117,
+            75,
             1,
             -76.5
           ],
@@ -3933,7 +3828,7 @@
             17
           ],
           "pos": [
-            117,
+            75,
             2.3,
             -93
           ],
@@ -3954,7 +3849,7 @@
             22
           ],
           "pos": [
-            117,
+            75,
             3.75,
             -73.19999999999999
           ],
@@ -3975,7 +3870,7 @@
             5
           ],
           "pos": [
-            117,
+            75,
             4,
             -56.7
           ],
@@ -3996,7 +3891,7 @@
             8
           ],
           "pos": [
-            93.9,
+            51.9,
             3.5,
             -56.7
           ],
@@ -4018,9 +3913,9 @@
             40
           ],
           "pos": [
-            -9.5,
+            149.5,
             11,
-            -17
+            -84
           ],
           "sourced": false,
           "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
@@ -4038,9 +3933,9 @@
             40
           ],
           "pos": [
-            -9.5,
+            149.5,
             1,
-            -17
+            -84
           ],
           "colour": "#1b2a3a",
           "cylinder": false,
@@ -4059,9 +3954,9 @@
             22
           ],
           "pos": [
-            -26.3,
+            132.7,
             9.5,
-            -17
+            -84
           ],
           "colour": "#d8d4c4",
           "cylinder": false,
@@ -4080,9 +3975,9 @@
             8
           ],
           "pos": [
-            -10.899999999999999,
+            148.1,
             2.8,
-            -17
+            -84
           ],
           "colour": "#3d4148",
           "cylinder": false,
@@ -4101,9 +3996,9 @@
             11
           ],
           "pos": [
-            3.1000000000000014,
+            162.1,
             2.9,
-            -17
+            -84
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -4122,98 +4017,14 @@
             9
           ],
           "pos": [
-            23.39999999999999,
+            182.39999999999998,
             3.6,
-            -17
+            -84
           ],
           "colour": "#9aa0a8",
           "cylinder": false,
           "sourced": false,
           "note": "The pale block is the caesium iodide crystal in its reflective wrap, which is most of the sensitive volume and all of the mass. The silicon photomultiplier beside it reads the light the crystal makes.",
-          "remote": false
-        },
-        {
-          "id": "swir-ingaas640",
-          "label": "various InGaAs 640x512 SWIR module",
-          "band": "swir",
-          "hue": 48,
-          "mount": "usb",
-          "size": [
-            60,
-            75,
-            60
-          ],
-          "pos": [
-            67.5,
-            37.5,
-            -7
-          ],
-          "sourced": false,
-          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
-          "interface": "usb3",
-          "shell": true
-        },
-        {
-          "id": "swir-ingaas640-body",
-          "label": "camera body",
-          "parent": "swir-ingaas640",
-          "mount": "detail",
-          "size": [
-            60,
-            40,
-            60
-          ],
-          "pos": [
-            67.5,
-            20,
-            -7
-          ],
-          "colour": "#3d4148",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
-          "remote": false
-        },
-        {
-          "id": "swir-ingaas640-lens",
-          "label": "C-mount lens",
-          "parent": "swir-ingaas640",
-          "mount": "detail",
-          "size": [
-            42,
-            32,
-            42
-          ],
-          "pos": [
-            67.5,
-            56,
-            -7
-          ],
-          "colour": "#232629",
-          "cylinder": true,
-          "sourced": false,
-          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
-          "remote": false
-        },
-        {
-          "id": "swir-ingaas640-connector",
-          "label": "USB 3.0 micro-B",
-          "parent": "swir-ingaas640",
-          "mount": "detail",
-          "size": [
-            14,
-            6,
-            6
-          ],
-          "pos": [
-            67.5,
-            11,
-            -33.4
-          ],
-          "colour": "#9aa0a8",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
           "remote": false
         },
         {
@@ -4230,7 +4041,7 @@
           "pos": [
             5.5,
             11,
-            56
+            -16
           ],
           "sourced": false,
           "note": "Approximate 4-port hub body.",
@@ -4250,7 +4061,7 @@
           "pos": [
             5.5,
             9,
-            56
+            -16
           ],
           "colour": "#2a2d33",
           "cylinder": false,
@@ -4271,138 +4082,12 @@
           "pos": [
             5.5,
             8.5,
-            73.64
+            1.6400000000000006
           ],
           "colour": "#2f4f8f",
           "cylinder": false,
           "sourced": false,
           "note": "Approximate 4-port hub body.",
-          "remote": false
-        },
-        {
-          "id": "cam-hq-imx477",
-          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens",
-          "band": "vis",
-          "hue": 150,
-          "mount": "csi",
-          "size": [
-            38,
-            48,
-            38
-          ],
-          "pos": [
-            -185.5,
-            24,
-            123
-          ],
-          "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "interface": "csi",
-          "shell": true
-        },
-        {
-          "id": "cam-hq-imx477-body",
-          "label": "HQ camera board",
-          "parent": "cam-hq-imx477",
-          "mount": "detail",
-          "size": [
-            38,
-            10,
-            38
-          ],
-          "pos": [
-            -185.5,
-            5,
-            123
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "remote": false
-        },
-        {
-          "id": "cam-hq-imx477-lens",
-          "label": "6 mm CS lens",
-          "parent": "cam-hq-imx477",
-          "mount": "detail",
-          "size": [
-            30,
-            36,
-            30
-          ],
-          "pos": [
-            -185.5,
-            28,
-            123
-          ],
-          "colour": "#232629",
-          "cylinder": true,
-          "sourced": false,
-          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
-          "remote": false
-        },
-        {
-          "id": "cam-noir-imx477",
-          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass",
-          "band": "nir",
-          "hue": 20,
-          "mount": "csi",
-          "size": [
-            38,
-            48,
-            38
-          ],
-          "pos": [
-            -133.5,
-            24,
-            123
-          ],
-          "sourced": false,
-          "note": "As above, with the bandpass filter fitted.",
-          "interface": "csi",
-          "shell": true
-        },
-        {
-          "id": "cam-noir-imx477-body",
-          "label": "NoIR camera board",
-          "parent": "cam-noir-imx477",
-          "mount": "detail",
-          "size": [
-            38,
-            10,
-            38
-          ],
-          "pos": [
-            -133.5,
-            5,
-            123
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "As above, with the bandpass filter fitted.",
-          "remote": false
-        },
-        {
-          "id": "cam-noir-imx477-lens",
-          "label": "6 mm CS lens + 850 nm bandpass",
-          "parent": "cam-noir-imx477",
-          "mount": "detail",
-          "size": [
-            30,
-            36,
-            30
-          ],
-          "pos": [
-            -133.5,
-            28,
-            123
-          ],
-          "colour": "#232629",
-          "cylinder": true,
-          "sourced": false,
-          "note": "As above, with the bandpass filter fitted.",
           "remote": false
         },
         {
@@ -4553,90 +4238,6 @@
           "remote": false
         },
         {
-          "id": "uv-as7331",
-          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
-          "band": "uv",
-          "hue": 258,
-          "mount": "enclosure-wall",
-          "size": [
-            25,
-            5,
-            18
-          ],
-          "pos": [
-            -95,
-            65.1,
-            -133
-          ],
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "interface": "i2c",
-          "shell": true
-        },
-        {
-          "id": "uv-as7331-pcb",
-          "label": "AS7331 board",
-          "parent": "uv-as7331",
-          "mount": "detail",
-          "size": [
-            25,
-            1.2,
-            18
-          ],
-          "pos": [
-            -95,
-            63.199999999999996,
-            -133
-          ],
-          "colour": "#1f5f3a",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "remote": false
-        },
-        {
-          "id": "uv-as7331-pkg",
-          "label": "AS7331",
-          "parent": "uv-as7331",
-          "mount": "detail",
-          "size": [
-            3,
-            0.9,
-            3
-          ],
-          "pos": [
-            -95,
-            64.25,
-            -132.1
-          ],
-          "colour": "#2a2d33",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "remote": false
-        },
-        {
-          "id": "uv-as7331-hdr",
-          "label": "header",
-          "parent": "uv-as7331",
-          "mount": "detail",
-          "size": [
-            17.5,
-            3,
-            2.4
-          ],
-          "pos": [
-            -95,
-            65.3,
-            -139.84
-          ],
-          "colour": "#1c1f24",
-          "cylinder": false,
-          "sourced": false,
-          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
-          "remote": false
-        },
-        {
           "id": "mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone",
           "band": "acoustic",
@@ -4648,7 +4249,7 @@
             15
           ],
           "pos": [
-            -60.5,
+            -97.5,
             65.1,
             -134.5
           ],
@@ -4668,7 +4269,7 @@
             15
           ],
           "pos": [
-            -60.5,
+            -97.5,
             63.699999999999996,
             -134.5
           ],
@@ -4689,7 +4290,7 @@
             2.6
           ],
           "pos": [
-            -60.5,
+            -97.5,
             64.8,
             -133.75
           ],
@@ -4710,7 +4311,7 @@
             2.4
           ],
           "pos": [
-            -60.5,
+            -97.5,
             65.8,
             -140.2
           ],
@@ -4732,7 +4333,7 @@
             18
           ],
           "pos": [
-            -26,
+            -63,
             65.1,
             -133
           ],
@@ -4752,7 +4353,7 @@
             18
           ],
           "pos": [
-            -26,
+            -63,
             63.199999999999996,
             -133
           ],
@@ -4773,7 +4374,7 @@
             3
           ],
           "pos": [
-            -26,
+            -63,
             64.3,
             -132.1
           ],
@@ -4794,7 +4395,7 @@
             2.4
           ],
           "pos": [
-            -26,
+            -63,
             65.3,
             -139.84
           ],
@@ -4802,6 +4403,405 @@
           "cylinder": false,
           "sourced": false,
           "note": "Mounted where the supply enters the enclosure, not on the carrier. Its shunt has to sit in series with the feed it is measuring, so putting the board in the middle of the stack would mean running the full node current up to the carrier and back down again.",
+          "remote": false
+        },
+        {
+          "id": "cam-hq-imx477",
+          "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens",
+          "band": "vis",
+          "hue": 150,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -185.5,
+            131,
+            -115
+          ],
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-hq-imx477-body",
+          "label": "HQ camera board",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -185.5,
+            112,
+            -115
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
+        },
+        {
+          "id": "cam-hq-imx477-lens",
+          "label": "6 mm CS lens",
+          "parent": "cam-hq-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -185.5,
+            135,
+            -115
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "38 x 38 mm HQ camera body is sourced; height includes a 6 mm CS lens and is approximate.",
+          "remote": false
+        },
+        {
+          "id": "cam-noir-imx477",
+          "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass",
+          "band": "nir",
+          "hue": 20,
+          "mount": "csi",
+          "size": [
+            38,
+            48,
+            38
+          ],
+          "pos": [
+            -135.5,
+            131,
+            -115
+          ],
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "interface": "csi",
+          "shell": true
+        },
+        {
+          "id": "cam-noir-imx477-body",
+          "label": "NoIR camera board",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            38,
+            10,
+            38
+          ],
+          "pos": [
+            -135.5,
+            112,
+            -115
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
+        },
+        {
+          "id": "cam-noir-imx477-lens",
+          "label": "6 mm CS lens + 850 nm bandpass",
+          "parent": "cam-noir-imx477",
+          "mount": "detail",
+          "size": [
+            30,
+            36,
+            30
+          ],
+          "pos": [
+            -135.5,
+            135,
+            -115
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "As above, with the bandpass filter fitted.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3",
+          "band": "lwir",
+          "hue": 4,
+          "mount": "usb",
+          "size": [
+            30,
+            12,
+            30
+          ],
+          "pos": [
+            -89.5,
+            149,
+            -119
+          ],
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "interface": "usb",
+          "shell": true
+        },
+        {
+          "id": "lwir-lepton35-board",
+          "label": "PureThermal carrier",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            30,
+            2,
+            30
+          ],
+          "pos": [
+            -89.5,
+            144,
+            -119
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35-socket",
+          "label": "Lepton 3.5 socket",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            13,
+            6,
+            13
+          ],
+          "pos": [
+            -89.5,
+            148,
+            -121.4
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35-lens",
+          "label": "fixed lens",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            7.5,
+            3,
+            7.5
+          ],
+          "pos": [
+            -89.5,
+            152.5,
+            -121.4
+          ],
+          "colour": "#3d4148",
+          "cylinder": true,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "lwir-lepton35-usb",
+          "label": "USB-C",
+          "parent": "lwir-lepton35",
+          "mount": "detail",
+          "size": [
+            9,
+            3.2,
+            3.2
+          ],
+          "pos": [
+            -89.5,
+            146.6,
+            -105.2
+          ],
+          "colour": "#9aa0a8",
+          "cylinder": false,
+          "sourced": false,
+          "note": "FLIR Lepton 3.5 seated in a PureThermal carrier. The thermal core is the small socketed module with the fixed lens; the board around it is the USB interface.",
+          "remote": false
+        },
+        {
+          "id": "uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor",
+          "band": "uv",
+          "hue": 258,
+          "mount": "enclosure-wall",
+          "size": [
+            25,
+            5,
+            18
+          ],
+          "pos": [
+            -50,
+            152.5,
+            -125
+          ],
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "interface": "i2c",
+          "shell": true
+        },
+        {
+          "id": "uv-as7331-pcb",
+          "label": "AS7331 board",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            25,
+            1.2,
+            18
+          ],
+          "pos": [
+            -50,
+            150.6,
+            -125
+          ],
+          "colour": "#1f5f3a",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
+        },
+        {
+          "id": "uv-as7331-pkg",
+          "label": "AS7331",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            3,
+            0.9,
+            3
+          ],
+          "pos": [
+            -50,
+            151.64999999999998,
+            -124.1
+          ],
+          "colour": "#2a2d33",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
+        },
+        {
+          "id": "uv-as7331-hdr",
+          "label": "header",
+          "parent": "uv-as7331",
+          "mount": "detail",
+          "size": [
+            17.5,
+            3,
+            2.4
+          ],
+          "pos": [
+            -50,
+            152.7,
+            -131.84
+          ],
+          "colour": "#1c1f24",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Needs sky view through its own gasketed window. Mounted at the enclosure wall.",
+          "remote": false
+        },
+        {
+          "id": "swir-ingaas640",
+          "label": "various InGaAs 640x512 SWIR module",
+          "band": "swir",
+          "hue": 48,
+          "mount": "usb",
+          "size": [
+            60,
+            75,
+            60
+          ],
+          "pos": [
+            4.5,
+            117.5,
+            -104
+          ],
+          "sourced": false,
+          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
+          "interface": "usb3",
+          "shell": true
+        },
+        {
+          "id": "swir-ingaas640-body",
+          "label": "camera body",
+          "parent": "swir-ingaas640",
+          "mount": "detail",
+          "size": [
+            60,
+            40,
+            60
+          ],
+          "pos": [
+            4.5,
+            100,
+            -104
+          ],
+          "colour": "#3d4148",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
+          "remote": false
+        },
+        {
+          "id": "swir-ingaas640-lens",
+          "label": "C-mount lens",
+          "parent": "swir-ingaas640",
+          "mount": "detail",
+          "size": [
+            42,
+            32,
+            42
+          ],
+          "pos": [
+            4.5,
+            136,
+            -104
+          ],
+          "colour": "#232629",
+          "cylinder": true,
+          "sourced": false,
+          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
+          "remote": false
+        },
+        {
+          "id": "swir-ingaas640-connector",
+          "label": "USB 3.0 micro-B",
+          "parent": "swir-ingaas640",
+          "mount": "detail",
+          "size": [
+            14,
+            6,
+            6
+          ],
+          "pos": [
+            4.5,
+            91,
+            -130.4
+          ],
+          "colour": "#9aa0a8",
+          "cylinder": false,
+          "sourced": false,
+          "note": "Most of the height is lens. The InGaAs focal plane needs glass that passes 1000 to 1700 nm, which ordinary camera optics do not, and the barrel is the single most expensive part of the most expensive channel.",
           "remote": false
         },
         {
@@ -5566,7 +5566,7 @@
           ],
           "wireframe": true,
           "sourced": true,
-          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits."
+          "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits. The apertures listed with this part are what has to be cut into it, and the material of each is chosen by what the band behind it can pass rather than by what is convenient to fit."
         }
       ],
       "cables": [
@@ -5581,23 +5581,7 @@
           "to": [
             5.5,
             11,
-            35
-          ],
-          "kind": "cable",
-          "remote": false
-        },
-        {
-          "id": "cable-lwir-lepton35",
-          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
-          "from": [
-            62.5,
-            6,
-            -74
-          ],
-          "to": [
-            5.5,
-            11,
-            35
+            -37
           ],
           "kind": "cable",
           "remote": false
@@ -5606,14 +5590,14 @@
           "id": "cable-radar-iwr6843",
           "label": "Texas Instruments IWR6843ISK 60 GHz mmWave to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
           "from": [
-            117,
+            47.5,
             8,
-            -49
+            -76.5
           ],
           "to": [
-            5.5,
+            55.5,
             11,
-            35
+            -16
           ],
           "kind": "cable",
           "remote": false
@@ -5622,30 +5606,14 @@
           "id": "cable-gamma-csi-sipm",
           "label": "OpenGammaDetector CsI(Tl) + SiPM open gamma spectrometer to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
           "from": [
-            -9.5,
+            114.5,
             11,
-            3
+            -84
           ],
           "to": [
-            5.5,
+            55.5,
             11,
-            35
-          ],
-          "kind": "cable",
-          "remote": false
-        },
-        {
-          "id": "cable-swir-ingaas640",
-          "label": "various InGaAs 640x512 SWIR module to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
-          "from": [
-            67.5,
-            37.5,
-            23
-          ],
-          "to": [
-            5.5,
-            11,
-            35
+            -16
           ],
           "kind": "cable",
           "remote": false
@@ -5654,14 +5622,14 @@
           "id": "cable-usb-hub-powered",
           "label": "generic 4-port USB 3.0 hub with 5 V 4 A external supply to USB 3.0 x2",
           "from": [
-            5.5,
+            -44.5,
             11,
-            35
+            -16
           ],
           "to": [
-            -99.25,
+            -92,
             9.799999999999999,
-            -50.5
+            -59.25
           ],
           "kind": "cable",
           "remote": false
@@ -5670,14 +5638,14 @@
           "id": "cable-cam-hq-imx477",
           "label": "Raspberry Pi HQ Camera (IMX477) + 6mm CS lens to CSI/DSI 0",
           "from": [
-            -185.5,
-            24,
-            104
+            -166.5,
+            131,
+            -115
           ],
           "to": [
-            -130.7,
+            -132,
             3.1,
-            -65
+            -75.5
           ],
           "kind": "ribbon",
           "remote": false
@@ -5686,16 +5654,48 @@
           "id": "cable-cam-noir-imx477",
           "label": "Raspberry Pi HQ Camera NoIR + 850nm bandpass to CSI/DSI 1",
           "from": [
-            -133.5,
-            24,
-            104
+            -135.5,
+            131,
+            -96
           ],
           "to": [
             -119.7,
             3.1,
-            -65
+            -86
           ],
           "kind": "ribbon",
+          "remote": false
+        },
+        {
+          "id": "cable-lwir-lepton35",
+          "label": "Teledyne FLIR Lepton 3.5 + PureThermal 3 to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
+          "from": [
+            -89.5,
+            149,
+            -104
+          ],
+          "to": [
+            5.5,
+            11,
+            -37
+          ],
+          "kind": "cable",
+          "remote": false
+        },
+        {
+          "id": "cable-swir-ingaas640",
+          "label": "various InGaAs 640x512 SWIR module to generic 4-port USB 3.0 hub with 5 V 4 A external supply",
+          "from": [
+            4.5,
+            117.5,
+            -74
+          ],
+          "to": [
+            5.5,
+            11,
+            -37
+          ],
+          "kind": "cable",
           "remote": false
         },
         {
@@ -5731,26 +5731,10 @@
           "kind": "cable"
         },
         {
-          "id": "cable-uv-as7331",
-          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
-          "from": [
-            -95,
-            65.1,
-            -124
-          ],
-          "remote": false,
-          "to": [
-            -78.5,
-            51.4,
-            -82.4
-          ],
-          "kind": "cable"
-        },
-        {
           "id": "cable-mic-ics43434",
           "label": "TDK InvenSense ICS-43434 I2S MEMS microphone to the carrier",
           "from": [
-            -60.5,
+            -97.5,
             65.1,
             -127
           ],
@@ -5766,9 +5750,25 @@
           "id": "cable-pwr-ina226",
           "label": "Texas Instruments / generic breakout INA226 bidirectional current and power monitor to the carrier",
           "from": [
-            -38.5,
+            -63,
             65.1,
-            -133
+            -124
+          ],
+          "remote": false,
+          "to": [
+            -78.5,
+            51.4,
+            -82.4
+          ],
+          "kind": "cable"
+        },
+        {
+          "id": "cable-uv-as7331",
+          "label": "ams OSRAM AS7331 UVA/UVB/UVC sensor to the carrier",
+          "from": [
+            -62.5,
+            152.5,
+            -125
           ],
           "remote": false,
           "to": [
@@ -5848,9 +5848,9 @@
         "sourced": 13,
         "approximate": 98,
         "onCarrier": 2,
-        "onWall": 5,
-        "usb": 6,
-        "csi": 2
+        "onWall": 4,
+        "usb": 4,
+        "csi": 0
       }
     }
   ]

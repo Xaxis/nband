@@ -137,7 +137,18 @@ function generateTypeScript() {
     `  whatItSees: string`,
     `  limits: string`,
     `  typicalSensors: string[]`,
+    `  /** What the enclosure has to do for this band to reach its sensor. */`,
+    `  aperture: BandAperture`,
     `  profile: BandProfile`,
+    `}`,
+    ``,
+    `export interface BandAperture {`,
+    `  needs: 'none' | 'optical-window' | 'swir-window' | 'uv-window' | 'lwir-window' | 'rf-transparent' | 'vented' | 'vented-acoustic' | 'external'`,
+    `  /** Materials that pass this band. Empty where no aperture applies. */`,
+    `  passedBy: string[]`,
+    `  /** Materials that look transparent and are not. */`,
+    `  blockedBy: string[]`,
+    `  note: string`,
     `}`,
     ``,
     `export interface BandProfile {`,
@@ -184,7 +195,16 @@ function generateTypeScript() {
     `  id: string`,
     `  category: string
   /** Ships inside another part box, so its price is zero and was paid under that part. */
-  includedWith?: string`,
+  includedWith?: string
+  /** For an enclosure: what has to be cut into it, and out of what. */
+  apertures?: {
+    id: string
+    bands: string[]
+    face: string
+    material: string
+    sizeMm: number | null
+    note: string
+  }[]`,
     `  band: BandId | null`,
     `  vendor: string`,
     `  model: string`,

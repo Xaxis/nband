@@ -54,7 +54,23 @@ function assemblyFor(tier) {
   const parts = hardware.parts.filter((p) => p.tiers?.includes(tier.id) && p.mechanical)
   if (parts.length === 0) return null
 
-  const by = (mount) => parts.filter((p) => p.mechanical.mount === mount)
+  // Where a part goes is not the same question as how it connects, and the
+  // layout was answering the second. A thermal camera is a USB device and it is
+  // also the thing that has to look through the only germanium window in the
+  // build; placing it by its connector put it on the floor facing the lid it
+  // cannot see through. The enclosure records which face each aperture is cut
+  // in, so anything whose band is served by a lid window is mounted to the lid,
+  // whatever cable it happens to use.
+  const enclosure = hardware.parts.find(
+    (p) => p.category === 'enclosure' && p.tiers?.includes(tier.id),
+  )
+  const lidBands = new Set(
+    (enclosure?.apertures ?? []).filter((a) => a.face === 'lid').flatMap((a) => a.bands ?? []),
+  )
+  const looksUp = (p) =>
+    p.band != null && lidBands.has(p.band) && p.mechanical.mount !== 'external'
+
+  const by = (mount) => parts.filter((p) => p.mechanical.mount === mount && !looksUp(p))
   const bodies = []
 
   /**
@@ -337,6 +353,29 @@ function assemblyFor(tier) {
       backZ + p.mechanical.depthMm / 2,
     )
     wx += p.mechanical.widthMm + 12
+  }
+
+  // 7b. Bolted to the underside of the lid, behind the window that serves the
+  //     band each one works in. This is where the cameras, the thermal core,
+  //     the ultraviolet sensor and the short-wave imager actually go, and it is
+  //     also the only placement that makes the windows mean anything: a lid
+  //     window with nothing under it is a hole, and a sensor on the floor under
+  //     a closed lid is blind.
+  const lidParts = parts.filter(looksUp)
+  const lidY = CASE.h
+  let lx2 = -CASE.w / 2 + WALL_CLEAR
+  let lz = -CASE.d / 2 + WALL_CLEAR
+  let lidRow = 0
+  for (const p of lidParts) {
+    const m = p.mechanical
+    if (lx2 + m.widthMm > CASE.w / 2 - WALL_CLEAR && lx2 > -CASE.w / 2 + WALL_CLEAR) {
+      lx2 = -CASE.w / 2 + WALL_CLEAR
+      lz += lidRow + 12
+      lidRow = 0
+    }
+    push(p, lx2 + m.widthMm / 2, lidY - m.heightMm / 2, lz + m.depthMm / 2)
+    lx2 += m.widthMm + 12
+    lidRow = Math.max(lidRow, m.depthMm)
   }
 
   // 8. Everything that lives away from the node: the geophone in the ground,

@@ -30,7 +30,18 @@ export interface Band {
   whatItSees: string
   limits: string
   typicalSensors: string[]
+  /** What the enclosure has to do for this band to reach its sensor. */
+  aperture: BandAperture
   profile: BandProfile
+}
+
+export interface BandAperture {
+  needs: 'none' | 'optical-window' | 'swir-window' | 'uv-window' | 'lwir-window' | 'rf-transparent' | 'vented' | 'vented-acoustic' | 'external'
+  /** Materials that pass this band. Empty where no aperture applies. */
+  passedBy: string[]
+  /** Materials that look transparent and are not. */
+  blockedBy: string[]
+  note: string
 }
 
 export interface BandProfile {
@@ -141,6 +152,12 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 30,
       "entryCostUsd": 189
+    },
+    "aperture": {
+      "needs": "none",
+      "passedBy": [],
+      "blockedBy": [],
+      "note": "Passes through the enclosure. Above roughly 50 keV a few millimetres of plastic attenuates negligibly, so the detector needs no window and gains nothing from one. Below that the wall starts to matter, which is a reason to record the wall rather than to cut a hole in it."
     }
   },
   {
@@ -191,6 +208,20 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 5000,
       "entryCostUsd": 24.95
+    },
+    "aperture": {
+      "needs": "uv-window",
+      "passedBy": [
+        "fused silica",
+        "quartz",
+        "UV-transmitting acrylic (UVA only)"
+      ],
+      "blockedBy": [
+        "soda-lime glass",
+        "standard acrylic",
+        "polycarbonate"
+      ],
+      "note": "Ordinary glass and standard acrylic cut off between roughly 350 and 400 nm, which removes UVB and all of UVC. A node reading through either measures UVA and reports it as the band. Fused silica passes to about 200 nm and is the only cheap material that does."
     }
   },
   {
@@ -241,6 +272,16 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 30000,
       "entryCostUsd": 78
+    },
+    "aperture": {
+      "needs": "optical-window",
+      "passedBy": [
+        "glass",
+        "acrylic",
+        "polycarbonate"
+      ],
+      "blockedBy": [],
+      "note": "Any clear window works. Choose for scratch and weathering rather than transmission: acrylic yellows under years of sunlight, tempered glass does not."
     }
   },
   {
@@ -290,6 +331,15 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 20000,
       "entryCostUsd": 96
+    },
+    "aperture": {
+      "needs": "optical-window",
+      "passedBy": [
+        "glass",
+        "acrylic"
+      ],
+      "blockedBy": [],
+      "note": "The same window as visible. Acrylic transmits usefully to about 1100 nm, which covers the 850 nm the beacon and the NoIR camera work at."
     }
   },
   {
@@ -338,6 +388,19 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 25000,
       "entryCostUsd": 2400
+    },
+    "aperture": {
+      "needs": "swir-window",
+      "passedBy": [
+        "fused silica",
+        "soda-lime glass",
+        "sapphire"
+      ],
+      "blockedBy": [
+        "acrylic",
+        "polycarbonate"
+      ],
+      "note": "Between 1000 and 1700 nm, glass still transmits and acrylic does not: acrylic absorbs hard past about 1100 nm, so the cheap window that works for the visible cameras is opaque to the most expensive sensor in the tier."
     }
   },
   {
@@ -388,6 +451,23 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 8000,
       "entryCostUsd": 74.95
+    },
+    "aperture": {
+      "needs": "lwir-window",
+      "passedBy": [
+        "germanium",
+        "zinc selenide",
+        "chalcogenide glass",
+        "thin polyethylene film"
+      ],
+      "blockedBy": [
+        "glass",
+        "acrylic",
+        "polycarbonate",
+        "ABS",
+        "PETG"
+      ],
+      "note": "The hard one, and the reason a thermal channel is not simply another hole in the lid. Glass and every common plastic are opaque beyond roughly 2.7 um, so at 8 to 14 um an ordinary window is a wall. Germanium works and costs more than some of the sensors. Thin polyethylene film transmits usefully and is what an infrared-transparent bag is, but it is a film rather than a structural window and it will not survive a winter outdoors unsupported."
     }
   },
   {
@@ -438,6 +518,21 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 250,
       "entryCostUsd": 14.5
+    },
+    "aperture": {
+      "needs": "rf-transparent",
+      "passedBy": [
+        "HDPE",
+        "PTFE",
+        "polypropylene",
+        "unfilled PETG or ASA"
+      ],
+      "blockedBy": [
+        "any metal",
+        "carbon-filled filament",
+        "metallised paint"
+      ],
+      "note": "A radome rather than a window. Low-loss plastic passes 60 GHz; metal and carbon-filled filament do not. Wall thickness wants to be a multiple of half the wavelength inside the material, which for polyethylene at 60 GHz is about 1.65 mm, or the wall reflects part of what it is meant to pass. A printed wall with infill has air voids and therefore an uncertain permittivity, so the section in front of the antenna should be solid."
     }
   },
   {
@@ -488,6 +583,17 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 300000,
       "entryCostUsd": 39.95
+    },
+    "aperture": {
+      "needs": "rf-transparent",
+      "passedBy": [
+        "any non-conductive material"
+      ],
+      "blockedBy": [
+        "any metal",
+        "carbon-filled filament"
+      ],
+      "note": "The antenna goes outside the enclosure or the enclosure is not metal. A metal box is a Faraday cage and this is the band that notices first."
     }
   },
   {
@@ -538,6 +644,18 @@ export const BANDS: readonly Band[] = [
     "wavelength": {
       "minM": 10000,
       "maxM": 10000000
+    },
+    "aperture": {
+      "needs": "external",
+      "passedBy": [
+        "any non-ferrous material"
+      ],
+      "blockedBy": [
+        "steel",
+        "nickel",
+        "any ferrous fastener"
+      ],
+      "note": "Not an aperture problem. The magnetometer has to be metres from the node because the node is the loudest magnetic source nearby, so it sits in its own small housing on a mast. Use non-ferrous fasteners: a steel screw beside a fluxgate is a permanent offset."
     }
   },
   {
@@ -584,6 +702,16 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 12000,
       "entryCostUsd": 12.5
+    },
+    "aperture": {
+      "needs": "vented-acoustic",
+      "passedBy": [
+        "ePTFE acoustic membrane over a port"
+      ],
+      "blockedBy": [
+        "sealed wall"
+      ],
+      "note": "Sound needs a path to the diaphragm. A sealed box is a low-pass filter with a resonance of its own, and what comes out is the box rather than the site. An acoustic port covered by a waterproof breathable membrane passes sound and stops water."
     }
   },
   {
@@ -630,6 +758,12 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 3000,
       "entryCostUsd": 89
+    },
+    "aperture": {
+      "needs": "external",
+      "passedBy": [],
+      "blockedBy": [],
+      "note": "The geophone is in the ground, coupled to it by a spike, on a cable. Nothing about the enclosure applies except that the cable has to leave it through a gland."
     }
   },
   {
@@ -671,6 +805,12 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 100,
       "entryCostUsd": 150000
+    },
+    "aperture": {
+      "needs": "none",
+      "passedBy": [],
+      "blockedBy": [],
+      "note": "No buildable sensor, so no enclosure requirement to state."
     }
   },
   {
@@ -713,6 +853,16 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 0,
       "entryCostUsd": 22.5
+    },
+    "aperture": {
+      "needs": "vented",
+      "passedBy": [
+        "ePTFE vent membrane"
+      ],
+      "blockedBy": [
+        "sealed wall"
+      ],
+      "note": "The most commonly botched one. A sealed enclosure measures the enclosure: its temperature lags the air by tens of minutes, its humidity is whatever was sealed in, and its pressure is whatever it was at assembly. The sensor needs air exchange with outside through a membrane vent, which the enclosure needs anyway for pressure equalisation."
     }
   },
   {
@@ -756,6 +906,17 @@ export const BANDS: readonly Band[] = [
       },
       "typicalRangeM": 0,
       "entryCostUsd": 49.99
+    },
+    "aperture": {
+      "needs": "rf-transparent",
+      "passedBy": [
+        "any non-conductive material"
+      ],
+      "blockedBy": [
+        "any metal",
+        "carbon-filled filament"
+      ],
+      "note": "The GNSS antenna needs sky. Plastic overhead is fine and metal is not, and the 170 mm lead on the antenna that ships with the receiver is what decides how far it can get from the board."
     }
   }
 ] as const
@@ -1252,6 +1413,15 @@ export interface Part {
   category: string
   /** Ships inside another part box, so its price is zero and was paid under that part. */
   includedWith?: string
+  /** For an enclosure: what has to be cut into it, and out of what. */
+  apertures?: {
+    id: string
+    bands: string[]
+    face: string
+    material: string
+    sizeMm: number | null
+    note: string
+  }[]
   band: BandId | null
   vendor: string
   model: string
@@ -3606,11 +3776,86 @@ export const PARTS: readonly Part[] = [
       "heightMm": 157,
       "mount": "enclosure",
       "dimensionsSourced": true,
-      "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits.",
+      "note": "Pelican 1500 published dimensions. Exterior 434 x 332 x 157 mm, interior 425 x 284 x 155 mm. The interior is the figure that answers whether a node fits. The apertures listed with this part are what has to be cut into it, and the material of each is chosen by what the band behind it can pass rather than by what is convenient to fit.",
       "interiorWidthMm": 425,
       "interiorDepthMm": 284,
       "interiorHeightMm": 155
-    }
+    },
+    "apertures": [
+      {
+        "id": "wall-rf",
+        "bands": [
+          "nav",
+          "rf",
+          "mmw"
+        ],
+        "face": "none",
+        "material": "the case wall itself, copolymer polypropylene",
+        "sizeMm": null,
+        "note": "No hole. A Pelican Protector shell is copolymer polypropylene, which is not conductive, so GNSS, the software radio and 60 GHz radar all read through the closed case. This is recorded as an aperture because the fact that no hole is needed is the useful part: drilling one, or swapping to a metal case, is how these three bands get lost. The radar wants the wall in front of it to be flat and free of ribs; a moulded corner is a lens."
+      },
+      {
+        "id": "win-optical",
+        "bands": [
+          "vis",
+          "nir"
+        ],
+        "face": "lid",
+        "material": "acrylic or tempered glass, 60 mm",
+        "sizeMm": 60,
+        "note": "One window serves both cameras: they sit side by side looking through it. Tempered glass over acrylic if the node lives outdoors for years, because acrylic yellows and that is a slow calibration drift rather than an obvious failure. Bed it in the lid on a gasket, not in a printed frame that will craze."
+      },
+      {
+        "id": "win-uv",
+        "bands": [
+          "uv"
+        ],
+        "face": "lid",
+        "material": "fused silica, 25 mm",
+        "sizeMm": 25,
+        "note": "Fused silica because glass and standard acrylic cut off between 350 and 400 nm. Behind either of those the AS7331 still returns numbers: it measures the UVA that gets through and reports it as the band, which is worse than reading nothing."
+      },
+      {
+        "id": "win-lwir",
+        "bands": [
+          "lwir"
+        ],
+        "face": "lid",
+        "material": "germanium, 25 mm, anti-reflection coated",
+        "sizeMm": 25,
+        "note": "The expensive one, and the reason a thermal channel is not just another hole. Nothing cheap passes 8 to 14 um: glass, acrylic and every printable filament are opaque, so a Lepton behind any of them images the inside of the lid at a steady indoor temperature and produces a plausible, constant, meaningless field. An uncoated germanium window reflects a third of what reaches it, so pay for the coating or accept the loss knowingly. Thin polyethylene film transmits and costs almost nothing, and is a film rather than a window; it is a bench answer, not a winter one."
+      },
+      {
+        "id": "win-swir",
+        "bands": [
+          "swir"
+        ],
+        "face": "lid",
+        "material": "fused silica, 25 mm",
+        "sizeMm": 25,
+        "note": "Glass works between 1000 and 1700 nm and acrylic does not, which is the trap: the cheap window that serves the visible cameras is opaque to the most expensive sensor in the tier. Fused silica rather than soda-lime because the OH absorption in ordinary glass sits inside this band."
+      },
+      {
+        "id": "port-acoustic",
+        "bands": [
+          "acoustic"
+        ],
+        "face": "side, facing down",
+        "material": "ePTFE acoustic membrane over a 6 mm port",
+        "sizeMm": 6,
+        "note": "Sound needs a path to the diaphragm and water does not need one in. A membrane passes the first and stops the second. Facing down, or into the lee, because a port facing the sky is a drain and a port facing the wind is a microphone recording the wind."
+      },
+      {
+        "id": "vent-env",
+        "bands": [
+          "env"
+        ],
+        "face": "side, facing down",
+        "material": "ePTFE vent membrane, M12 threaded",
+        "sizeMm": 12,
+        "note": "Two jobs in one part. The environmental sensor has to exchange air with outside or it measures the box: sealed, its temperature lags the air by tens of minutes, its humidity is whatever was shut in at assembly and its pressure never changes. And the enclosure needs the vent regardless, because a sealed box breathes as it warms and cools and will pull water in through whatever imperfection it can find. A vent is not a hole in the waterproofing, it is what makes the waterproofing work."
+      }
+    ]
   },
   {
     "id": "power-solar-150w",
