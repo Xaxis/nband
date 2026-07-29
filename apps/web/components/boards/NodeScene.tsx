@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { colourOf, visibleBodies, visibleCables } from '../../lib/boards/scene.mjs'
 
 /**
  * The whole node, assembled.
@@ -88,16 +89,6 @@ function webglAvailable(): boolean {
   return webglProbe
 }
 
-const MOUNT_COLOUR: Record<string, number> = {
-  host: 0x1f6f43,
-  hat: 0x2f7d55,
-  carrier: 0x4e6b8a,
-  usb: 0x6b5f8a,
-  csi: 0x8a6b4e,
-  'enclosure-wall': 0x7a8a6b,
-  external: 0x5a5a62,
-  enclosure: 0x8a8a94,
-}
 
 export default function NodeScene({
   assembly,
@@ -114,6 +105,11 @@ export default function NodeScene({
     webglAvailable() ? 'loading' : 'error',
   )
   const [hovered, setHovered] = useState<Body | null>(null)
+  // The part a hovered feature belongs to. Looked up by id rather than carried
+  // on the body, so it stays correct if the assembly changes shape.
+  const hoveredParent = hovered?.parent
+    ? (assembly.bodies.find((b) => b.id === hovered.parent) ?? null)
+    : null
 
   useEffect(() => {
     const host = hostRef.current
@@ -168,10 +164,10 @@ export default function NodeScene({
     scene.add(group)
 
 
-    const visible = assembly.bodies.filter(
-      (b) =>
-        (b.mount !== 'enclosure' || showCase) && (!b.remote || showRemote),
-    )
+    // Shared with the build-time projector, so the view a reader without WebGL
+    // is shown is the same node under the same rules rather than a second
+    // drawing that happens to read the same file.
+    const visible = visibleBodies(assembly, { showCase, showRemote })
 
     for (const b of visible) {
       if (b.glb) continue // loaded separately below
@@ -186,11 +182,7 @@ export default function NodeScene({
         : new THREE.BoxGeometry(w, h, d)
       disposables.push(geo)
 
-      const colour = b.colour
-        ? new THREE.Color(b.colour)
-        : b.hue != null
-          ? new THREE.Color(`hsl(${b.hue}, 45%, 52%)`)
-          : new THREE.Color(MOUNT_COLOUR[b.mount] ?? 0x5a5a62)
+      const colour = new THREE.Color(colourOf(b))
       const mat = material(
         `${colour.getHexString()}-${b.mount}-${b.wireframe ? 'w' : 's'}`,
         () =>
@@ -232,8 +224,7 @@ export default function NodeScene({
     // peripheral floated beside a board it had no visible relationship to.
     // Drawn as a sag rather than a straight line, because a straight line
     // between two components reads as a dimension, not a wire.
-    // A cable whose far end is hidden is wiring to nothing.
-    for (const c of (assembly.cables ?? []).filter((c) => !c.remote || showRemote)) {
+    for (const c of visibleCables(assembly, { showRemote })) {
       const a = new THREE.Vector3(...c.from)
       const bb = new THREE.Vector3(...c.to)
       const mid = a.clone().lerp(bb, 0.5)
@@ -418,10 +409,29 @@ export default function NodeScene({
 
       {hovered && (
         <div className="pointer-events-none absolute left-3 top-3 max-w-[46ch] rounded-[8px] border border-[var(--line)] bg-[var(--surface-1)]/95 px-3 py-2 shadow-lg backdrop-blur">
-          <p className="text-[13px] font-semibold text-[var(--ink)]">{hovered.label}</p>
+          {/* Nineteen parts on tier 3 are drawn as their own detail geometry
+              rather than as a block, so the thing under the cursor is usually a
+              lens barrel or a shield can rather than the part. Naming only the
+              feature answered a question nobody asked: hovering the $2,400
+              short-wave camera said "C-mount lens". The part comes first and
+              the feature qualifies it. */}
+          {hoveredParent && (
+            <p className="text-[13px] font-semibold text-[var(--ink)]">{hoveredParent.label}</p>
+          )}
+          <p
+            className={
+              hoveredParent
+                ? 'num text-[11.5px] text-[var(--ink-2)]'
+                : 'text-[13px] font-semibold text-[var(--ink)]'
+            }
+          >
+            {hoveredParent ? `${hovered.label}` : hovered.label}
+          </p>
           <p className="num mt-0.5 text-[11.5px] text-[var(--ink-2)]">
             {hovered.size[0]} × {hovered.size[2]} × {hovered.size[1]} mm
-            {hovered.interface ? ` · ${hovered.interface}` : ''}
+            {(hoveredParent ?? hovered).interface
+              ? ` · ${(hoveredParent ?? hovered).interface}`
+              : ''}
             {' · '}
             {hovered.sourced ? 'sourced dimensions' : 'approximate'}
           </p>

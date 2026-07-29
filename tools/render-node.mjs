@@ -20,28 +20,21 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+// The same visibility and colour rules the browser renderer uses. This file
+// held its own copy of both, which is how a check ends up inspecting a picture
+// that is not the one anybody sees.
+import {
+  DEFAULT_TOGGLES,
+  colourOf,
+  visibleBodies,
+  visibleCables,
+} from '../apps/web/lib/boards/scene.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = join(root, 'apps/web/public/boards')
 mkdirSync(OUT, { recursive: true })
 
 const { assemblies } = JSON.parse(readFileSync(join(OUT, 'assembly.json'), 'utf8'))
-
-// Mirrors MOUNT_COLOUR in NodeScene. A body with no colour of its own is
-// coloured by where it mounts, which is the one thing a massing model is for.
-const MOUNT_COLOUR = {
-  host: '#1f6f43',
-  hat: '#2f7d55',
-  carrier: '#4e6b8a',
-  usb: '#6b5f8a',
-  csi: '#8a6b4e',
-  'enclosure-wall': '#7a8a6b',
-  external: '#5a5a62',
-  enclosure: '#8a8a94',
-  standoff: '#9aa0a8',
-  feature: '#5a5a62',
-  detail: '#5a5a62',
-}
 
 const VIEWS = {
   iso: { az: -0.62, el: 0.5 },
@@ -111,13 +104,15 @@ function faces(body) {
   return out
 }
 
-const colourOf = (b) =>
-  b.colour ??
-  (b.hue != null ? hslHex(b.hue, 45, 52) : (MOUNT_COLOUR[b.mount] ?? '#5a5a62'))
-
-function hslHex(h, s, l) {
-  s /= 100
-  l /= 100
+/** colourOf returns CSS, which here means hex or an hsl() the shader-free
+ *  rasteriser has to resolve itself. */
+function toHex(css) {
+  if (css.startsWith('#')) return css
+  const m = /hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%/.exec(css)
+  if (!m) return '#5a5a62'
+  const h = Number(m[1])
+  const s = Number(m[2]) / 100
+  const l = Number(m[3]) / 100
   const k = (n) => (n + h / 30) % 12
   const a = s * Math.min(l, 1 - l)
   const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)))
@@ -125,26 +120,27 @@ function hslHex(h, s, l) {
 }
 
 export function renderAssembly(assembly, opts = {}) {
-  const { view = 'iso', width = 1100, height = 780, showCase = false, showRemote = false } = opts
+  const {
+    view = 'iso',
+    width = 1100,
+    height = 780,
+    showCase = DEFAULT_TOGGLES.showCase,
+    showRemote = DEFAULT_TOGGLES.showRemote,
+  } = opts
   const project = makeProject(VIEWS[view] ?? VIEWS.iso)
 
   // The carrier is a real GLB in the interactive scene and there is no mesh
   // loader here, so it is drawn as the board rectangle it is. Leaving it out
   // entirely was worse: every breakout mounted on it floated above the Pi with
   // nothing underneath.
-  const bodies = assembly.bodies
-    .filter(
-      (b) =>
-        !b.shell && // drawn as its own detail geometry instead
-        (b.mount !== 'enclosure' || showCase) &&
-        (!b.remote || showRemote),
-    )
-    .map((b) => (b.glb ? { ...b, colour: '#1b5e3a', glb: undefined } : b))
+  const bodies = visibleBodies(assembly, { showCase, showRemote }).map((b) =>
+    b.glb ? { ...b, colour: '#1b5e3a', glb: undefined } : b,
+  )
 
   // Every face of every body, projected once.
   const quads = []
   for (const b of bodies) {
-    const col = colourOf(b)
+    const col = toHex(colourOf(b))
     for (const f of faces(b)) {
       const p = f.pts.map(project)
       const nv = project(f.n)
@@ -169,9 +165,11 @@ export function renderAssembly(assembly, opts = {}) {
   // Extent, from the projected geometry rather than assumed.
   const xs = quads.flatMap((q) => q.pts.map((p) => p[0]))
   const ys = quads.flatMap((q) => q.pts.map((p) => p[1]))
-  const cables = (assembly.cables ?? [])
-    .filter((c) => !c.remote || showRemote)
-    .map((c) => ({ ...c, a: project(c.from), b: project(c.to) }))
+  const cables = visibleCables(assembly, { showRemote }).map((c) => ({
+    ...c,
+    a: project(c.from),
+    b: project(c.to),
+  }))
   for (const c of cables) {
     xs.push(c.a[0], c.b[0])
     ys.push(c.a[1], c.b[1])
@@ -233,7 +231,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // is for looking at while fixing geometry.
   const jobs = explicit
     ? [{ view: wantView ?? 'iso', showCase: process.argv.includes('--case'), showRemote: process.argv.includes('--remote') }]
-    : [{ view: 'iso', showCase: false, showRemote: false }]
+    : [{ view: 'iso', ...DEFAULT_TOGGLES }]
 
   for (const a of assemblies) {
     if (wantTier && a.tier !== wantTier) continue

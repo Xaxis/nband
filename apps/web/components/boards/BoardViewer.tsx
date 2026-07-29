@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { useId, useState, useSyncExternalStore } from 'react'
 import { PanZoom } from './PanZoom'
 import { TierTabs } from '../TierTabs'
+import { DEFAULT_TOGGLES } from '../../lib/boards/scene.mjs'
 import type { Assembly } from './NodeScene'
 
 /**
@@ -136,12 +137,12 @@ export function BoardViewer({
   const panelId = useId()
   // Local rather than in the URL: these are display toggles, not a view worth
   // linking to, and putting four booleans in the hash makes the link unreadable.
-  // The case is on by default where a tier ships one. A node drawn without the
-  // box it lives in reads as parts on a bench, and the wall-mounted sensors in
-  // particular have nothing to be mounted to; the outline is faint enough that
-  // it frames the node rather than hiding it.
-  const [showCase, setShowCase] = useState(true)
-  const [showRemote, setShowRemote] = useState(false)
+  // From the shared scene rules, not chosen here. The build-time projection
+  // renders the fallback view with the same two values, and a fallback that
+  // opens on a different arrangement than the interactive view is worse than
+  // none: it looks like the node without being the view.
+  const [showCase, setShowCase] = useState(DEFAULT_TOGGLES.showCase)
+  const [showRemote, setShowRemote] = useState(DEFAULT_TOGGLES.showRemote)
 
   const board = boards.find((b) => b.tier === tier) ?? boards[0]
   const assembly = assemblies.find((a) => a.tier === board?.tier)

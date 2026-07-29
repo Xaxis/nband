@@ -15,6 +15,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { visibleBodies } from '../apps/web/lib/boards/scene.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => JSON.parse(readFileSync(resolve(root, p), 'utf8'))
@@ -546,9 +547,10 @@ check('the assembly is physically consistent', () => {
       errors.push(`${a.tier}: ${a.tier}-node.svg is missing. Run \`make boards\`.`)
       continue
     }
-    const expected = a.bodies.filter(
-      (b) => !b.shell && b.mount !== 'enclosure' && !b.remote,
-    ).length
+    // Through the shared rules, not a third copy of them. This had its own
+    // filter and disagreed the moment the default toggles changed, which is the
+    // exact failure the shared module exists to stop.
+    const expected = visibleBodies(a).length
     const claimed = Number(/(\d+) bodies/.exec(readFileSync(svgPath, 'utf8'))?.[1] ?? -1)
     if (claimed !== expected) {
       errors.push(
