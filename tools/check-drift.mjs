@@ -374,6 +374,88 @@ check('every sensor has a way through the enclosure', () => {
   return `${cut} aperture(s) across ${shells.length} enclosure(s), each of a material that passes the band behind it`
 })
 
+check('the build guide says how to close the box', () => {
+  // The aperture table and the dimensioned drawings landed on the hardware
+  // page, which is where someone comparing part numbers finds them. The build
+  // guide is what a person reads with the lid open in front of them, and it
+  // went from fitting the cameras straight to surveying the horizon. Nothing
+  // in it said that a thermal camera behind acrylic images the inside of that
+  // lid, so the whole enclosure argument was published somewhere the builder
+  // had already stopped reading.
+  //
+  // Every aperture requirement the enclosures actually cut for has to reach
+  // the guide. The mapping from a requirement to the words a builder reads is
+  // written out rather than inferred, because matching free prose against a
+  // material string fails open, and an unregistered requirement is an error
+  // rather than a pass: a band that gains a window is exactly the case this
+  // exists to catch, and it would otherwise catch nothing.
+  const PHRASING = {
+    'uv-window': ['fused silica', 'quartz'],
+    'optical-window': ['acrylic'],
+    'swir-window': ['fused silica'],
+    'lwir-window': ['germanium'],
+    'rf-transparent': ['carbon-filled filament', 'carbon filled filament'],
+    'vented-acoustic': ['acoustic port'],
+    vented: ['breather vent'],
+  }
+  const NEEDS_NOTHING = new Set(['none', 'external'])
+  const bandOf = Object.fromEntries(bands.bands.map((b) => [b.id, b]))
+  const guide = readText('content/build.md')
+
+  // The section is located by the link rather than by its heading, so that
+  // renaming or renumbering the step does not silently disable the check while
+  // rewording it out of existence still fails.
+  const sections = guide.split(/^## /m)
+  const step = sections.find((s) => s.includes('/hardware#enclosure'))
+  if (!step) {
+    throw new Error(
+      'no step links to /hardware#enclosure, so the guide never sends anyone to the ' +
+        'aperture table or the drawings',
+    )
+  }
+
+  const errors = []
+  // The guide promises in its own opening that every step ends in something
+  // you can check. A step about a box whose failures are all quiet is the last
+  // one that should be exempt from that.
+  if (!step.includes('**Verify')) {
+    errors.push('the enclosure step ends in no verification, which the guide promises for every step')
+  }
+
+  const needed = new Map()
+  for (const shell of hardware.parts.filter((p) => p.category === 'enclosure')) {
+    for (const a of shell.apertures ?? []) {
+      for (const band of a.bands ?? []) {
+        const needs = bandOf[band]?.aperture?.needs
+        if (!needs || NEEDS_NOTHING.has(needs)) continue
+        if (!needed.has(needs)) needed.set(needs, new Set())
+        needed.get(needs).add(band)
+      }
+    }
+  }
+
+  const lower = step.toLowerCase()
+  for (const [needs, forBands] of [...needed].sort()) {
+    const accepted = PHRASING[needs]
+    if (!accepted) {
+      errors.push(
+        `'${needs}' has no registered phrasing, so nothing checks that the guide covers it ` +
+          `(${[...forBands].join(', ')} need it). Add one to PHRASING and write the prose.`,
+      )
+      continue
+    }
+    if (!accepted.some((phrase) => lower.includes(phrase.toLowerCase()))) {
+      errors.push(
+        `the enclosure step never says ${accepted.map((p) => `"${p}"`).join(' or ')}, which is ` +
+          `how a builder is told what ${[...forBands].join(', ')} needs from a wall`,
+      )
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return `the enclosure step covers ${needed.size} aperture requirement(s) and ends in a verification`
+})
+
 check('a solar panel is the size its rating implies', () => {
   // The panel is drawn in the whole-node view and its footprint is most of what
   // a reader uses to decide whether a site can host one, so the body has to

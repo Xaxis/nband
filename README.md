@@ -78,7 +78,7 @@ Everything is published at [nband.space](https://nband.space) and lives in
 
 - [What the fourteen bands can and cannot see](https://nband.space/bands)
 - [Bill of materials, wiring, and power budget](https://nband.space/hardware)
-- [Build guide](https://nband.space/build), ten steps, each one verifiable
+- [Build guide](https://nband.space/build), eleven steps, each one verifiable
 - [How verdicts are reached](https://nband.space/discriminator), runs live
 - [Safety and regulation](https://nband.space/safety), read before building an emitter
 

@@ -1,16 +1,16 @@
 ---
 title: Build guide
-description: Ten steps from a bare board to a node reporting to the grid. Every step ends in something you can check before you spend money on the next one.
+description: Eleven steps from a bare board to a node reporting to the grid. Every step ends in something you can check before you spend money on the next one.
 version: 0.1.0
 section: Build
 order: 10
-updated: 2026-07-27
+updated: 2026-07-30
 audience: Someone mid-build with a soldering iron down
 ---
 
 Every step below ends in a verification: a command that prints an expected value, a file you can open, a number you can compare. If a step does not verify, stop there. The failure modes listed under each one cover most of what actually goes wrong, and continuing past a failed step means debugging two problems at once later.
 
-The order is deliberate. Timing comes before sensors, and one working sensor comes before five. You can stop after step 5 and have a node that contributes usefully to the grid.
+The order is deliberate. Timing comes before sensors, one working sensor comes before five, and the box comes before the site, because a sensor that fails once the lid is on fails quietly and you want to find that indoors. You can stop after step 5 and have a node that contributes usefully to the grid.
 
 ## Before you start
 
@@ -175,7 +175,41 @@ Expected: the camera is listed with its sensor name (`imx477`), and `/tmp/test.j
 
 If you are fitting the second, infrared camera, put the 850 nm bandpass filter in front of it now. **Without the filter this is not a near-infrared channel**, it is a second visible-light channel with extra noise, and the grid will treat any data you send from it as a duplicate rather than as an independent band.
 
-## Step 8: Survey your horizon
+## Step 8: Close the box
+
+Everything so far has run on a bench with the sensors in open air, which is the right way to find a miswired one and the reason this step is easy to underestimate. The enclosure is not packaging. A weatherproof box is a wall, most of these bands cannot cross a wall, and a node that was correct on the bench will read the inside of its own lid once the lid is on and report that as sky.
+
+The aperture table under [Enclosure on the hardware page](/hardware#enclosure) states what each case has to let through and what every window is made of, and there is a dimensioned drawing beside it placing each window on the part that looks through it. Cut or print to that drawing rather than to a hole saw you already own: the window positions come from the same packing rule that decides where the sensors sit, so a hole moved for convenience is a sensor looking at plastic.
+
+Three of those materials are worth restating here, because they are the ones people substitute. The thermal window is germanium, and nothing cheap replaces it, since glass, acrylic and every printable filament are opaque between 8 and 14 micrometres. The ultraviolet window is fused silica, because glass and standard acrylic cut off somewhere between 350 and 400 nm and the sensor behind either of them still returns numbers. The short-wave window is fused silica rather than the acrylic that serves the visible cameras, which is the trap waiting in a tier 3 build: the cheapest window in the box is opaque to the most expensive sensor in it.
+
+Three things about fitting the sensors that a plan view cannot show. Mount the thermal sensor against its window rather than behind a standoff, because a 110 degree field of view vignettes fast on a 25 mm aperture held away from it. Face the acoustic port down, or into the lee, since a port facing the sky is a drain and a port facing the wind is a microphone recording the wind. Put the environmental sensor at the vent rather than beside the Pi, which is the warmest object in the box and will otherwise be the thing it measures.
+
+Fit the breather vent before you close anything, and put reusable desiccant in beside the electronics. A sealed enclosure traps moisture rather than excluding it: the air you shut the lid on is as humid as the room it was in, and the first cold night condenses it onto the coldest surface in the box, which is always the optics. The vent is not a hole in the waterproofing, it is what makes the waterproofing work, because a box that cannot equalise as it warms and cools pulls water in through whatever imperfection it has.
+
+Do not drill anything for the navigation, radio or radar channels. All three read through a copolymer polypropylene or unfilled ASA wall, and the registry records that as an aperture precisely because the absence of a hole is the load-bearing part. The two ways to lose those three bands are substituting a metal case and printing in carbon-filled filament, and both look like reasonable choices at the time.
+
+**Verify, part one.** The wall still passes what it is supposed to pass. Close the lid on a node that had PPS lock in step 3, leave it five minutes, then:
+
+```bash
+chronyc tracking | grep -E 'Reference ID|RMS offset'
+```
+
+Expected: the same reference ID and roughly the same offset as before the lid went on. A `Reference ID` that stops naming `PPS` when the box closes is a conductive wall rather than a failed receiver, and no window will fix it.
+
+**Verify, part two.** Each optical channel is looking through its window rather than at it. Run the self-test with the box closed, hold a warm hand flat against the thermal window, and run it again:
+
+```bash
+~/.nband-venv/bin/python -m nband_node.agent --config ~/node.toml --self-test
+```
+
+Expected: `lwir.main` moves by several kelvin between the two readings and settles back afterwards. This is the one failure in the build that produces a plausible number instead of an error. A Lepton behind acrylic reports a steady field at about indoor temperature, every channel still says `PASS`, and the archive fills with a careful measurement of the underside of a lid. The reading changing is the only evidence you get that the window passes 8 to 14 micrometres. If you fitted the ultraviolet channel, the equivalent test is that it reads near zero indoors and rises by orders of magnitude in direct sun; behind ordinary glass it will rise a little, and that little is UVA getting through and being recorded as the band.
+
+**Verify, part three.** The environmental channel is measuring the outside and not the box. Leave the closed node outdoors for an hour, then run the self-test again.
+
+Expected: `env.temp` within a couple of degrees of the outside air. Do not check this against a weather report, because those pressures are corrected to sea level and your sensor is not: at 300 metres the two legitimately differ by about 35 hPa, and chasing that difference has cost people an afternoon. What proves the vent is working is that temperature tracks the outside air instead of lagging it by tens of minutes, and that pressure moves at all across a day. A channel that sits high and barely changes is reading a sealed box, which means the vent is blocked, the membrane went on over the sensor rather than beside it, or the sensor is sitting in the Pi's exhaust.
+
+## Step 9: Survey your horizon
 
 The node needs to know what it physically cannot see. Without this, "nothing detected to the north" is ambiguous between a clear sky and a ridgeline.
 
@@ -195,7 +229,7 @@ Nearly every breakout board ships with its own I2C pull-up resistors fitted, usu
 
 The Raspberry Pi fits 1.8 k pull-ups to 3V3 on GPIO2 and GPIO3 on the board itself, and those cannot be removed. That value is correct on its own, which is why the carrier fits none of its own. Four breakouts left as shipped bring the bus to about 1,047 ohms, which still works. What does not work is adding more: I2C needs at least (3.3 - 0.4) / 3 mA, about 967 ohms, to pull a valid low, and it is easy to go under that without noticing because the symptom is not a dead bus. It is a bus that works until a hot afternoon or a longer cable, and then produces read errors that look like a failing sensor.
 
-## Step 9: Enrol with the grid
+## Step 10: Enrol with the grid
 
 Enrolling a new node needs a secret, and there is no self-service way to get one yet. Ask for it: open an issue on the repository titled "node enrolment", or email the address in [SECURITY.md](https://github.com/Xaxis/nband/blob/main/SECURITY.md). Say roughly where the node will be and which tier you built. You will get a secret back.
 
@@ -215,7 +249,7 @@ Check the published point on a map before continuing. If it lands somewhere you 
 
 Your node key was generated on first run at the path in `[grid].key_path` and is `0600`. It never leaves the machine. Back it up somewhere safe: losing it means enrolling under a new slug, and the archive cannot connect the two.
 
-## Step 10: Run it for real
+## Step 11: Run it for real
 
 Everything so far has run as you, out of your home directory, because that is the fastest way to find a miswired sensor. The service does not run that way. It runs as an unprivileged `nband` user with `ProtectHome=true`, which means it cannot read your home directory at all, not the venv, not the config, not the key. So installing it is a real step rather than a file copy:
 
