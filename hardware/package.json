@@ -7,6 +7,7 @@
     "postinstall": "echo '  tscircuit installed. Run `make boards` from the repository root.'"
   },
   "devDependencies": {
+    "@jscad/modeling": "2.13.0",
     "tscircuit": "0.0.2167"
   }
 }

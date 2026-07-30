@@ -1,0 +1,89 @@
+[
+  {
+    "id": "case-printed-asa",
+    "model": "Printed ASA enclosure, filament for the body and lid",
+    "drawnFor": "t1",
+    "parts": [
+      {
+        "file": "case-printed-asa-body.stl",
+        "part": "body",
+        "triangles": 2172,
+        "note": "print floor-down",
+        "sizeMm": [
+          196,
+          151,
+          113
+        ],
+        "volumeMm3": 313974
+      },
+      {
+        "file": "case-printed-asa-lid.stl",
+        "part": "lid",
+        "triangles": 3736,
+        "note": "print groove-face-down",
+        "sizeMm": [
+          202,
+          157,
+          5
+        ],
+        "volumeMm3": 140791
+      }
+    ],
+    "windows": [
+      {
+        "id": "win-optical",
+        "part": "cam-hq-imx477",
+        "band": "vis",
+        "apertureMm": 34,
+        "discMm": 37,
+        "material": "acrylic or tempered glass, two windows of 34 mm",
+        "x": -68,
+        "y": -45.5
+      },
+      {
+        "id": "win-optical",
+        "part": "cam-noir-imx477",
+        "band": "nir",
+        "apertureMm": 34,
+        "discMm": 37,
+        "material": "acrylic or tempered glass, two windows of 34 mm",
+        "x": -18,
+        "y": -45.5
+      },
+      {
+        "id": "win-lwir",
+        "part": "lwir-mlx90640",
+        "band": "lwir",
+        "apertureMm": 25,
+        "discMm": 28,
+        "material": "germanium, 25 mm, anti-reflection coated",
+        "x": 25.5,
+        "y": -52
+      }
+    ],
+    "sideHoles": [
+      {
+        "id": "vent-env",
+        "sizeMm": 12,
+        "atZ": 15
+      }
+    ],
+    "seal": {
+      "cordMm": 3,
+      "grooveMm": 3.4,
+      "grooveDepthMm": 2.4,
+      "cutInto": "lid"
+    },
+    "bedMm": [
+      220,
+      220
+    ],
+    "notModelled": [
+      "Board mounting bosses. No part in the registry records a mounting hole pattern, and inventing one puts confident holes in a file people print.",
+      "Cable entries. The registry names no gland, and a hole sized for the wrong one is worse than no hole.",
+      "The windows themselves, the seal cord and the vent, none of which are printed."
+    ],
+    "status": "submitted",
+    "neverPrinted": true
+  }
+]

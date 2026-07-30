@@ -23,7 +23,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { packFace, PART_GAP, WALL_CLEAR } from './lib/pack.mjs'
+import { lidLayout, packFace, PART_GAP, WALL_CLEAR } from './lib/pack.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const hardware = JSON.parse(readFileSync(join(root, 'schema/hardware.json'), 'utf8'))
@@ -68,34 +68,19 @@ function drawFor(shell) {
   const iw = m.interiorWidthMm
   const id_ = m.interiorDepthMm
   const ih = m.interiorHeightMm
-  const wall = (m.widthMm - iw) / 2
+  // Stated rather than derived from the exterior. Deriving it assumed a box of
+  // constant section, which stopped being true when the printed lid grew a drip
+  // edge overhanging the body: (exterior - interior) / 2 then measures the
+  // overhang and reports it as the wall thickness.
+  const wall = shell.keySpecs?.wallMm ?? (m.widthMm - iw) / 2
   const apertures = shell.apertures ?? []
 
-  // Which parts look through the lid, taken from the same registry the node
-  // assembly reads, so the windows land on the parts rather than near them.
+  // Which parts look through the lid and where each sits, from the rule the
+  // printable model also calls. Written out here as well, the drawing and the
+  // STL agree until one is edited, and the STL is the one that gets printed.
+  const layout = lidLayout(shell, hardware.parts)
+  const { tier: tierOf, parts: lidParts, placed } = layout
   const lidBands = new Set(apertures.filter((a) => a.face === 'lid').flatMap((a) => a.bands ?? []))
-  // The tier that needs the most holes, not the first one listed. The Pelican
-  // ships with tiers 2 and 3, and drawing it for tier 2 left out the short-wave
-  // window that only tier 3 needs: a builder cutting to that drawing would have
-  // to open the lid again for the most expensive sensor in the build.
-  const wantsLid = (p, tier) =>
-    p.tiers?.includes(tier) &&
-    p.mechanical &&
-    p.band &&
-    lidBands.has(p.band) &&
-    p.mechanical.mount !== 'external'
-  const candidateTiers = shell.tiers?.length ? shell.tiers : ['t1']
-  const tierOf = candidateTiers.reduce((best, tier) =>
-    hardware.parts.filter((p) => wantsLid(p, tier)).length >
-    hardware.parts.filter((p) => wantsLid(p, best)).length
-      ? tier
-      : best,
-  )
-  const lidParts = hardware.parts.filter((p) => wantsLid(p, tierOf))
-  const placed = packFace(
-    lidParts.map((p) => ({ id: p.id, ...p.mechanical })),
-    { width: iw, depth: id_, gap: PART_GAP, clear: WALL_CLEAR },
-  )
   const apertureFor = (band) => apertures.find((a) => (a.bands ?? []).includes(band))
 
   const S = 1.5 // px per mm
@@ -212,7 +197,12 @@ function drawFor(shell) {
     g.push(t(sx, yy + 18, `${a.id.replace(/^(vent|port)-/, '')} ${a.sizeMm} mm`, { size: 8, anchor: 'middle', fill: CUT }))
     sx += 76
   }
-  g.push(dim(bx, ly + planD + 30, bx + planW, ly + planD + 30, `${m.widthMm} outside`, { off: 14 }))
+  // The body, not the assembly. Where a lid overhangs, m.widthMm is the widest
+  // point of the two parts together and labelling the body with it is wrong by
+  // the overhang.
+  g.push(
+    dim(bx, ly + planD + 30, bx + planW, ly + planD + 30, `${iw + wall * 2} outside`, { off: 14 }),
+  )
 
   // --- section -----------------------------------------------------------
   const sy = ly + planD + 96

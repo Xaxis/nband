@@ -2429,8 +2429,14 @@
       "keySpecs": {
         "material": "ASA",
         "wallMm": 3,
+        "sealCordMm": 3,
         "sealGrooveMm": 3.4,
-        "printsPerSpool": 4,
+        "lidMm": 5,
+        "lidOverhangMm": 3,
+        "windowRebateMm": 1.5,
+        "windowRebateDepthMm": 1.5,
+        "printsPerSpool": 1,
+        "filamentG": 564,
         "bedMm": "fits 220 x 220"
       },
       "alternatives": [],
@@ -2441,17 +2447,17 @@
         "rail": "none",
         "pins": []
       },
-      "notes": "A design, not a product, and nobody has printed one. The price is one 1 kg spool of ASA, which is the only part of this you can put in a basket; a body and lid take roughly 250 g, so a spool is about four enclosures. It does not include the seal cord, the vent, the cable glands or any of the windows, and those are not free: the germanium window for the thermal channel costs more than several of the sensors. What it does buy is the difference between a 179 dollar case and a spool of filament, and the freedom to put each window where its sensor actually looks rather than where a moulded lid allows. ASA rather than PLA because PLA creeps at the temperature the inside of a dark box reaches in summer and goes brittle within a year of ultraviolet. Do not print in anything carbon filled: it is conductive enough to matter and this enclosure is the antenna window for GNSS, the software radio and the radar.",
+      "notes": "A design, not a product, and nobody has printed one. The price is one 1 kg spool of ASA, which is the only part of this you can put in a basket. A body and lid come to 564 g once the geometry exists to measure rather than to estimate, so a spool is one enclosure and most of a second, not the four an earlier guess claimed. That moves the filament cost of one enclosure from about 8 dollars to about 18. It does not include the seal cord, the vent, the cable glands or any of the windows, and those are not free: the germanium window for the thermal channel costs more than several of the sensors. What it does buy is the difference between a 179 dollar case and a spool of filament, and the freedom to put each window where its sensor actually looks rather than where a moulded lid allows. ASA rather than PLA because PLA creeps at the temperature the inside of a dark box reaches in summer and goes brittle within a year of ultraviolet. Do not print in anything carbon filled: it is conductive enough to matter and this enclosure is the antenna window for GNSS, the software radio and the radar.",
       "mechanical": {
-        "widthMm": 196,
-        "depthMm": 151,
-        "heightMm": 116,
+        "widthMm": 202,
+        "depthMm": 157,
+        "heightMm": 118,
         "mount": "enclosure",
         "dimensionsSourced": false,
         "interiorWidthMm": 190,
         "interiorDepthMm": 145,
         "interiorHeightMm": 110,
-        "note": "Sized from the tier 1 parts rather than chosen: their summed footprint is 16,893 mm2, and at the 1.6x packing factor the fit check uses that needs 27,029 mm2 of floor, which 190 x 145 provides. The 110 mm interior comes from stacking the two things that face each other: a camera hangs 48 mm from the lid and the board stack rises 32 mm from the floor, and the 30 mm left between them is cable bend radius. A 90 mm interior closes that to 10 mm, which fits on paper and does not fit a cable. The exterior fits a 220 x 220 bed with room for a brim, which is the constraint that actually decides whether a design like this is printable at home."
+        "note": "Sized from the tier 1 parts rather than chosen: their summed footprint is 16,893 mm2, and at the 1.6x packing factor the fit check uses that needs 27,029 mm2 of floor, which 190 x 145 provides. The 110 mm interior comes from stacking the two things that face each other: a camera hangs 48 mm from the lid and the board stack rises 32 mm from the floor, and the 30 mm left between them is cable bend radius. A 90 mm interior closes that to 10 mm, which fits on paper and does not fit a cable. The exterior fits a 220 x 220 bed with room for a brim, which is the constraint that actually decides whether a design like this is printable at home. The exterior is the lid, which overhangs the 196 x 151 body by 3 mm on each side: the seal groove is 3.4 mm wide and centred on a 3 mm wall, so a flush lid would carry part of that groove off its own edge. The overhang doubles as a drip edge. Height is the 113 mm body and the 5 mm lid, and the lid is 5 mm rather than 3 because a 2.4 mm groove has to be cut into it."
       },
       "apertures": [
         {

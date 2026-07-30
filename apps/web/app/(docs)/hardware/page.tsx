@@ -9,7 +9,11 @@ import {
 import { Button, Container, Note, PageHeader, Section } from '../../../components/ui'
 import { CarrierBoards } from '../../../components/CarrierBoard'
 import { SystemArchitecture } from '../../../components/SystemArchitecture'
-import { ApertureByBand, EnclosureApertures } from '../../../components/Enclosure'
+import {
+  ApertureByBand,
+  EnclosureApertures,
+  PrintableEnclosures,
+} from '../../../components/Enclosure'
 import { DocTabs } from '../../../components/DocTabs'
 import { TierScope } from '../../../components/TierScope'
 import {
@@ -362,11 +366,16 @@ export default function HardwarePage() {
                   permittivity is therefore neither known nor repeatable, so print that section
                   solid and measure a coupon before trusting the number.
                 </p>
-                <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
-                  No printed enclosure is published yet. When one is, it will be generated from the
-                  same aperture list above rather than drawn beside it, and it will carry the same
-                  caveat every other model here does: nothing in this repository has been built.
+                <h3 className="eyebrow mb-2 mt-10">Print one</h3>
+                <p className="max-w-[68ch] text-[13.5px] leading-relaxed text-[var(--ink-2)]">
+                  Generated from the same aperture list above rather than drawn beside it, so the
+                  windows in the file are in the places the drawing puts them. Making it a solid
+                  rather than a plan found two things a plan cannot hold an opinion about: a
+                  3.4&nbsp;mm seal groove does not fit in a 3&nbsp;mm wall, and a body and lid come
+                  to 564&nbsp;g rather than the 250&nbsp;g the registry had estimated, which is one
+                  enclosure per spool instead of four.
                 </p>
+                <PrintableEnclosures />
               </Container>
             ),
           },

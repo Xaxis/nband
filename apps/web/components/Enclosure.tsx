@@ -1,5 +1,8 @@
+import { readFileSync, existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { BandChip } from './Bands'
 import { BAND_BY_ID, PARTS, type BandId, type Part } from '../lib/schema/generated'
+import { Note } from './ui'
 
 /**
  * What the box has to let through.
@@ -159,6 +162,131 @@ export function ApertureByBand() {
           ))}
         </tbody>
       </table>
+    </div>
+  )
+}
+
+interface ModelPart {
+  file: string
+  part: string
+  triangles: number
+  note: string
+  sizeMm: number[]
+  volumeMm3: number
+}
+
+interface EnclosureModel {
+  id: string
+  model: string
+  drawnFor: string
+  parts: ModelPart[]
+  windows: { id: string; part: string; band: string; apertureMm: number; discMm: number }[]
+  seal: { cordMm: number; grooveMm: number; grooveDepthMm: number; cutInto: string }
+  bedMm: number[] | null
+  notModelled: string[]
+  neverPrinted: boolean
+}
+
+function loadModels(): EnclosureModel[] {
+  const path = resolve(process.cwd(), 'public/boards/enclosure-models.json')
+  if (!existsSync(path)) return []
+  return JSON.parse(readFileSync(path, 'utf8')) as EnclosureModel[]
+}
+
+/**
+ * The printed enclosure as something you can actually print.
+ *
+ * This panel used to end by saying no printed enclosure was published yet and
+ * that one would be generated from the aperture list above rather than drawn
+ * beside it. That is now what happens, so the paragraph promising it had to
+ * become the thing itself.
+ *
+ * The list of what is not modelled is as load-bearing as the download. A
+ * printed part fails expensively and late: nine hours of filament in, or worse,
+ * after it is on a pole. Someone should learn that the mounting bosses are
+ * missing from this page rather than from a finished print.
+ */
+export function PrintableEnclosures() {
+  const models = loadModels()
+  if (models.length === 0) return null
+
+  return (
+    <div className="mt-7 space-y-8">
+      {models.map((m) => {
+        const grams = Math.round(m.parts.reduce((s, p) => s + p.volumeMm3, 0) * 1.24e-3)
+        return (
+          <div key={m.id}>
+            <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+              <h4 className="text-[14px] font-semibold text-[var(--ink)]">{m.model}</h4>
+              <span className="num text-[11.5px] text-[var(--ink-3)]">
+                drawn for {m.drawnFor} · about {grams} g of ASA
+                {m.bedMm ? ` · fits a ${m.bedMm[0]} x ${m.bedMm[1]} mm bed` : ''}
+              </span>
+            </div>
+
+            <div className="card scroll-x">
+              <table className="w-full min-w-[720px] border-collapse">
+                <caption className="sr-only">
+                  Printable parts of the {m.model}, their size, and how each one is oriented on the
+                  bed
+                </caption>
+                <thead>
+                  <tr className="bg-[var(--surface-3)] text-left">
+                    <th className="eyebrow px-3 py-2.5 font-normal">Part</th>
+                    <th className="eyebrow px-3 py-2.5 font-normal">Size</th>
+                    <th className="eyebrow px-3 py-2.5 font-normal">On the bed</th>
+                    <th className="eyebrow px-3 py-2.5 font-normal">File</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {m.parts.map((p) => (
+                    <tr key={p.file} className="border-t border-[var(--line)] align-top">
+                      <td className="px-3 py-3 text-[13px] text-[var(--ink)]">{p.part}</td>
+                      <td className="num px-3 py-3 text-[12px] text-[var(--ink-2)]">
+                        {p.sizeMm.join(' x ')} mm
+                      </td>
+                      <td className="px-3 py-3 text-[12.5px] text-[var(--ink-2)]">{p.note}</td>
+                      <td className="px-3 py-3">
+                        <a className="link num text-[12px]" href={`/boards/${p.file}`} download>
+                          {p.file}
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <p className="mt-3 max-w-[74ch] text-[12.5px] leading-relaxed text-[var(--ink-2)]">
+              The seal is a {m.seal.cordMm} mm cord in a {m.seal.grooveMm} mm groove{' '}
+              {m.seal.grooveDepthMm} mm deep, cut into the {m.seal.cutInto} rather than the rim. A
+              groove has to be wider than the wall it seals against, and this wall is 3 mm, so on
+              the body it would have removed the wall it was meant to seal. That is also why the
+              lid overhangs, and the overhang doubles as a drip edge.
+            </p>
+
+            <h5 className="eyebrow mb-2 mt-6">What is not in these files</h5>
+            <ul className="max-w-[74ch] space-y-1.5">
+              {m.notModelled.map((n) => (
+                <li key={n} className="text-[12.5px] leading-relaxed text-[var(--ink-2)]">
+                  {n}
+                </li>
+              ))}
+            </ul>
+
+            {m.neverPrinted && (
+              <div className="mt-5">
+                <Note kind="warning" title="Never printed">
+                  Generated from the registry and never printed. The geometry is checked on every
+                  build for a closed mesh, for the dimensions the registry publishes, and for an
+                  open hole at every window, which is not the same as somebody having made one and
+                  put it outside for a winter.
+                </Note>
+              </div>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }

@@ -16,6 +16,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { visibleBodies } from '../apps/web/lib/boards/scene.mjs'
+import { lidLayout } from './lib/pack.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const read = (p) => JSON.parse(readFileSync(resolve(root, p), 'utf8'))
@@ -372,6 +373,248 @@ check('every sensor has a way through the enclosure', () => {
   const shells = hardware.parts.filter((p) => p.category === 'enclosure')
   const cut = shells.flatMap((p) => p.apertures ?? []).length
   return `${cut} aperture(s) across ${shells.length} enclosure(s), each of a material that passes the band behind it`
+})
+
+check('the printed enclosure is a solid a slicer will accept', () => {
+  // A drawing that is wrong wastes a sheet of paper. A model that is wrong
+  // wastes nine hours and 560 g of filament, and the ways it goes wrong are not
+  // visible in a viewer: a mesh with a hole in it renders perfectly and slices
+  // into a part with no top, and a window that failed to cut looks exactly like
+  // a window on the far side of an opaque plate.
+  //
+  // So the geometry is read back out of the file that gets printed, and checked
+  // against the registry rather than against the generator that wrote it.
+  const errors = []
+  const shells = hardware.parts.filter(
+    (p) => p.category === 'enclosure' && p.keySpecs?.bedMm && p.mechanical?.interiorWidthMm,
+  )
+
+  // --- binary STL, back to triangles ---------------------------------------
+  const readStl = (file) => {
+    const buf = readFileSync(file)
+    const count = buf.readUInt32LE(80)
+    const tris = []
+    for (let i = 0; i < count; i += 1) {
+      const o = 84 + i * 50 + 12 // past the facet normal
+      const v = []
+      for (let k = 0; k < 3; k += 1) {
+        v.push([
+          buf.readFloatLE(o + k * 12),
+          buf.readFloatLE(o + k * 12 + 4),
+          buf.readFloatLE(o + k * 12 + 8),
+        ])
+      }
+      tris.push(v)
+    }
+    return tris
+  }
+
+  // Vertices are floats and the same corner reached along two different edges
+  // can differ in the last bit, so they are keyed at a tolerance rather than
+  // exactly. Keying on the raw float reported every seam as a crack.
+  const key = (p) => p.map((v) => Math.round(v * 1000)).join(',')
+
+  const bbox = (tris) => {
+    const lo = [Infinity, Infinity, Infinity]
+    const hi = [-Infinity, -Infinity, -Infinity]
+    for (const t of tris) {
+      for (const v of t) {
+        for (let i = 0; i < 3; i += 1) {
+          lo[i] = Math.min(lo[i], v[i])
+          hi[i] = Math.max(hi[i], v[i])
+        }
+      }
+    }
+    return hi.map((h, i) => Number((h - lo[i]).toFixed(2)))
+  }
+
+  // Signed volume by the divergence theorem, which also reports the winding: a
+  // negative total means the surface is inside out, and a slicer handed that
+  // fills the room and hollows the part.
+  const volume = (tris) =>
+    tris.reduce((s, [a, b, c]) => {
+      const cx = b[1] * c[2] - b[2] * c[1]
+      const cy = b[2] * c[0] - b[0] * c[2]
+      const cz = b[0] * c[1] - b[1] * c[0]
+      return s + (a[0] * cx + a[1] * cy + a[2] * cz) / 6
+    }, 0)
+
+  /**
+   * Is this column of the part solid.
+   *
+   * A ray straight up from below, counting crossings. Even is outside, which
+   * over the middle of a plate means a hole went all the way through. This is
+   * the only way to ask the printed file whether a window exists, as opposed to
+   * asking the program that claims it cut one.
+   */
+  const solidAt = (tris, x, y, z) => {
+    // The ray starts at the probe point rather than below the part and counts
+    // only what is above it. Counting every crossing of the whole vertical line
+    // is even everywhere on a closed solid, inside and out alike, which is a
+    // test that passes identically on a plate and on the empty air beside it.
+    let hits = 0
+    for (const [a, b, c] of tris) {
+      const d1x = b[0] - a[0]
+      const d1y = b[1] - a[1]
+      const d2x = c[0] - a[0]
+      const d2y = c[1] - a[1]
+      const det = d1x * d2y - d1y * d2x
+      if (Math.abs(det) < 1e-12) continue // edge-on to the ray, contributes nothing
+      const px = x - a[0]
+      const py = y - a[1]
+      const u = (px * d2y - py * d2x) / det
+      const v = (py * d1x - px * d1y) / det
+      if (u < 0 || v < 0 || u + v > 1) continue
+      const hz = a[2] + u * (b[2] - a[2]) + v * (c[2] - a[2])
+      if (hz > z) hits += 1
+    }
+    return hits % 2 === 1
+  }
+
+  for (const shell of shells) {
+    const m = shell.mechanical
+    const ks = shell.keySpecs
+    const files = ['body', 'lid'].map((p) => ({
+      part: p,
+      path: resolve(root, `apps/web/public/boards/${shell.id}-${p}.stl`),
+    }))
+    if (files.some((f) => !existsSync(f.path))) {
+      errors.push(`'${shell.id}': no printable model. Run \`make boards\`.`)
+      continue
+    }
+
+    const meshes = {}
+    for (const f of files) {
+      const tris = readStl(f.path)
+      meshes[f.part] = tris
+
+      // Every edge belongs to exactly two triangles in a closed surface. One is
+      // a crack, three is a self-intersection, and both slice into something
+      // nobody wants on a bed for nine hours.
+      const edges = new Map()
+      for (const t of tris) {
+        for (let i = 0; i < 3; i += 1) {
+          const e = [key(t[i]), key(t[(i + 1) % 3])].sort().join('|')
+          edges.set(e, (edges.get(e) ?? 0) + 1)
+        }
+      }
+      const bad = [...edges.values()].filter((n) => n !== 2).length
+      if (bad > 0) {
+        errors.push(
+          `'${shell.id}' ${f.part}: ${bad} edge(s) not shared by exactly two triangles, so the ` +
+            'mesh is not closed and will not slice into a watertight part',
+        )
+      }
+      if (volume(tris) <= 0) {
+        errors.push(`'${shell.id}' ${f.part}: negative volume, so the surface is inside out`)
+      }
+    }
+
+    // The assembled part is the lid's footprint by the two heights stacked, and
+    // that is what has to fit a bed and what the registry publishes.
+    const bodyBox = bbox(meshes.body)
+    const lidBox = bbox(meshes.lid)
+    const declared = [m.widthMm, m.depthMm, m.heightMm]
+    const actual = [lidBox[0], lidBox[1], Number((bodyBox[2] + lidBox[2]).toFixed(2))]
+    for (let i = 0; i < 3; i += 1) {
+      if (Math.abs(actual[i] - declared[i]) > 0.05) {
+        errors.push(
+          `'${shell.id}': the model measures ${actual.join(' x ')} mm and the registry says ` +
+            `${declared.join(' x ')} mm`,
+        )
+        break
+      }
+    }
+
+    const bed = String(ks.bedMm).match(/(\d+)\s*x\s*(\d+)/)
+    if (bed) {
+      const [bx, by] = [Number(bed[1]), Number(bed[2])]
+      for (const [part, box] of Object.entries({ body: bodyBox, lid: lidBox })) {
+        const fits = (box[0] <= bx && box[1] <= by) || (box[1] <= bx && box[0] <= by)
+        if (!fits) {
+          errors.push(
+            `'${shell.id}' ${part}: ${box[0]} x ${box[1]} mm does not fit the ${bx} x ${by} mm ` +
+              'bed the registry says it prints on',
+          )
+        }
+      }
+    }
+
+    // Every window the registry declares has to be a hole in the file. Asked of
+    // the mesh, not of the manifest, because the manifest is written by the
+    // same program that would have failed to cut it.
+    // Never probe the exact centre of a round feature. A bore is triangulated
+    // as a fan meeting at its own axis, so a ray sent up the axis passes
+    // through a vertex every one of those triangles shares and the crossing is
+    // counted once per triangle. The first version of this test read an uncut
+    // 25 mm window as open, because the rebate floor above it was counted
+    // twice and two is even. The offsets are small against any real aperture
+    // and share no factor with the geometry.
+    const NUDGE = [
+      [0.37, 0.29],
+      [0.29, -0.37],
+    ]
+    const layout = lidLayout(shell, hardware.parts)
+    for (const w of layout.windows) {
+      const d = w.aperture.sizeMm
+      if (!d) continue
+      // The axis and a ring at 60 percent of the radius, so a bore that was cut
+      // undersize or off centre fails as well as one never cut at all.
+      const probes = [
+        ...NUDGE.map(([dx, dy]) => [w.at.x + dx, w.at.z + dy]),
+        [w.at.x + d * 0.3, w.at.z + 0.29],
+        [w.at.x - 0.37, w.at.z + d * 0.3],
+      ]
+      const blocked = probes.filter(([x, y]) => solidAt(meshes.lid, x, y, ks.lidMm / 2))
+      if (blocked.length > 0) {
+        errors.push(
+          `'${shell.id}': the lid is solid at ${blocked.length} of ${probes.length} points inside ` +
+            `the window ${w.part.id} looks through (${w.aperture.id}, ${d} mm at ` +
+            `${w.at.x.toFixed(1)}, ${w.at.z.toFixed(1)}), so that aperture is not open`,
+        )
+      }
+    }
+    // And the plate itself has to exist, or a lid that failed to generate at
+    // all would pass the test above on every window.
+    const clearOf = (x, y) =>
+      layout.windows.every(
+        (w) => Math.hypot(x - w.at.x, y - w.at.z) > (w.aperture.sizeMm ?? 0) / 2 + ks.windowRebateMm + 4,
+      )
+    let control = null
+    for (let x = -m.interiorWidthMm / 2 + 12; x < m.interiorWidthMm / 2 - 12 && !control; x += 5) {
+      for (let y = -m.interiorDepthMm / 2 + 12; y < m.interiorDepthMm / 2 - 12 && !control; y += 5) {
+        if (clearOf(x, y)) control = [x, y]
+      }
+    }
+    if (control && !solidAt(meshes.lid, control[0], control[1], ks.lidMm / 2)) {
+      errors.push(
+        `'${shell.id}': the lid has no material at ${control[0].toFixed(1)}, ${control[1].toFixed(1)}, ` +
+          'which is nowhere near a window, so the plate itself is missing',
+      )
+    }
+
+    // The filament figure is the one number here anybody spends money on, and
+    // it was a guess that the geometry contradicted by a factor of two.
+    if (ks.filamentG) {
+      const grams = (volume(meshes.body) + volume(meshes.lid)) * 1.24e-3
+      if (Math.abs(grams - ks.filamentG) / ks.filamentG > 0.05) {
+        errors.push(
+          `'${shell.id}': the model is ${Math.round(grams)} g of ASA and the registry says ` +
+            `${ks.filamentG} g`,
+        )
+      }
+      const perSpool = Math.floor(1000 / grams)
+      if (ks.printsPerSpool !== perSpool) {
+        errors.push(
+          `'${shell.id}': ${Math.round(grams)} g is ${perSpool} enclosure(s) per 1 kg spool, and ` +
+            `the registry claims ${ks.printsPerSpool}`,
+        )
+      }
+    }
+  }
+
+  if (errors.length) throw new Error(errors.join('; '))
+  return `${shells.length} printed enclosure(s), closed meshes matching the registry`
 })
 
 check('the build guide says how to close the box', () => {

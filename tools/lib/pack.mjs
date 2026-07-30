@@ -49,3 +49,55 @@ export function packFace(parts, { width, depth, gap = PART_GAP, clear = WALL_CLE
   }
   return out
 }
+
+/**
+ * Which parts read through the lid, and where each one ends up.
+ *
+ * The drawing and the printable model both have to cut their windows in the
+ * same places, and they were about to answer that question in two files. Same
+ * failure the packing rule itself was pulled out to fix, one level up: a
+ * drawing and an STL that disagree send someone to a printer with a hole where
+ * the camera is not, and the STL is the one that gets printed.
+ *
+ * The tier is the one needing the most apertures rather than the first listed.
+ * The Pelican ships with tiers 2 and 3, and choosing tier 2 left out the
+ * short-wave window that only tier 3 needs.
+ */
+export function lidLayout(shell, parts, { gap = PART_GAP, clear = WALL_CLEAR } = {}) {
+  const apertures = shell.apertures ?? []
+  const lidBands = new Set(apertures.filter((a) => a.face === 'lid').flatMap((a) => a.bands ?? []))
+  const wantsLid = (p, tier) =>
+    p.tiers?.includes(tier) &&
+    p.mechanical &&
+    p.band &&
+    lidBands.has(p.band) &&
+    p.mechanical.mount !== 'external'
+
+  // An enclosure that ships with no tier is still sized against one, and the
+  // registry says which: the printed case is sized from the tier 1 parts.
+  const candidateTiers = shell.tiers?.length ? shell.tiers : ['t1']
+  const tier = candidateTiers.reduce((best, t) =>
+    parts.filter((p) => wantsLid(p, t)).length > parts.filter((p) => wantsLid(p, best)).length
+      ? t
+      : best,
+  )
+
+  const lidParts = parts.filter((p) => wantsLid(p, tier))
+  const placed = packFace(
+    lidParts.map((p) => ({ id: p.id, ...p.mechanical })),
+    { width: shell.mechanical.interiorWidthMm, depth: shell.mechanical.interiorDepthMm, gap, clear },
+  )
+
+  return {
+    tier,
+    parts: lidParts,
+    placed,
+    windows: lidParts
+      .map((p) => ({
+        part: p,
+        at: placed.find((q) => q.id === p.id),
+        aperture: apertures.find((a) => (a.bands ?? []).includes(p.band)),
+      }))
+      .filter((w) => w.aperture && w.at),
+  }
+}
