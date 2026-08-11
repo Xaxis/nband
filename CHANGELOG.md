@@ -27,6 +27,22 @@ written against and which `make drift` enforces.
   between day and night.
 
 ### Fixed
+- **Row level security stopped at the telemetry partitions.** Every policy the
+  archive relies on was attached to `nband.telemetry`, the partitioned parent,
+  and none of them to the partitions underneath it. Postgres applies the
+  parent's policy only when the parent is the table being queried, so a
+  partition named directly answered with every row it held, including samples
+  from simulated and non-public nodes that 0004 and 0005 exist to withhold.
+  Migration 0002 compounded it by granting `select` on each new partition to
+  `anon` and `authenticated`, grants that were never needed because permission
+  for a partitioned read is checked on the parent alone. Nothing was served:
+  PostgREST does not route to partitions, so the Data API never exposed them.
+  That is one component's behaviour rather than a guarantee this schema made.
+  Migration 0010 enables RLS with no policy on every partition, which denies
+  direct access outright, drops the grants, and adds an event trigger so a
+  partition created by the ingest path or by hand is secured on creation rather
+  than on remembering. Verified against the live database: a read through the
+  parent still returns its rows, and a direct partition read is refused.
 - **Published node positions could be de-fuzzed to about five metres.** The
   offset's bearing was derived by hashing the node's Ed25519 public key, which
   was itself a column on the world-readable `nodes` row, so anyone could

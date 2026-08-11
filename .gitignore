@@ -29,6 +29,7 @@ firmware/captures/
 
 # editors / os
 .idea/
+*.iml
 .vscode/
 .DS_Store
 .vercel

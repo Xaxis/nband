@@ -53,6 +53,8 @@ after changing discriminator scoring. Both are checked in CI.
 
 **Nanosecond timestamps travel as decimal strings, not JSON numbers.** ~1.8×10¹⁸ exceeds `Number.MAX_SAFE_INTEGER`; a JSON number arrives already rounded, destroying the precision the PPS lock exists to buy. The API parses them with `BigInt` (`nanosSchema` in `lib/grid/ingest.ts`).
 
+**RLS on a partitioned table does not reach its partitions.** Postgres applies the parent's policy when the parent is queried and the partition's own policy when the partition is named directly, so a policy on `nband.telemetry` protects nothing if a partition is reachable. Partitions therefore carry RLS with no policy, which denies direct access, and no grants to `anon` or `authenticated`. Those grants are not needed: permission for a partitioned read is checked on the parent alone. The `secure_telemetry_partitions` event trigger applies both to any new partition, so this holds for partitions created by hand as well as by the ingest path. Migration 0010.
+
 **`ensure_telemetry_partition` is `SECURITY DEFINER` with a pinned `search_path`.** It performs DDL that the service role cannot do directly. It failed silently once and every row landed in the default partition. The telemetry route now checks its error and returns 500.
 
 **Renaming the Postgres schema does not rewrite function bodies.** Migration 0003 exists because of this. The function now uses unqualified names resolved via `search_path`.
