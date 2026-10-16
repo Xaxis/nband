@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import '../styles/globals.css'
 import { SiteHeader, SiteFooter } from '../components/Chrome'
 import { PLATFORM_VERSION } from '../lib/schema/generated'
@@ -66,6 +67,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter version={PLATFORM_VERSION} />
+        <Script
+          src="https://overlook.technology/s.js"
+          data-site="ws_q72okd336j"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
